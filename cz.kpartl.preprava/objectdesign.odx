@@ -1,0 +1,916 @@
+<project>
+  <packages>
+    <javaPackage name="util">
+      <projectName>Preprava</projectName>
+      <path>src/util</path>
+      <rootName>src</rootName>
+    </javaPackage>
+    <javaPackage name="cz.kpartl.preprava.util">
+      <projectName>Preprava</projectName>
+      <path>src/cz/kpartl/preprava/util</path>
+      <classes>
+        <classifier name="HibernateHelper">
+          <stereotype>Persistence Helper</stereotype>
+          <variables>
+            <variable name="singleton">
+              <type class="cz.kpartl.preprava.util.HibernateHelper"/>
+              <multiplicity>0..1</multiplicity>
+              <modifiers>8</modifiers>
+              <access>2</access>
+              <value>new HibernateHelper()</value>
+            </variable>
+            <variable name="factory">
+              <type>org.hibernate.SessionFactory</type>
+              <multiplicity>0..1</multiplicity>
+              <access>2</access>
+            </variable>
+            <variable name="currentSession">
+              <type>ThreadLocal</type>
+              <multiplicity>0..1</multiplicity>
+              <access>2</access>
+              <value>new ThreadLocal();</value>
+            </variable>
+          </variables>
+          <operations>
+            <operation name="constructor">
+              <multiplicity>1</multiplicity>
+              <access>2</access>
+              <generatedName>HibernateHelper</generatedName>
+              <exceptions>
+                <exception>org.hibernate.HibernateException</exception>
+              </exceptions>
+              <method>
+                <statements>
+                  <javaCode></javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="main">
+              <type basicType="void"/>
+              <multiplicity>0</multiplicity>
+              <modifiers>8</modifiers>
+              <access>1</access>
+              <generatedName>main</generatedName>
+              <parameters>
+                <variable name="args">
+                  <type>String</type>
+                  <multiplicity>*</multiplicity>
+                  <access>1</access>
+                  <arrayCount>1</arrayCount>
+                </variable>
+              </parameters>
+              <exceptions>
+                <exception>Exception</exception>
+              </exceptions>
+              <method>
+                <statements>
+                  <javaCode>String sqlFile = null;</javaCode>
+                  <javaCode>if(args.length &gt; 0) { sqlFile = args[0]; }</javaCode>
+                  <javaCode>boolean print = (sqlFile == null);</javaCode>
+                  <javaCode>boolean export = (sqlFile == null);</javaCode>
+                  <javaCode></javaCode>
+                  <javaCode>org.hibernate.cfg.Configuration config = getInstance().getConfiguration();</javaCode>
+                  <javaCode>org.hibernate.tool.hbm2ddl.SchemaExport exporter = new org.hibernate.tool.hbm2ddl.SchemaExport(config);</javaCode>
+                  <javaCode>if(sqlFile != null) { exporter.setOutputFile(sqlFile); }</javaCode>
+                  <javaCode>exporter.create(print, export);</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="getInstance">
+              <type class="cz.kpartl.preprava.util.HibernateHelper"/>
+              <multiplicity>0..1</multiplicity>
+              <modifiers>8</modifiers>
+              <access>1</access>
+              <generatedName>getInstance</generatedName>
+              <method>
+                <statements>
+                  <javaCode>return singleton;</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="getFactory">
+              <type>org.hibernate.SessionFactory</type>
+              <multiplicity>0..1</multiplicity>
+              <modifiers>32</modifiers>
+              <access>1</access>
+              <generatedName>getFactory</generatedName>
+              <exceptions>
+                <exception>org.hibernate.HibernateException</exception>
+              </exceptions>
+              <method>
+                <statements>
+                  <javaCode>if(factory == null) { org.hibernate.cfg.Configuration config=getConfiguration(); factory=config.buildSessionFactory(); }</javaCode>
+                  <javaCode>return factory;</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="close">
+              <type basicType="void"/>
+              <multiplicity>0</multiplicity>
+              <modifiers>32</modifiers>
+              <access>1</access>
+              <generatedName>close</generatedName>
+              <exceptions>
+                <exception>org.hibernate.HibernateException</exception>
+              </exceptions>
+              <method>
+                <statements>
+                  <javaCode>closeSession();</javaCode>
+                  <javaCode>if (factory != null) { factory.close(); factory = null; }</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="getConfiguration">
+              <type>org.hibernate.cfg.Configuration</type>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <generatedName>getConfiguration</generatedName>
+              <exceptions>
+                <exception>org.hibernate.MappingException</exception>
+              </exceptions>
+              <method>
+                <statements>
+                  <javaCode>org.hibernate.cfg.Configuration config = new org.hibernate.cfg.Configuration();</javaCode>
+                  <javaCode>config.addClass(cz.kpartl.preprava.model.User.class);</javaCode>
+                  <javaCode>config.addClass(cz.kpartl.preprava.model.Permission.class);</javaCode>
+                  <javaCode>return config;</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="openSession">
+              <type>org.hibernate.Session</type>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <generatedName>openSession</generatedName>
+              <exceptions>
+                <exception>org.hibernate.HibernateException</exception>
+              </exceptions>
+              <method>
+                <statements>
+                  <javaCode>org.hibernate.Session session = getFactory().openSession();</javaCode>
+                  <javaCode>session.connection();</javaCode>
+                  <javaCode>return session;</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="getSession">
+              <type>org.hibernate.Session</type>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <generatedName>getSession</generatedName>
+              <exceptions>
+                <exception>org.hibernate.HibernateException</exception>
+              </exceptions>
+              <method>
+                <statements>
+                  <javaCode>org.hibernate.Session session = (org.hibernate.Session) currentSession.get();</javaCode>
+                  <javaCode>if(session == null || !session.isOpen()) { session = openSession(); currentSession.set(session); }</javaCode>
+                  <javaCode>return session;</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="closeSession">
+              <type>void</type>
+              <multiplicity>0</multiplicity>
+              <access>1</access>
+              <generatedName>closeSession</generatedName>
+              <exceptions>
+                <exception>org.hibernate.HibernateException</exception>
+              </exceptions>
+              <method>
+                <statements>
+                  <javaCode>org.hibernate.Session session = (org.hibernate.Session) currentSession.get();</javaCode>
+                  <javaCode>if (session != null &amp;&amp; session.isOpen()) { session.close(); }</javaCode>
+                  <javaCode>currentSession.set(null);</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="save">
+              <type>void</type>
+              <multiplicity>0</multiplicity>
+              <access>1</access>
+              <generatedName>save</generatedName>
+              <parameters>
+                <variable name="object">
+                  <type class="java.lang.Object"/>
+                  <multiplicity>0..1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <exceptions>
+                <exception>org.hibernate.HibernateException</exception>
+              </exceptions>
+              <method>
+                <statements>
+                  <javaCode>getSession().save(object);</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="delete">
+              <type>void</type>
+              <multiplicity>0</multiplicity>
+              <access>1</access>
+              <generatedName>delete</generatedName>
+              <parameters>
+                <variable name="object">
+                  <type class="java.lang.Object"/>
+                  <multiplicity>0..1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <exceptions>
+                <exception>org.hibernate.HibernateException</exception>
+              </exceptions>
+              <method>
+                <statements>
+                  <javaCode>getSession().delete(object);</javaCode>
+                </statements>
+              </method>
+            </operation>
+          </operations>
+          <generatedFiles>
+            <name>HibernateHelper.java</name>
+            <compilationUnitId>=cz.kpartl.preprava/src&lt;cz.kpartl.preprava.util{HibernateHelper.java</compilationUnitId>
+          </generatedFiles>
+        </classifier>
+      </classes>
+      <rootName>src</rootName>
+      <generateHibernateHelper>true</generateHibernateHelper>
+    </javaPackage>
+    <javaPackage name="cz.kpartl.preprava.model">
+      <projectName>Preprava</projectName>
+      <path>src/cz/kpartl/preprava/model</path>
+      <classes>
+        <classifier name="User">
+          <stereotype>Persistent</stereotype>
+          <interfaces>
+            <type>java.io.Serializable</type>
+          </interfaces>
+          <tags>
+            <tag name="@Table">
+              <parameters>
+                <uniqueConstraints>username</uniqueConstraints>
+              </parameters>
+            </tag>
+          </tags>
+          <variables>
+            <variable name="serialVersionUID">
+              <type>long</type>
+              <multiplicity>1</multiplicity>
+              <modifiers>24</modifiers>
+              <access>2</access>
+              <value>-980933042</value>
+            </variable>
+            <variable name="id">
+              <type>Long</type>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <stereotype>id</stereotype>
+              <tags>
+                <tag name="@Id"/>
+                <tag name="@GeneratedValue"/>
+              </tags>
+            </variable>
+            <variable name="username">
+              <type class="java.lang.String"/>
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <value>&quot;&quot;</value>
+              <tags>
+                <tag name="@Column">
+                  <parameters>
+                    <unique>true</unique>
+                  </parameters>
+                </tag>
+                <tag name="@hibernate">
+                  <parameters>
+                    <unique>true</unique>
+                  </parameters>
+                </tag>
+              </tags>
+            </variable>
+            <variable name="password">
+              <type class="java.lang.String"/>
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <value>&quot;&quot;</value>
+            </variable>
+            <variable name="DAO_CLASS">
+              <type class="cz.kpartl.preprava.dao.UserDAO"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <inverse class="cz.kpartl.preprava.dao.UserDAO" name="DAO_TARGET"/>
+              <association>dao</association>
+              <type>5</type>
+            </variable>
+            <variable name="PERSISTENT_TEST_CLASS">
+              <type class="cz.kpartl.preprava.model.UserPersistentTest"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <inverse class="cz.kpartl.preprava.model.UserPersistentTest" name="PERSISTENT_TEST_TARGET"/>
+              <association>persistentTest</association>
+              <type>5</type>
+            </variable>
+            <variable name="permission">
+              <type class="cz.kpartl.preprava.model.Permission"/>
+              <multiplicity>*</multiplicity>
+              <access>1</access>
+              <value>new cz.kpartl.preprava.model.Permission()</value>
+            </variable>
+          </variables>
+          <operations>
+            <operation name="constructor">
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <generatedName>User</generatedName>
+              <method>
+                <statements>
+                  <javaCode></javaCode>
+                </statements>
+              </method>
+            </operation>
+          </operations>
+          <generatedFiles>
+            <name>User.java</name>
+            <compilationUnitId>=cz.kpartl.preprava/src&lt;cz.kpartl.preprava.model{User.java</compilationUnitId>
+            <otherFiles>
+              <string>src/cz/kpartl/preprava/model/User.hbm.xml</string>
+            </otherFiles>
+          </generatedFiles>
+        </classifier>
+        <classifier name="UserPersistentTest">
+          <superclass>junit.framework.TestCase</superclass>
+          <stereotype>Persistent Test</stereotype>
+          <variables>
+            <variable name="PERSISTENT_TEST_TARGET">
+              <type class="cz.kpartl.preprava.model.User"/>
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <inverse class="cz.kpartl.preprava.model.User" name="PERSISTENT_TEST_CLASS"/>
+              <association>persistentTest</association>
+              <type>4</type>
+            </variable>
+            <variable name="persistenceHelper">
+              <type>cz.kpartl.preprava.util.HibernateHelper</type>
+              <multiplicity>1</multiplicity>
+              <access>2</access>
+            </variable>
+          </variables>
+          <operations>
+            <operation name="constructor">
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <generatedName>UserPersistentTest</generatedName>
+              <method>
+                <statements>
+                  <javaCode>persistenceHelper = cz.kpartl.preprava.util.HibernateHelper.getInstance();</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="initObjects">
+              <type basicType="void"/>
+              <multiplicity>0</multiplicity>
+              <access>2</access>
+              <generatedName>initObjects</generatedName>
+              <objects>
+                <objectDiagram name="Objects">
+                  <width>1400</width>
+                  <height>1000</height>
+                  <lineStyle>STRAIGHT</lineStyle>
+                  <attributeTypesVisible>true</attributeTypesVisible>
+                </objectDiagram>
+              </objects>
+            </operation>
+            <operation name="tearDown">
+              <type>void</type>
+              <multiplicity>0</multiplicity>
+              <access>4</access>
+              <generatedName>tearDown</generatedName>
+              <exceptions>
+                <exception>Exception</exception>
+              </exceptions>
+              <method>
+                <statements>
+                  <javaCode>if(persistenceHelper != null) { persistenceHelper.close(); }
+super.tearDown();
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="setUp">
+              <type>void</type>
+              <multiplicity>0</multiplicity>
+              <access>4</access>
+              <generatedName>setUp</generatedName>
+              <exceptions>
+                <exception>Exception</exception>
+              </exceptions>
+              <method>
+                <statements>
+                  <javaCode>super.setUp(); initObjects();
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="testFindByUsername">
+              <type basicType="void"/>
+              <multiplicity>0</multiplicity>
+              <access>1</access>
+              <generatedName>testFindByUsername</generatedName>
+              <exceptions>
+                <exception class="java.lang.Exception"/>
+              </exceptions>
+            </operation>
+            <operation name="testLogin">
+              <type basicType="void"/>
+              <multiplicity>0</multiplicity>
+              <access>1</access>
+              <generatedName>testLogin</generatedName>
+              <exceptions>
+                <exception class="java.lang.Exception"/>
+              </exceptions>
+            </operation>
+            <operation name="testUniqUserName">
+              <type basicType="void"/>
+              <multiplicity>0</multiplicity>
+              <access>1</access>
+              <generatedName>testUniqUserName</generatedName>
+            </operation>
+          </operations>
+          <generatedFiles>
+            <name>UserPersistentTest.java</name>
+            <compilationUnitId>=cz.kpartl.preprava/test&lt;cz.kpartl.preprava.model{UserPersistentTest.java</compilationUnitId>
+          </generatedFiles>
+        </classifier>
+        <classifier name="Permission">
+          <stereotype>Persistent</stereotype>
+          <interfaces>
+            <type>java.io.Serializable</type>
+          </interfaces>
+          <variables>
+            <variable name="serialVersionUID">
+              <type>long</type>
+              <multiplicity>1</multiplicity>
+              <modifiers>24</modifiers>
+              <access>2</access>
+              <value>-520891886</value>
+            </variable>
+            <variable name="id">
+              <type>Long</type>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <stereotype>id</stereotype>
+              <tags>
+                <tag name="@Id"/>
+                <tag name="@GeneratedValue"/>
+              </tags>
+            </variable>
+            <variable name="name">
+              <type class="java.lang.String"/>
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <tags>
+                <tag name="@hibernate">
+                  <parameters>
+                    <unique>true</unique>
+                  </parameters>
+                </tag>
+              </tags>
+            </variable>
+            <variable name="text">
+              <type class="java.lang.String"/>
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+            </variable>
+          </variables>
+          <operations>
+            <operation name="constructor">
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <generatedName>Permission</generatedName>
+              <method>
+                <statements>
+                  <javaCode></javaCode>
+                </statements>
+              </method>
+            </operation>
+          </operations>
+          <generatedFiles>
+            <name>Permission.java</name>
+            <compilationUnitId>=cz.kpartl.preprava/src&lt;cz.kpartl.preprava.model{Permission.java</compilationUnitId>
+            <otherFiles>
+              <string>src/cz/kpartl/preprava/model/Permission.hbm.xml</string>
+            </otherFiles>
+          </generatedFiles>
+        </classifier>
+      </classes>
+      <diagrams>
+        <classDiagram name="PrepravaClassDiagram">
+          <showAttributes>true</showAttributes>
+          <showOperations>true</showOperations>
+          <tagSymbol id="1">
+            <x>136</x>
+            <y>32</y>
+            <connectedTo symbol="2"/>
+            <tag class="cz.kpartl.preprava.model.Permission" variable="name" id="@hibernate"/>
+            <showNotSet>true</showNotSet>
+          </tagSymbol>
+          <classSymbol id="2">
+            <x>35</x>
+            <y>12</y>
+            <class class="cz.kpartl.preprava.model.Permission"/>
+            <attributes autoDisplay="289" accessVisible="true">
+              <attribute>name</attribute>
+              <attribute>text</attribute>
+            </attributes>
+            <operations autoDisplay="37" accessVisible="true" parametersVisible="true"/>
+          </classSymbol>
+          <tagSymbol id="3">
+            <x>251</x>
+            <y>99</y>
+            <connectedTo symbol="6"/>
+            <tag class="cz.kpartl.preprava.model.User" variable="username" id="@hibernate"/>
+            <showNotSet>true</showNotSet>
+          </tagSymbol>
+          <classSymbol id="4">
+            <x>111</x>
+            <y>298</y>
+            <class class="cz.kpartl.preprava.model.UserPersistentTest"/>
+            <attributes autoDisplay="289" accessVisible="true"/>
+            <operations autoDisplay="37" accessVisible="true" parametersVisible="true">
+              <operation>initObjects()</operation>
+              <operation>tearDown()</operation>
+              <operation>setUp()</operation>
+              <operation>testFindByUsername()</operation>
+              <operation>testLogin()</operation>
+              <operation>testUniqUserName()</operation>
+            </operations>
+          </classSymbol>
+          <classSymbol id="5">
+            <x>324</x>
+            <y>297</y>
+            <class class="cz.kpartl.preprava.dao.UserDAO"/>
+            <attributes autoDisplay="289" accessVisible="true"/>
+            <operations autoDisplay="37" accessVisible="true" parametersVisible="true">
+              <operation>getSession()</operation>
+              <operation>create(cz.kpartl.preprava.model.User)</operation>
+              <operation>read(Long)</operation>
+              <operation>update(cz.kpartl.preprava.model.User)</operation>
+              <operation>delete(cz.kpartl.preprava.model.User)</operation>
+              <operation>findByUsername(java.lang.String)</operation>
+              <operation>login(java.lang.String,java.lang.String)</operation>
+            </operations>
+          </classSymbol>
+          <classSymbol id="6">
+            <x>111</x>
+            <y>101</y>
+            <class class="cz.kpartl.preprava.model.User"/>
+            <attributes autoDisplay="289" accessVisible="true">
+              <attribute>username</attribute>
+              <attribute>password</attribute>
+            </attributes>
+            <operations autoDisplay="37" accessVisible="true" parametersVisible="true"/>
+          </classSymbol>
+          <association id="7">
+            <x>435</x>
+            <y>369</y>
+            <assocEnd-0 class="cz.kpartl.preprava.model.User" name="DAO_CLASS"/>
+            <assocEnd-1 class="cz.kpartl.preprava.dao.UserDAO" name="DAO_TARGET"/>
+            <showMultiplicity>true</showMultiplicity>
+            <point>
+              <connectX symbol="5"/>
+              <connectY symbol="5"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.5</atX>
+              <atY>0.5</atY>
+            </point>
+            <point>
+              <connectX symbol="6"/>
+              <connectY symbol="6"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.5</atX>
+              <atY>0.49275362</atY>
+            </point>
+            <end-1>
+              <x>435</x>
+              <y>297</y>
+              <connectedSymbol symbol="5"/>
+              <text>0..1</text>
+            </end-1>
+            <end-2>
+              <x>239</x>
+              <y>135</y>
+              <connectedSymbol symbol="6"/>
+              <symbolType>2</symbolType>
+              <symbolLength>8</symbolLength>
+            </end-2>
+            <dashed>true</dashed>
+            <style>RECTANGULAR</style>
+          </association>
+          <association id="8">
+            <x>186</x>
+            <y>361</y>
+            <assocEnd-0 class="cz.kpartl.preprava.model.User" name="PERSISTENT_TEST_CLASS"/>
+            <assocEnd-1 class="cz.kpartl.preprava.model.UserPersistentTest" name="PERSISTENT_TEST_TARGET"/>
+            <showMultiplicity>true</showMultiplicity>
+            <point>
+              <connectX symbol="4"/>
+              <connectY symbol="4"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.5</atX>
+              <atY>0.4949495</atY>
+            </point>
+            <point>
+              <connectX symbol="6"/>
+              <connectY symbol="6"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.5</atX>
+              <atY>0.49275362</atY>
+            </point>
+            <end-1>
+              <x>175</x>
+              <y>298</y>
+              <connectedSymbol symbol="4"/>
+              <text>0..1</text>
+            </end-1>
+            <end-2>
+              <x>175</x>
+              <y>170</y>
+              <connectedSymbol symbol="6"/>
+              <symbolType>2</symbolType>
+              <symbolLength>8</symbolLength>
+            </end-2>
+            <dashed>true</dashed>
+            <style>RECTANGULAR</style>
+          </association>
+          <association id="9">
+            <x>191</x>
+            <y>140</y>
+            <assocEnd-1 class="cz.kpartl.preprava.model.User" name="permission"/>
+            <showMultiplicity>true</showMultiplicity>
+            <point>
+              <connectX symbol="6"/>
+              <connectY symbol="6"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.625</atX>
+              <atY>0.5714286</atY>
+            </point>
+            <point>
+              <connectX symbol="2"/>
+              <connectY symbol="2"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.5543478</atX>
+              <atY>0.5942029</atY>
+            </point>
+            <end-1>
+              <x>191</x>
+              <y>101</y>
+              <connectedSymbol symbol="6"/>
+            </end-1>
+            <end-2>
+              <x>127</x>
+              <y>53</y>
+              <w>58</w>
+              <h>30</h>
+              <connectedSymbol symbol="2"/>
+              <text>+permission</text>
+              <text>*</text>
+            </end-2>
+            <style>RECTANGULAR</style>
+          </association>
+          <width>1400</width>
+          <height>1000</height>
+          <lineStyle>RECTANGULAR</lineStyle>
+        </classDiagram>
+      </diagrams>
+      <rootName>src</rootName>
+    </javaPackage>
+    <javaPackage name="cz.kpartl.preprava.dao">
+      <projectName>Preprava</projectName>
+      <path>src/cz/kpartl/preprava/dao</path>
+      <classes>
+        <classifier name="UserDAO">
+          <stereotype>DAO</stereotype>
+          <variables>
+            <variable name="DAO_TARGET">
+              <type class="cz.kpartl.preprava.model.User"/>
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <inverse class="cz.kpartl.preprava.model.User" name="DAO_CLASS"/>
+              <association>dao</association>
+              <type>4</type>
+            </variable>
+          </variables>
+          <operations>
+            <operation name="constructor">
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <generatedName>UserDAO</generatedName>
+              <method>
+                <statements>
+                  <javaCode></javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="getSession">
+              <type>org.hibernate.Session</type>
+              <multiplicity>0..1</multiplicity>
+              <access>2</access>
+              <generatedName>getSession</generatedName>
+              <method>
+                <statements>
+                  <javaCode>
+return cz.kpartl.preprava.util.HibernateHelper.getInstance().getSession();
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="create">
+              <type>Long</type>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <generatedName>create</generatedName>
+              <parameters>
+                <variable name="object">
+                  <type class="cz.kpartl.preprava.model.User"/>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+getSession().save(object);
+return object.getId();
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="read">
+              <type class="cz.kpartl.preprava.model.User"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <generatedName>read</generatedName>
+              <parameters>
+                <variable name="id">
+                  <type>Long</type>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+return (cz.kpartl.preprava.model.User) getSession().get(cz.kpartl.preprava.model.User.class, id);
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="update">
+              <type>void</type>
+              <multiplicity>0</multiplicity>
+              <access>1</access>
+              <generatedName>update</generatedName>
+              <parameters>
+                <variable name="object">
+                  <type class="cz.kpartl.preprava.model.User"/>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+getSession().update(object);
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="delete">
+              <type basicType="void"/>
+              <multiplicity>0</multiplicity>
+              <access>1</access>
+              <generatedName>delete</generatedName>
+              <parameters>
+                <variable name="object">
+                  <type class="cz.kpartl.preprava.model.User"/>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+getSession().delete(object);
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="findByUsername">
+              <type class="cz.kpartl.preprava.model.User"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <generatedName>findByUsername</generatedName>
+              <parameters>
+                <variable name="username">
+                  <type class="java.lang.String"/>
+                  <multiplicity>1</multiplicity>
+                </variable>
+              </parameters>
+              <query>
+                <tokens>
+                  <queryVariable name="u">
+                    <type class="cz.kpartl.preprava.model.User"/>
+                  </queryVariable>
+                  <queryText>where</queryText>
+                  <queryObjectVariable object="u">
+                    <variable class="cz.kpartl.preprava.model.User" name="username"/>
+                  </queryObjectVariable>
+                  <com.objectgen.core.Query_-Operator>=</com.objectgen.core.Query_-Operator>
+                  <queryParameter name="username"/>
+                </tokens>
+              </query>
+            </operation>
+            <operation name="login">
+              <type class="cz.kpartl.preprava.model.User"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <generatedName>login</generatedName>
+              <parameters>
+                <variable name="name">
+                  <type class="java.lang.String"/>
+                  <multiplicity>0..1</multiplicity>
+                </variable>
+                <variable name="password">
+                  <type class="java.lang.String"/>
+                  <multiplicity>0..1</multiplicity>
+                </variable>
+              </parameters>
+            </operation>
+          </operations>
+          <generatedFiles>
+            <name>UserDAO.java</name>
+            <compilationUnitId>=cz.kpartl.preprava/src&lt;cz.kpartl.preprava.dao{UserDAO.java</compilationUnitId>
+          </generatedFiles>
+        </classifier>
+      </classes>
+      <rootName>src</rootName>
+    </javaPackage>
+  </packages>
+  <basicTypes>
+    <basicType>void</basicType>
+    <basicType>int</basicType>
+  </basicTypes>
+  <codeGenerators>
+    <Java-Bean>
+      <generate-property-support>false</generate-property-support>
+    </Java-Bean>
+    <Unit-Test>
+      <src-dir>test</src-dir>
+      <add-junit3-libraries>false</add-junit3-libraries>
+    </Unit-Test>
+    <Persistent>
+      <create-hibernate-cfg-xml>false</create-hibernate-cfg-xml>
+      <add-hsqldb-libraries>true</add-hsqldb-libraries>
+      <platform>Hibernate 3</platform>
+      <create-persistence-xml>true</create-persistence-xml>
+      <src-dir>(default)</src-dir>
+      <create-helper-main>true</create-helper-main>
+      <annotate-getters>true</annotate-getters>
+      <generate-dto-associations-many>false</generate-dto-associations-many>
+      <generate-collections-as-set>true</generate-collections-as-set>
+      <generate-full-classnames>true</generate-full-classnames>
+      <add-hibernate3-libraries>true</add-hibernate3-libraries>
+      <generate-dto>false</generate-dto>
+      <generate-interfaces>false</generate-interfaces>
+    </Persistent>
+    <DAO>
+      <src-dir>(default)</src-dir>
+      <generate-interfaces>false</generate-interfaces>
+      <use-spring-templates>false</use-spring-templates>
+    </DAO>
+    <GWT-Service>
+      <version>1.5</version>
+    </GWT-Service>
+  </codeGenerators>
+  <properties>
+    <conf-dir>(default)</conf-dir>
+    <root-package>cz.kpartl.preprava</root-package>
+    <create-hibernate-properties>true</create-hibernate-properties>
+    <create-log4j-properties>true</create-log4j-properties>
+  </properties>
+  <codeGeneration>
+    <generate-equals-and-hashcode>true</generate-equals-and-hashcode>
+    <source-compatibility>5.0</source-compatibility>
+    <grammar>None</grammar>
+  </codeGeneration>
+  <diagramProperties>
+    <link-with-java-editor>false</link-with-java-editor>
+  </diagramProperties>
+</project>

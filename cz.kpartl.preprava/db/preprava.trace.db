@@ -1,0 +1,64 @@
+09-06 12:50:46 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-06 12:50:46 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-06 12:50:47 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-06 12:50:47 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-06 12:50:48 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-06 12:50:48 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-06 12:50:48 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-06 12:50:48 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-06 12:52:58 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-06 12:52:58 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-06 12:52:58 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-06 12:52:58 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-06 12:52:58 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-06 12:52:58 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-06 12:52:58 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-06 12:52:58 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
