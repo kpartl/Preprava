@@ -2,11 +2,15 @@ package cz.kpartl.preprava.dao;
 
 import java.security.NoSuchAlgorithmException;
 
+import javax.inject.Inject;
+
+import org.eclipse.e4.core.services.log.Logger;
+
 import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.util.CryptoUtils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 
 /**
@@ -18,7 +22,8 @@ import org.slf4j.LoggerFactory;
  */
 public class UserDAO {
 	
-	final Logger logger = LoggerFactory.getLogger(UserDAO.class);
+	@Inject
+	 Logger logger;// = LoggerFactory.getLogger(UserDAO.class);
 	/**
 	 * @generated
 	 */

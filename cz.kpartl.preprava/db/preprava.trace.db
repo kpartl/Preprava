@@ -62,3 +62,35 @@ alter table tb_user_permission drop constraint fk_user_permission [42102-166]
 org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
 Table "TB_USER_PERMISSION" not found; SQL statement:
 alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-07 13:19:03 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-07 13:19:03 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-07 13:23:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-07 13:23:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-07 13:23:18 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-07 13:23:18 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-07 13:23:18 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-07 13:23:18 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]

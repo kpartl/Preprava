@@ -13,7 +13,9 @@ import cz.kpartl.preprava.util.CryptoUtils;
  */
 public class User implements java.io.Serializable {
 	
-	final Logger logger = LoggerFactory.getLogger(User.class);
+	public static final String CONTEXT_NAME = "LOGGED_USER";
+	
+	final Logger logger = LoggerFactory.getLogger(User.class);		
 	
 	/**
 	 * @generated

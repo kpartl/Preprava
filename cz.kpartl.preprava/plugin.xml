@@ -12,6 +12,10 @@
                name="appName"
                value="cz.kpartl.preprava">
          </property>
+         <property
+               name="lifeCycleURI"
+               value="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.util.Login">
+         </property>
          
       </product>
    </extension>

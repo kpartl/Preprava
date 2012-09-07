@@ -9,14 +9,15 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import cz.kpartl.preprava.util.DIUtil;
+
 public class TablePart {
 	
 	Label label;
 	
 	@PostConstruct
 	  public void createControls(Composite parent) {
-			label = new Label(parent,SWT.NONE);
-			System.out.println("TodoOverviewPart postConstruct called");
+			label = new Label(parent,SWT.NONE);							 
 		} 
 	  
 	  @PreDestroy
