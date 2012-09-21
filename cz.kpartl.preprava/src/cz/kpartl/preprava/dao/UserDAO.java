@@ -4,13 +4,17 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.inject.Inject;
 
-import org.eclipse.e4.core.services.log.Logger;
+import org.eclipse.e4.core.di.annotations.Creatable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 
 import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.util.CryptoUtils;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+
+
 
 
 /**
@@ -20,14 +24,19 @@ import cz.kpartl.preprava.util.CryptoUtils;
  * @author Karel Partl
  *
  */
+
 public class UserDAO {
 	
-	@Inject
-	 Logger logger;// = LoggerFactory.getLogger(UserDAO.class);
+	 
+	
+	private static final Logger _logger = LoggerFactory
+			.getLogger(UserDAO.class);
+	 
 	/**
 	 * @generated
 	 */
 	public UserDAO() {
+			
 	}
 
 	/**
@@ -122,11 +131,11 @@ public class UserDAO {
 	 * @param password
 	 * @return Hash of the password or empty string if any error has occured
 	 */
-	public String encryptPassword(String password){
+	public static String encryptPassword(String password){
 		try{
 			return CryptoUtils.byteArrayToHexString(CryptoUtils.computeHash(password));
 		} catch (NoSuchAlgorithmException e) {
-			logger.error("Cannot login user", e);
+			_logger.error("Cannot login user", e);
 			return "";
 		}
 		

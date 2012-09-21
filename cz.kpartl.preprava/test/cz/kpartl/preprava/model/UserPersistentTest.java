@@ -83,8 +83,6 @@ public class UserPersistentTest extends junit.framework.TestCase {
 	 * @generated
 	 */
 	public void testFindByUsername() throws Exception {
-		  User user = userDAO.findByUsername(USER_NAME);
-	      assertNotNull(user);
 	}
 
 	/**
@@ -95,6 +93,7 @@ public class UserPersistentTest extends junit.framework.TestCase {
 	      assertNotNull(user);
 	}
 	
+	@Test
 	public void testLoginWrongPassword() throws Exception {
 	      User user = userDAO.login(USER_NAME, "x");
 	      assertNull(user);

@@ -21,7 +21,7 @@
       </children>
     </mainMenu>
     <trimBars xmi:id="_nkHks_dIEeGDArQ_Xew7DQ">
-      <children xsi:type="menu:ToolBar" xmi:id="_nkHktPdIEeGDArQ_Xew7DQ" elementId="toolbar:org.eclipse.ui.main.toolbar">
+      <children xsi:type="menu:ToolBar" xmi:id="_nkHktPdIEeGDArQ_Xew7DQ" elementId="toolbar:org.eclipse.ui.main.toolbar" toBeRendered="false" visible="false">
         <children xsi:type="menu:HandledToolItem" xmi:id="_nkHktfdIEeGDArQ_Xew7DQ" iconURI="platform:/plugin/cz.kpartl.preprava/icons/sample.gif" command="_nkHknvdIEeGDArQ_Xew7DQ"/>
         <children xsi:type="menu:HandledToolItem" xmi:id="_nkHktvdIEeGDArQ_Xew7DQ" iconURI="platform:/plugin/cz.kpartl.preprava/icons/save_edit.gif" command="_nkHkofdIEeGDArQ_Xew7DQ"/>
       </children>

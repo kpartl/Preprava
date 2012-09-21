@@ -10,6 +10,7 @@ import org.eclipse.e4.ui.internal.workbench.E4Workbench;
 import org.eclipse.e4.ui.internal.workbench.swt.E4Application;
 import org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine;
 import org.eclipse.e4.ui.internal.workbench.swt.WorkbenchSWTActivator;
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 
 import org.eclipse.e4.ui.workbench.lifecycle.PostContextCreate;
@@ -29,15 +30,23 @@ import cz.kpartl.preprava.model.User;
 
 
 public class Login {
+	
+	public static final Boolean TEST = true; 
 			
+	UserDAO userDAO = null;
 	
 	 @PostContextCreate
 	   public void login(IEclipseContext context) {
-		 
-	
+		 	
 	      final Shell shell = new Shell(SWT.INHERIT_NONE);
 	      
-	      InitUtil.initDBData();
+	      userDAO = ContextInjectionFactory.make(UserDAO.class, context);
+	      
+	      context.set(UserDAO.class, userDAO); 
+	      
+	      InitUtil initUtil = ContextInjectionFactory.make(InitUtil.class, context);
+	      
+	      initUtil.initDBData();
 	      
 	      tryLogin(shell, context);	 
 	      
@@ -45,26 +54,26 @@ public class Login {
 	 
 	 private void tryLogin(Shell shell, IEclipseContext context) 
 	 {
-		 final LoginDialog dialog = new LoginDialog(shell);
+		/* final LoginDialog dialog = new LoginDialog(shell);
 	      dialog.create();
 	 	      	      
 	 
 	      if (dialog.open() != Window.OK) {
 	         System.exit(0);
 	      }	
-	      	      
+	      	 
+	      	      */
+	      	     
 	      
-	      DAOFactory daoFactory = new DAOFactory();
 	      
-	      UserDAO userDAO = daoFactory.getUserDAO();
 	      
-	      String username = dialog.getUsername();
+	     /* String username = dialog.getUsername();
 	      
-	      String password = userDAO.encryptPassword((dialog.getPassword()));
+	      String password = userDAO.encryptPassword((dialog.getPassword()));*/
 	      
-	      //add the DAOFactory into the context
-	      context.set(DAOFactory.CONTEXT_NAME, daoFactory);	      
-	      
+	      String username = InitUtil.LOGIN;
+	      String password = UserDAO.encryptPassword(InitUtil.PASSWORD);	    
+	      	      	      
 	      //try to login
 	      User user = userDAO.login(username, password);
 	      

@@ -1,0 +1,82 @@
+a:link {
+	color: #EA0000;
+}
+
+a:visited {
+	color: #EA0000;
+}
+
+body {
+	background-image: url(images/cleverlance_bg.gif);
+	background-repeat: no-repeat;
+	color: #000000;
+	font: normal 68% verdana,arial,helvetica;
+}
+
+h1 {
+	color: #EA0000;
+	font: 200% verdana,arial,helvetica;
+	font-weight: bold;
+	margin: 0px 0px 5px;
+}
+
+h2 {
+	font: bold 125% verdana,arial,helvetica;
+	margin-bottom: 0.5em;
+	margin-top: 1em;
+}
+
+h3 {
+	font: bold 115% verdana,arial,helvetica;
+	margin-bottom: 0.5em;
+}
+
+h4 {
+	font: bold 100% verdana,arial,helvetica;
+	margin-bottom: 0.5em;
+}
+
+h5 {
+	font: bold 100% verdana,arial,helvetica;
+	margin-bottom: 0.5em;
+}
+
+h6 {
+	font: bold 100% verdana,arial,helvetica;
+	margin-bottom: 0.5em;
+}
+
+p {
+	line-height: 1.5em;
+	margin-bottom: 1.0em;
+	margin-top: 0.5em;
+}
+
+table tr td, table tr th {
+	font-size: 68%;
+}
+
+table.details tr td{
+	background: #EEEEE0;
+}
+
+table.details tr th{
+	background: #666666;
+	color: #FFFFFF;
+	font-weight: bold;
+	text-align: left;
+}
+
+.error {
+	color: #FF0000;
+	font-weight: bold;
+}
+
+.failure {
+	color: #FF0000;
+	font-weight: bold;
+}
+
+.properties {
+	text-align: right;
+}
