@@ -27,8 +27,14 @@
       <many-to-one  name='dodavatel' class='cz.kpartl.preprava.model.Dodavatel' foreign-key='fk_pozadavek_dodavatel_id'>
          <column name='dodavatel_id'/>
       </many-to-one>
-      <many-to-one  name='disponent' class='cz.kpartl.preprava.model.Disponent' foreign-key='fk_pozadavek_disponent_id'>
+      <one-to-one  name='objednavka' class='cz.kpartl.preprava.model.Objednavka' property-ref='pozadavek'>
+      </one-to-one>
+      <property  name='celkova_hmotnost' type='string' column='celkova_hmotnost'>
+      </property>
+      <many-to-one  name='disponent' class='cz.kpartl.preprava.model.User' foreign-key='fk_pozadavek_disponent_id'>
          <column name='disponent_id'/>
       </many-to-one>
+      <property  name='attr' type='integer' column='attr'>
+      </property>
    </class>
 </hibernate-mapping>

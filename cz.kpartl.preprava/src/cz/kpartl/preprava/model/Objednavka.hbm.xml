@@ -7,9 +7,9 @@
       <id name='id' type='long' column='objednavka_id'>
          <generator class='native' />
       </id>
-      <property  name='cislo' type='integer' column='cislo'>
+      <property  name='cislo' type='integer' column='cislo' unique='true'>
       </property>
-      <property  name='cena' type='double' column='cena'>
+      <property  name='cena' type='big_decimal' column='cena'>
       </property>
       <property  name='mena' type='string' column='mena'>
       </property>
@@ -19,5 +19,11 @@
       </property>
       <property  name='cislo_faktury_dopravce' type='integer' column='cislo_faktury_dopravce'>
       </property>
+      <many-to-one  name='pozadavek' class='cz.kpartl.preprava.model.Pozadavek' not-null='true' cascade='save-update' foreign-key='fk_objednavka_pozadavek_id' unique='true'>
+         <column name='pozadavek_id'/>
+      </many-to-one>
+      <many-to-one  name='dopravce' class='cz.kpartl.preprava.model.Dopravce' foreign-key='fk_objednavka_dopravce_id'>
+         <column name='dopravce_id'/>
+      </many-to-one>
    </class>
 </hibernate-mapping>

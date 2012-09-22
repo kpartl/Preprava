@@ -136,8 +136,8 @@
                   <javaCode>config.addClass(cz.kpartl.preprava.model.Pozadavek.class);</javaCode>
                   <javaCode>config.addClass(cz.kpartl.preprava.model.Zakaznik.class);</javaCode>
                   <javaCode>config.addClass(cz.kpartl.preprava.model.Dodavatel.class);</javaCode>
-                  <javaCode>config.addClass(cz.kpartl.preprava.model.Disponent.class);</javaCode>
                   <javaCode>config.addClass(cz.kpartl.preprava.model.Objednavka.class);</javaCode>
+                  <javaCode>config.addClass(cz.kpartl.preprava.model.Dopravce.class);</javaCode>
                   <javaCode>return config;</javaCode>
                 </statements>
               </method>
@@ -584,9 +584,33 @@ super.tearDown();
               <multiplicity>0..1</multiplicity>
               <access>1</access>
             </variable>
-            <variable name="disponent">
-              <type class="cz.kpartl.preprava.model.Disponent"/>
+            <variable name="objednavka">
+              <type class="cz.kpartl.preprava.model.Objednavka"/>
               <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <inverse class="cz.kpartl.preprava.model.Objednavka" name="pozadavek"/>
+            </variable>
+            <variable name="DAO_CLASS">
+              <type class="cz.kpartl.preprava.dao.PozadavekDAO"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <inverse class="cz.kpartl.preprava.dao.PozadavekDAO" name="DAO_TARGET"/>
+              <association>dao</association>
+              <type>5</type>
+            </variable>
+            <variable name="celkova_hmotnost">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="disponent">
+              <type class="cz.kpartl.preprava.model.User"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="attr">
+              <type basicType="int"/>
+              <multiplicity>1</multiplicity>
               <access>1</access>
             </variable>
           </variables>
@@ -622,7 +646,7 @@ super.tearDown();
               <access>1</access>
             </variable>
             <variable name="cislo">
-              <type basicType="long"/>
+              <type basicType="int"/>
               <multiplicity>1</multiplicity>
               <access>1</access>
               <tags>
@@ -890,10 +914,12 @@ super.tearDown();
             <variable name="nazev">
               <type class="java.lang.String"/>
               <multiplicity>0..1</multiplicity>
+              <access>1</access>
             </variable>
             <variable name="cislo">
-              <type basicType="long"/>
+              <type basicType="int"/>
               <multiplicity>1</multiplicity>
+              <access>1</access>
               <tags>
                 <tag name="@hibernate">
                   <parameters>
@@ -905,6 +931,7 @@ super.tearDown();
             <variable name="hodina_nakladky">
               <type class="java.lang.String"/>
               <multiplicity>0..1</multiplicity>
+              <access>1</access>
             </variable>
             <variable name="DAO_CLASS">
               <type class="cz.kpartl.preprava.dao.DodavatelDAO"/>
@@ -935,69 +962,6 @@ super.tearDown();
             </otherFiles>
           </generatedFiles>
         </classifier>
-        <classifier name="Disponent">
-          <stereotype>Persistent</stereotype>
-          <interfaces>
-            <type>java.io.Serializable</type>
-          </interfaces>
-          <variables>
-            <variable name="serialVersionUID">
-              <type>long</type>
-              <multiplicity>1</multiplicity>
-              <modifiers>24</modifiers>
-              <access>2</access>
-              <value>-857751129</value>
-            </variable>
-            <variable name="id">
-              <type>Long</type>
-              <multiplicity>0..1</multiplicity>
-              <access>1</access>
-              <stereotype>id</stereotype>
-              <tags>
-                <tag name="@Id"/>
-                <tag name="@GeneratedValue"/>
-              </tags>
-            </variable>
-            <variable name="jmeno">
-              <type class="java.lang.String"/>
-              <multiplicity>0..1</multiplicity>
-              <tags>
-                <tag name="@hibernate">
-                  <parameters>
-                    <unique>true</unique>
-                  </parameters>
-                </tag>
-              </tags>
-            </variable>
-            <variable name="DAO_CLASS">
-              <type class="cz.kpartl.preprava.dao.DisponentDAO"/>
-              <multiplicity>0..1</multiplicity>
-              <access>1</access>
-              <inverse class="cz.kpartl.preprava.dao.DisponentDAO" name="DAO_TARGET"/>
-              <association>dao</association>
-              <type>5</type>
-            </variable>
-          </variables>
-          <operations>
-            <operation name="constructor">
-              <multiplicity>1</multiplicity>
-              <access>1</access>
-              <generatedName>Disponent</generatedName>
-              <method>
-                <statements>
-                  <javaCode></javaCode>
-                </statements>
-              </method>
-            </operation>
-          </operations>
-          <generatedFiles>
-            <name>Disponent.java</name>
-            <compilationUnitId>=cz.kpartl.preprava/src&lt;cz.kpartl.preprava.model{Disponent.java</compilationUnitId>
-            <otherFiles>
-              <string>src/cz/kpartl/preprava/model/Disponent.hbm.xml</string>
-            </otherFiles>
-          </generatedFiles>
-        </classifier>
         <classifier name="Objednavka">
           <stereotype>Persistent</stereotype>
           <interfaces>
@@ -1025,10 +989,17 @@ super.tearDown();
               <type basicType="int"/>
               <multiplicity>1</multiplicity>
               <access>1</access>
+              <tags>
+                <tag name="@hibernate">
+                  <parameters>
+                    <unique>true</unique>
+                  </parameters>
+                </tag>
+              </tags>
             </variable>
             <variable name="cena">
-              <type basicType="double"/>
-              <multiplicity>1</multiplicity>
+              <type class="java.math.BigDecimal"/>
+              <multiplicity>0..1</multiplicity>
               <access>1</access>
             </variable>
             <variable name="mena">
@@ -1051,6 +1022,25 @@ super.tearDown();
               <multiplicity>1</multiplicity>
               <access>1</access>
             </variable>
+            <variable name="pozadavek">
+              <type class="cz.kpartl.preprava.model.Pozadavek"/>
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <inverse class="cz.kpartl.preprava.model.Pozadavek" name="objednavka"/>
+            </variable>
+            <variable name="dopravce">
+              <type class="cz.kpartl.preprava.model.Dopravce"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="DAO_CLASS">
+              <type class="cz.kpartl.preprava.dao.ObjednavkaDAO"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <inverse class="cz.kpartl.preprava.dao.ObjednavkaDAO" name="DAO_TARGET"/>
+              <association>dao</association>
+              <type>5</type>
+            </variable>
           </variables>
           <operations>
             <operation name="constructor">
@@ -1072,14 +1062,127 @@ super.tearDown();
             </otherFiles>
           </generatedFiles>
         </classifier>
+        <classifier name="Dopravce">
+          <stereotype>Persistent</stereotype>
+          <interfaces>
+            <type>java.io.Serializable</type>
+          </interfaces>
+          <variables>
+            <variable name="serialVersionUID">
+              <type>long</type>
+              <multiplicity>1</multiplicity>
+              <modifiers>24</modifiers>
+              <access>2</access>
+              <value>917935527</value>
+            </variable>
+            <variable name="id">
+              <type>Long</type>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <stereotype>id</stereotype>
+              <tags>
+                <tag name="@Id"/>
+                <tag name="@GeneratedValue"/>
+              </tags>
+            </variable>
+            <variable name="nazev">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="DAO_CLASS">
+              <type class="cz.kpartl.preprava.dao.DopravceDAO"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <inverse class="cz.kpartl.preprava.dao.DopravceDAO" name="DAO_TARGET"/>
+              <association>dao</association>
+              <type>5</type>
+            </variable>
+          </variables>
+          <operations>
+            <operation name="constructor">
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <generatedName>Dopravce</generatedName>
+              <method>
+                <statements>
+                  <javaCode></javaCode>
+                </statements>
+              </method>
+            </operation>
+          </operations>
+          <generatedFiles>
+            <name>Dopravce.java</name>
+            <compilationUnitId>=cz.kpartl.preprava/src&lt;cz.kpartl.preprava.model{Dopravce.java</compilationUnitId>
+            <otherFiles>
+              <string>src/cz/kpartl/preprava/model/Dopravce.hbm.xml</string>
+            </otherFiles>
+          </generatedFiles>
+        </classifier>
       </classes>
       <diagrams>
         <classDiagram name="PrepravaClassDiagram">
           <showAttributes>true</showAttributes>
           <showOperations>true</showOperations>
-          <classSymbol id="1">
-            <x>559</x>
-            <y>430</y>
+          <classSymbol id="2">
+            <x>409</x>
+            <y>572</y>
+            <class class="cz.kpartl.preprava.dao.ObjednavkaDAO"/>
+            <attributes autoDisplay="289" accessVisible="true"/>
+            <operations autoDisplay="37" accessVisible="true" parametersVisible="true">
+              <operation>getSession()</operation>
+              <operation>create(cz.kpartl.preprava.model.Objednavka)</operation>
+              <operation>read(Long)</operation>
+              <operation>update(cz.kpartl.preprava.model.Objednavka)</operation>
+              <operation>delete(cz.kpartl.preprava.model.Objednavka)</operation>
+            </operations>
+          </classSymbol>
+          <classSymbol id="3">
+            <x>88</x>
+            <y>576</y>
+            <class class="cz.kpartl.preprava.dao.DopravceDAO"/>
+            <attributes autoDisplay="289" accessVisible="true"/>
+            <operations autoDisplay="37" accessVisible="true" parametersVisible="true">
+              <operation>getSession()</operation>
+              <operation>create(cz.kpartl.preprava.model.Dopravce)</operation>
+              <operation>read(Long)</operation>
+              <operation>update(cz.kpartl.preprava.model.Dopravce)</operation>
+              <operation>delete(cz.kpartl.preprava.model.Dopravce)</operation>
+            </operations>
+          </classSymbol>
+          <tagSymbol id="4">
+            <x>609</x>
+            <y>465</y>
+            <connectedTo symbol="7"/>
+            <tag class="cz.kpartl.preprava.model.Objednavka" variable="cislo" id="@hibernate"/>
+            <showNotSet>true</showNotSet>
+          </tagSymbol>
+          <classSymbol id="5">
+            <x>1045</x>
+            <y>335</y>
+            <class class="cz.kpartl.preprava.dao.PozadavekDAO"/>
+            <attributes autoDisplay="289" accessVisible="true"/>
+            <operations autoDisplay="37" accessVisible="true" parametersVisible="true">
+              <operation>getSession()</operation>
+              <operation>create(cz.kpartl.preprava.model.Pozadavek)</operation>
+              <operation>read(Long)</operation>
+              <operation>update(cz.kpartl.preprava.model.Pozadavek)</operation>
+              <operation>delete(cz.kpartl.preprava.model.Pozadavek)</operation>
+              <operation>findAll()</operation>
+            </operations>
+          </classSymbol>
+          <classSymbol id="6">
+            <x>135</x>
+            <y>462</y>
+            <class class="cz.kpartl.preprava.model.Dopravce"/>
+            <attributes autoDisplay="289" accessVisible="true">
+              <attribute>nazev</attribute>
+            </attributes>
+            <operations autoDisplay="37" accessVisible="true" parametersVisible="true"/>
+          </classSymbol>
+          <classSymbol id="7">
+            <x>415</x>
+            <y>396</y>
             <class class="cz.kpartl.preprava.model.Objednavka"/>
             <attributes autoDisplay="289" accessVisible="true">
               <attribute>cislo</attribute>
@@ -1091,21 +1194,14 @@ super.tearDown();
             </attributes>
             <operations autoDisplay="37" accessVisible="true" parametersVisible="true"/>
           </classSymbol>
-          <tagSymbol id="2">
-            <x>810</x>
-            <y>242</y>
-            <connectedTo symbol="6"/>
-            <tag class="cz.kpartl.preprava.model.Disponent" variable="jmeno" id="@hibernate"/>
-            <showNotSet>true</showNotSet>
-          </tagSymbol>
-          <tagSymbol id="3">
-            <x>1265</x>
+          <tagSymbol id="9">
+            <x>1273</x>
             <y>205</y>
-            <connectedTo symbol="7"/>
+            <connectedTo symbol="11"/>
             <tag class="cz.kpartl.preprava.model.Dodavatel" variable="cislo" id="@hibernate"/>
             <showNotSet>true</showNotSet>
           </tagSymbol>
-          <classSymbol id="4">
+          <classSymbol id="10">
             <x>1119</x>
             <class class="cz.kpartl.preprava.dao.DodavatelDAO"/>
             <attributes autoDisplay="289" accessVisible="true"/>
@@ -1118,29 +1214,7 @@ super.tearDown();
               <operation>findByCislo(long)</operation>
             </operations>
           </classSymbol>
-          <classSymbol id="5">
-            <x>863</x>
-            <class class="cz.kpartl.preprava.dao.DisponentDAO"/>
-            <attributes autoDisplay="289" accessVisible="true"/>
-            <operations autoDisplay="37" accessVisible="true" parametersVisible="true">
-              <operation>getSession()</operation>
-              <operation>create(cz.kpartl.preprava.model.Disponent)</operation>
-              <operation>read(Long)</operation>
-              <operation>update(cz.kpartl.preprava.model.Disponent)</operation>
-              <operation>delete(cz.kpartl.preprava.model.Disponent)</operation>
-              <operation>findByJmeno(java.lang.String)</operation>
-            </operations>
-          </classSymbol>
-          <classSymbol id="6">
-            <x>829</x>
-            <y>168</y>
-            <class class="cz.kpartl.preprava.model.Disponent"/>
-            <attributes autoDisplay="289" accessVisible="true">
-              <attribute>jmeno</attribute>
-            </attributes>
-            <operations autoDisplay="37" accessVisible="true" parametersVisible="true"/>
-          </classSymbol>
-          <classSymbol id="7">
+          <classSymbol id="11">
             <x>1119</x>
             <y>203</y>
             <class class="cz.kpartl.preprava.model.Dodavatel"/>
@@ -1151,7 +1225,7 @@ super.tearDown();
             </attributes>
             <operations autoDisplay="37" accessVisible="true" parametersVisible="true"/>
           </classSymbol>
-          <classSymbol id="8">
+          <classSymbol id="12">
             <x>509</x>
             <class class="cz.kpartl.preprava.model.ZakaznikPersistentTest"/>
             <attributes autoDisplay="289" accessVisible="true"/>
@@ -1163,7 +1237,7 @@ super.tearDown();
               <operation>testFindByCislo()</operation>
             </operations>
           </classSymbol>
-          <classSymbol id="9">
+          <classSymbol id="13">
             <x>658</x>
             <class class="cz.kpartl.preprava.dao.ZakaznikDAO"/>
             <attributes autoDisplay="289" accessVisible="true"/>
@@ -1177,31 +1251,30 @@ super.tearDown();
               <operation>findByCislo(long)</operation>
             </operations>
           </classSymbol>
-          <tagSymbol id="10">
+          <tagSymbol id="14">
             <x>650</x>
             <y>161</y>
-            <connectedTo symbol="11"/>
+            <connectedTo symbol="15"/>
             <tag class="cz.kpartl.preprava.model.Zakaznik" variable="cislo" id="@hibernate"/>
             <showNotSet>true</showNotSet>
           </tagSymbol>
-          <classSymbol id="11">
+          <classSymbol id="15">
             <x>499</x>
             <y>207</y>
             <class class="cz.kpartl.preprava.model.Zakaznik"/>
-            <attributes autoDisplay="353" accessVisible="true">
+            <attributes autoDisplay="289" accessVisible="true">
               <attribute>nazev</attribute>
               <attribute>cislo</attribute>
               <attribute>kontaktni_osoba</attribute>
               <attribute>kontakt</attribute>
-              <attribute>id</attribute>
             </attributes>
             <operations autoDisplay="37" accessVisible="true" parametersVisible="true"/>
           </classSymbol>
-          <classSymbol id="12">
-            <x>761</x>
-            <y>340</y>
+          <classSymbol id="16">
+            <x>782</x>
+            <y>359</y>
             <class class="cz.kpartl.preprava.model.Pozadavek"/>
-            <attributes autoDisplay="289" accessVisible="true">
+            <attributes autoDisplay="353" accessVisible="true">
               <attribute>datum</attribute>
               <attribute>datum_nakladky</attribute>
               <attribute>datum_vykladky</attribute>
@@ -1209,17 +1282,20 @@ super.tearDown();
               <attribute>je_termin_konecny</attribute>
               <attribute>taxi</attribute>
               <attribute>poznamka</attribute>
+              <attribute>celkova_hmotnost</attribute>
+              <attribute>attr</attribute>
+              <attribute>id</attribute>
             </attributes>
-            <operations autoDisplay="37" accessVisible="true" parametersVisible="true"/>
+            <operations autoDisplay="53" accessVisible="true" parametersVisible="true"/>
           </classSymbol>
-          <tagSymbol id="13">
-            <x>129</x>
-            <y>310</y>
-            <connectedTo symbol="14"/>
+          <tagSymbol id="17">
+            <x>78</x>
+            <y>228</y>
+            <connectedTo symbol="18"/>
             <tag class="cz.kpartl.preprava.model.Permission" variable="name" id="@hibernate"/>
             <showNotSet>true</showNotSet>
           </tagSymbol>
-          <classSymbol id="14">
+          <classSymbol id="18">
             <x>28</x>
             <y>290</y>
             <class class="cz.kpartl.preprava.model.Permission"/>
@@ -1229,14 +1305,14 @@ super.tearDown();
             </attributes>
             <operations autoDisplay="37" accessVisible="true" parametersVisible="true"/>
           </classSymbol>
-          <tagSymbol id="15">
+          <tagSymbol id="19">
             <x>323</x>
             <y>187</y>
-            <connectedTo symbol="18"/>
+            <connectedTo symbol="22"/>
             <tag class="cz.kpartl.preprava.model.User" variable="username" id="@hibernate"/>
             <showNotSet>true</showNotSet>
           </tagSymbol>
-          <classSymbol id="16">
+          <classSymbol id="20">
             <x>53</x>
             <y>1</y>
             <class class="cz.kpartl.preprava.model.UserPersistentTest"/>
@@ -1250,8 +1326,9 @@ super.tearDown();
               <operation>testUniqUserName()</operation>
             </operations>
           </classSymbol>
-          <classSymbol id="17">
-            <x>261</x>
+          <classSymbol id="21">
+            <x>286</x>
+            <y>8</y>
             <class class="cz.kpartl.preprava.dao.UserDAO"/>
             <attributes autoDisplay="289" accessVisible="true"/>
             <operations autoDisplay="37" accessVisible="true" parametersVisible="true">
@@ -1264,72 +1341,71 @@ super.tearDown();
               <operation>login(java.lang.String,java.lang.String)</operation>
             </operations>
           </classSymbol>
-          <classSymbol id="18">
+          <classSymbol id="22">
             <x>182</x>
             <y>218</y>
             <class class="cz.kpartl.preprava.model.User"/>
-            <attributes autoDisplay="353" accessVisible="true">
+            <attributes autoDisplay="289" accessVisible="true">
               <attribute>username</attribute>
               <attribute>password</attribute>
-              <attribute>id</attribute>
             </attributes>
             <operations autoDisplay="53" accessVisible="true" parametersVisible="true"/>
           </classSymbol>
-          <association id="19">
-            <x>372</x>
-            <y>72</y>
+          <association id="23">
+            <x>397</x>
+            <y>80</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.User" name="DAO_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.dao.UserDAO" name="DAO_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
-              <connectX symbol="17"/>
-              <connectY symbol="17"/>
+              <connectX symbol="21"/>
+              <connectY symbol="21"/>
               <x>0</x>
               <y>0</y>
               <atX>0.5</atX>
               <atY>0.5</atY>
             </point>
             <point>
-              <connectX symbol="18"/>
-              <connectY symbol="18"/>
+              <connectX symbol="22"/>
+              <connectY symbol="22"/>
               <x>0</x>
               <y>0</y>
               <atX>0.5</atX>
               <atY>0.49275362</atY>
             </point>
             <end-1>
-              <x>261</x>
-              <y>72</y>
-              <connectedSymbol symbol="17"/>
+              <x>286</x>
+              <y>80</y>
+              <connectedSymbol symbol="21"/>
               <text>0..1</text>
             </end-1>
             <end-2>
               <x>246</x>
               <y>218</y>
-              <connectedSymbol symbol="18"/>
+              <connectedSymbol symbol="22"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
             </end-2>
             <dashed>true</dashed>
             <style>RECTANGULAR</style>
           </association>
-          <association id="20">
+          <association id="24">
             <x>128</x>
             <y>64</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.User" name="PERSISTENT_TEST_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.model.UserPersistentTest" name="PERSISTENT_TEST_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
-              <connectX symbol="16"/>
-              <connectY symbol="16"/>
+              <connectX symbol="20"/>
+              <connectY symbol="20"/>
               <x>0</x>
               <y>0</y>
               <atX>0.5</atX>
               <atY>0.4949495</atY>
             </point>
             <point>
-              <connectX symbol="18"/>
-              <connectY symbol="18"/>
+              <connectX symbol="22"/>
+              <connectY symbol="22"/>
               <x>0</x>
               <y>0</y>
               <atX>0.5</atX>
@@ -1338,35 +1414,35 @@ super.tearDown();
             <end-1>
               <x>203</x>
               <y>64</y>
-              <connectedSymbol symbol="16"/>
+              <connectedSymbol symbol="20"/>
               <text>0..1</text>
             </end-1>
             <end-2>
               <x>246</x>
               <y>218</y>
-              <connectedSymbol symbol="18"/>
+              <connectedSymbol symbol="22"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
             </end-2>
             <dashed>true</dashed>
             <style>RECTANGULAR</style>
           </association>
-          <association id="21">
+          <association id="25">
             <x>262</x>
-            <y>266</y>
+            <y>257</y>
             <assocEnd-1 class="cz.kpartl.preprava.model.User" name="permission"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
-              <connectX symbol="18"/>
-              <connectY symbol="18"/>
+              <connectX symbol="22"/>
+              <connectY symbol="22"/>
               <x>0</x>
               <y>0</y>
               <atX>0.625</atX>
               <atY>0.5714286</atY>
             </point>
             <point>
-              <connectX symbol="14"/>
-              <connectY symbol="14"/>
+              <connectX symbol="18"/>
+              <connectY symbol="18"/>
               <x>0</x>
               <y>0</y>
               <atX>0.5543478</atX>
@@ -1374,112 +1450,119 @@ super.tearDown();
             </point>
             <end-1>
               <x>262</x>
-              <y>302</y>
-              <connectedSymbol symbol="18"/>
+              <y>287</y>
+              <connectedSymbol symbol="22"/>
             </end-1>
             <end-2>
               <x>120</x>
               <y>331</y>
               <w>58</w>
               <h>30</h>
-              <connectedSymbol symbol="14"/>
+              <connectedSymbol symbol="18"/>
               <text>+permission</text>
               <text>*</text>
             </end-2>
             <style>RECTANGULAR</style>
           </association>
-          <association id="22">
-            <x>766</x>
-            <y>381</y>
+          <association id="26">
+            <x>787</x>
+            <y>412</y>
             <assocEnd-1 class="cz.kpartl.preprava.model.Pozadavek" name="zakaznik"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
-              <connectX symbol="12"/>
-              <connectY symbol="12"/>
+              <connectX symbol="16"/>
+              <connectY symbol="16"/>
               <x>0</x>
               <y>0</y>
               <atX>0.032894738</atX>
               <atY>0.2847222</atY>
             </point>
             <point>
-              <connectX symbol="11"/>
-              <connectY symbol="11"/>
+              <connectX symbol="15"/>
+              <connectY symbol="15"/>
               <x>0</x>
               <y>0</y>
               <atX>0.9230769</atX>
               <atY>0.51754385</atY>
             </point>
             <end-1>
-              <x>766</x>
-              <y>340</y>
-              <connectedSymbol symbol="12"/>
+              <x>787</x>
+              <y>359</y>
+              <connectedSymbol symbol="16"/>
             </end-1>
             <end-2>
               <x>629</x>
-              <y>266</y>
+              <y>258</y>
               <w>48</w>
               <h>30</h>
-              <connectedSymbol symbol="11"/>
+              <connectedSymbol symbol="15"/>
               <text>+zakaznik</text>
               <text>0..1</text>
             </end-2>
             <style>RECTANGULAR</style>
           </association>
-          <association id="23">
+          <association id="27">
             <x>761</x>
             <y>72</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.Zakaznik" name="DAO_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.dao.ZakaznikDAO" name="DAO_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
-              <connectX symbol="9"/>
-              <connectY symbol="9"/>
+              <connectX symbol="13"/>
+              <connectY symbol="13"/>
               <x>0</x>
               <y>0</y>
               <atX>0.5</atX>
               <atY>0.5</atY>
             </point>
             <point>
-              <connectX symbol="11"/>
-              <connectY symbol="11"/>
+              <connectY symbol="15"/>
+              <x>719</x>
+              <y>-18</y>
+              <atX>0.2961165</atX>
+              <atY>0.4949495</atY>
+            </point>
+            <point>
+              <connectX symbol="15"/>
+              <connectY symbol="15"/>
               <x>0</x>
               <y>0</y>
               <atX>0.5</atX>
               <atY>0.5</atY>
             </point>
             <end-1>
-              <x>761</x>
+              <x>719</x>
               <y>144</y>
-              <connectedSymbol symbol="9"/>
+              <connectedSymbol symbol="13"/>
               <text>0..1</text>
             </end-1>
             <end-2>
               <x>629</x>
-              <y>264</y>
-              <connectedSymbol symbol="11"/>
+              <y>238</y>
+              <connectedSymbol symbol="15"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
             </end-2>
             <dashed>true</dashed>
             <style>RECTANGULAR</style>
           </association>
-          <association id="24">
+          <association id="28">
             <x>582</x>
             <y>56</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.Zakaznik" name="PERSISTENT_TEST_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.model.ZakaznikPersistentTest" name="PERSISTENT_TEST_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
-              <connectX symbol="8"/>
-              <connectY symbol="8"/>
+              <connectX symbol="12"/>
+              <connectY symbol="12"/>
               <x>0</x>
               <y>0</y>
               <atX>0.5</atX>
               <atY>0.4949495</atY>
             </point>
             <point>
-              <connectX symbol="11"/>
-              <connectY symbol="11"/>
+              <connectX symbol="15"/>
+              <connectY symbol="15"/>
               <x>0</x>
               <y>0</y>
               <atX>0.5</atX>
@@ -1488,12 +1571,87 @@ super.tearDown();
             <end-1>
               <x>564</x>
               <y>114</y>
-              <connectedSymbol symbol="8"/>
+              <connectedSymbol symbol="12"/>
               <text>0..1</text>
             </end-1>
             <end-2>
               <x>564</x>
               <y>207</y>
+              <connectedSymbol symbol="15"/>
+              <symbolType>2</symbolType>
+              <symbolLength>8</symbolLength>
+            </end-2>
+            <dashed>true</dashed>
+            <style>RECTANGULAR</style>
+          </association>
+          <association id="29">
+            <x>912</x>
+            <y>425</y>
+            <assocEnd-1 class="cz.kpartl.preprava.model.Pozadavek" name="dodavatel"/>
+            <showMultiplicity>true</showMultiplicity>
+            <point>
+              <connectX symbol="16"/>
+              <connectY symbol="16"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.8552632</atX>
+              <atY>0.35416666</atY>
+            </point>
+            <point>
+              <connectX symbol="11"/>
+              <connectY symbol="11"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.36585367</atX>
+              <atY>0.7380952</atY>
+            </point>
+            <end-1>
+              <x>912</x>
+              <y>359</y>
+              <connectedSymbol symbol="16"/>
+            </end-1>
+            <end-2>
+              <x>1119</x>
+              <y>265</y>
+              <w>56</w>
+              <h>30</h>
+              <connectedSymbol symbol="11"/>
+              <text>+dodavatel</text>
+              <text>0..1</text>
+            </end-2>
+            <style>RECTANGULAR</style>
+          </association>
+          <association id="30">
+            <x>1211</x>
+            <y>64</y>
+            <assocEnd-0 class="cz.kpartl.preprava.model.Dodavatel" name="DAO_CLASS"/>
+            <assocEnd-1 class="cz.kpartl.preprava.dao.DodavatelDAO" name="DAO_TARGET"/>
+            <showMultiplicity>true</showMultiplicity>
+            <point>
+              <connectX symbol="10"/>
+              <connectY symbol="10"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.5</atX>
+              <atY>0.5</atY>
+            </point>
+            <point>
+              <connectX symbol="11"/>
+              <connectY symbol="11"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.49593496</atX>
+              <atY>0.5</atY>
+            </point>
+            <end-1>
+              <x>1183</x>
+              <y>129</y>
+              <connectedSymbol symbol="10"/>
+              <text>0..1</text>
+            </end-1>
+            <end-2>
+              <x>1183</x>
+              <y>203</y>
               <connectedSymbol symbol="11"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
@@ -1501,85 +1659,53 @@ super.tearDown();
             <dashed>true</dashed>
             <style>RECTANGULAR</style>
           </association>
-          <association id="25">
-            <x>891</x>
-            <y>391</y>
-            <assocEnd-1 class="cz.kpartl.preprava.model.Pozadavek" name="dodavatel"/>
+          <association id="31">
+            <x>543</x>
+            <y>445</y>
+            <assocEnd-0 class="cz.kpartl.preprava.model.Pozadavek" name="objednavka"/>
+            <assocEnd-1 class="cz.kpartl.preprava.model.Objednavka" name="pozadavek"/>
             <showMultiplicity>true</showMultiplicity>
-            <point>
-              <connectX symbol="12"/>
-              <connectY symbol="12"/>
-              <x>0</x>
-              <y>0</y>
-              <atX>0.8552632</atX>
-              <atY>0.35416666</atY>
-            </point>
             <point>
               <connectX symbol="7"/>
               <connectY symbol="7"/>
               <x>0</x>
               <y>0</y>
-              <atX>0.36585367</atX>
-              <atY>0.7380952</atY>
+              <atX>0.7398844</atX>
+              <atY>0.37984496</atY>
             </point>
-            <end-1>
-              <x>891</x>
-              <y>340</y>
-              <connectedSymbol symbol="12"/>
-            </end-1>
-            <end-2>
-              <x>1119</x>
-              <y>265</y>
-              <w>56</w>
-              <h>30</h>
-              <connectedSymbol symbol="7"/>
-              <text>+dodavatel</text>
-              <text>0..1</text>
-            </end-2>
-            <style>RECTANGULAR</style>
-          </association>
-          <association id="26">
-            <x>885</x>
-            <y>388</y>
-            <assocEnd-1 class="cz.kpartl.preprava.model.Pozadavek" name="disponent"/>
-            <showMultiplicity>true</showMultiplicity>
             <point>
-              <connectX symbol="12"/>
-              <connectY symbol="12"/>
+              <connectX symbol="16"/>
+              <connectY symbol="16"/>
               <x>0</x>
               <y>0</y>
-              <atX>0.81578946</atX>
-              <atY>0.33333334</atY>
-            </point>
-            <point>
-              <connectX symbol="6"/>
-              <connectY symbol="6"/>
-              <x>1</x>
-              <y>0</y>
-              <atX>0.6195652</atX>
-              <atY>0.5925926</atY>
+              <atX>0.27631578</atX>
+              <atY>0.75</atY>
             </point>
             <end-1>
-              <x>886</x>
-              <y>340</y>
-              <connectedSymbol symbol="12"/>
+              <x>588</x>
+              <y>500</y>
+              <w>64</w>
+              <h>30</h>
+              <connectedSymbol symbol="7"/>
+              <text>+objednavka</text>
+              <text>0..1</text>
             </end-1>
             <end-2>
-              <x>886</x>
-              <y>222</y>
-              <w>55</w>
+              <x>782</x>
+              <y>500</y>
+              <w>60</w>
               <h>30</h>
-              <connectedSymbol symbol="6"/>
-              <text>+disponent</text>
-              <text>0..1</text>
+              <connectedSymbol symbol="16"/>
+              <text>+pozadavek</text>
+              <text>1</text>
             </end-2>
             <style>RECTANGULAR</style>
           </association>
-          <association id="27">
-            <x>963</x>
-            <y>64</y>
-            <assocEnd-0 class="cz.kpartl.preprava.model.Disponent" name="DAO_CLASS"/>
-            <assocEnd-1 class="cz.kpartl.preprava.dao.DisponentDAO" name="DAO_TARGET"/>
+          <association id="32">
+            <x>1137</x>
+            <y>399</y>
+            <assocEnd-0 class="cz.kpartl.preprava.model.Pozadavek" name="DAO_CLASS"/>
+            <assocEnd-1 class="cz.kpartl.preprava.dao.PozadavekDAO" name="DAO_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
               <connectX symbol="5"/>
@@ -1590,6 +1716,81 @@ super.tearDown();
               <atY>0.5</atY>
             </point>
             <point>
+              <connectX symbol="16"/>
+              <connectY symbol="16"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.5</atX>
+              <atY>0.5</atY>
+            </point>
+            <end-1>
+              <x>1045</x>
+              <y>453</y>
+              <connectedSymbol symbol="5"/>
+              <text>0..1</text>
+            </end-1>
+            <end-2>
+              <x>934</x>
+              <y>453</y>
+              <connectedSymbol symbol="16"/>
+              <symbolType>2</symbolType>
+              <symbolLength>8</symbolLength>
+            </end-2>
+            <dashed>true</dashed>
+            <style>RECTANGULAR</style>
+          </association>
+          <association id="33">
+            <x>455</x>
+            <y>463</y>
+            <assocEnd-1 class="cz.kpartl.preprava.model.Objednavka" name="dopravce"/>
+            <showMultiplicity>true</showMultiplicity>
+            <point>
+              <connectX symbol="7"/>
+              <connectY symbol="7"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.23121387</atX>
+              <atY>0.51937985</atY>
+            </point>
+            <point>
+              <connectX symbol="6"/>
+              <connectY symbol="6"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.57608694</atX>
+              <atY>0.3888889</atY>
+            </point>
+            <end-1>
+              <x>415</x>
+              <y>483</y>
+              <connectedSymbol symbol="7"/>
+            </end-1>
+            <end-2>
+              <x>227</x>
+              <y>483</y>
+              <w>53</w>
+              <h>30</h>
+              <connectedSymbol symbol="6"/>
+              <text>+dopravce</text>
+              <text>0..1</text>
+            </end-2>
+            <style>RECTANGULAR</style>
+          </association>
+          <association id="34">
+            <x>180</x>
+            <y>633</y>
+            <assocEnd-0 class="cz.kpartl.preprava.model.Dopravce" name="DAO_CLASS"/>
+            <assocEnd-1 class="cz.kpartl.preprava.dao.DopravceDAO" name="DAO_TARGET"/>
+            <showMultiplicity>true</showMultiplicity>
+            <point>
+              <connectX symbol="3"/>
+              <connectY symbol="3"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.5</atX>
+              <atY>0.5</atY>
+            </point>
+            <point>
               <connectX symbol="6"/>
               <connectY symbol="6"/>
               <x>0</x>
@@ -1598,14 +1799,14 @@ super.tearDown();
               <atY>0.5</atY>
             </point>
             <end-1>
-              <x>875</x>
-              <y>129</y>
-              <connectedSymbol symbol="5"/>
+              <x>181</x>
+              <y>576</y>
+              <connectedSymbol symbol="3"/>
               <text>0..1</text>
             </end-1>
             <end-2>
-              <x>875</x>
-              <y>168</y>
+              <x>181</x>
+              <y>516</y>
               <connectedSymbol symbol="6"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
@@ -1613,15 +1814,15 @@ super.tearDown();
             <dashed>true</dashed>
             <style>RECTANGULAR</style>
           </association>
-          <association id="28">
-            <x>1211</x>
-            <y>64</y>
-            <assocEnd-0 class="cz.kpartl.preprava.model.Dodavatel" name="DAO_CLASS"/>
-            <assocEnd-1 class="cz.kpartl.preprava.dao.DodavatelDAO" name="DAO_TARGET"/>
+          <association id="35">
+            <x>504</x>
+            <y>629</y>
+            <assocEnd-0 class="cz.kpartl.preprava.model.Objednavka" name="DAO_CLASS"/>
+            <assocEnd-1 class="cz.kpartl.preprava.dao.ObjednavkaDAO" name="DAO_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
-              <connectX symbol="4"/>
-              <connectY symbol="4"/>
+              <connectX symbol="2"/>
+              <connectY symbol="2"/>
               <x>0</x>
               <y>0</y>
               <atX>0.5</atX>
@@ -1632,23 +1833,66 @@ super.tearDown();
               <connectY symbol="7"/>
               <x>0</x>
               <y>0</y>
-              <atX>0.49593496</atX>
-              <atY>0.5</atY>
+              <atX>0.49710983</atX>
+              <atY>0.49612403</atY>
             </point>
             <end-1>
-              <x>1180</x>
-              <y>129</y>
-              <connectedSymbol symbol="4"/>
+              <x>501</x>
+              <y>572</y>
+              <connectedSymbol symbol="2"/>
               <text>0..1</text>
             </end-1>
             <end-2>
-              <x>1180</x>
-              <y>203</y>
+              <x>501</x>
+              <y>525</y>
               <connectedSymbol symbol="7"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
             </end-2>
             <dashed>true</dashed>
+            <style>RECTANGULAR</style>
+          </association>
+          <association id="36">
+            <x>860</x>
+            <y>433</y>
+            <assocEnd-1 class="cz.kpartl.preprava.model.Pozadavek" name="disponent"/>
+            <showMultiplicity>true</showMultiplicity>
+            <point>
+              <connectX symbol="16"/>
+              <connectY symbol="16"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.5131579</atX>
+              <atY>0.3962264</atY>
+            </point>
+            <point>
+              <connectY symbol="22"/>
+              <x>412</x>
+              <y>77</y>
+              <atY>0.5217391</atY>
+            </point>
+            <point>
+              <connectX symbol="22"/>
+              <connectY symbol="22"/>
+              <x>0</x>
+              <y>0</y>
+              <atX>0.890625</atX>
+              <atY>0.5652174</atY>
+            </point>
+            <end-1>
+              <x>860</x>
+              <y>359</y>
+              <connectedSymbol symbol="16"/>
+            </end-1>
+            <end-2>
+              <x>310</x>
+              <y>257</y>
+              <w>55</w>
+              <h>30</h>
+              <connectedSymbol symbol="22"/>
+              <text>+disponent</text>
+              <text>0..1</text>
+            </end-2>
             <style>RECTANGULAR</style>
           </association>
           <width>1400</width>
@@ -2001,16 +2245,6 @@ getSession().delete(object);
         </classifier>
         <classifier name="DisponentDAO">
           <stereotype>DAO</stereotype>
-          <variables>
-            <variable name="DAO_TARGET">
-              <type class="cz.kpartl.preprava.model.Disponent"/>
-              <multiplicity>1</multiplicity>
-              <access>1</access>
-              <inverse class="cz.kpartl.preprava.model.Disponent" name="DAO_CLASS"/>
-              <association>dao</association>
-              <type>4</type>
-            </variable>
-          </variables>
           <operations>
             <operation name="constructor">
               <multiplicity>1</multiplicity>
@@ -2040,13 +2274,6 @@ return cz.kpartl.preprava.util.HibernateHelper.getInstance().getSession();
               <multiplicity>0..1</multiplicity>
               <access>1</access>
               <generatedName>create</generatedName>
-              <parameters>
-                <variable name="object">
-                  <type class="cz.kpartl.preprava.model.Disponent"/>
-                  <multiplicity>1</multiplicity>
-                  <access>1</access>
-                </variable>
-              </parameters>
               <method>
                 <statements>
                   <javaCode>
@@ -2057,7 +2284,6 @@ return object.getId();
               </method>
             </operation>
             <operation name="read">
-              <type class="cz.kpartl.preprava.model.Disponent"/>
               <multiplicity>0..1</multiplicity>
               <access>1</access>
               <generatedName>read</generatedName>
@@ -2071,7 +2297,7 @@ return object.getId();
               <method>
                 <statements>
                   <javaCode>
-return (cz.kpartl.preprava.model.Disponent) getSession().get(cz.kpartl.preprava.model.Disponent.class, id);
+return (Disponent) getSession().get(Disponent.class, id);
 </javaCode>
                 </statements>
               </method>
@@ -2081,13 +2307,6 @@ return (cz.kpartl.preprava.model.Disponent) getSession().get(cz.kpartl.preprava.
               <multiplicity>0</multiplicity>
               <access>1</access>
               <generatedName>update</generatedName>
-              <parameters>
-                <variable name="object">
-                  <type class="cz.kpartl.preprava.model.Disponent"/>
-                  <multiplicity>1</multiplicity>
-                  <access>1</access>
-                </variable>
-              </parameters>
               <method>
                 <statements>
                   <javaCode>
@@ -2101,13 +2320,6 @@ getSession().update(object);
               <multiplicity>0</multiplicity>
               <access>1</access>
               <generatedName>delete</generatedName>
-              <parameters>
-                <variable name="object">
-                  <type class="cz.kpartl.preprava.model.Disponent"/>
-                  <multiplicity>1</multiplicity>
-                  <access>1</access>
-                </variable>
-              </parameters>
               <method>
                 <statements>
                   <javaCode>
@@ -2117,7 +2329,6 @@ getSession().delete(object);
               </method>
             </operation>
             <operation name="findByJmeno">
-              <type class="cz.kpartl.preprava.model.Disponent"/>
               <multiplicity>0..1</multiplicity>
               <access>1</access>
               <generatedName>findByJmeno</generatedName>
@@ -2130,12 +2341,10 @@ getSession().delete(object);
               <query>
                 <tokens>
                   <queryVariable name="d">
-                    <type class="cz.kpartl.preprava.model.Disponent"/>
+                    <type>Disponent</type>
                   </queryVariable>
                   <queryText>where</queryText>
-                  <queryObjectVariable object="d">
-                    <variable class="cz.kpartl.preprava.model.Disponent" name="jmeno"/>
-                  </queryObjectVariable>
+                  <queryObjectVariable object="d" variable="jmeno"/>
                   <com.objectgen.core.Query_-Operator>=</com.objectgen.core.Query_-Operator>
                   <queryParameter name="jmeno"/>
                 </tokens>
@@ -2293,6 +2502,388 @@ getSession().delete(object);
           <generatedFiles>
             <name>DodavatelDAO.java</name>
             <compilationUnitId>=cz.kpartl.preprava/src&lt;cz.kpartl.preprava.dao{DodavatelDAO.java</compilationUnitId>
+          </generatedFiles>
+        </classifier>
+        <classifier name="PozadavekDAO">
+          <stereotype>DAO</stereotype>
+          <variables>
+            <variable name="DAO_TARGET">
+              <type class="cz.kpartl.preprava.model.Pozadavek"/>
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <inverse class="cz.kpartl.preprava.model.Pozadavek" name="DAO_CLASS"/>
+              <association>dao</association>
+              <type>4</type>
+            </variable>
+          </variables>
+          <operations>
+            <operation name="constructor">
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <generatedName>PozadavekDAO</generatedName>
+              <method>
+                <statements>
+                  <javaCode></javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="getSession">
+              <type>org.hibernate.Session</type>
+              <multiplicity>0..1</multiplicity>
+              <access>2</access>
+              <generatedName>getSession</generatedName>
+              <method>
+                <statements>
+                  <javaCode>
+return cz.kpartl.preprava.util.HibernateHelper.getInstance().getSession();
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="create">
+              <type>Long</type>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <generatedName>create</generatedName>
+              <parameters>
+                <variable name="object">
+                  <type class="cz.kpartl.preprava.model.Pozadavek"/>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+getSession().save(object);
+return object.getId();
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="read">
+              <type class="cz.kpartl.preprava.model.Pozadavek"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <generatedName>read</generatedName>
+              <parameters>
+                <variable name="id">
+                  <type>Long</type>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+return (cz.kpartl.preprava.model.Pozadavek) getSession().get(cz.kpartl.preprava.model.Pozadavek.class, id);
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="update">
+              <type>void</type>
+              <multiplicity>0</multiplicity>
+              <access>1</access>
+              <generatedName>update</generatedName>
+              <parameters>
+                <variable name="object">
+                  <type class="cz.kpartl.preprava.model.Pozadavek"/>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+getSession().update(object);
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="delete">
+              <type basicType="void"/>
+              <multiplicity>0</multiplicity>
+              <access>1</access>
+              <generatedName>delete</generatedName>
+              <parameters>
+                <variable name="object">
+                  <type class="cz.kpartl.preprava.model.Pozadavek"/>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+getSession().delete(object);
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="findAll">
+              <type class="cz.kpartl.preprava.model.Pozadavek"/>
+              <multiplicity>*</multiplicity>
+              <access>1</access>
+              <generatedName>findAll</generatedName>
+              <query>
+                <tokens>
+                  <queryVariable name="p">
+                    <type class="cz.kpartl.preprava.model.Pozadavek"/>
+                  </queryVariable>
+                </tokens>
+              </query>
+            </operation>
+          </operations>
+          <generatedFiles>
+            <name>PozadavekDAO.java</name>
+            <compilationUnitId>=cz.kpartl.preprava/src&lt;cz.kpartl.preprava.dao{PozadavekDAO.java</compilationUnitId>
+          </generatedFiles>
+        </classifier>
+        <classifier name="DopravceDAO">
+          <stereotype>DAO</stereotype>
+          <variables>
+            <variable name="DAO_TARGET">
+              <type class="cz.kpartl.preprava.model.Dopravce"/>
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <inverse class="cz.kpartl.preprava.model.Dopravce" name="DAO_CLASS"/>
+              <association>dao</association>
+              <type>4</type>
+            </variable>
+          </variables>
+          <operations>
+            <operation name="constructor">
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <generatedName>DopravceDAO</generatedName>
+              <method>
+                <statements>
+                  <javaCode></javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="getSession">
+              <type>org.hibernate.Session</type>
+              <multiplicity>0..1</multiplicity>
+              <access>2</access>
+              <generatedName>getSession</generatedName>
+              <method>
+                <statements>
+                  <javaCode>
+return cz.kpartl.preprava.util.HibernateHelper.getInstance().getSession();
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="create">
+              <type>Long</type>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <generatedName>create</generatedName>
+              <parameters>
+                <variable name="object">
+                  <type class="cz.kpartl.preprava.model.Dopravce"/>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+getSession().save(object);
+return object.getId();
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="read">
+              <type class="cz.kpartl.preprava.model.Dopravce"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <generatedName>read</generatedName>
+              <parameters>
+                <variable name="id">
+                  <type>Long</type>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+return (cz.kpartl.preprava.model.Dopravce) getSession().get(cz.kpartl.preprava.model.Dopravce.class, id);
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="update">
+              <type>void</type>
+              <multiplicity>0</multiplicity>
+              <access>1</access>
+              <generatedName>update</generatedName>
+              <parameters>
+                <variable name="object">
+                  <type class="cz.kpartl.preprava.model.Dopravce"/>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+getSession().update(object);
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="delete">
+              <type basicType="void"/>
+              <multiplicity>0</multiplicity>
+              <access>1</access>
+              <generatedName>delete</generatedName>
+              <parameters>
+                <variable name="object">
+                  <type class="cz.kpartl.preprava.model.Dopravce"/>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+getSession().delete(object);
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+          </operations>
+          <generatedFiles>
+            <name>DopravceDAO.java</name>
+            <compilationUnitId>=cz.kpartl.preprava/src&lt;cz.kpartl.preprava.dao{DopravceDAO.java</compilationUnitId>
+          </generatedFiles>
+        </classifier>
+        <classifier name="ObjednavkaDAO">
+          <stereotype>DAO</stereotype>
+          <variables>
+            <variable name="DAO_TARGET">
+              <type class="cz.kpartl.preprava.model.Objednavka"/>
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <inverse class="cz.kpartl.preprava.model.Objednavka" name="DAO_CLASS"/>
+              <association>dao</association>
+              <type>4</type>
+            </variable>
+          </variables>
+          <operations>
+            <operation name="constructor">
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <generatedName>ObjednavkaDAO</generatedName>
+              <method>
+                <statements>
+                  <javaCode></javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="getSession">
+              <type>org.hibernate.Session</type>
+              <multiplicity>0..1</multiplicity>
+              <access>2</access>
+              <generatedName>getSession</generatedName>
+              <method>
+                <statements>
+                  <javaCode>
+return cz.kpartl.preprava.util.HibernateHelper.getInstance().getSession();
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="create">
+              <type>Long</type>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <generatedName>create</generatedName>
+              <parameters>
+                <variable name="object">
+                  <type class="cz.kpartl.preprava.model.Objednavka"/>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+getSession().save(object);
+return object.getId();
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="read">
+              <type class="cz.kpartl.preprava.model.Objednavka"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <generatedName>read</generatedName>
+              <parameters>
+                <variable name="id">
+                  <type>Long</type>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+return (cz.kpartl.preprava.model.Objednavka) getSession().get(cz.kpartl.preprava.model.Objednavka.class, id);
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="update">
+              <type>void</type>
+              <multiplicity>0</multiplicity>
+              <access>1</access>
+              <generatedName>update</generatedName>
+              <parameters>
+                <variable name="object">
+                  <type class="cz.kpartl.preprava.model.Objednavka"/>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+getSession().update(object);
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+            <operation name="delete">
+              <type basicType="void"/>
+              <multiplicity>0</multiplicity>
+              <access>1</access>
+              <generatedName>delete</generatedName>
+              <parameters>
+                <variable name="object">
+                  <type class="cz.kpartl.preprava.model.Objednavka"/>
+                  <multiplicity>1</multiplicity>
+                  <access>1</access>
+                </variable>
+              </parameters>
+              <method>
+                <statements>
+                  <javaCode>
+getSession().delete(object);
+</javaCode>
+                </statements>
+              </method>
+            </operation>
+          </operations>
+          <generatedFiles>
+            <name>ObjednavkaDAO.java</name>
+            <compilationUnitId>=cz.kpartl.preprava/src&lt;cz.kpartl.preprava.dao{ObjednavkaDAO.java</compilationUnitId>
           </generatedFiles>
         </classifier>
       </classes>

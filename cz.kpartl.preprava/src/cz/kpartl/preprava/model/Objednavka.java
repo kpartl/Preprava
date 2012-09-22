@@ -20,7 +20,7 @@ public class Objednavka implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	private double cena;
+	private java.math.BigDecimal cena;
 	/**
 	 * @generated
 	 */
@@ -37,6 +37,16 @@ public class Objednavka implements java.io.Serializable {
 	 * @generated
 	 */
 	private int cislo_faktury_dopravce;
+
+	/**
+	 * @generated
+	 */
+	private Pozadavek pozadavek;
+
+	/**
+	 * @generated
+	 */
+	private Dopravce dopravce;
 
 	/**
 	 * @generated
@@ -75,14 +85,14 @@ public class Objednavka implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	public double getCena() {
+	public java.math.BigDecimal getCena() {
 		return this.cena;
 	}
 
 	/**
 	 * @generated
 	 */
-	public void setCena(double cena) {
+	public void setCena(java.math.BigDecimal cena) {
 		this.cena = cena;
 	}
 
@@ -150,5 +160,33 @@ public class Objednavka implements java.io.Serializable {
 				+ " mena=" + mena + " zmena_nakladky=" + zmena_nakladky
 				+ " puvodni_termin_nakladky=" + puvodni_termin_nakladky
 				+ " cislo_faktury_dopravce=" + cislo_faktury_dopravce;
+	}
+
+	/**
+	 * @generated
+	 */
+	public Pozadavek getPozadavek() {
+		return this.pozadavek;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setPozadavek(Pozadavek pozadavek) {
+		this.pozadavek = pozadavek;
+	}
+
+	/**
+	 * @generated
+	 */
+	public Dopravce getDopravce() {
+		return this.dopravce;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setDopravce(Dopravce dopravce) {
+		this.dopravce = dopravce;
 	}
 }

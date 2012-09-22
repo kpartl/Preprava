@@ -51,10 +51,24 @@ public class Pozadavek implements java.io.Serializable {
 	 * @generated
 	 */
 	private Dodavatel dodavatel;
+	
 	/**
 	 * @generated
 	 */
-	private Disponent disponent;
+	private Objednavka objednavka;
+
+	/**
+	 * @generated
+	 */
+	private String celkova_hmotnost;
+	/**
+	 * @generated
+	 */
+	private User disponent;
+	/**
+	 * @generated
+	 */
+	private int attr;
 
 	/**
 	 * @generated
@@ -182,7 +196,8 @@ public class Pozadavek implements java.io.Serializable {
 				+ datum_nakladky + " datum_vykladky=" + datum_vykladky
 				+ " pocet_palet=" + pocet_palet + " je_termin_konecny="
 				+ je_termin_konecny + " taxi=" + taxi + " poznamka=" + poznamka
-				+ " id=" + id;
+				+ " id=" + id + " celkova_hmotnost=" + celkova_hmotnost
+				+ " attr=" + attr;
 	}
 
 	/**
@@ -213,17 +228,61 @@ public class Pozadavek implements java.io.Serializable {
 		this.dodavatel = dodavatel;
 	}
 
+	
+	
 	/**
 	 * @generated
 	 */
-	public Disponent getDisponent() {
+	public Objednavka getObjednavka() {
+		return this.objednavka;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setObjednavka(Objednavka objednavka) {
+		this.objednavka = objednavka;
+	}
+
+	/**
+	 * @generated
+	 */
+	public String getCelkova_hmotnost() {
+		return this.celkova_hmotnost;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setCelkova_hmotnost(String celkova_hmotnost) {
+		this.celkova_hmotnost = celkova_hmotnost;
+	}
+
+	/**
+	 * @generated
+	 */
+	public User getDisponent() {
 		return this.disponent;
 	}
 
 	/**
 	 * @generated
 	 */
-	public void setDisponent(Disponent disponent) {
+	public void setDisponent(User disponent) {
 		this.disponent = disponent;
+	}
+
+	/**
+	 * @generated
+	 */
+	public int getAttr() {
+		return this.attr;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setAttr(int attr) {
+		this.attr = attr;
 	}
 }

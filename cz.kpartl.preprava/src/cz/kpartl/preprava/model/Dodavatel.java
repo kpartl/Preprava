@@ -20,7 +20,7 @@ public class Dodavatel implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	private long cislo;
+	private int cislo;
 	/**
 	 * @generated
 	 */
@@ -49,42 +49,42 @@ public class Dodavatel implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	String getNazev() {
+	public String getNazev() {
 		return this.nazev;
 	}
 
 	/**
 	 * @generated
 	 */
-	void setNazev(String nazev) {
+	public void setNazev(String nazev) {
 		this.nazev = nazev;
 	}
 
 	/**
 	 * @generated
 	 */
-	long getCislo() {
+	public int getCislo() {
 		return this.cislo;
 	}
 
 	/**
 	 * @generated
 	 */
-	void setCislo(long cislo) {
+	public void setCislo(int cislo) {
 		this.cislo = cislo;
 	}
 
 	/**
 	 * @generated
 	 */
-	String getHodina_nakladky() {
+	public String getHodina_nakladky() {
 		return this.hodina_nakladky;
 	}
 
 	/**
 	 * @generated
 	 */
-	void setHodina_nakladky(String hodina_nakladky) {
+	public void setHodina_nakladky(String hodina_nakladky) {
 		this.hodina_nakladky = hodina_nakladky;
 	}
 

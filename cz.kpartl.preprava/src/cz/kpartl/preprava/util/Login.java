@@ -23,6 +23,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import cz.kpartl.preprava.dao.DAOFactory;
+import cz.kpartl.preprava.dao.PozadavekDAO;
 import cz.kpartl.preprava.dao.UserDAO;
 import cz.kpartl.preprava.dialog.LoginDialog;
 import cz.kpartl.preprava.model.User;
@@ -34,6 +35,7 @@ public class Login {
 	public static final Boolean TEST = true; 
 			
 	UserDAO userDAO = null;
+	PozadavekDAO pozadavekDAO = null;
 	
 	 @PostContextCreate
 	   public void login(IEclipseContext context) {
@@ -41,8 +43,10 @@ public class Login {
 	      final Shell shell = new Shell(SWT.INHERIT_NONE);
 	      
 	      userDAO = ContextInjectionFactory.make(UserDAO.class, context);
+	      pozadavekDAO = ContextInjectionFactory.make(PozadavekDAO.class, context);
 	      
 	      context.set(UserDAO.class, userDAO); 
+	      context.set(PozadavekDAO.class, pozadavekDAO);
 	      
 	      InitUtil initUtil = ContextInjectionFactory.make(InitUtil.class, context);
 	      

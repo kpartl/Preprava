@@ -1,5 +1,7 @@
 package cz.kpartl.preprava.model;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,6 +23,8 @@ public class UserPersistentTest extends junit.framework.TestCase {
 	
 	static final String USER_NAME = "testUser";
 	static final String USER_PASSWORD = "secret";
+	
+//	private Session session;
 
 	/**
 	 * @generated
@@ -32,21 +36,20 @@ public class UserPersistentTest extends junit.framework.TestCase {
 
 	
 	private void initObjects() {
-		org.hibernate.Session session = persistenceHelper.getSession();
-		org.hibernate.Transaction tx = session.beginTransaction();
+		
+		org.hibernate.Transaction tx = persistenceHelper.getSession().beginTransaction();
 		User user = new User();
 		user.setUsername(USER_NAME);
 		user.setPassword(userDAO.encryptPassword(USER_PASSWORD));
 		userDAO.create(user);
 		tx.commit();
-		persistenceHelper.closeSession();
+		
 	}
 
-	/**
-	 * @generated
-	 */
+	
 	protected void tearDown() throws Exception {
-		if (persistenceHelper != null) {
+		if (persistenceHelper != null) {			
+			persistenceHelper.closeSession();
 			persistenceHelper.close();
 		}
 		super.tearDown();
@@ -69,10 +72,14 @@ public class UserPersistentTest extends junit.framework.TestCase {
 		user.setUsername(USER_NAME);
 		user.setPassword(userDAO.encryptPassword(USER_PASSWORD));
 		
+		Transaction tx = persistenceHelper.getSession().beginTransaction();
+		
 		Class<Throwable> t =  Throwable.class;
-		try{
+		try{			
 			userDAO.create(user);
+			tx.commit();
 		}catch (Throwable ex){
+			tx.rollback();
 			e = ex;
 		}
 		
@@ -98,7 +105,16 @@ public class UserPersistentTest extends junit.framework.TestCase {
 	      User user = userDAO.login(USER_NAME, "x");
 	      assertNull(user);
 	   }
-
+	@Test
+	public void testDeleteUser() throws Exception {
+		Transaction tx = persistenceHelper.getSession().beginTransaction();
+		User user = userDAO.findByUsername(USER_NAME);
+		userDAO.delete(user);
+		tx.commit();
+		assertNull(userDAO.findByUsername(USER_NAME));
+		
+	}
+	
 	/**
 	 * @generated
 	 */

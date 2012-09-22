@@ -4,11 +4,11 @@ package cz.kpartl.preprava.model;
 /**
  * @generated
  */
-public class Disponent implements java.io.Serializable {
+public class Dopravce implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	private static final long serialVersionUID = -857751129L;
+	private static final long serialVersionUID = 917935527L;
 	/**
 	 * @generated
 	 */
@@ -16,12 +16,12 @@ public class Disponent implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	private String jmeno;
+	private String nazev;
 
 	/**
 	 * @generated
 	 */
-	public Disponent() {
+	public Dopravce() {
 	}
 
 	/**
@@ -41,21 +41,21 @@ public class Disponent implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	String getJmeno() {
-		return this.jmeno;
+	public String getNazev() {
+		return this.nazev;
 	}
 
 	/**
 	 * @generated
 	 */
-	void setJmeno(String jmeno) {
-		this.jmeno = jmeno;
+	public void setNazev(String nazev) {
+		this.nazev = nazev;
 	}
 
 	/**
 	 * @generated
 	 */
 	public String toString() {
-		return "Disponent" + " id=" + id + " jmeno=" + jmeno;
+		return "Dopravce" + " id=" + id + " nazev=" + nazev;
 	}
 }

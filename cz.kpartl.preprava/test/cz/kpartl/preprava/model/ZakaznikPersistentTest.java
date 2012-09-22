@@ -1,5 +1,6 @@
 package cz.kpartl.preprava.model;
 
+import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Test;
 
@@ -17,7 +18,7 @@ public class ZakaznikPersistentTest extends junit.framework.TestCase {
 	
 	private ZakaznikDAO zakaznikDAO = new ZakaznikDAO();
 	
-	private static final long ZAKAZNIK_CISLO = 1234567890;
+	private static final int ZAKAZNIK_CISLO = 1234567890;
 	private static final String ZAKAZNIK_NAZEV = "PENTIAC GROUP";
 	
 
@@ -29,9 +30,7 @@ public class ZakaznikPersistentTest extends junit.framework.TestCase {
 				.getInstance();
 	}
 
-	/**
-	 * @generated
-	 */
+	
 	private void initObjects() {
 		org.hibernate.Session session = persistenceHelper.getSession();
 		org.hibernate.Transaction tx = session.beginTransaction();
@@ -40,16 +39,15 @@ public class ZakaznikPersistentTest extends junit.framework.TestCase {
 		zakaznik.setNazev(ZAKAZNIK_NAZEV);
 		
 		zakaznikDAO.create(zakaznik);
-		
-		tx.commit();
-		persistenceHelper.closeSession();
+		tx.commit();		
 	}
 
-	/**
-	 * @generated
-	 */
+	
 	protected void tearDown() throws Exception {
 		if (persistenceHelper != null) {
+			
+			persistenceHelper.closeSession();
+			
 			persistenceHelper.close();
 		}
 		super.tearDown();
@@ -73,11 +71,15 @@ public class ZakaznikPersistentTest extends junit.framework.TestCase {
 		Zakaznik zakaznik = new Zakaznik();
 		zakaznik.setCislo(ZAKAZNIK_CISLO);
 		
+		Transaction tx = persistenceHelper.getSession().beginTransaction();
+		
 		Class<Throwable> t =  Throwable.class;
 		try{
 			zakaznikDAO.create(zakaznik);
+			tx.commit();
 		}catch (Throwable ex){
 			e = ex;
+			tx.rollback();
 		}
 		
 		assertTrue(e instanceof ConstraintViolationException);

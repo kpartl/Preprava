@@ -9,7 +9,7 @@
       </id>
       <property  name='nazev' type='string' column='nazev'>
       </property>
-      <property  name='cislo' type='long' column='cislo' unique='true'>
+      <property  name='cislo' type='integer' column='cislo' unique='true'>
       </property>
       <property  name='hodina_nakladky' type='string' column='hodina_nakladky'>
       </property>

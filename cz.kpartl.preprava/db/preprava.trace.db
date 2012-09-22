@@ -414,3 +414,543 @@ alter table tb_user_permission drop constraint fk_user_permission [42102-166]
 org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
 Table "TB_USER_PERMISSION" not found; SQL statement:
 alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 12:46:38 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 12:46:38 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 12:46:38 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 12:46:38 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 12:46:38 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 12:46:38 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 12:46:38 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 12:46:38 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 12:46:38 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 12:46:38 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 12:46:38 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 12:46:38 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 12:46:38 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 12:46:38 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 12:46:38 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 12:46:39 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 12:46:39 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 12:46:39 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 12:46:39 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 12:46:39 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 12:46:39 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 12:46:39 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 12:46:39 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 12:46:39 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 12:46:39 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 12:57:35 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 12:57:35 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 12:57:35 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 12:57:35 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 12:57:35 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 12:57:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 12:57:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 12:57:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 12:57:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 12:57:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 12:57:35 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 12:57:35 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 12:57:35 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 12:57:35 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 12:57:35 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:03:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:03:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:03:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:03:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:03:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:03:30 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:03:30 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:03:30 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:03:30 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:03:30 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:03:30 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:03:30 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:03:30 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:03:30 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:03:30 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:03:31 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:03:31 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:03:31 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:03:31 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:03:31 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:04:34 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:04:34 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:04:34 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:04:34 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:04:34 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:05:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:05:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:05:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:05:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:05:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:17:11 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:17:11 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:17:11 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:17:11 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:17:11 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:17:11 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:17:11 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:17:11 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:17:11 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:17:11 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:17:11 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:17:11 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:17:11 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:17:11 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:17:11 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:17:11 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:17:11 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:17:11 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:17:11 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:17:11 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:20:01 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:20:01 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:20:01 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:20:01 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:20:01 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:20:02 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:20:02 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:20:02 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:20:02 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:20:02 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:20:22 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:20:22 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:20:22 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:20:22 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:20:22 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:20:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:20:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:20:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:20:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:20:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:20:23 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:20:23 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:20:23 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:20:23 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:20:23 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:20:23 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:20:23 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:20:23 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:20:23 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:20:23 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:20:23 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:20:23 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:20:23 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:20:23 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:20:23 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:20:23 jdbc[11]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:20:23 jdbc[11]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:20:23 jdbc[11]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:20:23 jdbc[11]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:20:23 jdbc[11]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]
+09-21 13:20:23 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zakaznik_id [42102-166]
+09-21 13:20:23 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_disponent_id [42102-166]
+09-21 13:20:23 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_dodavatel_id [42102-166]
+09-21 13:20:23 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_permission [42102-166]
+09-21 13:20:23 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_USER_PERMISSION" nenalezena
+Table "TB_USER_PERMISSION" not found; SQL statement:
+alter table tb_user_permission drop constraint fk_user_id [42102-166]

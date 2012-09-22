@@ -85,8 +85,8 @@ public class HibernateHelper {
 				config.addClass(cz.kpartl.preprava.model.Pozadavek.class);
 				config.addClass(cz.kpartl.preprava.model.Zakaznik.class);
 				config.addClass(cz.kpartl.preprava.model.Dodavatel.class);
-				config.addClass(cz.kpartl.preprava.model.Disponent.class);
 				config.addClass(cz.kpartl.preprava.model.Objednavka.class);
+				config.addClass(cz.kpartl.preprava.model.Dopravce.class);
 				return config;
 			}
 

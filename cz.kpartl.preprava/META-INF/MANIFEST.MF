@@ -18,7 +18,13 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.8.0",
  org.eclipse.jface;bundle-version="3.8.0",
  org.eclipse.e4.core.services;bundle-version="1.0.0",
  org.eclipse.osgi.services;bundle-version="3.3.100",
- org.eclipse.e4.ui.workbench.renderers.swt;bundle-version="0.10.1"
+ org.eclipse.e4.ui.workbench.renderers.swt;bundle-version="0.10.1",
+ org.eclipse.jface.databinding;bundle-version="1.6.0",
+ org.eclipse.core.databinding;bundle-version="1.4.1",
+ org.eclipse.core.databinding.beans;bundle-version="1.2.200",
+ org.eclipse.core.databinding.observable;bundle-version="1.4.1",
+ org.eclipse.core.databinding.property;bundle-version="1.4.100",
+ org.eclipse.ui;bundle-version="3.103.0"
 Bundle-ClassPath: lib/h2-1.3.166.jar,
  lib/hibernate-jpa-2.0-api-1.0.1.Final.jar,
  lib/hibernate3.jar,
@@ -31,3 +37,4 @@ Bundle-ClassPath: lib/h2-1.3.166.jar,
  lib/javassist.jar,
  lib/jta.jar
 Import-Package: org.eclipse.e4.ui.services
+Bundle-Activator: cz.kpartl.preprava.Activator

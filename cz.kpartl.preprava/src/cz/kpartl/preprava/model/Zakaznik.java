@@ -12,7 +12,7 @@ public class Zakaznik implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	private long cislo;
+	private int cislo;
 	/**
 	 * @generated
 	 */
@@ -53,14 +53,14 @@ public class Zakaznik implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	public long getCislo() {
+	public int getCislo() {
 		return this.cislo;
 	}
 
 	/**
 	 * @generated
 	 */
-	public void setCislo(long cislo) {
+	public void setCislo(int cislo) {
 		this.cislo = cislo;
 	}
 

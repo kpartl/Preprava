@@ -5,7 +5,7 @@
       <children xsi:type="advanced:Perspective" xmi:id="_nkHksPdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.perspective" label="Preprava">
         <children xsi:type="basic:PartSashContainer" xmi:id="_nkHksfdIEeGDArQ_Xew7DQ">
           <children xsi:type="basic:PartStack" xmi:id="_nkHksvdIEeGDArQ_Xew7DQ">
-            <children xsi:type="basic:Part" xmi:id="_mhLKsPgVEeGJkZgo7dQKnw" elementId="cz.kpartl.preprava.part.tablepart" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.ui.part.TablePart" label="Tabulka"/>
+            <children xsi:type="basic:Part" xmi:id="_mhLKsPgVEeGJkZgo7dQKnw" elementId="cz.kpartl.preprava.part.tablepart" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.PozadavkyView" label="Tabulka"/>
           </children>
         </children>
       </children>
