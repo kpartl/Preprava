@@ -72,4 +72,14 @@ public class PozadavekDAO {
 				"from cz.kpartl.preprava.model.Pozadavek p");
 		return query.list();
 	}
+
+	/**
+	 * @generated
+	 */
+	public java.util.List<cz.kpartl.preprava.model.Pozadavek> findNeobjednane() {
+		org.hibernate.Query query = getSession()
+				.createQuery(
+						"from cz.kpartl.preprava.model.Pozadavek p where p.objednavka = nul");
+		return query.list();
+	}
 }

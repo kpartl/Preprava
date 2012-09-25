@@ -37,7 +37,7 @@ public class User implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	private java.util.Set<Permission> permission = new java.util.HashSet<Permission>();
+	private boolean administrator;
 
 	/**
 	 * @generated
@@ -79,7 +79,7 @@ public class User implements java.io.Serializable {
 	 */
 	public String toString() {
 		return "User" + " id=" + id + " username=" + username + " password="
-				+ password;
+				+ password + " administrator=" + administrator;
 	}
 
 	/**
@@ -99,28 +99,14 @@ public class User implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	public java.util.Set<Permission> getPermission() {
-		return permission;
+	public boolean isAdministrator() {
+		return this.administrator;
 	}
 
 	/**
 	 * @generated
 	 */
-	public void setPermission(java.util.Set<Permission> permission) {
-		this.permission = permission;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void addPermission(Permission permission) {
-		getPermission().add(permission);
-	}
-
-	/**
-	 * @generated
-	 */
-	public void removePermission(Permission permission) {
-		getPermission().remove(permission);
+	public void setAdministrator(boolean administrator) {
+		this.administrator = administrator;
 	}
 }

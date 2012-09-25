@@ -19,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 
+
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.list.IObservableList;
@@ -30,18 +31,25 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -50,126 +58,119 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
+
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.part.ViewPart;
 import org.osgi.service.event.EventHandler;
 
 import cz.kpartl.preprava.dao.PozadavekDAO;
-import cz.kpartl.preprava.model.Dodavatel;
+import cz.kpartl.preprava.model.Destinace;
 import cz.kpartl.preprava.model.Pozadavek;
-import cz.kpartl.preprava.model.Zakaznik;
+import cz.kpartl.preprava.model.User;
+
 import cz.kpartl.preprava.sorter.TableViewerComparator;
 import cz.kpartl.preprava.Activator;
 
 @SuppressWarnings("restriction")
-public class PozadavkyView extends ViewPart {
-
-	private TableViewer viewer;
-
-	private EventHandler eventHandler;
+public class PozadavkyView extends AbstractTableView {
 
 	private PozadavekDAO pozadavekDAO;
-
-	private IStylingEngine styleEngine;
-
-	private static final Image CHECKED = Activator.getImageDescriptor(
-			"icons/checked.gif").createImage();
-	private static final Image UNCHECKED = Activator.getImageDescriptor(
-			"icons/unchecked.gif").createImage();
-
-	private Menu headerMenu;
-
-	private TableViewerComparator comparator;
-
-	@Inject
-	@Optional
-	private IEventBroker eventBroker;
-
-	@Inject
-	@Optional
-	private ESelectionService selectionService;
 
 	@Inject
 	public PozadavkyView(Composite parent,
 			@Optional IStylingEngine styleEngine,
 			@Optional PozadavekDAO pozadavekDAO) {
+		super(styleEngine);
 
 		this.pozadavekDAO = pozadavekDAO;
-
-		this.styleEngine = styleEngine;
 		
+
 		createPartControl(parent);
 	}
 
-	public void createPartControl(Composite parent) {
-		GridLayout layout = new GridLayout(2, false);
-		parent.setLayout(layout);
-		createViewer(parent);
-		// Set the sorter for the table
-		comparator = new TableViewerComparator();
-		viewer.setComparator(comparator);
-	}
+	
 
 	// This will create the columns for the table
-	private void createColumns(final Composite parent) {
+	protected void createColumns(final Composite parent) {
 
 		headerMenu = new Menu(parent.getShell(), SWT.POP_UP);
+		viewer.getTable().setMenu(headerMenu);
+		
 
-		TableViewerColumn col = createTableViewerColumn("Datum požadavku", 100,
-				0);
+		TableViewerColumn col = createTableViewerColumn("Datum", 70,
+				0, "Datum požadavku");
 
-		col.setLabelProvider(new ColumnLabelProvider() {
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn().getToolTipText()) {
 			@Override
 			public String getText(Object element) {
 				return new SimpleDateFormat("dd.MM.yyyy")
 						.format(((Pozadavek) element).getDatum());
-			}
+			}					
 		});
 
-		col = createTableViewerColumn("Požadované datum nakládky", 100, 1);
-		col.setLabelProvider(new ColumnLabelProvider() {
+		col = createTableViewerColumn("Datum nakládky", 90, 1, "Požadované datum nakládky");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn().getToolTipText()) {
 			@Override
 			public String getText(Object element) {
 				return ((Pozadavek) element).getDatum_nakladky();
 			}
 		});
 
-		col = createTableViewerColumn("Požadované datum vykládky", 100, 2);
-		col.setLabelProvider(new ColumnLabelProvider() {
+		col = createTableViewerColumn("Datum vykládky", 90, 2, "Požadované datum vykládky");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn().getToolTipText()) {
 			@Override
 			public String getText(Object element) {
 				return ((Pozadavek) element).getDatum_vykladky();
 			}
 		});
 
-		col = createTableViewerColumn("Zákazník", 250, 3);
-		col.setLabelProvider(new ColumnLabelProvider() {
+		col = createTableViewerColumn("Odkud", 150, 3, "Výchozí destinace");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn().getToolTipText()) {
 			@Override
 			public String getText(Object element) {
-				Zakaznik zakaznik = ((Pozadavek) element).getZakaznik();
-				if (zakaznik == null)
+				final Destinace destinace_z = ((Pozadavek) element)
+						.getDestinace_z();
+				if (destinace_z == null)
 					return "";
 				else
-					return zakaznik
+					return destinace_z
 							.getNazev()
 							.concat("(")
-							.concat(String.valueOf(zakaznik.getCislo()).concat(
-									")"));
+							.concat(String.valueOf(destinace_z.getCislo())
+									.concat(")"));
 
 			}
 		});
 
-		col = createTableViewerColumn("Celková hmotnost zásilky", 250, 4);
-		col.setLabelProvider(new ColumnLabelProvider() {
+		col = createTableViewerColumn("Kam", 150, 4,"Cílová destinace");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn().getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				final Destinace destinace_do = ((Pozadavek) element)
+						.getDestinace_do();
+				if (destinace_do == null)
+					return "";
+				else
+					return destinace_do
+							.getNazev()
+							.concat(" (")
+							.concat(String.valueOf(destinace_do.getCislo())
+									.concat(")"));
+
+			}
+		});
+
+		col = createTableViewerColumn("Hmotnost", 60, 5, "Celková hmotnost zásilky");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn().getToolTipText()) {
 			@Override
 			public String getText(Object element) {
 				return ((Pozadavek) element).getCelkova_hmotnost();
 			}
 		});
 
-		col = createTableViewerColumn("Je termín koneèný", 250, 5);
-		col.setLabelProvider(new ColumnLabelProvider() {
+		col = createTableViewerColumn("Termín koneèný?", 120, 6, "Je termín koneèný?");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn().getToolTipText()) {
 			@Override
 			public String getText(Object element) {
 				return "";
@@ -183,6 +184,77 @@ public class PozadavkyView extends ViewPart {
 				return UNCHECKED;
 			}
 		});
+
+		col = createTableViewerColumn("TAXI", 50, 7,"TAXI?");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn().getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				return "";
+			}
+
+			@Override
+			public Image getImage(Object element) {
+				if (((Pozadavek) element).getTaxi()) {
+					return CHECKED;
+				}
+				return UNCHECKED;
+			}
+		});
+
+		col = createTableViewerColumn("Kontakt ODKUD", 200, 8,"Kontaktní osoba u výchozí destinace");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn().getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				final Destinace destinace_z = ((Pozadavek) element)
+						.getDestinace_z();
+				if (destinace_z == null)
+					return "";
+				else
+					return (destinace_z.getKontaktni_osoba()).concat(" (")
+							.concat(destinace_z.getKontakt()).concat(")");
+
+			}
+		});
+		
+		col = createTableViewerColumn("Kontakt KAM", 200, 8, "Kontaktní osoba u cílové destinace");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn().getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				final Destinace destinace_do = ((Pozadavek) element)
+						.getDestinace_do();
+				if (destinace_do == null)
+					return "";
+				else
+					return (destinace_do.getKontaktni_osoba()).concat(" (")
+							.concat(destinace_do.getKontakt()).concat(")");
+
+			}
+		});
+
+		col = createTableViewerColumn("Hodina nakládky", 100, 9, "Hodina nakládky u dodavatele");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn().getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				return ((Pozadavek) element).getHodina_nakladky();
+			}
+		});
+		
+		col = createTableViewerColumn("Zadavatel", 80, 10, "Zadavatel");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn().getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				final User zadavatel = ((Pozadavek) element)
+						.getZadavatel();
+				if (zadavatel == null)
+					return "";
+				else
+					return zadavatel.getUsername();
+
+			}
+		});
+
+		
+		
 
 		/*
 		 * Enumeration e = viewer.getColumnModel().getColumns(); while
@@ -209,120 +281,12 @@ public class PozadavkyView extends ViewPart {
 		});
 	}
 
-	private void createViewer(Composite parent) {
-		// Define the TableViewer
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
-				| SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+	
 
-		// Create the columns
-		createColumns(parent);
-
-		// Make lines and make header visible
-		final Table table = viewer.getTable();
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
-
-		// Set the ContentProvider
-		viewer.setContentProvider(ArrayContentProvider.getInstance());
-
-		/*for (Iterator<Pozadavek> iter = pozadavekDAO.findAll().iterator(); iter
-				.hasNext();)
-			viewer.add(iter.next());*/
-		
-		viewer.setInput(pozadavekDAO.findAll());
-
-		// Make the selection available to other Views
-		//getSite().setSelectionProvider(viewer);  // HELE JA NEVIM NA CO TO JE
-
-		if (styleEngine != null) {
-			styleEngine.setClassname(this.viewer.getControl(), "pozadavkyList");
-		}
-
-		// Layout the viewer
-		GridData gridData = new GridData();
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 2;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalAlignment = GridData.FILL;
-		viewer.getControl().setLayoutData(gridData);
-	}
-
-	@PostConstruct
-	public void init() {
-
-	}
-
-	@PostConstruct
-	void hookEvents() {
-
-	}
-
-	@PreDestroy
-	void unhookEvents() {
-		if (eventBroker != null && eventHandler != null) {
-			eventBroker.unsubscribe(eventHandler);
-		}
-	}
-
-	private TableViewerColumn createTableViewerColumn(String title, int bound,
-			final int colNumber) {
-		final TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
-				SWT.NONE);
-		final TableColumn column = viewerColumn.getColumn();
-		column.setText(title);
-		column.setWidth(bound);
-		column.setResizable(true);
-		column.setMoveable(true);
-		column.addSelectionListener(getSelectionAdapter(column, colNumber));
-		// Create the menu item for this column
-		createMenuItem(headerMenu, column);
-		return viewerColumn;
-	}
-
-	private SelectionAdapter getSelectionAdapter(final TableColumn column,
-			final int index) {
-		SelectionAdapter selectionAdapter = new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				comparator.setColumn(index);
-				int dir = comparator.getDirection();
-				viewer.getTable().setSortDirection(dir);
-				viewer.getTable().setSortColumn(column);
-				viewer.refresh();
-			}
-		};
-		return selectionAdapter;
-	}
-
-	private void createMenuItem(Menu parent, final TableColumn column) {
-		final MenuItem itemName = new MenuItem(parent, SWT.CHECK);
-		itemName.setText(column.getText());
-		itemName.setSelection(column.getResizable());
-		itemName.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
-				if (itemName.getSelection()) {
-					column.setWidth(150);
-					column.setResizable(true);
-				} else {
-					column.setWidth(0);
-					column.setResizable(false);
-				}
-			}
-		});
-
-	}
-
-	/**
-	 * Passing the focus request to the viewer's control.
-	 */
-	public void setFocus() {
-		viewer.getControl().setFocus();
-	}
-
-	// Used to update the viewer from outsite
-	public void refresh() {
-		viewer.refresh();
-	}
+	@Override
+	protected Object getModelData() {
+		return pozadavekDAO.findNeobjednane();
+	}	
 
 }
+

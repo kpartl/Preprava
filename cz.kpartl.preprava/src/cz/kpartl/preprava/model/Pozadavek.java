@@ -45,16 +45,6 @@ public class Pozadavek implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	private Zakaznik zakaznik;
-
-	/**
-	 * @generated
-	 */
-	private Dodavatel dodavatel;
-	
-	/**
-	 * @generated
-	 */
 	private Objednavka objednavka;
 
 	/**
@@ -64,11 +54,26 @@ public class Pozadavek implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	private User disponent;
+	private int attr;
+
 	/**
 	 * @generated
 	 */
-	private int attr;
+	private String hodina_nakladky;
+
+	/**
+	 * @generated
+	 */
+	private Destinace destinace_z;
+	/**
+	 * @generated
+	 */
+	private Destinace destinace_do;
+
+	/**
+	 * @generated
+	 */
+	private User zadavatel;
 
 	/**
 	 * @generated
@@ -197,39 +202,9 @@ public class Pozadavek implements java.io.Serializable {
 				+ " pocet_palet=" + pocet_palet + " je_termin_konecny="
 				+ je_termin_konecny + " taxi=" + taxi + " poznamka=" + poznamka
 				+ " id=" + id + " celkova_hmotnost=" + celkova_hmotnost
-				+ " attr=" + attr;
+				+ " attr=" + attr + " hodina_nakladky=" + hodina_nakladky;
 	}
 
-	/**
-	 * @generated
-	 */
-	public Zakaznik getZakaznik() {
-		return this.zakaznik;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setZakaznik(Zakaznik zakaznik) {
-		this.zakaznik = zakaznik;
-	}
-
-	/**
-	 * @generated
-	 */
-	public Dodavatel getDodavatel() {
-		return this.dodavatel;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setDodavatel(Dodavatel dodavatel) {
-		this.dodavatel = dodavatel;
-	}
-
-	
-	
 	/**
 	 * @generated
 	 */
@@ -261,20 +236,6 @@ public class Pozadavek implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	public User getDisponent() {
-		return this.disponent;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setDisponent(User disponent) {
-		this.disponent = disponent;
-	}
-
-	/**
-	 * @generated
-	 */
 	public int getAttr() {
 		return this.attr;
 	}
@@ -284,5 +245,61 @@ public class Pozadavek implements java.io.Serializable {
 	 */
 	public void setAttr(int attr) {
 		this.attr = attr;
+	}
+
+	/**
+	 * @generated
+	 */
+	public String getHodina_nakladky() {
+		return this.hodina_nakladky;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setHodina_nakladky(String hodina_nakladky) {
+		this.hodina_nakladky = hodina_nakladky;
+	}
+
+	/**
+	 * @generated
+	 */
+	public Destinace getDestinace_z() {
+		return this.destinace_z;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setDestinace_z(Destinace destinace_z) {
+		this.destinace_z = destinace_z;
+	}
+
+	/**
+	 * @generated
+	 */
+	public Destinace getDestinace_do() {
+		return this.destinace_do;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setDestinace_do(Destinace destinace_do) {
+		this.destinace_do = destinace_do;
+	}
+
+	/**
+	 * @generated
+	 */
+	public User getZadavatel() {
+		return this.zadavatel;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setZadavatel(User zadavatel) {
+		this.zadavatel = zadavatel;
 	}
 }

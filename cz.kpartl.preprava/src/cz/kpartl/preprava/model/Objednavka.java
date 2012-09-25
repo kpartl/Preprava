@@ -16,10 +16,6 @@ public class Objednavka implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	private int cislo;
-	/**
-	 * @generated
-	 */
 	private java.math.BigDecimal cena;
 	/**
 	 * @generated
@@ -51,6 +47,11 @@ public class Objednavka implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
+	private int faze;
+
+	/**
+	 * @generated
+	 */
 	public Objednavka() {
 	}
 
@@ -66,20 +67,6 @@ public class Objednavka implements java.io.Serializable {
 	 */
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	/**
-	 * @generated
-	 */
-	public int getCislo() {
-		return this.cislo;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setCislo(int cislo) {
-		this.cislo = cislo;
 	}
 
 	/**
@@ -156,7 +143,7 @@ public class Objednavka implements java.io.Serializable {
 	 * @generated
 	 */
 	public String toString() {
-		return "Objednavka" + " id=" + id + " cislo=" + cislo + " cena=" + cena
+		return "Objednavka" + " id=" + id + " faze=" + faze + " cena=" + cena
 				+ " mena=" + mena + " zmena_nakladky=" + zmena_nakladky
 				+ " puvodni_termin_nakladky=" + puvodni_termin_nakladky
 				+ " cislo_faktury_dopravce=" + cislo_faktury_dopravce;
@@ -188,5 +175,19 @@ public class Objednavka implements java.io.Serializable {
 	 */
 	public void setDopravce(Dopravce dopravce) {
 		this.dopravce = dopravce;
+	}
+
+	/**
+	 * @generated
+	 */
+	public int getFaze() {
+		return this.faze;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setFaze(int faze) {
+		this.faze = faze;
 	}
 }

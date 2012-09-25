@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_nkHkkPdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.application" bindingContexts="_nkHkkfdIEeGDArQ_Xew7DQ">
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_nkHkp_dIEeGDArQ_Xew7DQ" label="cz.kpartl.preprava" width="500" height="400">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_nkHkp_dIEeGDArQ_Xew7DQ" label="Objednávky přepravy" width="1400" height="800">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_nkHkr_dIEeGDArQ_Xew7DQ">
       <children xsi:type="advanced:Perspective" xmi:id="_nkHksPdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.perspective" label="Preprava">
         <children xsi:type="basic:PartSashContainer" xmi:id="_nkHksfdIEeGDArQ_Xew7DQ">
           <children xsi:type="basic:PartStack" xmi:id="_nkHksvdIEeGDArQ_Xew7DQ">
-            <children xsi:type="basic:Part" xmi:id="_mhLKsPgVEeGJkZgo7dQKnw" elementId="cz.kpartl.preprava.part.tablepart" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.PozadavkyView" label="Tabulka"/>
+            <children xsi:type="basic:Part" xmi:id="_mhLKsPgVEeGJkZgo7dQKnw" elementId="cz.kpartl.preprava.part.tablepartpozadane" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.PozadavkyView" label="Požadované"/>
+            <children xsi:type="basic:Part" xmi:id="_yFi6EAbtEeKkRsIJdnX9-w" elementId="cz.kpartl.preprava.part.tablepartobjednane" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.PozadavkyView" label="Objednané"/>
           </children>
         </children>
       </children>
@@ -41,6 +42,9 @@
     <children xmi:id="_nkHkkvdIEeGDArQ_Xew7DQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_nkHkk_dIEeGDArQ_Xew7DQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
   </rootContext>
+  <toolBarContributions xmi:id="_8OarsAbmEeKkRsIJdnX9-w" elementId="cz.kpartl.preprava.toolbarcontribution">
+    <children xsi:type="menu:HandledToolItem" xmi:id="__hRjkAbmEeKkRsIJdnX9-w" elementId="cz.kpartl.preprava.handledtoolitem.pozadavky" label="Požadované"/>
+  </toolBarContributions>
   <commands xmi:id="_nkHkmvdIEeGDArQ_Xew7DQ" elementId="org.eclipse.ui.file.exit" commandName="quitCommand"/>
   <commands xmi:id="_nkHknvdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.open" commandName="openCommand"/>
   <commands xmi:id="_nkHkofdIEeGDArQ_Xew7DQ" elementId="org.eclipse.ui.file.save" commandName="saveCommand"/>

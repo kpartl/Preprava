@@ -81,10 +81,8 @@ public class HibernateHelper {
 			throws org.hibernate.MappingException {
 				org.hibernate.cfg.Configuration config = new org.hibernate.cfg.Configuration();
 				config.addClass(cz.kpartl.preprava.model.User.class);
-				config.addClass(cz.kpartl.preprava.model.Permission.class);
 				config.addClass(cz.kpartl.preprava.model.Pozadavek.class);
-				config.addClass(cz.kpartl.preprava.model.Zakaznik.class);
-				config.addClass(cz.kpartl.preprava.model.Dodavatel.class);
+				config.addClass(cz.kpartl.preprava.model.Destinace.class);
 				config.addClass(cz.kpartl.preprava.model.Objednavka.class);
 				config.addClass(cz.kpartl.preprava.model.Dopravce.class);
 				return config;

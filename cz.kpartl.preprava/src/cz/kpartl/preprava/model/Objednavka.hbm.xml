@@ -7,7 +7,7 @@
       <id name='id' type='long' column='objednavka_id'>
          <generator class='native' />
       </id>
-      <property  name='cislo' type='integer' column='cislo' unique='true'>
+      <property  name='faze' type='integer' column='faze' unique='true'>
       </property>
       <property  name='cena' type='big_decimal' column='cena'>
       </property>

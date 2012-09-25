@@ -21,20 +21,22 @@
       </property>
       <property  name='poznamka' type='string' column='poznamka'>
       </property>
-      <many-to-one  name='zakaznik' class='cz.kpartl.preprava.model.Zakaznik' foreign-key='fk_pozadavek_zakaznik_id'>
-         <column name='zakaznik_id'/>
-      </many-to-one>
-      <many-to-one  name='dodavatel' class='cz.kpartl.preprava.model.Dodavatel' foreign-key='fk_pozadavek_dodavatel_id'>
-         <column name='dodavatel_id'/>
+      <many-to-one  name='destinace_z' class='cz.kpartl.preprava.model.Destinace' foreign-key='fk_pozadavek_destinace_z_id'>
+         <column name='destinace_z_id'/>
       </many-to-one>
       <one-to-one  name='objednavka' class='cz.kpartl.preprava.model.Objednavka' property-ref='pozadavek'>
       </one-to-one>
       <property  name='celkova_hmotnost' type='string' column='celkova_hmotnost'>
       </property>
-      <many-to-one  name='disponent' class='cz.kpartl.preprava.model.User' foreign-key='fk_pozadavek_disponent_id'>
-         <column name='disponent_id'/>
+      <many-to-one  name='zadavatel' class='cz.kpartl.preprava.model.User' foreign-key='fk_pozadavek_zadavatel_id'>
+         <column name='zadavatel_id'/>
       </many-to-one>
       <property  name='attr' type='integer' column='attr'>
       </property>
+      <property  name='hodina_nakladky' type='string' column='hodina_nakladky'>
+      </property>
+      <many-to-one  name='destinace_do' class='cz.kpartl.preprava.model.Destinace' foreign-key='fk_pozadavek_destinace_do_id'>
+         <column name='destinace_do_id'/>
+      </many-to-one>
    </class>
 </hibernate-mapping>
