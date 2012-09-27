@@ -63,4 +63,16 @@ public class ObjednavkaDAO {
 	public String toString() {
 		return "ObjednavkaDAO";
 	}
+
+	/**
+	 * @generated
+	 */
+	public java.util.List<cz.kpartl.preprava.model.Objednavka> findByFaze(
+			int faze) {
+		org.hibernate.Query query = getSession()
+				.createQuery(
+						"from cz.kpartl.preprava.model.Objednavka o where o.faze = :faze");
+		query.setInteger("faze", faze);
+		return query.list();
+	}
 }

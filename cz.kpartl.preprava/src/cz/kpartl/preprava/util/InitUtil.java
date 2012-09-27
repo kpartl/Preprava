@@ -10,13 +10,18 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Creatable;
 import org.eclipse.e4.core.di.annotations.Optional;
 
+import cz.kpartl.preprava.dao.DopravceDAO;
+import cz.kpartl.preprava.dao.ObjednavkaDAO;
 import cz.kpartl.preprava.dao.PozadavekDAO;
 import cz.kpartl.preprava.dao.UserDAO;
 import cz.kpartl.preprava.dao.DestinaceDAO;
+import cz.kpartl.preprava.model.Dopravce;
+import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.model.Destinace;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
 @Creatable
@@ -34,6 +39,12 @@ public class InitUtil {
 	
 	@Inject
 	private static PozadavekDAO pozadavekDAO;
+	
+	@Inject
+	private static ObjednavkaDAO objednavkaDAO;
+	
+	@Inject
+	private static DopravceDAO dopravceDAO;
 	
 	public static void initDBData(){
 								
@@ -59,6 +70,18 @@ public class InitUtil {
 		destinace2.setNazev("Valeo Mexico");
 		
 		destinace2.setId(destinaceDAO.create(destinace2));
+		
+		Dopravce dopravce = new Dopravce();
+		dopravce.setNazev("Vávra");
+		dopravceDAO.create(dopravce);
+		
+		dopravce = new Dopravce();
+		dopravce.setNazev("Transforwarding");
+		dopravceDAO.create(dopravce);
+		
+		dopravce = new Dopravce();
+		dopravce.setNazev("K+N");
+		dopravceDAO.create(dopravce);
 		
 		
 		Pozadavek pozadavek = new Pozadavek();
@@ -88,9 +111,20 @@ public class InitUtil {
 		pozadavek.setDestinace_z(destinace2);
 		pozadavek.setDestinace_do(destinace);
 		pozadavek.setTaxi(true);
+		pozadavek.setHodina_nakladky("13:00-15:30");
+		pozadavek.setZadavatel(adminUser);
 		
 		pozadavek.setId(pozadavekDAO.create(pozadavek));
 		
+		Objednavka objednavka = new Objednavka();
+		objednavka.setPozadavek(pozadavek);
+		objednavka.setCena(BigDecimal.valueOf(1234.56));
+		objednavka.setFaze(Objednavka.FAZE_OBJEDNANO);
+		objednavka.setMena("czk");
+		objednavka.setDopravce(dopravce);
+		objednavka.setZmena_nakladky("úètovat  na zakázaku 45000351546");
+		
+		objednavkaDAO.create(objednavka);
 		
 	}
 

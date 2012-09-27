@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_nkHkkPdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.application" bindingContexts="_nkHkkfdIEeGDArQ_Xew7DQ">
   <children xsi:type="basic:TrimmedWindow" xmi:id="_nkHkp_dIEeGDArQ_Xew7DQ" label="Objednávky přepravy" width="1400" height="800">
-    <children xsi:type="advanced:PerspectiveStack" xmi:id="_nkHkr_dIEeGDArQ_Xew7DQ">
-      <children xsi:type="advanced:Perspective" xmi:id="_nkHksPdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.perspective" label="Preprava">
+    <children xsi:type="advanced:PerspectiveStack" xmi:id="_nkHkr_dIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.perspectiveStack" accessibilityPhrase="M1+P" selectedElement="_nkHksPdIEeGDArQ_Xew7DQ">
+      <children xsi:type="advanced:Perspective" xmi:id="_nkHksPdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.perspective.preprava" label="Preprava">
         <children xsi:type="basic:PartSashContainer" xmi:id="_nkHksfdIEeGDArQ_Xew7DQ">
           <children xsi:type="basic:PartStack" xmi:id="_nkHksvdIEeGDArQ_Xew7DQ">
             <children xsi:type="basic:Part" xmi:id="_mhLKsPgVEeGJkZgo7dQKnw" elementId="cz.kpartl.preprava.part.tablepartpozadane" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.PozadavkyView" label="Požadované"/>
-            <children xsi:type="basic:Part" xmi:id="_yFi6EAbtEeKkRsIJdnX9-w" elementId="cz.kpartl.preprava.part.tablepartobjednane" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.PozadavkyView" label="Objednané"/>
+            <children xsi:type="basic:Part" xmi:id="_yFi6EAbtEeKkRsIJdnX9-w" elementId="cz.kpartl.preprava.part.tablepartobjednane" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.ObjednanoView" label="Objednané"/>
+          </children>
+        </children>
+      </children>
+      <children xsi:type="advanced:Perspective" xmi:id="_AezNMAgjEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.perspective.administrace" label="Administrace" tooltip="Administrace kmenových dat">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_H4NDsAgjEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.partsashcontainer.admin">
+          <children xsi:type="basic:PartStack" xmi:id="_KyK6cAgjEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.partstack.0">
+            <children xsi:type="basic:Part" xmi:id="_MGELQAgjEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.part.administrace" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.ObjednanoView" label="Administrace"/>
           </children>
         </children>
       </children>
@@ -20,6 +27,7 @@
       <children xsi:type="menu:Menu" xmi:id="_nkHkrfdIEeGDArQ_Xew7DQ" label="Help">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_nkHkrvdIEeGDArQ_Xew7DQ" label="About" command="_nkHkpPdIEeGDArQ_Xew7DQ"/>
       </children>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_t3azoAgoEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.handledmenuitem.administrace" label="Administrace" command="_-RCNwAglEeKxW-KmU_7sbA"/>
     </mainMenu>
     <trimBars xmi:id="_nkHks_dIEeGDArQ_Xew7DQ">
       <children xsi:type="menu:ToolBar" xmi:id="_nkHktPdIEeGDArQ_Xew7DQ" elementId="toolbar:org.eclipse.ui.main.toolbar" toBeRendered="false" visible="false">
@@ -29,9 +37,10 @@
     </trimBars>
   </children>
   <handlers xmi:id="_nkHkm_dIEeGDArQ_Xew7DQ" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.QuitHandler" command="_nkHkmvdIEeGDArQ_Xew7DQ"/>
-  <handlers xmi:id="_nkHkn_dIEeGDArQ_Xew7DQ" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.OpenHandler" command="_nkHknvdIEeGDArQ_Xew7DQ"/>
   <handlers xmi:id="_nkHkovdIEeGDArQ_Xew7DQ" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.SaveHandler" command="_nkHkofdIEeGDArQ_Xew7DQ"/>
   <handlers xmi:id="_nkHkpfdIEeGDArQ_Xew7DQ" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.AboutHandler" command="_nkHkpPdIEeGDArQ_Xew7DQ"/>
+  <handlers xmi:id="_MvI2EAgmEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.handler.0" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.SwitchPerspectiveHandler" command="_-RCNwAglEeKxW-KmU_7sbA"/>
+  <handlers xmi:id="_nkHkn_dIEeGDArQ_Xew7DQ" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.OpenHandler" command="_nkHknvdIEeGDArQ_Xew7DQ"/>
   <bindingTables xmi:id="_nkHknPdIEeGDArQ_Xew7DQ" bindingContext="_nkHkkfdIEeGDArQ_Xew7DQ">
     <bindings xmi:id="_nkHknfdIEeGDArQ_Xew7DQ" keySequence="M1+Q" command="_nkHkmvdIEeGDArQ_Xew7DQ"/>
     <bindings xmi:id="_nkHkoPdIEeGDArQ_Xew7DQ" keySequence="M1+O" command="_nkHknvdIEeGDArQ_Xew7DQ"/>
@@ -49,6 +58,7 @@
   <commands xmi:id="_nkHknvdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.open" commandName="openCommand"/>
   <commands xmi:id="_nkHkofdIEeGDArQ_Xew7DQ" elementId="org.eclipse.ui.file.save" commandName="saveCommand"/>
   <commands xmi:id="_nkHkpPdIEeGDArQ_Xew7DQ" elementId="org.eclipse.ui.help.aboutAction" commandName="aboutCommand"/>
+  <commands xmi:id="_-RCNwAglEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.command.showAdminPerspective" commandName="switchPerspectiveCommand"/>
   <addons xmi:id="_nkHklPdIEeGDArQ_Xew7DQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_nkHklfdIEeGDArQ_Xew7DQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_nkHklvdIEeGDArQ_Xew7DQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

@@ -5,14 +5,18 @@ package cz.kpartl.preprava.model;
  * @generated
  */
 public class Objednavka implements java.io.Serializable {
+	
+	public static final int FAZE_OBJEDNANO = 1;
+	public static final int FAZE_PREPRAVA_ZAHAJENA = 2;
+	public static final int FAZE_PREPRAVA_UKONCENA = 3;
+	public static final int FAZE_DOKLADY_KOMPLETNI = 4;
+	public static final int FAZE_FAKTUROVANO = 5;
+	public static final int FAZE_UKONCENO = 6;
+	
 	/**
 	 * @generated
 	 */
 	private static final long serialVersionUID = 1087054822L;
-	/**
-	 * @generated
-	 */
-	private Long id;
 	/**
 	 * @generated
 	 */
@@ -52,21 +56,12 @@ public class Objednavka implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
+	private Long id;
+
+	/**
+	 * @generated
+	 */
 	public Objednavka() {
-	}
-
-	/**
-	 * @generated
-	 */
-	public Long getId() {
-		return this.id;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	/**
@@ -143,10 +138,11 @@ public class Objednavka implements java.io.Serializable {
 	 * @generated
 	 */
 	public String toString() {
-		return "Objednavka" + " id=" + id + " faze=" + faze + " cena=" + cena
-				+ " mena=" + mena + " zmena_nakladky=" + zmena_nakladky
+		return "Objednavka" + " faze=" + faze + " cena=" + cena + " mena="
+				+ mena + " zmena_nakladky=" + zmena_nakladky
 				+ " puvodni_termin_nakladky=" + puvodni_termin_nakladky
-				+ " cislo_faktury_dopravce=" + cislo_faktury_dopravce;
+				+ " cislo_faktury_dopravce=" + cislo_faktury_dopravce + " id="
+				+ id;
 	}
 
 	/**
@@ -189,5 +185,19 @@ public class Objednavka implements java.io.Serializable {
 	 */
 	public void setFaze(int faze) {
 		this.faze = faze;
+	}
+
+	/**
+	 * @generated
+	 */
+	public Long getId() {
+		return this.id;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

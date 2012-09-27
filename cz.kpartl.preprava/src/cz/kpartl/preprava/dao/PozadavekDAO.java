@@ -79,7 +79,7 @@ public class PozadavekDAO {
 	public java.util.List<cz.kpartl.preprava.model.Pozadavek> findNeobjednane() {
 		org.hibernate.Query query = getSession()
 				.createQuery(
-						"from cz.kpartl.preprava.model.Pozadavek p where p.objednavka = nul");
+						"from cz.kpartl.preprava.model.Pozadavek p where ( p.objednavka is null OR p.objednavka is empty )");
 		return query.list();
 	}
 }

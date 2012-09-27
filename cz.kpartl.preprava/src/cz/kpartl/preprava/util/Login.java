@@ -18,11 +18,15 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import cz.kpartl.preprava.dao.DAOFactory;
+import cz.kpartl.preprava.dao.DopravceDAO;
+import cz.kpartl.preprava.dao.ObjednavkaDAO;
 import cz.kpartl.preprava.dao.PozadavekDAO;
 import cz.kpartl.preprava.dao.UserDAO;
 import cz.kpartl.preprava.dao.DestinaceDAO;
@@ -38,19 +42,30 @@ public class Login {
 	UserDAO userDAO = null;
 	PozadavekDAO pozadavekDAO = null;
 	DestinaceDAO zakaznikDAO= null;
+	ObjednavkaDAO objednavkaDAO = null;
+	DopravceDAO dopravceDAO = null;
+	
+	
 	
 	 @PostContextCreate
 	   public void login(IEclipseContext context) {
+		 
+		 
 		 	
 	      final Shell shell = new Shell(SWT.INHERIT_NONE);
 	      
 	      userDAO = ContextInjectionFactory.make(UserDAO.class, context);
 	      pozadavekDAO = ContextInjectionFactory.make(PozadavekDAO.class, context);
 	      zakaznikDAO = ContextInjectionFactory.make(DestinaceDAO.class, context);
+	      objednavkaDAO = ContextInjectionFactory.make(ObjednavkaDAO.class, context);
+	      dopravceDAO = ContextInjectionFactory.make(DopravceDAO.class, context);
 	      
 	      context.set(UserDAO.class, userDAO); 
 	      context.set(PozadavekDAO.class, pozadavekDAO);
+	      context.set(ObjednavkaDAO.class, objednavkaDAO);
 	      context.set(DestinaceDAO.class, zakaznikDAO);
+	      context.set(DopravceDAO.class, dopravceDAO);
+	      
 	      
 	      InitUtil initUtil = ContextInjectionFactory.make(InitUtil.class, context);
 	      
