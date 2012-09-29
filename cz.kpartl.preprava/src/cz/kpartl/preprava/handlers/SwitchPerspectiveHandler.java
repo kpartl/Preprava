@@ -1,43 +1,31 @@
 package cz.kpartl.preprava.handlers;
 
-import javax.inject.Inject;
-
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
+import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
-import org.eclipse.ui.IPerspectiveDescriptor;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.WorkbenchException;
-import org.eclipse.ui.application.WorkbenchAdvisor;
+public class SwitchPerspectiveHandler {	
 
-
-public class SwitchPerspectiveHandler {
-	
-	
-	
+	@SuppressWarnings("restriction")
 	@Execute
-	public void execute() {
-		try {
-			ResourcePlugin.
-			IWorkbench workbench = PlatformUI.getWorkbench();
-			/*MyPlugin.getDefault().getActiveWorkbenchWindow().getActivePage()
-					.getPerspective();*/
-			if (workbench.getActiveWorkbenchWindow().getActivePage()
-					.getPerspective() != null && workbench.getActiveWorkbenchWindow().getActivePage()
-							.getPerspective().getId().equals(
-					"cz.kpartl.preprava.perspective.preprava")) {
-				PlatformUI.getWorkbench().showPerspective(
-						"cz.kpartl.preprava.perspective.administrace",
-						PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-			} else {
-				PlatformUI.getWorkbench().showPerspective(
-						"cz.kpartl.preprava.perspective.preprava",
-						PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-			}
+	public void execute(MApplication app, EPartService partService,
+			EModelService modelService, MWindow window, MPerspective activePerspective) {	
+		
+		//MPerspective activePerspective = modelService.getPerspectiveFor(window);
 
-		} catch (WorkbenchException e) {
-			e.printStackTrace();
-		}
+		MPerspective prepravaPerspective = (MPerspective) modelService.find(
+				"cz.kpartl.preprava.perspective.preprava", app);
+
+		MPerspective administracePerspective = (MPerspective) modelService
+				.find("cz.kpartl.preprava.perspective.administrace", app);
+
+		if (prepravaPerspective.equals(activePerspective))
+			partService.switchPerspective(administracePerspective);
+		else
+			partService.switchPerspective(prepravaPerspective);
 	}
 
 }

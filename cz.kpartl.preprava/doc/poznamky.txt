@@ -1,0 +1,10 @@
+zakaznik/dodavatel -> destinace, dát OD a DO.
+Hodina nakladky u dodavatele - text bez napojeni na tabulku Dodavatele
+Disponent -> Žadatel - ten kdo to zadává
+
+Èíslo objednávky automaticky
+Možnost editace Poznámky
+
+Fáze jsou Objednáno, Pøeprava zahájena, Pøeprav ukonèena, Doklady kompletní,Fakturováno, Ukonèeno
+Pohledy: Požadavky, Otevøené pøepravy, Ukonèené pøepravy.
+Destinace možnost vyhledávání podle PSÈ, Názvu, i s *

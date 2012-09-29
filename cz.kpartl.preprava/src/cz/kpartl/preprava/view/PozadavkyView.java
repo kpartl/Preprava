@@ -29,6 +29,7 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 
 import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -53,6 +54,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -73,6 +75,8 @@ import cz.kpartl.preprava.Activator;
 
 @SuppressWarnings("restriction")
 public class PozadavkyView extends AbstractTableView {
+	
+	public static final String ID = "cz.kpartl.preprava.view.PozadavkyView";
 
 	private PozadavekDAO pozadavekDAO;
 
@@ -90,6 +94,14 @@ public class PozadavkyView extends AbstractTableView {
 	@Override
 	protected Object getModelData() {
 		return pozadavekDAO.findNeobjednane();
+	}
+	
+	@Override
+	protected void createViewer(Composite parent, Object data) {
+		final Label nadpisLabel = new Label(parent, SWT.NONE);
+		nadpisLabel.setText("Pøehled požadavkù na pøepravu");
+		nadpisLabel.setFont(JFaceResources.getHeaderFont());
+		super.createViewer(parent, data);
 	}
 
 }

@@ -1,6 +1,5 @@
 package cz.kpartl.preprava.view;
 
-import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -31,10 +30,13 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 
 import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
+import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
+import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -77,6 +79,8 @@ import cz.kpartl.preprava.Activator;
 public abstract class AbstractTableView extends ViewPart {
 
 	protected TableViewer viewer;
+
+	protected TableColumnLayout layout;
 
 	protected EventHandler eventHandler;
 
@@ -138,7 +142,7 @@ public abstract class AbstractTableView extends ViewPart {
 	}
 
 	public void createPartControl(Composite parent) {
-		GridLayout layout = new GridLayout(2, false);
+		GridLayout layout = new GridLayout(1, false);
 		parent.setLayout(layout);
 		createViewer(parent, getModelData());
 		// Set the sorter for the table
@@ -148,10 +152,18 @@ public abstract class AbstractTableView extends ViewPart {
 	}
 
 	protected void createViewer(Composite parent, Object data) {
+		// Create the composite
+		Composite composite = new Composite(parent, SWT.NONE);
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1,
+				1));
+
+		// Add TableColumnLayout
+		layout = new TableColumnLayout();
+		composite.setLayout(layout);
 		// Define the TableViewer
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
+		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
-		
+
 		headerMenu = new Menu(parent.getShell(), SWT.POP_UP);
 		viewer.getTable().setMenu(headerMenu);
 
@@ -188,14 +200,20 @@ public abstract class AbstractTableView extends ViewPart {
 	protected TableViewerColumn createTableViewerColumn(String title,
 			int bound, final int colNumber, final String toolTip) {
 		final TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
-				SWT.LEFT);
+				SWT.NONE);
 
 		final TableColumn column = viewerColumn.getColumn();
+		if (colNumber == 0)
+			layout.setColumnData(column, new ColumnPixelData(bound, true, true));
+		else
+			layout.setColumnData(column, new ColumnWeightData(bound,
+					ColumnWeightData.MINIMUM_WIDTH, true));
 		column.setToolTipText(toolTip);
 		column.setText(title);
-		column.setWidth(bound);
+		// column.setWidth(bound);
 		column.setResizable(true);
 		column.setMoveable(true);
+		// column.setImage(Activator.getImageDescriptor("./icons/header.gif").createImage());
 		column.addSelectionListener(getSelectionAdapter(column, colNumber));
 		// Create the menu item for this column
 		// createMenuItem(headerMenu, column);
@@ -220,7 +238,9 @@ public abstract class AbstractTableView extends ViewPart {
 	// This will create the columns for the table
 	protected void createColumns(final Composite parent) {
 
-		
+		// TableViewerColumn col = createTableViewerColumn("", 0,columnIndex++,
+		// ""); //kvuli chybe we Windowsech, kdy 1. sloupec ma jinak pozicovany
+		// data
 
 		TableViewerColumn col = createTableViewerColumn("Datum", 70,
 				columnIndex++, "Datum požadavku");
@@ -470,6 +490,12 @@ public abstract class AbstractTableView extends ViewPart {
 	 * column.setWidth(0); column.setResizable(false); } } });
 	 * 
 	 * }
+	 */
+
+	/*
+	 * public void changePerspective() {
+	 * getViewSite().getWorkbenchWindow().getActivePage
+	 * ().setPerspective(perspective) }
 	 */
 
 }

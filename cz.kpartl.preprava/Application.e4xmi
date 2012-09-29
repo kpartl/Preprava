@@ -3,17 +3,28 @@
   <children xsi:type="basic:TrimmedWindow" xmi:id="_nkHkp_dIEeGDArQ_Xew7DQ" label="Objednávky přepravy" width="1400" height="800">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_nkHkr_dIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.perspectiveStack" accessibilityPhrase="M1+P" selectedElement="_nkHksPdIEeGDArQ_Xew7DQ">
       <children xsi:type="advanced:Perspective" xmi:id="_nkHksPdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.perspective.preprava" label="Preprava">
-        <children xsi:type="basic:PartSashContainer" xmi:id="_nkHksfdIEeGDArQ_Xew7DQ">
-          <children xsi:type="basic:PartStack" xmi:id="_nkHksvdIEeGDArQ_Xew7DQ">
-            <children xsi:type="basic:Part" xmi:id="_mhLKsPgVEeGJkZgo7dQKnw" elementId="cz.kpartl.preprava.part.tablepartpozadane" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.PozadavkyView" label="Požadované"/>
-            <children xsi:type="basic:Part" xmi:id="_yFi6EAbtEeKkRsIJdnX9-w" elementId="cz.kpartl.preprava.part.tablepartobjednane" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.ObjednanoView" label="Objednané"/>
+        <children xsi:type="basic:PartSashContainer" xmi:id="_nkHksfdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.partsashcontainer.preprava">
+          <children xsi:type="basic:PartStack" xmi:id="_nkHksvdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.partstack.preprava">
+            <children xsi:type="basic:Part" xmi:id="_mhLKsPgVEeGJkZgo7dQKnw" elementId="cz.kpartl.preprava.part.tablepartpozadane" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.PozadavkyView" label="Požadované">
+              <toolbar xmi:id="_m24XYAicEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.toolbar.0"/>
+            </children>
+            <children xsi:type="basic:Part" xmi:id="_yFi6EAbtEeKkRsIJdnX9-w" elementId="cz.kpartl.preprava.part.tablepartobjednane" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.ObjednanoView" label="Objednané">
+              <toolbar xmi:id="_nJXOgAicEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.toolbar.0"/>
+            </children>
+            <children xsi:type="basic:Part" xmi:id="_2bzSgAp4EeK8G_IvoEUUaQ" elementId="cz.kpartl.preprava.part.tablepartukoncene" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.UkoncenoView" label="Ukončené">
+              <toolbar xmi:id="_9VUvEAp4EeK8G_IvoEUUaQ" elementId="cz.kpartl.preprava.toolbar.0"/>
+            </children>
           </children>
         </children>
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_AezNMAgjEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.perspective.administrace" label="Administrace" tooltip="Administrace kmenových dat">
         <children xsi:type="basic:PartSashContainer" xmi:id="_H4NDsAgjEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.partsashcontainer.admin">
-          <children xsi:type="basic:PartStack" xmi:id="_KyK6cAgjEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.partstack.0">
-            <children xsi:type="basic:Part" xmi:id="_MGELQAgjEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.part.administrace" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.ObjednanoView" label="Administrace"/>
+          <children xsi:type="basic:PartStack" xmi:id="_KyK6cAgjEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.partstack.administrace">
+            <children xsi:type="basic:Part" xmi:id="_MGELQAgjEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.part.administrace" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.AdministraceView" label="Administrace">
+              <toolbar xmi:id="_cYhiIAicEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.toolbar.administrace">
+                <children xsi:type="menu:HandledToolItem" xmi:id="_-IxJgAicEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.handledtoolitem.administrace" command="_-RCNwAglEeKxW-KmU_7sbA"/>
+              </toolbar>
+            </children>
           </children>
         </children>
       </children>
@@ -29,18 +40,19 @@
       </children>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_t3azoAgoEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.handledmenuitem.administrace" label="Administrace" command="_-RCNwAglEeKxW-KmU_7sbA"/>
     </mainMenu>
-    <trimBars xmi:id="_nkHks_dIEeGDArQ_Xew7DQ">
-      <children xsi:type="menu:ToolBar" xmi:id="_nkHktPdIEeGDArQ_Xew7DQ" elementId="toolbar:org.eclipse.ui.main.toolbar" toBeRendered="false" visible="false">
-        <children xsi:type="menu:HandledToolItem" xmi:id="_nkHktfdIEeGDArQ_Xew7DQ" iconURI="platform:/plugin/cz.kpartl.preprava/icons/sample.gif" command="_nkHknvdIEeGDArQ_Xew7DQ"/>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_nkHktvdIEeGDArQ_Xew7DQ" iconURI="platform:/plugin/cz.kpartl.preprava/icons/save_edit.gif" command="_nkHkofdIEeGDArQ_Xew7DQ"/>
+    <trimBars xmi:id="_nkHks_dIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.windowtrim">
+      <children xsi:type="menu:ToolBar" xmi:id="_nkHktPdIEeGDArQ_Xew7DQ" elementId="toolbar:org.eclipse.ui.main.toolbar">
+        <children xsi:type="menu:HandledToolItem" xmi:id="_nkHktfdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.toolItem.novyPozadavek" label="Nový požadavek" iconURI="platform:/plugin/cz.kpartl.preprava/icons/sample.gif" tooltip="Vytvoření nového požadavku" command="_Oy61EAp-EeK8G_IvoEUUaQ"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_nkHktvdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.toolItem.save" label="Save" iconURI="platform:/plugin/cz.kpartl.preprava/icons/save_edit.gif" tooltip="Ulozit" command="_nkHkofdIEeGDArQ_Xew7DQ"/>
       </children>
     </trimBars>
   </children>
   <handlers xmi:id="_nkHkm_dIEeGDArQ_Xew7DQ" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.QuitHandler" command="_nkHkmvdIEeGDArQ_Xew7DQ"/>
   <handlers xmi:id="_nkHkovdIEeGDArQ_Xew7DQ" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.SaveHandler" command="_nkHkofdIEeGDArQ_Xew7DQ"/>
   <handlers xmi:id="_nkHkpfdIEeGDArQ_Xew7DQ" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.AboutHandler" command="_nkHkpPdIEeGDArQ_Xew7DQ"/>
-  <handlers xmi:id="_MvI2EAgmEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.handler.0" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.SwitchPerspectiveHandler" command="_-RCNwAglEeKxW-KmU_7sbA"/>
+  <handlers xmi:id="_MvI2EAgmEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.handler.switchPerspective" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.SwitchPerspectiveHandler" command="_-RCNwAglEeKxW-KmU_7sbA"/>
   <handlers xmi:id="_nkHkn_dIEeGDArQ_Xew7DQ" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.OpenHandler" command="_nkHknvdIEeGDArQ_Xew7DQ"/>
+  <handlers xmi:id="_DqDDMAp-EeK8G_IvoEUUaQ" elementId="cz.kpartl.preprava.handler.novyPozadavek" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.NovyPozadavekHandler" command="_Oy61EAp-EeK8G_IvoEUUaQ"/>
   <bindingTables xmi:id="_nkHknPdIEeGDArQ_Xew7DQ" bindingContext="_nkHkkfdIEeGDArQ_Xew7DQ">
     <bindings xmi:id="_nkHknfdIEeGDArQ_Xew7DQ" keySequence="M1+Q" command="_nkHkmvdIEeGDArQ_Xew7DQ"/>
     <bindings xmi:id="_nkHkoPdIEeGDArQ_Xew7DQ" keySequence="M1+O" command="_nkHknvdIEeGDArQ_Xew7DQ"/>
@@ -52,13 +64,15 @@
     <children xmi:id="_nkHkk_dIEeGDArQ_Xew7DQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
   </rootContext>
   <toolBarContributions xmi:id="_8OarsAbmEeKkRsIJdnX9-w" elementId="cz.kpartl.preprava.toolbarcontribution">
-    <children xsi:type="menu:HandledToolItem" xmi:id="__hRjkAbmEeKkRsIJdnX9-w" elementId="cz.kpartl.preprava.handledtoolitem.pozadavky" label="Požadované"/>
+    <children xsi:type="menu:HandledToolItem" xmi:id="__hRjkAbmEeKkRsIJdnX9-w" elementId="cz.kpartl.preprava.handledtoolitem.pozadavky" label="Požadované" command="_-RCNwAglEeKxW-KmU_7sbA"/>
   </toolBarContributions>
+  <toolBarContributions xmi:id="_5So9gAibEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.toolbarcontribution.0"/>
   <commands xmi:id="_nkHkmvdIEeGDArQ_Xew7DQ" elementId="org.eclipse.ui.file.exit" commandName="quitCommand"/>
   <commands xmi:id="_nkHknvdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.open" commandName="openCommand"/>
   <commands xmi:id="_nkHkofdIEeGDArQ_Xew7DQ" elementId="org.eclipse.ui.file.save" commandName="saveCommand"/>
   <commands xmi:id="_nkHkpPdIEeGDArQ_Xew7DQ" elementId="org.eclipse.ui.help.aboutAction" commandName="aboutCommand"/>
   <commands xmi:id="_-RCNwAglEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.command.showAdminPerspective" commandName="switchPerspectiveCommand"/>
+  <commands xmi:id="_Oy61EAp-EeK8G_IvoEUUaQ" elementId="cz.kpartl.preprava.command.novyPozadavek" commandName="novyPozadavekCommand"/>
   <addons xmi:id="_nkHklPdIEeGDArQ_Xew7DQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_nkHklfdIEeGDArQ_Xew7DQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_nkHklvdIEeGDArQ_Xew7DQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

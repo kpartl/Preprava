@@ -1,11 +1,23 @@
 package cz.kpartl.preprava.view;
 
+import java.awt.Font;
+
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.services.IStylingEngine;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 import cz.kpartl.preprava.dao.ObjednavkaDAO;
 import cz.kpartl.preprava.dao.PozadavekDAO;
@@ -15,7 +27,16 @@ import cz.kpartl.preprava.model.Dopravce;;
 
 public class ObjednanoView extends AbstractTableView {
 	
-	private ObjednavkaDAO objednavkaDAO;
+	private static final String TYP_OBJEDNANO = "Objednáno";
+	private static final String TYP_PREPRAVA_ZAHAJENA = "Pøeprava zahájena";
+	private static final String TYP_PREPRAVA_UKONCENA = "Pøeprav ukonèena";
+	private static final String TYP_DOKLADY_KOMPLETNI ="Doklady kompletní";
+	private static final String TYP_FAKTUROVANO = "Fakturováno";
+	
+	protected ObjednavkaDAO objednavkaDAO;
+	
+	private Combo typCombo;
+	private String faze= TYP_OBJEDNANO;
 	
 	@Inject
 	public ObjednanoView(Composite parent,
@@ -31,7 +52,13 @@ public class ObjednanoView extends AbstractTableView {
 
 	@Override
 	protected Object getModelData() {
-		return objednavkaDAO.findByFaze(Objednavka.FAZE_OBJEDNANO);
+		int typ = 0;
+		if(faze.equals(TYP_OBJEDNANO)) typ =Objednavka.FAZE_OBJEDNANO;
+		else if(faze.equals(TYP_PREPRAVA_ZAHAJENA)) typ =Objednavka.FAZE_PREPRAVA_ZAHAJENA;
+		else if(faze.equals(TYP_PREPRAVA_UKONCENA)) typ =Objednavka.FAZE_PREPRAVA_UKONCENA;
+		else if(faze.equals(TYP_FAKTUROVANO)) typ =Objednavka.FAZE_FAKTUROVANO;
+		else if(faze.equals(TYP_DOKLADY_KOMPLETNI)) typ =Objednavka.FAZE_DOKLADY_KOMPLETNI;
+		return objednavkaDAO.findByFaze(typ);
 	}
 	
 	@Override
@@ -71,9 +98,36 @@ public class ObjednanoView extends AbstractTableView {
 			}
 		});
 		
-		super.createColumns(parent);
+		super.createColumns(parent);		
+	}
+	@Override
+	protected void createViewer(Composite parent, Object data) {
+		Composite composite = new Composite(parent, SWT.NONE);
+		composite.setLayout(new GridLayout(2, false));
+		final Label nadpisLabel = new Label(composite, SWT.NONE);
+		nadpisLabel.setText("Pøehled objednaných pøeprav ve stavu");
+		nadpisLabel.setFont(JFaceResources.getHeaderFont());
+		typCombo = new Combo(composite, SWT.READ_ONLY);
+		typCombo.setBounds(new Rectangle(50, 50, 150, 65));
+		String typy[]= {TYP_OBJEDNANO,TYP_PREPRAVA_ZAHAJENA,TYP_PREPRAVA_UKONCENA, TYP_DOKLADY_KOMPLETNI, TYP_FAKTUROVANO};
+		typCombo.setItems(typy);
+		typCombo.addSelectionListener(new SelectionAdapter() {		
+						
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				faze = typCombo.getText();
+				viewer.setInput(getModelData());
+				viewer.refresh();							
+			}				
+		});
+				
+		super.createViewer(parent, data);
 		
+		typCombo.select(0);
+	}
 	
+	protected void superCreateViewer(Composite parent, Object data){
+		super.createViewer(parent, data);
 	}
 
 }
