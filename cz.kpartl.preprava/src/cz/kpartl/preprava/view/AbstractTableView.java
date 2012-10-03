@@ -297,11 +297,7 @@ public abstract class AbstractTableView extends ViewPart {
 				if (destinace_z == null)
 					return "";
 				else
-					return destinace_z
-							.getNazev()
-							.concat("(")
-							.concat(String.valueOf(destinace_z.getCislo())
-									.concat(")"));
+					return destinace_z.getNazevACislo();
 
 			}
 		});
@@ -320,11 +316,7 @@ public abstract class AbstractTableView extends ViewPart {
 				if (destinace_do == null)
 					return "";
 				else
-					return destinace_do
-							.getNazev()
-							.concat(" (")
-							.concat(String.valueOf(destinace_do.getCislo())
-									.concat(")"));
+					return destinace_do.getNazevACislo();
 
 			}
 		});
@@ -343,7 +335,7 @@ public abstract class AbstractTableView extends ViewPart {
 		});
 
 		col = createTableViewerColumn("Termín koneèný?", 120, columnIndex++,
-				"Je termín koneèný?");
+				"Je termín nakládky koneèný?");
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
 			@Override
@@ -397,8 +389,7 @@ public abstract class AbstractTableView extends ViewPart {
 				if (destinace_z == null)
 					return "";
 				else
-					return (destinace_z.getKontaktni_osoba()).concat(" (")
-							.concat(destinace_z.getKontakt()).concat(")");
+					return (destinace_z.getKontaktniOsobuAKontakt());
 
 			}
 		});
@@ -417,8 +408,7 @@ public abstract class AbstractTableView extends ViewPart {
 				if (destinace_do == null)
 					return "";
 				else
-					return (destinace_do.getKontaktni_osoba()).concat(" (")
-							.concat(destinace_do.getKontakt()).concat(")");
+					return destinace_do.getKontaktniOsobuAKontakt();
 
 			}
 		});

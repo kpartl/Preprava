@@ -170,4 +170,12 @@ public class Destinace implements java.io.Serializable {
 	public void setPSC(int PSC) {
 		this.PSC = PSC;
 	}
+	
+	public String getNazevACislo(){
+		return getNazev().concat("(").concat(String.valueOf(getCislo()).concat(")"));
+	}
+	
+	public String getKontaktniOsobuAKontakt(){
+		return getKontaktni_osoba().concat(" (").concat(getKontakt()).concat(")");
+	}
 }

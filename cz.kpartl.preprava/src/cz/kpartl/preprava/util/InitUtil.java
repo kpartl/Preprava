@@ -59,7 +59,7 @@ public class InitUtil {
 		destinace.setCislo(123);
 		destinace.setKontaktni_osoba("Èistiè Viktor");
 		destinace.setKontakt("cistic.viktor@bezstarosti.cz");
-		destinace.setNazev("Bez starosti");
+		destinace.setNazev("Bez starostiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
 		
 		destinace.setId(destinaceDAO.create(destinace));
 		

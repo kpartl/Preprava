@@ -90,4 +90,13 @@ public class DestinaceDAO {
 	 */
 	public DestinaceDAO() {
 	}
+
+	/**
+	 * @generated
+	 */
+	public java.util.List<cz.kpartl.preprava.model.Destinace> findAll() {
+		org.hibernate.Query query = getSession().createQuery(
+				"from cz.kpartl.preprava.model.Destinace d");
+		return query.list();
+	}
 }
