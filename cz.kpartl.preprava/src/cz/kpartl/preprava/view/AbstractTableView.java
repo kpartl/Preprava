@@ -27,7 +27,9 @@ import org.eclipse.core.databinding.observable.masterdetail.IObservableFactory;
 import org.eclipse.core.databinding.property.list.IListProperty;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import cz.kpartl.preprava.util.EventConstants;
 
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.layout.TableColumnLayout;
@@ -116,15 +118,14 @@ public abstract class AbstractTableView extends ViewPart {
 	public void init() {
 
 	}
+	
+	
 
-	@PostConstruct
-	void hookEvents() {
-
-	}
-
+	
+	
 	@PreDestroy
 	void unhookEvents() {
-		if (eventBroker != null && eventHandler != null) {
+		if( eventBroker != null && eventHandler != null ) {
 			eventBroker.unsubscribe(eventHandler);
 		}
 	}
@@ -181,7 +182,7 @@ public abstract class AbstractTableView extends ViewPart {
 		viewer.setInput(data);
 
 		// Make the selection available to other Views
-		// getSite().setSelectionProvider(viewer); // HELE JA NEVIM NA CO TO JE
+		//getSite().setSelectionProvider(viewer); // HELE JA NEVIM NA CO TO JE
 
 		if (styleEngine != null) {
 			styleEngine.setClassname(this.viewer.getControl(), "pozadavkyList");
@@ -196,6 +197,8 @@ public abstract class AbstractTableView extends ViewPart {
 		gridData.horizontalAlignment = GridData.FILL;
 		viewer.getControl().setLayoutData(gridData);
 	}
+	
+	
 
 	protected TableViewerColumn createTableViewerColumn(String title,
 			int bound, final int colNumber, final String toolTip) {
@@ -216,9 +219,13 @@ public abstract class AbstractTableView extends ViewPart {
 		// column.setImage(Activator.getImageDescriptor("./icons/header.gif").createImage());
 		column.addSelectionListener(getSelectionAdapter(column, colNumber));
 		// Create the menu item for this column
-		// createMenuItem(headerMenu, column);
+		//createMenuItem(headerMenu, column);
 		return viewerColumn;
 	}
+	
+		
+		
+	
 
 	protected SelectionAdapter getSelectionAdapter(final TableColumn column,
 			final int index) {
@@ -333,6 +340,19 @@ public abstract class AbstractTableView extends ViewPart {
 				return ((Pozadavek) element).getCelkova_hmotnost();
 			}
 		});
+		
+		col = createTableViewerColumn("Palet", 60, columnIndex++,
+				"Poèet palet");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				if (element instanceof Objednavka) {
+					element = ((Objednavka) element).getPozadavek();
+				}
+				return ((Pozadavek) element).getPocet_palet();
+			}
+		});
 
 		col = createTableViewerColumn("Termín koneèný?", 120, columnIndex++,
 				"Je termín nakládky koneèný?");
@@ -442,6 +462,21 @@ public abstract class AbstractTableView extends ViewPart {
 					return zadavatel.getUsername();
 
 			}
+			
+			
+		});
+		
+		col = createTableViewerColumn("Poznámka", 100, columnIndex++,
+				"Poznámka");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				if (element instanceof Objednavka) {
+					element = ((Objednavka) element).getPozadavek();
+				}
+				return ((Pozadavek) element).getPoznamka();
+			}
 		});
 
 		/*
@@ -468,6 +503,10 @@ public abstract class AbstractTableView extends ViewPart {
 			}
 		});
 	}
+	
+	public void refreshInputData() {
+		viewer.setInput(getModelData());
+		}
 
 	/*
 	 * protected void createMenuItem(Menu parent, final TableColumn column) {

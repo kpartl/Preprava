@@ -1,5 +1,8 @@
 package cz.kpartl.preprava.util;
 
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.hibernate.Transaction;
+
 
 /**
  * @generated
@@ -144,4 +147,9 @@ public class HibernateHelper {
 	public String toString() {
 		return "HibernateHelper";
 	}
+	
+	public Transaction beginTransaction() {
+		return getSession().beginTransaction();
+	}
+	
 }

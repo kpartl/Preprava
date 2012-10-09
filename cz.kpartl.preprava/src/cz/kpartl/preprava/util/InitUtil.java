@@ -47,7 +47,7 @@ public class InitUtil {
 	private static DopravceDAO dopravceDAO;
 	
 	public static void initDBData(){
-								
+			if (true) return;					
 		User adminUser = new User();
 		adminUser.setUsername(LOGIN);
 		adminUser.setPassword(UserDAO.encryptPassword(PASSWORD));

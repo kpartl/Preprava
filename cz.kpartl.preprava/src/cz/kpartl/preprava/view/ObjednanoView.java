@@ -18,6 +18,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.TableColumn;
 
 import cz.kpartl.preprava.dao.ObjednavkaDAO;
 import cz.kpartl.preprava.dao.PozadavekDAO;
@@ -129,5 +131,7 @@ public class ObjednanoView extends AbstractTableView {
 	protected void superCreateViewer(Composite parent, Object data){
 		super.createViewer(parent, data);
 	}
+	
+	protected void createMenuItem(Menu parent, final TableColumn column) {}
 
 }

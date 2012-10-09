@@ -6,8 +6,6 @@ import org.eclipse.swt.SWT;
 
 import cz.kpartl.preprava.model.Pozadavek;
 
-
-
 public class TableViewerComparator extends ViewerComparator {
 	private int propertyIndex;
 	private static final int DESCENDING = 1;
@@ -49,10 +47,50 @@ public class TableViewerComparator extends ViewerComparator {
 			rc = p1.getDatum_vykladky().compareTo(p2.getDatum_vykladky());
 			break;
 		case 3:
+			rc = p1.getDestinace_z().getNazevACislo()
+					.compareTo(p2.getDestinace_z().getNazevACislo());
+			break;
+		case 4:
+			rc = p1.getDestinace_do().getNazevACislo()
+					.compareTo(p2.getDestinace_do().getNazevACislo());
+			break;
+		case 5:
+			rc = p1.getCelkova_hmotnost().compareTo(p2.getCelkova_hmotnost());
+			break;
+		case 6:
+			rc = p1.getPocet_palet().compareTo(p2.getPocet_palet());
+			break;
+		case 7:
 			if (p1.getJe_termin_konecny() == p2.getJe_termin_konecny()) {
-				rc = 0;
+				rc = 0;				
 			} else
 				rc = (p1.getJe_termin_konecny() ? 1 : -1);
+			break;
+		case 8:
+			if (p1.getTaxi() == p2.getTaxi()) {
+				rc = 0;				
+			} else
+				rc = (p1.getTaxi() ? 1 : -1);
+			break;
+		case 9:
+			rc = p1.getDestinace_z().getKontaktniOsobuAKontakt()
+					.compareTo(p2.getDestinace_z().getKontaktniOsobuAKontakt());
+			break;
+		case 10:
+			rc = p1.getDestinace_do().getKontaktniOsobuAKontakt()
+					.compareTo(p2.getDestinace_do().getKontaktniOsobuAKontakt());
+			break;
+		case 11:
+			rc = p1.getHodina_nakladky()
+					.compareTo(p2.getHodina_nakladky());
+			break;
+		case 12:
+			rc = p1.getZadavatel().getUsername()
+					.compareTo(p2.getZadavatel().getUsername());
+			break;
+		case 13:
+			rc = p1.getPoznamka()
+					.compareTo(p2.getPoznamka());
 			break;
 		default:
 			rc = 0;
@@ -64,4 +102,4 @@ public class TableViewerComparator extends ViewerComparator {
 		return rc;
 	}
 
-} 
+}
