@@ -43,16 +43,13 @@ public class NovyPozadavekHandler {
 
 	@Execute
 	public void execute(
-			Shell parentShell,
-			@Named("cz.kpartl.preprava.dao.DestinaceDAO") DestinaceDAO destinaceDAO,
-			PozadavekDAO pozadavekDAO,
-			@Named(User.CONTEXT_NAME) User user,
+			Shell parentShell,									
 			@Named("cz.kpartl.preprava.view.PozadavkyView") PozadavkyView pozadavkyView,
 			IEclipseContext context
 
 	) {
 		Object o = context.get(PozadavekDAO.class);
-		NovyPozadavekDialog dialog = new NovyPozadavekDialog(parentShell,
+		final NovyPozadavekDialog dialog = new NovyPozadavekDialog(parentShell,
 				context);
 		if (dialog.open() == Window.OK) {
 

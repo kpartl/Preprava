@@ -61,6 +61,8 @@ import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.util.OtherUtils;
 
 public class NovyPozadavekDialog extends TitleAreaDialog {
+	
+	final Logger logger = LoggerFactory.getLogger(NovaDestinaceDialog.class); 
 
 	Shell parentShell;
 	DestinaceDAO destinaceDAO;
@@ -108,7 +110,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		this.destinaceDAO = context.get(DestinaceDAO.class);
 		this.parentShell = parentShell;
 		this.pozadavekDAO = context.get(PozadavekDAO.class);
-		this.user = context.get(User.class);
+		this.user = (User) context.get(User.CONTEXT_NAME);
 		this.pozadavek = pozadavek;
 		setTitle("Nový požadavek na pøepravu");
 		persistenceHelper = cz.kpartl.preprava.util.HibernateHelper
@@ -179,8 +181,10 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 
 		Label hodinaNakladkyLabel = new Label(parent, SWT.BOLD);
 		hodinaNakladkyLabel.setText("Hodina nakládky");
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
+		gridData = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
+		//gridData = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL, SWT.CENTER, true, false);
 		// gridData.horizontalIndent = 10;
+		gridData.widthHint= 70;
 		hodinaNakladkyLabel.setLayoutData(gridData);
 
 		hodinaNakladky = new Text(parent, SWT.BORDER);
@@ -318,17 +322,19 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 
 		hmotnost = new Text(parent, SWT.BORDER);
 		gridData = new GridData(SWT.NONE, SWT.CENTER, false, false);
+		gridData.widthHint = 70;
 		hmotnost.setLayoutData(gridData);
 
 		new Label(parent, SWT.NONE);
 
 		Label pocetPaletLabel = new Label(parent, SWT.BOLD);
 		pocetPaletLabel.setText("Poèet palet");
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
+		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);		
 		pocetPaletLabel.setLayoutData(gridData);
 
 		pocetPalet = new Text(parent, SWT.BORDER);
 		gridData = new GridData(SWT.NONE, SWT.CENTER, false, false);
+		gridData.widthHint = 70;
 		pocetPalet.setLayoutData(gridData);
 
 		new Label(parent, SWT.NONE);
@@ -413,13 +419,19 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 					pozadavek.setZadavatel(user);
 					pozadavek.setPoznamka(poznamka.getText());
 					Transaction tx = persistenceHelper.beginTransaction();
+					try{
 					if (novyPozadavek)
 						pozadavek.setId(pozadavekDAO.create(pozadavek));
 					else
 						pozadavekDAO.update(pozadavek);
 					tx.commit();
-
 					close();
+					}catch (Exception ex){
+						setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
+								.concat(System.getProperty("line.separator")).concat(ex.getMessage()));
+						logger.error("Nelze vlozit/updatovat destinaci", e);
+					}
+
 
 				} else {
 					String errString = "";
@@ -486,7 +498,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		if (pozadavek == null)
 			return;
 
-		hmotnost.setText(pozadavek.getCelkova_hmotnost());
+		hmotnost.setText(pozadavek.getCelkova_hmotnost());		
 		datumNakladky.setText(pozadavek.getDatum_nakladky());
 		datumVykladky.setText(pozadavek.getDatum_vykladky());
 		if (pozadavek.getDestinace_z() != null) {

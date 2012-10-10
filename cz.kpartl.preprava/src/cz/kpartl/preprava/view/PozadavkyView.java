@@ -94,13 +94,7 @@ public class PozadavkyView extends AbstractTableView {
 	public static final String ID = "cz.kpartl.preprava.view.PozadavkyView";
 
 	private PozadavekDAO pozadavekDAO;
-	
-	/*@Inject
-	private DestinaceDAO destinaceDAO;
-	
-	@Inject
-	@Named (User.CONTEXT_NAME)
-	private User user;*/
+		
 	
 	@Inject
 	IEclipseContext context;
@@ -140,6 +134,7 @@ public class PozadavkyView extends AbstractTableView {
 		editItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				Pozadavek selectedPozadavek  = (Pozadavek) ((StructuredSelection) viewer.getSelection()).getFirstElement();
+				if(selectedPozadavek==null) return;
 				NovyPozadavekDialog dialog = new NovyPozadavekDialog(event.widget.getDisplay().getActiveShell(),
 						context, selectedPozadavek);
 				if (dialog.open() == Window.OK){
@@ -166,20 +161,9 @@ public class PozadavkyView extends AbstractTableView {
 
 	}
 	
-	@Inject 
-	@Optional
-	void closeHandler(@UIEventTopic(EventConstants.NEW_OR_UPDATED_POZADAVEK) final Pozadavek pozadavek) {
-		this.refresh();
-		/*viewer.getControl().getDisplay().asyncExec(new Runnable() {
-			
-			public void run() {
-				
-				viewer.;
-			}
-		});*/
-	}
 	
-	@Inject
+	
+	/*@Inject
 	public void setPozadavek(@Named(IServiceConstants.ACTIVE_SELECTION) @Optional Pozadavek pozadavek) {
 		System.out.println("SetPozadavek called");
 		if( pozadavek != null ) {
@@ -187,6 +171,6 @@ public class PozadavkyView extends AbstractTableView {
 			//this.folder = folder;
 			//viewer.setInput(folder.getSession().getMails(folder, 0, folder.getMailCount()));
 		}
-	}
+	}*/
 
 }
