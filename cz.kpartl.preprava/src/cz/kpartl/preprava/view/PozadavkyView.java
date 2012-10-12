@@ -83,6 +83,7 @@ import cz.kpartl.preprava.model.Destinace;
 import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.model.User;
 
+import cz.kpartl.preprava.sorter.PozadavekTableViewerComparator;
 import cz.kpartl.preprava.sorter.TableViewerComparator;
 import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
@@ -96,19 +97,18 @@ public class PozadavkyView extends AbstractTableView {
 	private PozadavekDAO pozadavekDAO;
 		
 	
-	@Inject
-	IEclipseContext context;
+	
 
 	@Inject
 	public PozadavkyView(Composite parent,
-			@Optional IStylingEngine styleEngine,
-			@Optional PozadavekDAO pozadavekDAO ,
-		@Optional IEclipseContext context)
+			@Optional IStylingEngine styleEngine, IEclipseContext context)
 	{
+		
 		super(styleEngine);
-		context.set("cz.kpartl.preprava.view.PozadavkyView", this);
+		this.context = context;
+		context.set(ID, this);
 
-		this.pozadavekDAO = pozadavekDAO;
+		this.pozadavekDAO = context.get(PozadavekDAO.class);
 
 		createPartControl(parent);
 	}
@@ -159,6 +159,11 @@ public class PozadavkyView extends AbstractTableView {
 			}
 		});
 
+	}
+
+	@Override
+	protected TableViewerComparator getComparator() {
+		return new PozadavekTableViewerComparator();
 	}
 	
 	

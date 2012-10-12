@@ -46,12 +46,20 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 	Text psc;
 	Text mesto;
 	Destinace destinace;
-
+	
 	@Inject
 	public NovaDestinaceDialog(
 			@Named(IServiceConstants.ACTIVE_SHELL) Shell parentShell,
 			IEclipseContext context) {
+		this(parentShell, context, null);
+	}
+
+	@Inject
+	public NovaDestinaceDialog(
+			@Named(IServiceConstants.ACTIVE_SHELL) Shell parentShell,
+			IEclipseContext context, Destinace destinace) {
 		super(parentShell);
+		this.destinace = destinace;
 		this.destinaceDAO = context.get(DestinaceDAO.class);
 		persistenceHelper = cz.kpartl.preprava.util.HibernateHelper
 				.getInstance();
@@ -164,9 +172,10 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 		okButton.setData(IDialogConstants.OK_ID);
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				final ArrayList<String> validace = validate();
+				boolean novaDestinace = destinace == null;
+				final ArrayList<String> validace = validate(novaDestinace);
 				if (validace.size() == 0) {
-					boolean novaDestinace = destinace == null;
+					
 					if (novaDestinace) {
 						destinace = new Destinace();
 					}
@@ -175,7 +184,7 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 					destinace.setKontaktni_osoba(kontaktniOsoba.getText());
 					destinace.setMesto(mesto.getText());
 					destinace.setNazev(nazev.getText());
-					destinace.setPSC(Integer.valueOf(psc.getText()));
+					if(psc.getText()!= "" )destinace.setPSC(Integer.valueOf(psc.getText()));
 					destinace.setUlice(ulice.getText());
 					Transaction tx = persistenceHelper.beginTransaction();
 					try {
@@ -219,8 +228,9 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 
 	}
 
-	protected ArrayList<String> validate() {
+	protected ArrayList<String> validate(boolean novaDestinace) {
 		ArrayList<String> result = new ArrayList<String>();
+		if("".equals(nazev.getText().trim())) result.add("Není zadán název destinace");
 		if ("".equals(cislo.getText().trim())) {
 			result.add("Není zadané èíslo destinace");
 		} else {
@@ -230,7 +240,7 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 				result.add("Èíslo destinace ".concat(cislo.getText()).concat(
 						" není platné èíslo"));
 			}
-			if (destinaceDAO.findByCislo(Long.valueOf(cislo.getText())) != null) {
+			if (novaDestinace && destinaceDAO.findByCislo(Integer.valueOf(cislo.getText())) != null) {
 				result.add("Destinace s èíslem ".concat(cislo.getText())
 						.concat(" již existuje"));
 			}
@@ -253,8 +263,8 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 
 		nazev.setText(destinace.getNazev());
 		cislo.setText(String.valueOf(destinace.getCislo()));
-		mesto.setText(destinace.getMesto());
-		ulice.setText(destinace.getUlice());
+		mesto.setText(destinace.getMesto() !=null ? destinace.getMesto() : "");
+		ulice.setText(destinace.getUlice() != null ? destinace.getUlice() : "");
 		psc.setText(String.valueOf(destinace.getPSC()));
 		kontakt.setText(destinace.getKontakt());
 		kontaktniOsoba.setText(destinace.getKontaktni_osoba());

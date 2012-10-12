@@ -13,6 +13,7 @@ public class TooltipColumnLabelProvider extends ColumnLabelProvider {
 	
 	public TooltipColumnLabelProvider(String tooltip){
 		super();
+		if(tooltip == null) tooltip = "";
 		this.tooltip = tooltip;
 	}
 	

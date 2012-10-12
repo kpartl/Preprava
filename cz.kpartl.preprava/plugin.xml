@@ -19,5 +19,17 @@
          
       </product>
    </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="cz.kpartl.preprava.definition4">
+         <with
+               variable="selection">
+            <instanceof
+                  value="org.eclipse.swt.widgets.TableItem">
+            </instanceof>
+         </with>
+      </definition>
+   </extension>
 
 </plugin>

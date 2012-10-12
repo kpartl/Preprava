@@ -25,6 +25,7 @@ import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.masterdetail.IObservableFactory;
 import org.eclipse.core.databinding.property.list.IListProperty;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import cz.kpartl.preprava.util.EventConstants;
@@ -98,13 +99,17 @@ public abstract class AbstractTableView extends ViewPart {
 	protected TableViewerComparator comparator;
 
 	protected int columnIndex = 0;
+	
+	@Inject
+	@Optional
+	IEclipseContext context;
 
 	@Inject
 	@Optional
 	protected IEventBroker eventBroker;
 
-	@Inject
-	@Optional
+	//@Inject
+	//@Optional
 	protected ESelectionService selectionService;
 
 	public AbstractTableView(IStylingEngine styleEngine) {
@@ -113,6 +118,8 @@ public abstract class AbstractTableView extends ViewPart {
 
 	// Vrati data pro tabulku
 	protected abstract Object getModelData();
+	
+	protected abstract TableViewerComparator getComparator();
 
 	@PostConstruct
 	public void init() {
@@ -146,8 +153,8 @@ public abstract class AbstractTableView extends ViewPart {
 		GridLayout layout = new GridLayout(1, false);
 		parent.setLayout(layout);
 		createViewer(parent, getModelData());
-		// Set the sorter for the table
-		comparator = new TableViewerComparator();
+		// Set the sorter for the table		
+		comparator = getComparator();
 		viewer.setComparator(comparator);
 		ColumnViewerToolTipSupport.enableFor(viewer, ToolTip.NO_RECREATE);
 	}

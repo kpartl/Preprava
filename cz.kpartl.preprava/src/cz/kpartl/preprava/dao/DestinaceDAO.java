@@ -65,11 +65,11 @@ public class DestinaceDAO {
 	/**
 	 * @generated
 	 */
-	public cz.kpartl.preprava.model.Destinace findByCislo(long cislo) {
+	public cz.kpartl.preprava.model.Destinace findByCislo(int cislo) {
 		org.hibernate.Query query = getSession()
 				.createQuery(
 						"from cz.kpartl.preprava.model.Destinace z where z.cislo = :cislo");
-		query.setParameter("cislo", cislo);
+		query.setInteger("cislo", cislo);
 		java.util.List list = query.list();
 		if (list.size() == 1) {
 			return (cz.kpartl.preprava.model.Destinace) list.get(0);

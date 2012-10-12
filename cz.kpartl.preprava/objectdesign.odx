@@ -1208,7 +1208,7 @@ super.tearDown();
               <operation>update(cz.kpartl.preprava.model.Destinace)</operation>
               <operation>delete(cz.kpartl.preprava.model.Destinace)</operation>
               <operation>findByNazev(java.lang.String)</operation>
-              <operation>findByCislo(long)</operation>
+              <operation>findByCislo(int)</operation>
               <operation>findAll()</operation>
             </operations>
           </classSymbol>
@@ -2131,7 +2131,7 @@ getSession().delete(object);
               <generatedName>findByCislo</generatedName>
               <parameters>
                 <variable name="cislo">
-                  <type basicType="long"/>
+                  <type basicType="int"/>
                   <multiplicity>1</multiplicity>
                 </variable>
               </parameters>

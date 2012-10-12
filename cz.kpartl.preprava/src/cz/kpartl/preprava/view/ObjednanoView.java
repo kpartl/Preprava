@@ -1,7 +1,5 @@
 package cz.kpartl.preprava.view;
 
-import java.awt.Font;
-
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
@@ -11,9 +9,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -22,10 +18,9 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableColumn;
 
 import cz.kpartl.preprava.dao.ObjednavkaDAO;
-import cz.kpartl.preprava.dao.PozadavekDAO;
+import cz.kpartl.preprava.model.Dopravce;
 import cz.kpartl.preprava.model.Objednavka;
-import cz.kpartl.preprava.model.Pozadavek;
-import cz.kpartl.preprava.model.Dopravce;;
+import cz.kpartl.preprava.sorter.TableViewerComparator;
 
 public class ObjednanoView extends AbstractTableView {
 	
@@ -133,5 +128,10 @@ public class ObjednanoView extends AbstractTableView {
 	}
 	
 	protected void createMenuItem(Menu parent, final TableColumn column) {}
+
+	@Override
+	protected TableViewerComparator getComparator() {
+		return new TableViewerComparator();
+	}
 
 }

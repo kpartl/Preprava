@@ -6,8 +6,10 @@ import javax.inject.Named;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.part.ViewPart;
 
@@ -40,11 +42,13 @@ public class NovyPozadavekHandler {
 
 	@Inject
 	PozadavekDAO pozadavekDAO;
+	
+	
 
 	@Execute
 	public void execute(
-			Shell parentShell,									
-			@Named("cz.kpartl.preprava.view.PozadavkyView") PozadavkyView pozadavkyView,
+			Shell parentShell,	
+			@Optional @Named("cz.kpartl.preprava.view.PozadavkyView") PozadavkyView pozadavkyView,
 			IEclipseContext context
 
 	) {
@@ -59,8 +63,8 @@ public class NovyPozadavekHandler {
 	}
 
 	@CanExecute
-	public boolean canExecute() {
-		return true;
+	public boolean canExecute(@Optional  PozadavkyView pozadavkyView) {
+		return pozadavkyView != null;
 	}
 
 	/*
