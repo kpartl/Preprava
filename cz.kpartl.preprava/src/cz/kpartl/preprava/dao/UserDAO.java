@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-
 import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.util.CryptoUtils;
 

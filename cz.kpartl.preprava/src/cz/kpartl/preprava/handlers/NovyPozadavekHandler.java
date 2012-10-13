@@ -62,11 +62,12 @@ public class NovyPozadavekHandler {
 
 	}
 
-	@CanExecute
+	/*@CanExecute
 	public boolean canExecute(@Optional  PozadavkyView pozadavkyView) {
 		return pozadavkyView != null;
+	
 	}
-
+*/
 	/*
 	 * @Override public Object execute(ExecutionEvent event) throws
 	 * ExecutionException {

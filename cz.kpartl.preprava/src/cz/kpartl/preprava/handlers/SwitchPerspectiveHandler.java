@@ -19,6 +19,7 @@ import org.eclipse.e4.ui.model.application.ui.menu.MMenu;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenuContribution;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenuContributions;
 import org.eclipse.e4.ui.model.application.ui.menu.impl.HandledItemImpl;
+import org.eclipse.e4.ui.model.application.ui.menu.impl.HandledToolItemImpl;
 import org.eclipse.e4.ui.workbench.UIEvents;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;

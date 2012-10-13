@@ -31,7 +31,10 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import cz.kpartl.preprava.util.EventConstants;
 
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.menu.impl.HandledToolItemImpl;
 import org.eclipse.e4.ui.services.IStylingEngine;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -111,6 +114,8 @@ public abstract class AbstractTableView extends ViewPart {
 	//@Inject
 	//@Optional
 	protected ESelectionService selectionService;
+	
+	protected HandledToolItemImpl novyMenuItem;
 
 	public AbstractTableView(IStylingEngine styleEngine) {
 		this.styleEngine = styleEngine;
@@ -121,8 +126,11 @@ public abstract class AbstractTableView extends ViewPart {
 	
 	protected abstract TableViewerComparator getComparator();
 
+	
+	@Inject 
 	@PostConstruct
-	public void init() {
+	public void init(EModelService modelService, MApplication app) {
+		novyMenuItem = (HandledToolItemImpl) modelService.find("cz.kpartl.preprava.toolItem.novyPozadavek",app);
 
 	}
 	

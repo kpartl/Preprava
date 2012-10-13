@@ -30,9 +30,13 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 
 
+import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.menu.impl.HandledToolItemImpl;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.services.IStylingEngine;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.JFaceResources;
@@ -92,7 +96,7 @@ import cz.kpartl.preprava.Activator;
 @SuppressWarnings("restriction")
 public class PozadavkyView extends AbstractTableView {
 	
-	public static final String ID = "cz.kpartl.preprava.view.PozadavkyView";
+	public static final String ID = "cz.kpartl.preprava.part.tablepartpozadane";
 
 	private PozadavekDAO pozadavekDAO;
 		
@@ -164,6 +168,13 @@ public class PozadavkyView extends AbstractTableView {
 	@Override
 	protected TableViewerComparator getComparator() {
 		return new PozadavekTableViewerComparator();
+	}
+	
+	@Focus
+	public void setFocus(){
+		novyMenuItem.setVisible(true);
+		novyMenuItem.setLabel("Nový požadavek");
+		super.setFocus();
 	}
 	
 	

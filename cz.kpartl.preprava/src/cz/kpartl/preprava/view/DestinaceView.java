@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -49,6 +50,8 @@ import cz.kpartl.preprava.sorter.TableViewerComparator;
 import cz.kpartl.preprava.util.HibernateHelper;
 
 public class DestinaceView extends AbstractTableView {
+	
+	public static final String ID = "cz.kpartl.preprava.part.destinace";
 
 	private DestinaceDAO destinaceDAO;
 
@@ -248,6 +251,13 @@ public class DestinaceView extends AbstractTableView {
 			}
 		});
 
+	}
+	
+	@Focus
+	public void setFocus(){
+		novyMenuItem.setVisible(true);
+		novyMenuItem.setLabel("Nová destinace");
+		super.setFocus();
 	}
 
 	@Override

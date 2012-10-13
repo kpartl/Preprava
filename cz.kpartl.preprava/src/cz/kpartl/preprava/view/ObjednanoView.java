@@ -3,6 +3,7 @@ package cz.kpartl.preprava.view;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -132,6 +133,13 @@ public class ObjednanoView extends AbstractTableView {
 	@Override
 	protected TableViewerComparator getComparator() {
 		return new TableViewerComparator();
+	}
+	
+	@Focus
+	public void setFocus(){
+		novyMenuItem.setVisible(false);
+		novyMenuItem.setLabel("");
+		super.setFocus();
 	}
 
 }
