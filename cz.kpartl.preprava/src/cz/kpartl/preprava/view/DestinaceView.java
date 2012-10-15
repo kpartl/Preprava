@@ -15,6 +15,8 @@ import org.eclipse.jface.resource.JFaceResources;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnViewerEditor;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -32,6 +34,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.part.ViewPart;
@@ -50,10 +53,12 @@ import cz.kpartl.preprava.sorter.TableViewerComparator;
 import cz.kpartl.preprava.util.HibernateHelper;
 
 public class DestinaceView extends AbstractTableView {
-	
+
 	public static final String ID = "cz.kpartl.preprava.part.destinace";
 
 	private DestinaceDAO destinaceDAO;
+
+	private Shell shell;
 
 	final Logger logger = LoggerFactory.getLogger(DestinaceView.class);
 
@@ -70,6 +75,7 @@ public class DestinaceView extends AbstractTableView {
 		context.set("cz.kpartl.preprava.view.DestinaceView", this);
 		this.selectionService = selectionService;
 		this.destinaceDAO = context.get(DestinaceDAO.class);
+		shell = parent.getShell();
 		createPartControl(parent);
 	}
 
@@ -89,7 +95,7 @@ public class DestinaceView extends AbstractTableView {
 		layout = new TableColumnLayout();
 		composite.setLayout(layout);
 		// Define the TableViewer
-		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL
+		viewer = new TableViewer(composite, SWT.SINGLE | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 
 		headerMenu = new Menu(parent.getShell(), SWT.POP_UP);
@@ -123,8 +129,24 @@ public class DestinaceView extends AbstractTableView {
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		viewer.getControl().setLayoutData(gridData);
-		
+
 		createMenuItems(headerMenu);
+		viewer.addDoubleClickListener(new IDoubleClickListener() {
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				Destinace selectedDestinace = (Destinace) ((StructuredSelection) viewer
+						.getSelection()).getFirstElement();
+				if (selectedDestinace == null)
+					return;
+				NovaDestinaceDialog dialog = new NovaDestinaceDialog(shell,
+						context, selectedDestinace);
+				if (dialog.open() == Window.OK) {
+					refreshInputData();
+				}
+
+			}
+
+		});
 	}
 
 	// This will create the columns for the table
@@ -204,8 +226,20 @@ public class DestinaceView extends AbstractTableView {
 	}
 
 	protected void createMenuItems(Menu parent) {
+		final MenuItem newItem = new MenuItem(parent, SWT.PUSH);
+		newItem.setText("Vytvoøit novou destinaci");
+		newItem.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				if (new NovaDestinaceDialog(event.widget.getDisplay()
+						.getActiveShell(), context).open() == Window.OK) {
+					refreshInputData();
+				}
+			}
+		});
+		new MenuItem(parent, SWT.SEPARATOR);
+
 		final MenuItem editItem = new MenuItem(parent, SWT.PUSH);
-		editItem.setText("Editovat");
+		editItem.setText("Editovat destinaci");
 		editItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				Destinace selectedDestinace = (Destinace) ((StructuredSelection) viewer
@@ -213,15 +247,18 @@ public class DestinaceView extends AbstractTableView {
 				if (selectedDestinace == null)
 					return;
 				NovaDestinaceDialog dialog = new NovaDestinaceDialog(
-						event.widget.getDisplay().getActiveShell(), context, selectedDestinace);
+						event.widget.getDisplay().getActiveShell(), context,
+						selectedDestinace);
 				if (dialog.open() == Window.OK) {
 					refreshInputData();
 				}
 			}
 		});
 
+		new MenuItem(parent, SWT.SEPARATOR);
+
 		final MenuItem smazatItem = new MenuItem(parent, SWT.PUSH);
-		smazatItem.setText("Smazat");
+		smazatItem.setText("Smazat destinaci");
 		smazatItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				Destinace selectedDestinace = (Destinace) ((StructuredSelection) viewer
@@ -243,7 +280,7 @@ public class DestinaceView extends AbstractTableView {
 										"Chyba pøi zápisu do databáze",
 										"Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace.");
 
-						logger.error("Nelze vlozit/updatovat destinaci", ex);
+						logger.error("Nelze vložit/upravit destinaci", ex);
 					}
 					refreshInputData();
 				}
@@ -252,11 +289,12 @@ public class DestinaceView extends AbstractTableView {
 		});
 
 	}
-	
+
 	@Focus
-	public void setFocus(){
+	public void setFocus() {
 		novyMenuItem.setVisible(true);
 		novyMenuItem.setLabel("Nová destinace");
+		if(viewer.getSelection().isEmpty()) viewer.getTable().select(0);
 		super.setFocus();
 	}
 

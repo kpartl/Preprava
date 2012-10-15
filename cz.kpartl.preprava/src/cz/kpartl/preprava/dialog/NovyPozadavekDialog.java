@@ -120,9 +120,16 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 	@Override
 	protected Control createContents(Composite parent) {
 		Control contents = super.createContents(parent);
-		setTitle("Vytvoøení / editace požadavku na pøepravu");
-		setMessage("Zadejte data pro vytvoøení nového požadavku na pøepravu",
+		if(pozadavek == null){ //novy pozadavek
+		setTitle("Vytvoøení nového požadavku na pøepravu");
+		setMessage("Zadejte data nového požadavku na pøepravu",
 				IMessageProvider.INFORMATION);
+		}
+		else{ //novy pozadavek
+			setTitle("Editace požadavku na pøepravu");
+			setMessage("Upravte data požadavku na pøepravu",
+					IMessageProvider.INFORMATION);
+			}
 		return contents;
 	}
 

@@ -26,6 +26,7 @@ import org.hibernate.Transaction;
 
 import cz.kpartl.preprava.dao.DestinaceDAO;
 import cz.kpartl.preprava.model.Destinace;
+import cz.kpartl.preprava.model.Dopravce;
 import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.util.HibernateHelper;
 
@@ -240,10 +241,14 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 				result.add("Èíslo destinace ".concat(cislo.getText()).concat(
 						" není platné èíslo"));
 			}
-			if (novaDestinace && destinaceDAO.findByCislo(Integer.valueOf(cislo.getText())) != null) {
-				result.add("Destinace s èíslem ".concat(cislo.getText())
-						.concat(" již existuje"));
+			final Destinace existujici = destinaceDAO.findByCislo(Integer.valueOf(cislo.getText()));
+			if (existujici != null) {
+				if (novaDestinace || !existujici.getId().equals(destinace.getId())) {
+					result.add("Destinace s èíslem ".concat(cislo.getText())
+							.concat(" již existuje"));
+				}
 			}
+									
 		}
 
 		if (!("".equals(psc.getText().trim()))) {

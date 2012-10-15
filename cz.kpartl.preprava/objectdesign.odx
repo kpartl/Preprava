@@ -1144,6 +1144,8 @@ super.tearDown();
               <operation>read(Long)</operation>
               <operation>update(cz.kpartl.preprava.model.Dopravce)</operation>
               <operation>delete(cz.kpartl.preprava.model.Dopravce)</operation>
+              <operation>findAll()</operation>
+              <operation>findByNazev(java.lang.String)</operation>
             </operations>
           </classSymbol>
           <classSymbol id="5">
@@ -1614,8 +1616,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="25">
-            <x>180</x>
-            <y>633</y>
+            <x>186</x>
+            <y>648</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.Dopravce" name="DAO_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.dao.DopravceDAO" name="DAO_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
@@ -2560,6 +2562,44 @@ getSession().delete(object);
 </javaCode>
                 </statements>
               </method>
+            </operation>
+            <operation name="findAll">
+              <type class="cz.kpartl.preprava.model.Dopravce"/>
+              <multiplicity>*</multiplicity>
+              <access>1</access>
+              <generatedName>findAll</generatedName>
+              <query>
+                <tokens>
+                  <queryVariable name="d">
+                    <type class="cz.kpartl.preprava.model.Dopravce"/>
+                  </queryVariable>
+                </tokens>
+              </query>
+            </operation>
+            <operation name="findByNazev">
+              <type class="cz.kpartl.preprava.model.Dopravce"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+              <generatedName>findByNazev</generatedName>
+              <parameters>
+                <variable name="nazev">
+                  <type class="java.lang.String"/>
+                  <multiplicity>0..1</multiplicity>
+                </variable>
+              </parameters>
+              <query>
+                <tokens>
+                  <queryVariable name="d">
+                    <type class="cz.kpartl.preprava.model.Dopravce"/>
+                  </queryVariable>
+                  <queryText>where</queryText>
+                  <queryObjectVariable object="d">
+                    <variable class="cz.kpartl.preprava.model.Dopravce" name="nazev"/>
+                  </queryObjectVariable>
+                  <com.objectgen.core.Query_-Operator>=</com.objectgen.core.Query_-Operator>
+                  <queryParameter name="nazev"/>
+                </tokens>
+              </query>
             </operation>
           </operations>
           <generatedFiles>

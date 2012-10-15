@@ -139,6 +139,7 @@ public class ObjednanoView extends AbstractTableView {
 	public void setFocus(){
 		novyMenuItem.setVisible(false);
 		novyMenuItem.setLabel("");
+		if(viewer.getSelection().isEmpty()) viewer.getTable().select(0);
 		super.setFocus();
 	}
 

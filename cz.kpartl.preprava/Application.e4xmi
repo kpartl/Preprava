@@ -25,10 +25,8 @@
             <menus xmi:id="_445g8BOVEeKA4tZRQvKeaA" elementId="cz.kpartl.preprava.menu.NovaDestinaceMenu" label="Nová destinace">
               <tags>ViewMenu</tags>
             </menus>
-            <toolbar xmi:id="_cYhiIAicEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.toolbar.administrace">
-              <children xsi:type="menu:HandledToolItem" xmi:id="_-IxJgAicEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.handledtoolitem.administrace" command="_-RCNwAglEeKxW-KmU_7sbA"/>
-            </toolbar>
           </children>
+          <children xsi:type="basic:Part" xmi:id="_JZjegBbFEeK06cf066v-uQ" elementId="cz.kpartl.preprava.part.dopravce" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.DopravceView" label="Dopravce"/>
         </children>
       </children>
     </children>
@@ -36,10 +34,10 @@
       <children xsi:type="menu:Menu" xmi:id="_nkHkqfdIEeGDArQ_Xew7DQ" label="Aplikace">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_nkHkrPdIEeGDArQ_Xew7DQ" label="Konec" command="_nkHkmvdIEeGDArQ_Xew7DQ"/>
       </children>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_t3azoAgoEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.handledmenuitem.administrace" label="Administrace" command="_-RCNwAglEeKxW-KmU_7sbA"/>
       <children xsi:type="menu:Menu" xmi:id="_nkHkrfdIEeGDArQ_Xew7DQ" label="Nápověda">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_nkHkrvdIEeGDArQ_Xew7DQ" label="O aplikaci" command="_nkHkpPdIEeGDArQ_Xew7DQ"/>
       </children>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_t3azoAgoEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.handledmenuitem.administrace" label="Administrace" command="_-RCNwAglEeKxW-KmU_7sbA"/>
     </mainMenu>
     <trimBars xmi:id="_nkHks_dIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.windowtrim">
       <children xsi:type="menu:ToolBar" xmi:id="_nkHktPdIEeGDArQ_Xew7DQ" elementId="toolbar:org.eclipse.ui.main.toolbar">

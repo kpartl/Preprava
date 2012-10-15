@@ -43,6 +43,8 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -70,6 +72,7 @@ import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 import org.osgi.service.event.EventHandler;
 
@@ -164,6 +167,7 @@ public abstract class AbstractTableView extends ViewPart {
 		// Set the sorter for the table		
 		comparator = getComparator();
 		viewer.setComparator(comparator);
+		
 		ColumnViewerToolTipSupport.enableFor(viewer, ToolTip.NO_RECREATE);
 	}
 
@@ -177,7 +181,7 @@ public abstract class AbstractTableView extends ViewPart {
 		layout = new TableColumnLayout();
 		composite.setLayout(layout);
 		// Define the TableViewer
-		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL
+		viewer = new TableViewer(composite, SWT.SINGLE | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 
 		headerMenu = new Menu(parent.getShell(), SWT.POP_UP);
@@ -210,7 +214,7 @@ public abstract class AbstractTableView extends ViewPart {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		viewer.getControl().setLayoutData(gridData);
+		viewer.getControl().setLayoutData(gridData);				
 	}
 	
 	
@@ -220,7 +224,7 @@ public abstract class AbstractTableView extends ViewPart {
 		final TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
 				SWT.NONE);
 
-		final TableColumn column = viewerColumn.getColumn();
+		final TableColumn column = viewerColumn.getColumn(); 
 		if (colNumber == 0)
 			layout.setColumnData(column, new ColumnPixelData(bound, true, true));
 		else
@@ -235,6 +239,7 @@ public abstract class AbstractTableView extends ViewPart {
 		column.addSelectionListener(getSelectionAdapter(column, colNumber));
 		// Create the menu item for this column
 		//createMenuItem(headerMenu, column);
+						
 		return viewerColumn;
 	}
 	
@@ -493,6 +498,8 @@ public abstract class AbstractTableView extends ViewPart {
 				return ((Pozadavek) element).getPoznamka();
 			}
 		});
+		
+		
 
 		/*
 		 * Enumeration e = viewer.getColumnModel().getColumns(); while
@@ -517,6 +524,8 @@ public abstract class AbstractTableView extends ViewPart {
 				unhookEvents();
 			}
 		});
+		
+		
 	}
 	
 	public void refreshInputData() {

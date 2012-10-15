@@ -44,6 +44,8 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -71,6 +73,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
@@ -99,6 +102,8 @@ public class PozadavkyView extends AbstractTableView {
 	public static final String ID = "cz.kpartl.preprava.part.tablepartpozadane";
 
 	private PozadavekDAO pozadavekDAO;
+	
+	private Shell shell;
 		
 	
 	
@@ -111,6 +116,7 @@ public class PozadavkyView extends AbstractTableView {
 		super(styleEngine);
 		this.context = context;
 		context.set(ID, this);
+		shell = parent.getShell();
 
 		this.pozadavekDAO = context.get(PozadavekDAO.class);
 
@@ -129,12 +135,39 @@ public class PozadavkyView extends AbstractTableView {
 		nadpisLabel.setFont(JFaceResources.getHeaderFont());
 		super.createViewer(parent, data);
 		createMenuItems(headerMenu);
+		viewer.addDoubleClickListener(new IDoubleClickListener()
+		{
+		            @Override
+		            public void doubleClick(DoubleClickEvent event) {
+		            	Pozadavek selectedPozadavek  = (Pozadavek) ((StructuredSelection) viewer.getSelection()).getFirstElement();
+						if(selectedPozadavek==null) return;
+						NovyPozadavekDialog dialog = new NovyPozadavekDialog(shell,
+								context, selectedPozadavek);
+						if (dialog.open() == Window.OK){
+							refreshInputData();
+						}
+		                
+		            }
+
+		});
 	}
 	
 	
 	protected void createMenuItems(Menu parent) {
+		final MenuItem newItem = new MenuItem(parent, SWT.PUSH);
+		newItem.setText("Vytvoøit nový požadavek");
+		newItem.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {								
+				if (new NovyPozadavekDialog(shell,
+						context).open() == Window.OK){
+					refreshInputData();
+				}
+			}});
+		
+		
+		
 		final MenuItem editItem = new MenuItem(parent, SWT.PUSH);
-		editItem.setText("Editovat");		
+		editItem.setText("Editovat požadavek");		
 		editItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				Pozadavek selectedPozadavek  = (Pozadavek) ((StructuredSelection) viewer.getSelection()).getFirstElement();
@@ -149,7 +182,7 @@ public class PozadavkyView extends AbstractTableView {
 		
 		
 		final MenuItem smazatItem = new MenuItem(parent, SWT.PUSH);
-		smazatItem.setText("Smazat");		
+		smazatItem.setText("Smazat požadavek");		
 		smazatItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				Pozadavek selectedPozadavek  = (Pozadavek) ((StructuredSelection) viewer.getSelection()).getFirstElement();
@@ -162,6 +195,11 @@ public class PozadavkyView extends AbstractTableView {
 				};  
 			}
 		});
+		
+		new MenuItem(parent, SWT.SEPARATOR);
+		
+		final MenuItem objednavkaItem = new MenuItem(parent, SWT.PUSH);
+		objednavkaItem.setText("Pøevést požadavek na objednávku");		
 
 	}
 
@@ -174,6 +212,7 @@ public class PozadavkyView extends AbstractTableView {
 	public void setFocus(){
 		novyMenuItem.setVisible(true);
 		novyMenuItem.setLabel("Nový požadavek");
+		if(viewer.getSelection().isEmpty()) viewer.getTable().select(0);
 		super.setFocus();
 	}
 	

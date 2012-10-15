@@ -63,4 +63,29 @@ public class DopravceDAO {
 	public String toString() {
 		return "DopravceDAO";
 	}
+
+	/**
+	 * @generated
+	 */
+	public java.util.List<cz.kpartl.preprava.model.Dopravce> findAll() {
+		org.hibernate.Query query = getSession().createQuery(
+				"from cz.kpartl.preprava.model.Dopravce d");
+		return query.list();
+	}
+
+	/**
+	 * @generated
+	 */
+	public cz.kpartl.preprava.model.Dopravce findByNazev(String nazev) {
+		org.hibernate.Query query = getSession()
+				.createQuery(
+						"from cz.kpartl.preprava.model.Dopravce d where d.nazev = :nazev");
+		query.setString("nazev", nazev);
+		java.util.List list = query.list();
+		if (list.size() == 1) {
+			return (cz.kpartl.preprava.model.Dopravce) list.get(0);
+		} else {
+			return null;
+		}
+	}
 }
