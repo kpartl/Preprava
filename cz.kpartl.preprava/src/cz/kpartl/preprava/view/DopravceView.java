@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.services.IStylingEngine;
@@ -34,6 +35,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 
 import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -48,10 +50,11 @@ import cz.kpartl.preprava.dialog.NovyDopravceDialog;
 import cz.kpartl.preprava.model.Dopravce;
 import cz.kpartl.preprava.sorter.TableViewerComparator;
 import cz.kpartl.preprava.util.HibernateHelper;
+import cz.kpartl.preprava.util.Login;
 
 public class DopravceView extends AbstractTableView {
 
-	public static final String ID = "cz.kpartl.preprava.view.dopravce";
+	public static final String ID = "cz.kpartl.preprava.part.dopravce";
 
 	private DopravceDAO dopravceDAO;
 
@@ -65,12 +68,13 @@ public class DopravceView extends AbstractTableView {
 
 	@Inject
 	public DopravceView(Composite parent, @Optional IStylingEngine styleEngine,
-			@Optional IEclipseContext context) {
+			@Optional IEclipseContext context, IEventBroker eventBroker) {
 		super(styleEngine);
 		this.context = context;
 		context.set(ID, this);
 		this.selectionService = selectionService;
 		this.dopravceDAO = context.get(DopravceDAO.class);
+		this.eventBroker = eventBroker;
 		shell = parent.getShell();
 		createPartControl(parent);
 	}
@@ -130,14 +134,14 @@ public class DopravceView extends AbstractTableView {
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
-				Dopravce selectedDoprace = (Dopravce) ((StructuredSelection) viewer
+				Dopravce selectedDopravce = (Dopravce) ((StructuredSelection) viewer
 						.getSelection()).getFirstElement();
-				if (selectedDoprace == null)
+				if (selectedDopravce == null)
 					return;
 				NovyDopravceDialog dialog = new NovyDopravceDialog(shell,
-						context, selectedDoprace);
+						context, selectedDopravce, eventBroker);
 				if (dialog.open() == Window.OK) {
-					refreshInputData();
+					//refreshInputData();
 				}
 
 			}
@@ -164,63 +168,28 @@ public class DopravceView extends AbstractTableView {
 		newItem.setText("Vytvoøit nového dopravce");
 		newItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				if (new NovyDopravceDialog(event.widget.getDisplay()
-						.getActiveShell(), context).open() == Window.OK) {
-					refreshInputData();
-				}
+				new NovyDopravceDialog(event.widget.getDisplay()
+						.getActiveShell(), context, eventBroker).open();
+
 			}
 		});
-		new MenuItem(parent, SWT.SEPARATOR);
+		//new MenuItem(parent, SWT.SEPARATOR);
 
 		final MenuItem editItem = new MenuItem(parent, SWT.PUSH);
-		editItem.setText("Editovat doprace");
+		editItem.setText("Editovat dopravce");
 		editItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				boolean b = viewer.getSelection().isEmpty();
-				Dopravce selectedDopravce = (Dopravce) ((StructuredSelection) viewer
-						.getSelection()).getFirstElement();
-				if (selectedDopravce == null) {
-					return;
-				}
-				NovyDopravceDialog dialog = new NovyDopravceDialog(event.widget
-						.getDisplay().getActiveShell(), context,
-						selectedDopravce);
-				if (dialog.open() == Window.OK) {
-					refreshInputData();
-				}
+				editSelectedDopravce();
 			}
 		});
 
-		new MenuItem(parent, SWT.SEPARATOR);
+		//new MenuItem(parent, SWT.SEPARATOR);
 
 		final MenuItem smazatItem = new MenuItem(parent, SWT.PUSH);
-		smazatItem.setText("Smazat doprace");
+		smazatItem.setText("Smazat dopravce");
 		smazatItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				Dopravce selectedDoprace = (Dopravce) ((StructuredSelection) viewer
-						.getSelection()).getFirstElement();
-				boolean result = MessageDialog.openConfirm(event.widget
-						.getDisplay().getActiveShell(),
-						"Potvrzení smazání doprace",
-						"Opravdu chcete smazat tohoto doprace?");
-				if (result) {
-					try {
-						Transaction tx = HibernateHelper.getInstance()
-								.beginTransaction();
-						dopravceDAO.delete(selectedDoprace);
-						tx.commit();
-					} catch (Exception ex) {
-						MessageDialog
-								.openError(event.widget.getDisplay()
-										.getActiveShell(),
-										"Chyba pøi zápisu do databáze",
-										"Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace.");
-
-						logger.error("Nelze vložit/upravit dopravce", ex);
-					}
-					refreshInputData();
-				}
-				;
+				deleteSelectedDopravce();
 			}
 		});
 		
@@ -234,37 +203,61 @@ public class DopravceView extends AbstractTableView {
 			}
 		});
 
-		/*viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				ISelection sel = event.getSelection();
-				if (sel.isEmpty()) {
-					headerMenu.setEnabled(false);
-					
-					
-					for (MenuItem item : headerMenu.getItems()) {
-						item.setEnabled(false);
-					}
-
-				} else {
-					headerMenu.setEnabled(true);
-					for (MenuItem item : headerMenu.getItems()) {
-						item.setEnabled(true);
-					}
-				}
-
-			}
-		});
-*/
+		newItem.setImage((Image) context.get(Login.ADD_ICON));
+		smazatItem.setImage((Image) context.get(Login.DELETE_ICON));		
+		editItem.setImage((Image) context.get(Login.EDIT_ICON));		
 		
+	}
+	
+	public void editSelectedDopravce() {
+		boolean b = viewer.getSelection().isEmpty();
+		Dopravce selectedDopravce = (Dopravce) ((StructuredSelection) viewer
+				.getSelection()).getFirstElement();
+		if (selectedDopravce == null) {
+			return;
+		}
+		new NovyDopravceDialog(shell, context,
+				selectedDopravce, eventBroker).open();	
+		
+		eventBroker.post(REFRESH_VIEWERS, "");
+	}
+	public void deleteSelectedDopravce(){
+		Dopravce selectedDopravce = (Dopravce) ((StructuredSelection) viewer
+				.getSelection()).getFirstElement();
+		boolean result = MessageDialog.openConfirm(shell,
+				"Potvrzení smazání dopravce",
+				"Opravdu chcete smazat tohoto dopravce?");
+		if (result) {
+			try {
+				Transaction tx = HibernateHelper.getInstance()
+						.beginTransaction();
+				dopravceDAO.delete(selectedDopravce);
+				tx.commit();
+				
+				eventBroker.post(REFRESH_VIEWERS, "");
+				
+			} catch (Exception ex) {
+				MessageDialog
+						.openError(shell,
+								"Chyba pøi zápisu do databáze",
+								"Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace.");
+
+				logger.error("Nelze vložit/upravit dopravce", ex);
+			}			
+		}
+		;
 	}
 
 	@Focus
-	public void setFocus() {
+	public void setFocus() {						
 		novyMenuItem.setVisible(true);
-		novyMenuItem.setLabel("Nový dopravce");
-		if(viewer.getSelection().isEmpty()) viewer.getTable().select(0);
+		editMenuItem.setVisible(true);
+		smazatMenuItem.setVisible(true);
+		
+		novyMenuItem.setTooltip("Vytvoøit nového dopravce");
+		editMenuItem.setTooltip("Editovat dopravce");
+		smazatMenuItem.setTooltip("Smazat dopravce");
+		
 		super.setFocus();
 	}
 

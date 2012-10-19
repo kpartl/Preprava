@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -29,6 +30,7 @@ import cz.kpartl.preprava.model.Destinace;
 import cz.kpartl.preprava.model.Dopravce;
 import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.util.HibernateHelper;
+import cz.kpartl.preprava.view.AbstractTableView;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,19 +50,22 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 	Text mesto;
 	Destinace destinace;
 	
+	IEventBroker eventBroker;
+	
 	@Inject
 	public NovaDestinaceDialog(
 			@Named(IServiceConstants.ACTIVE_SHELL) Shell parentShell,
-			IEclipseContext context) {
-		this(parentShell, context, null);
+			IEclipseContext context, IEventBroker eventBroker) {
+		this(parentShell, context, null, eventBroker);
 	}
 
 	@Inject
 	public NovaDestinaceDialog(
 			@Named(IServiceConstants.ACTIVE_SHELL) Shell parentShell,
-			IEclipseContext context, Destinace destinace) {
+			IEclipseContext context, Destinace destinace, IEventBroker eventBroker) {
 		super(parentShell);
 		this.destinace = destinace;
+		this.eventBroker = eventBroker;
 		this.destinaceDAO = context.get(DestinaceDAO.class);
 		persistenceHelper = cz.kpartl.preprava.util.HibernateHelper
 				.getInstance();
@@ -75,8 +80,7 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 		return contents;
 	}
 
-	protected void setShellStyle(int newShellStyle) {
-		// TODO Auto-generated method stub
+	protected void setShellStyle(int newShellStyle) {		
 		super.setShellStyle(newShellStyle | SWT.RESIZE | SWT.MAX);
 	}
 
@@ -193,13 +197,15 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 						destinace.setId(destinaceDAO.create(destinace));
 					else
 						destinaceDAO.update(destinace);
-					tx.commit();					
+					tx.commit();		
+					
+					eventBroker.post(AbstractTableView.REFRESH_VIEWERS, "");
 
 					close();
 					} catch (Exception ex){
 						setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
 								.concat(System.getProperty("line.separator")).concat(ex.getMessage()));
-						logger.error("Nelze vlozit/updatovat destinaci", e);
+						logger.error("Nelze vložit/upravit destinaci", e);
 					}
 
 				} else {

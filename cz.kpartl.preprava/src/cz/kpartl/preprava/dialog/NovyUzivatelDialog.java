@@ -26,38 +26,38 @@ import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cz.kpartl.preprava.dao.DopravceDAO;
-
-import cz.kpartl.preprava.model.Dopravce;
+import cz.kpartl.preprava.dao.UserDAO;
+import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.util.HibernateHelper;
-//TODO pri zmene nazvu dopravce refreshnout view pozadavku i objednavek
 import cz.kpartl.preprava.view.AbstractTableView;
 
-public class NovyDopravceDialog extends TitleAreaDialog {
+public class NovyUzivatelDialog extends TitleAreaDialog {
 
-	DopravceDAO dopravceDAO;
-	HibernateHelper persistenceHelper;
-	final Logger logger = LoggerFactory.getLogger(NovyDopravceDialog.class);
-	Dopravce dopravce;
-
+	UserDAO uzivatelDAO;
 	IEventBroker eventBroker;
+	
+	HibernateHelper persistenceHelper;
+	final Logger logger = LoggerFactory.getLogger(NovyUzivatelDialog.class);
+	User uzivatel;
 
-	Text nazev;
+	Text username;
+	Text password; 
+	Button administrator;
 
 	@Inject
-	public NovyDopravceDialog(
+	public NovyUzivatelDialog(
 			@Named(IServiceConstants.ACTIVE_SHELL) Shell parentShell,
 			IEclipseContext context, IEventBroker eventBroker) {
 		this(parentShell, context, null, eventBroker);
 	}
 
 	@Inject
-	public NovyDopravceDialog(
+	public NovyUzivatelDialog(
 			@Named(IServiceConstants.ACTIVE_SHELL) Shell parentShell,
-			IEclipseContext context, Dopravce dopravce, IEventBroker eventBroker) {
+			IEclipseContext context, User uzivatel, IEventBroker eventBroker) {
 		super(parentShell);
-		this.dopravce = dopravce;
-		this.dopravceDAO = context.get(DopravceDAO.class);
+		this.uzivatel = uzivatel;
+		this.uzivatelDAO = context.get(UserDAO.class);
 		this.eventBroker = eventBroker;
 		persistenceHelper = cz.kpartl.preprava.util.HibernateHelper
 				.getInstance();
@@ -68,7 +68,7 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 	protected Control createContents(Composite parent) {
 		Control contents = super.createContents(parent);
 		setTitle("Vytvoøení / editace doprace");
-		setMessage("Zadejte data dopravce", IMessageProvider.INFORMATION);
+		setMessage("Zadejte data uživatele", IMessageProvider.INFORMATION);
 		return contents;
 	}
 
@@ -86,16 +86,37 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 
 		parent.setLayout(layout);
 
-		Label nazevlabel = new Label(parent, SWT.NONE);
+		Label usernamelabel = new Label(parent, SWT.NONE);
 		GridData gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false,
 				false);
-		nazevlabel.setLayoutData(gridData);
-		nazevlabel.setText("Název");
+		usernamelabel.setLayoutData(gridData);
+		usernamelabel.setText("Uživatelské jméno");
 
-		nazev = new Text(parent, SWT.BORDER);
+		username = new Text(parent, SWT.BORDER);
 		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
 		gridData.widthHint = 200;
-		nazev.setLayoutData(gridData);
+		username.setLayoutData(gridData);
+		
+		Label passwordlabel = new Label(parent, SWT.NONE);
+		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false,
+				false);
+		passwordlabel.setLayoutData(gridData);
+		passwordlabel.setText("Heslo");
+
+		password = new Text(parent, SWT.BORDER | SWT.PASSWORD);
+		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
+		gridData.widthHint = 200;
+		password.setLayoutData(gridData);
+		
+		Label adminLabel = new Label(parent, SWT.BOLD);
+		adminLabel.setText("Administrátor");
+		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
+		adminLabel.setLayoutData(gridData);
+
+		administrator = new Button(parent, SWT.CHECK);
+		gridData = new GridData(SWT.END, SWT.CENTER, true, false);
+		gridData.horizontalIndent = 10;
+
 
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
@@ -109,31 +130,32 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 		okButton.setData(IDialogConstants.OK_ID);
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				boolean novyDopravce = dopravce == null;
-				final ArrayList<String> validace = validate(novyDopravce);
+				boolean novyUzivatel = uzivatel == null;
+				final ArrayList<String> validace = validate(novyUzivatel);
 				if (validace.size() == 0) {
 
-					if (novyDopravce) {
-						dopravce = new Dopravce();
+					if (novyUzivatel) {
+						uzivatel = new User();
 					}
 
-					dopravce.setNazev(nazev.getText());
+					uzivatel.setUsername(username.getText());
+					uzivatel.setPassword(UserDAO.encryptPassword(password.getText()));
+					uzivatel.setAdministrator(administrator.getSelection());
+					
 					Transaction tx = persistenceHelper.beginTransaction();
 					try {
-						if (novyDopravce)
-							dopravce.setId(dopravceDAO.create(dopravce));
+						if (novyUzivatel)
+							uzivatel.setId(uzivatelDAO.create(uzivatel));
 						else
-							dopravceDAO.update(dopravce);
+							uzivatelDAO.update(uzivatel);
 						tx.commit();
-						
 						eventBroker.post(AbstractTableView.REFRESH_VIEWERS, "");
-
 						close();
 					} catch (Exception ex) {
 						setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
 								.concat(System.getProperty("line.separator"))
 								.concat(ex.getMessage()));
-						logger.error("Nelze vložit/upravit dopravce", e);
+						logger.error("Nelze vložit/upravit uživatele", e);
 					}
 
 				} else {
@@ -156,21 +178,23 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 			}
 		});
 
-		// editace existujiciho dopravce
+		// editace existujiciho uzivatel
 		fillFields();
 
 		return parent;
 
 	}
 
-	protected ArrayList<String> validate(boolean novyDopravce) {
+	protected ArrayList<String> validate(boolean novyUser) {
 		ArrayList<String> result = new ArrayList<String>();
-		if ("".equals(nazev.getText().trim()))
-			result.add("Není zadán název dopravce");
-		final Dopravce existujici = dopravceDAO.findByNazev(nazev.getText());
+		if ("".equals(username.getText().trim()))
+			result.add("Není zadáno uživatelské jméno");
+		if ("".equals(password.getText().trim()))
+			result.add("Není zadáno heslo");
+		final User existujici = uzivatelDAO.findByUsername(username.getText());
 		if (existujici != null) {
-			if (novyDopravce || !existujici.getId().equals(dopravce.getId())) {
-				result.add("Dopravce s názvem " + nazev.getText()
+			if (novyUser || !existujici.getId().equals(uzivatel.getId())) {
+				result.add("Uživatel se jménem " + username.getText()
 						+ " již existuje");
 			}
 		}
@@ -179,13 +203,16 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 	}
 
 	protected void fillFields() {
-		if (dopravce == null)
+		if (uzivatel == null)
 			return;
 
-		nazev.setText(dopravce.getNazev());
+		username.setText(uzivatel.getUsername());
+		password.setText("");
+		administrator.setSelection(uzivatel.isAdministrator());
 	}
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 	}
 }
+

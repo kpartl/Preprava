@@ -49,15 +49,15 @@ public class NovyPozadavekHandler {
 	public void execute(
 			Shell parentShell,	
 			@Optional @Named("cz.kpartl.preprava.view.PozadavkyView") PozadavkyView pozadavkyView,
-			IEclipseContext context
+			IEclipseContext context, IEventBroker eventBroker
 
 	) {
 		Object o = context.get(PozadavekDAO.class);
 		final NovyPozadavekDialog dialog = new NovyPozadavekDialog(parentShell,
-				context);
+				context, eventBroker);
 		if (dialog.open() == Window.OK) {
 
-			pozadavkyView.refreshInputData();
+			//pozadavkyView.refreshInputData();
 		}
 
 	}

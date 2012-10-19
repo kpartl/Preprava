@@ -6,12 +6,12 @@ package cz.kpartl.preprava.model;
  */
 public class Objednavka implements java.io.Serializable {
 	
-	public static final int FAZE_OBJEDNANO = 1;
-	public static final int FAZE_PREPRAVA_ZAHAJENA = 2;
-	public static final int FAZE_PREPRAVA_UKONCENA = 3;
-	public static final int FAZE_DOKLADY_KOMPLETNI = 4;
-	public static final int FAZE_FAKTUROVANO = 5;
-	public static final int FAZE_UKONCENO = 6;
+	public static final int FAZE_OBJEDNANO = 0;
+	public static final int FAZE_PREPRAVA_ZAHAJENA = 1;
+	public static final int FAZE_PREPRAVA_UKONCENA = 2;
+	public static final int FAZE_DOKLADY_KOMPLETNI = 3;
+	public static final int FAZE_FAKTUROVANO = 4;
+	public static final int FAZE_UKONCENO = 5;
 	
 	/**
 	 * @generated
@@ -36,7 +36,7 @@ public class Objednavka implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	private int cislo_faktury_dopravce;
+	private Integer cislo_faktury_dopravce;
 
 	/**
 	 * @generated
@@ -123,14 +123,14 @@ public class Objednavka implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	public int getCislo_faktury_dopravce() {
+	public Integer getCislo_faktury_dopravce() {
 		return this.cislo_faktury_dopravce;
 	}
 
 	/**
 	 * @generated
 	 */
-	public void setCislo_faktury_dopravce(int cislo_faktury_dopravce) {
+	public void setCislo_faktury_dopravce(Integer cislo_faktury_dopravce) {
 		this.cislo_faktury_dopravce = cislo_faktury_dopravce;
 	}
 

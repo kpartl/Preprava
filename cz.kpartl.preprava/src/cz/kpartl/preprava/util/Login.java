@@ -24,6 +24,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
+import cz.kpartl.preprava.Activator;
 import cz.kpartl.preprava.dao.DAOFactory;
 import cz.kpartl.preprava.dao.DopravceDAO;
 import cz.kpartl.preprava.dao.ObjednavkaDAO;
@@ -36,8 +37,14 @@ import cz.kpartl.preprava.model.User;
 
 
 public class Login {
+	//TODO zakazat nektere view pro neadminy
 	
 	public static final Boolean TEST = true; 
+	
+	public static final String ADD_ICON="ADD_ICON";
+	public static final String EDIT_ICON="EDIT_ICON";
+	public static final String DELETE_ICON="DELETE_ICON";
+	public static final String OBJEDNAVKA_ICON="OBJEDNAVKA_ICON";
 			
 	UserDAO userDAO = null;
 	PozadavekDAO pozadavekDAO = null;
@@ -65,6 +72,11 @@ public class Login {
 	      context.set(ObjednavkaDAO.class, objednavkaDAO);
 	      context.set(DestinaceDAO.class, zakaznikDAO);
 	      context.set(DopravceDAO.class, dopravceDAO);
+	      
+	      context.set(ADD_ICON,Activator.getImageDescriptor("icons/add_obj.gif").createImage());
+	      context.set(EDIT_ICON,Activator.getImageDescriptor("icons/editor.gif").createImage());
+	      context.set(DELETE_ICON,Activator.getImageDescriptor("icons/delete_obj.gif").createImage());
+	      context.set(OBJEDNAVKA_ICON,Activator.getImageDescriptor("icons/objednavka.gif").createImage());
 	      
 	      
 	      InitUtil initUtil = ContextInjectionFactory.make(InitUtil.class, context);

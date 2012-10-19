@@ -1,7 +1,5 @@
 package cz.kpartl.preprava.view;
 
-import java.text.SimpleDateFormat;
-
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -13,83 +11,74 @@ import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.resource.JFaceResources;
-
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnViewerEditor;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.ViewerRow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.Widget;
-import org.eclipse.ui.part.ViewPart;
 import org.hibernate.Transaction;
-import org.osgi.service.event.EventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cz.kpartl.preprava.dao.DestinaceDAO;
-import cz.kpartl.preprava.dialog.NovaDestinaceDialog;
-import cz.kpartl.preprava.dialog.NovyPozadavekDialog;
-import cz.kpartl.preprava.model.Destinace;
+import cz.kpartl.preprava.dao.UserDAO;
+import cz.kpartl.preprava.dialog.NovyUzivatelDialog;
 import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.model.Pozadavek;
+import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.sorter.TableViewerComparator;
 import cz.kpartl.preprava.util.HibernateHelper;
 import cz.kpartl.preprava.util.Login;
+import cz.kpartl.preprava.util.MyMessageDialog;
 
-public class DestinaceView extends AbstractTableView {
+public class UzivatelView extends AbstractTableView {
 
-	public static final String ID = "cz.kpartl.preprava.part.destinace";
+	public static final String ID = "cz.kpartl.preprava.part.uzivatele";
 
-	private DestinaceDAO destinaceDAO;
+	private UserDAO userDAO;
 
 	private Shell shell;
 
-	final Logger logger = LoggerFactory.getLogger(DestinaceView.class);
+	final Logger logger = LoggerFactory.getLogger(UzivatelView.class);
 
 	@Inject
 	@Optional
 	protected ESelectionService selectionService;
 
 	@Inject
-	public DestinaceView(Composite parent,
-			@Optional IStylingEngine styleEngine,
+	public UzivatelView(Composite parent, @Optional IStylingEngine styleEngine,
 			@Optional IEclipseContext context, IEventBroker eventBroker) {
 		super(styleEngine);
 		this.context = context;
 		this.eventBroker = eventBroker;
-		context.set("cz.kpartl.preprava.view.DestinaceView", this);
+		context.set(ID, this);
 		this.selectionService = selectionService;
-		this.destinaceDAO = context.get(DestinaceDAO.class);
+		this.userDAO = context.get(UserDAO.class);
 		shell = parent.getShell();
 		createPartControl(parent);
 	}
 
 	protected Object getModelData() {
-		return destinaceDAO.findAll();
+		return userDAO.findAll();
 	}
 
 	protected void createViewer(Composite parent, Object data) {
 		final Label nadpisLabel = new Label(parent, SWT.NONE);
-		nadpisLabel.setText("Pøehled destinací");
+		nadpisLabel.setText("Pøehled uživatelù");
 		nadpisLabel.setFont(JFaceResources.getHeaderFont());
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1,
@@ -138,88 +127,51 @@ public class DestinaceView extends AbstractTableView {
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
-				Destinace selectedDestinace = (Destinace) ((StructuredSelection) viewer
+				User selectedUser = (User) ((StructuredSelection) viewer
 						.getSelection()).getFirstElement();
-				if (selectedDestinace == null)
+				if (selectedUser == null)
 					return;
-				new NovaDestinaceDialog(shell,
-						context, selectedDestinace, eventBroker).open();				
+				if (selectedUser.getUsername().equals("admin")) {
+					MessageDialog.openError(shell,
+							"Nelze editovat tohoto uživatele",
+							"Uživatele admin nelze editovat ani smazat");
+				} else {
+					new NovyUzivatelDialog(shell,
+							context, selectedUser, eventBroker).open();					
+				}
+
 			}
 
 		});
-	}
+	}// This will create the columns for the table
 
-	// This will create the columns for the table
 	protected void createColumns(final Composite parent) {
-		TableViewerColumn col = createTableViewerColumn("Název", 200,
-				columnIndex++, "Název destinace");
+		TableViewerColumn col = createTableViewerColumn("Uživatelské jméno",
+				200, columnIndex++, "Uživatelské jméno");
 
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
 			@Override
 			public String getText(Object element) {
-				return ((Destinace) element).getNazev();
+				return ((User) element).getUsername();
 			}
 		});
 
-		col = createTableViewerColumn("Èíslo", 70, columnIndex++,
-				"Èíslo destinace");
-
+		col = createTableViewerColumn("Administrátor", 120, columnIndex++,
+				"Má uživatel administrátorské oprávnìní?");
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
 			@Override
 			public String getText(Object element) {
-				return String.valueOf(((Destinace) element).getCislo());
+				return "";
 			}
-		});
 
-		col = createTableViewerColumn("Ulice", 200, columnIndex++, "Ulice");
-
-		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
-				.getToolTipText()) {
 			@Override
-			public String getText(Object element) {
-				return ((Destinace) element).getUlice();
-			}
-		});
-
-		col = createTableViewerColumn("Mìsto", 200, columnIndex++, "Mìsto");
-
-		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
-				.getToolTipText()) {
-			@Override
-			public String getText(Object element) {
-				return ((Destinace) element).getMesto();
-			}
-		});
-
-		col = createTableViewerColumn("PSÈ", 200, columnIndex++, "PSÈe");
-
-		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
-				.getToolTipText()) {
-			@Override
-			public String getText(Object element) {				
-				return ((Destinace) element).getPSC() != null ? String.valueOf(((Destinace) element).getPSC()) : "";
-			}
-		});
-		col = createTableViewerColumn("Kontaktní osoba", 200, columnIndex++,
-				"Kontaktní osoba");
-
-		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
-				.getToolTipText()) {
-			@Override
-			public String getText(Object element) {
-				return ((Destinace) element).getKontaktni_osoba();
-			}
-		});
-		col = createTableViewerColumn("Kontakt", 200, columnIndex++,
-				"Kontakt na kontaktní osobu");
-
-		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
-				.getToolTipText()) {
-			@Override
-			public String getText(Object element) {
-				return ((Destinace) element).getKontakt();
+			public Image getImage(Object element) {
+				if (((User) element).isAdministrator()) {
+					return CHECKED;
+				}
+				return UNCHECKED;
 			}
 		});
 
@@ -227,11 +179,10 @@ public class DestinaceView extends AbstractTableView {
 
 	protected void createMenuItems(Menu parent) {
 		final MenuItem newItem = new MenuItem(parent, SWT.PUSH);
-		newItem.setText("Vytvoøit novou destinaci");
+		newItem.setText("Vytvoøit nového uživatele");
 		newItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				if (new NovaDestinaceDialog(event.widget.getDisplay()
-						.getActiveShell(), context, eventBroker).open() == Window.OK) {
+				if (new NovyUzivatelDialog(shell, context, eventBroker).open() == Window.OK) {
 					// refreshInputData();
 				}
 			}
@@ -239,20 +190,32 @@ public class DestinaceView extends AbstractTableView {
 		// new MenuItem(parent, SWT.SEPARATOR);
 
 		final MenuItem editItem = new MenuItem(parent, SWT.PUSH);
-		editItem.setText("Editovat destinaci");
+		editItem.setText("Editovat uživatele");
 		editItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				editSelectedDestinace();
+				editSelectedUzivatele();
 			}
 		});
 
 		// new MenuItem(parent, SWT.SEPARATOR);
 
 		final MenuItem smazatItem = new MenuItem(parent, SWT.PUSH);
-		smazatItem.setText("Smazat destinaci");
+		smazatItem.setText("Smazat uživatele");
 		smazatItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				deleteSelectedDestinace();
+				deleteSelectedUzivatel();
+			}
+		});
+
+		viewer.getTable().addMouseListener(new MouseAdapter() {
+			public void mouseDown(MouseEvent event) {
+				if (event.button == 3 && viewer.getSelection().isEmpty()) { // prave
+																			// tlacitko
+																			// mysi
+					headerMenu.setVisible(false);
+					viewer.getTable().getMenu().setEnabled(false);
+					headerMenu.setEnabled(false);
+				}
 			}
 		});
 
@@ -261,60 +224,69 @@ public class DestinaceView extends AbstractTableView {
 		editItem.setImage((Image) context.get(Login.EDIT_ICON));
 	}
 
-	@Focus
-	public void setFocus() {						
-		novyMenuItem.setVisible(true);
-		editMenuItem.setVisible(true);
-		smazatMenuItem.setVisible(true);
-		
-		novyMenuItem.setTooltip("Vytvoøit novou destinaci");
-		editMenuItem.setTooltip("Editovat destinaci");
-		smazatMenuItem.setTooltip("Smazat destinaci");
-		
-		super.setFocus();
-	}
-
-	public void editSelectedDestinace() {
-		Destinace selectedDestinace = (Destinace) ((StructuredSelection) viewer
-				.getSelection()).getFirstElement();
-		if (selectedDestinace != null){
-			new NovaDestinaceDialog(shell, context, selectedDestinace,
-					eventBroker).open();
-			eventBroker.post(REFRESH_VIEWERS, "");
+	public void editSelectedUzivatele() {
+		final boolean b = viewer.getSelection().isEmpty();
+		User selectedUser = (User) ((StructuredSelection) viewer.getSelection())
+				.getFirstElement();
+		if (selectedUser == null) {
+			return;
 		}
+
+		if (selectedUser.getUsername().equals("admin")) {
+			MessageDialog.openError(shell, "Nelze editovat tohoto uživatele",
+					"Uživatele admin nelze editovat");
+			return;
+		}
+
+		new NovyUzivatelDialog(shell, context, selectedUser, eventBroker).open();
+		eventBroker.post(REFRESH_VIEWERS, "");
+
 	}
 
-	public void deleteSelectedDestinace() {
-		Destinace selectedDestinace = (Destinace) ((StructuredSelection) viewer
+	public void deleteSelectedUzivatel() {
+		final User selectedUzivatel = (User) ((StructuredSelection) viewer
 				.getSelection()).getFirstElement();
-		boolean result = MessageDialog.openConfirm(shell,
-				"Potvrzení smazání destinace",
-				"Opravdu chcete smazat tuto destinaci?");
-		if (result) {
+		if (selectedUzivatel.getUsername().equals("admin")) {
+			MessageDialog.openError(shell, "Nelze smazat tohoto uživatele",
+					"Uživatele admin nelze smazat");
+			return;
+		}
+		final String message = "Opravdu chcete smazat uživatele ".concat(selectedUzivatel
+				.getUsername().concat("?"));
+		
+		if (new MyMessageDialog(shell, "Potvrzení smazání uživatele", message).confirm()) {
 			try {
 				Transaction tx = HibernateHelper.getInstance()
 						.beginTransaction();
-				destinaceDAO.delete(selectedDestinace);
+				userDAO.delete(selectedUzivatel);
 				tx.commit();
-				
-				eventBroker.post(REFRESH_VIEWERS, "");
-				
 			} catch (Exception ex) {
 				MessageDialog
-						.openError(shell,
-								"Chyba pøi zápisu do databáze",
+						.openError(shell, "Chyba pøi zápisu do databáze",
 								"Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace.");
 
-				logger.error("Nelze vložit/upravit destinaci", ex);
+				logger.error("Nelze vložit/upravit uživatele", ex);
 			}
-			
+			eventBroker.post(REFRESH_VIEWERS, "");
 		}
 		;
+	}
+
+	@Focus
+	public void setFocus() {
+		novyMenuItem.setVisible(true);
+		editMenuItem.setVisible(true);
+		smazatMenuItem.setVisible(true);
+
+		novyMenuItem.setTooltip("Vytvoøit nového uživatele");
+		editMenuItem.setTooltip("Editovat uživatele");
+		smazatMenuItem.setTooltip("Smazat uživatele");
+
+		super.setFocus();
 	}
 
 	@Override
 	protected TableViewerComparator getComparator() {
 		return new TableViewerComparator();
 	}
-
 }

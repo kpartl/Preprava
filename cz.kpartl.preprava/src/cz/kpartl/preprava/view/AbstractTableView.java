@@ -86,6 +86,8 @@ import cz.kpartl.preprava.sorter.TableViewerComparator;
 import cz.kpartl.preprava.Activator;
 
 public abstract class AbstractTableView extends ViewPart {
+	
+	public static final String REFRESH_VIEWERS = "REFRESH_VIEWERS";
 
 	protected TableViewer viewer;
 
@@ -119,6 +121,8 @@ public abstract class AbstractTableView extends ViewPart {
 	protected ESelectionService selectionService;
 	
 	protected HandledToolItemImpl novyMenuItem;
+	protected HandledToolItemImpl editMenuItem;
+	protected HandledToolItemImpl smazatMenuItem;
 
 	public AbstractTableView(IStylingEngine styleEngine) {
 		this.styleEngine = styleEngine;
@@ -134,6 +138,8 @@ public abstract class AbstractTableView extends ViewPart {
 	@PostConstruct
 	public void init(EModelService modelService, MApplication app) {
 		novyMenuItem = (HandledToolItemImpl) modelService.find("cz.kpartl.preprava.toolItem.novyPozadavek",app);
+		editMenuItem = (HandledToolItemImpl) modelService.find("cz.kpartl.preprava.handledtoolitem.edit",app);
+		smazatMenuItem = (HandledToolItemImpl) modelService.find("cz.kpartl.preprava.handledtoolitem.delete",app);
 
 	}
 	
@@ -152,6 +158,8 @@ public abstract class AbstractTableView extends ViewPart {
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
+		if (viewer.getSelection().isEmpty())
+			viewer.getTable().select(0);
 		viewer.getControl().setFocus();
 	}
 
@@ -528,9 +536,14 @@ public abstract class AbstractTableView extends ViewPart {
 		
 	}
 	
-	public void refreshInputData() {
+	/*public void refreshInputData() {
 		viewer.setInput(getModelData());
-		}
+		}*/
+	
+	@Inject @Optional
+	void closeHandler(@UIEventTopic(REFRESH_VIEWERS) String s) {
+		viewer.setInput(getModelData());
+	} 
 
 	/*
 	 * protected void createMenuItem(Menu parent, final TableColumn column) {

@@ -35,7 +35,6 @@ public class UserDAO {
 	 * @generated
 	 */
 	public UserDAO() {
-			
 	}
 
 	/**
@@ -138,5 +137,14 @@ public class UserDAO {
 			return "";
 		}
 		
+	}
+
+	/**
+	 * @generated
+	 */
+	public java.util.List<cz.kpartl.preprava.model.User> findAll() {
+		org.hibernate.Query query = getSession().createQuery(
+				"from cz.kpartl.preprava.model.User u");
+		return query.list();
 	}
 }

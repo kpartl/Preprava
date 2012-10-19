@@ -661,8 +661,8 @@ super.tearDown();
               <access>1</access>
             </variable>
             <variable name="PSC">
-              <type basicType="int"/>
-              <multiplicity>1</multiplicity>
+              <type class="java.lang.Integer"/>
+              <multiplicity>0..1</multiplicity>
               <access>1</access>
             </variable>
           </variables>
@@ -890,8 +890,8 @@ super.tearDown();
               <access>1</access>
             </variable>
             <variable name="cislo_faktury_dopravce">
-              <type basicType="int"/>
-              <multiplicity>1</multiplicity>
+              <type class="java.lang.Integer"/>
+              <multiplicity>0..1</multiplicity>
               <access>1</access>
             </variable>
             <variable name="pozadavek">
@@ -1240,7 +1240,7 @@ super.tearDown();
             <x>769</x>
             <y>388</y>
             <class class="cz.kpartl.preprava.model.Pozadavek"/>
-            <attributes autoDisplay="353" accessVisible="true">
+            <attributes autoDisplay="289" accessVisible="true">
               <attribute>datum</attribute>
               <attribute>datum_nakladky</attribute>
               <attribute>datum_vykladky</attribute>
@@ -1250,10 +1250,9 @@ super.tearDown();
               <attribute>poznamka</attribute>
               <attribute>celkova_hmotnost</attribute>
               <attribute>attr</attribute>
-              <attribute>id</attribute>
               <attribute>hodina_nakladky</attribute>
             </attributes>
-            <operations autoDisplay="53" accessVisible="true" parametersVisible="true"/>
+            <operations autoDisplay="37" accessVisible="true" parametersVisible="true"/>
           </classSymbol>
           <tagSymbol id="13">
             <x>323</x>
@@ -1289,6 +1288,7 @@ super.tearDown();
               <operation>delete(cz.kpartl.preprava.model.User)</operation>
               <operation>findByUsername(java.lang.String)</operation>
               <operation>login(java.lang.String,java.lang.String)</operation>
+              <operation>findAll()</operation>
             </operations>
           </classSymbol>
           <classSymbol id="16">
@@ -1304,7 +1304,7 @@ super.tearDown();
           </classSymbol>
           <association id="17">
             <x>397</x>
-            <y>80</y>
+            <y>87</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.User" name="DAO_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.dao.UserDAO" name="DAO_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
@@ -1326,7 +1326,7 @@ super.tearDown();
             </point>
             <end-1>
               <x>286</x>
-              <y>80</y>
+              <y>87</y>
               <connectedSymbol symbol="15"/>
               <text>0..1</text>
             </end-1>
@@ -1977,6 +1977,19 @@ getSession().delete(object);
                   <multiplicity>0..1</multiplicity>
                 </variable>
               </parameters>
+            </operation>
+            <operation name="findAll">
+              <type class="cz.kpartl.preprava.model.User"/>
+              <multiplicity>*</multiplicity>
+              <access>1</access>
+              <generatedName>findAll</generatedName>
+              <query>
+                <tokens>
+                  <queryVariable name="u">
+                    <type class="cz.kpartl.preprava.model.User"/>
+                  </queryVariable>
+                </tokens>
+              </query>
             </operation>
           </operations>
           <generatedFiles>

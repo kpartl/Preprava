@@ -37,75 +37,66 @@ import org.eclipse.ui.internal.WorkbenchWindow;
 
 import org.eclipse.ui.menus.UIElement;
 
-
 import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.view.PozadavkyView;
 
-public class SwitchPerspectiveHandler  {	
-			
+public class SwitchPerspectiveHandler {
+
 	@Inject
 	IEclipseContext context;
 
 	@SuppressWarnings("restriction")
 	@Execute
 	public void execute(MApplication app, EPartService partService,
-			EModelService modelService, MWindow window, MPerspective activePerspective, Event event) {		
-		
-		//MPerspective activePerspective = modelService.getPerspectiveFor(window);
+			EModelService modelService, MWindow window,
+			MPerspective activePerspective, Event event) {
+
+		// MPerspective activePerspective =
+		// modelService.getPerspectiveFor(window);
 
 		MPerspective prepravaPerspective = (MPerspective) modelService.find(
 				"cz.kpartl.preprava.perspective.preprava", app);
 
 		MPerspective administracePerspective = (MPerspective) modelService
 				.find("cz.kpartl.preprava.perspective.administrace", app);
-		
-		
-		
-		//Object menuitem =menuService. find("cz.kpartl.preprava.handledmenuitem.administrace", app);
 
-		if (prepravaPerspective.equals(activePerspective)){
-			
+		// Object menuitem =menuService.
+		// find("cz.kpartl.preprava.handledmenuitem.administrace", app);
+
+		if (prepravaPerspective.equals(activePerspective)) {
+
 			partService.switchPerspective(administracePerspective);
-			((MenuItem)event.widget).setText("Požadavky/objednávky");
-			
-			
-			
-		}
-		else
-		{
-			
+			((MenuItem) event.widget).setText("Požadavky/objednávky");
+
+		} else {
+
 			partService.switchPerspective(prepravaPerspective);
-			((MenuItem)event.widget).setText("Administrace");
-			((MenuItem)event.widget).getParent().setVisible(false);
-			
-			
-					
+			((MenuItem) event.widget).setText("Administrace");
+			((MenuItem) event.widget).getParent().setVisible(false);
+
 		}
-			
-		
-		
+
 	}
-	
-	
-	
+
 	@CanExecute
 	public boolean canExecute() {
-		boolean result = ((User) context.get(User.CONTEXT_NAME)).isAdministrator();
+		boolean result = ((User) context.get(User.CONTEXT_NAME))
+				.isAdministrator();
 		return result;
-	}	
-	
+	}
+
 	@Inject
 	@Optional
-	public void partActivation(@UIEventTopic(UIEvents.UILifeCycle.ACTIVATE) 
-	org.osgi.service.event.Event event,
-	  MApplication application) {
-	    
-	  MPart activePart = (MPart) event.
-	      getProperty(UIEvents.EventTags.ELEMENT);
-	  IEclipseContext context = application.getContext();
-	  if (activePart != null) {
-	    context.set("myactivePartId", activePart.getElementId());
-	  }
-	} 
+	public void partActivation(
+			@UIEventTopic(UIEvents.UILifeCycle.ACTIVATE) org.osgi.service.event.Event event,
+			MApplication application) {
+
+		MPart activePart = (MPart) event
+				.getProperty(UIEvents.EventTags.ELEMENT);
+		IEclipseContext context = application.getContext();
+		if (activePart != null) {
+			context.set("myactivePartId", activePart.getElementId());
+		}
+	}
 
 }
