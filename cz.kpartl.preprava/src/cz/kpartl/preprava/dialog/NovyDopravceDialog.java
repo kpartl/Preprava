@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import cz.kpartl.preprava.dao.DopravceDAO;
 
 import cz.kpartl.preprava.model.Dopravce;
+import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
 //TODO pri zmene nazvu dopravce refreshnout view pozadavku i objednavek
 import cz.kpartl.preprava.view.AbstractTableView;
@@ -126,7 +127,7 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 							dopravceDAO.update(dopravce);
 						tx.commit();
 						
-						eventBroker.post(AbstractTableView.REFRESH_VIEWERS, "");
+						eventBroker.post(EventConstants.REFRESH_VIEWERS, dopravce);
 
 						close();
 					} catch (Exception ex) {

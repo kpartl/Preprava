@@ -29,6 +29,7 @@ import cz.kpartl.preprava.dao.DestinaceDAO;
 import cz.kpartl.preprava.model.Destinace;
 import cz.kpartl.preprava.model.Dopravce;
 import cz.kpartl.preprava.model.Pozadavek;
+import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
 import cz.kpartl.preprava.view.AbstractTableView;
 
@@ -199,7 +200,7 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 						destinaceDAO.update(destinace);
 					tx.commit();		
 					
-					eventBroker.post(AbstractTableView.REFRESH_VIEWERS, "");
+					eventBroker.post(EventConstants.REFRESH_VIEWERS, destinace);
 
 					close();
 					} catch (Exception ex){

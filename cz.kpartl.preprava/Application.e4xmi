@@ -3,15 +3,16 @@
   <children xsi:type="basic:TrimmedWindow" xmi:id="_nkHkp_dIEeGDArQ_Xew7DQ" label="Objednávky přepravy" width="1400" height="800">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_nkHkr_dIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.perspectiveStack" accessibilityPhrase="M1+P" selectedElement="_nkHksPdIEeGDArQ_Xew7DQ">
       <children xsi:type="advanced:Perspective" xmi:id="_nkHksPdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.perspective.preprava" label="Preprava">
-        <children xsi:type="basic:PartStack" xmi:id="_nkHksvdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.partstack.preprava">
-          <children xsi:type="basic:Part" xmi:id="_mhLKsPgVEeGJkZgo7dQKnw" elementId="cz.kpartl.preprava.part.tablepartpozadane" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.PozadavkyView" label="Požadované">
-            <menus xmi:id="_I3A6EBTAEeKNqPJNco7s0w" elementId="cz.kpartl.preprava.viewmenu1" label="ViewMenu">
-              <tags>ViewMenu</tags>
-              <children xsi:type="menu:HandledMenuItem" xmi:id="_MFPwoBTAEeKNqPJNco7s0w" elementId="cz.kpartl.preprava.handledmenuitem.0" label="Child" command="_nkHkmvdIEeGDArQ_Xew7DQ"/>
-            </menus>
+        <children xsi:type="basic:PartSashContainer" xmi:id="_ZUPMEBsDEeK-qrdj6l5qwA" elementId="cz.kpartl.preprava.partsashcontainer.objednavky">
+          <children xsi:type="basic:PartStack" xmi:id="_nkHksvdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.partstack.preprava">
+            <children xsi:type="basic:Part" xmi:id="_mhLKsPgVEeGJkZgo7dQKnw" elementId="cz.kpartl.preprava.part.tablepartpozadane" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.PozadavkyView" label="Požadované"/>
+            <children xsi:type="basic:Part" xmi:id="_yFi6EAbtEeKkRsIJdnX9-w" elementId="cz.kpartl.preprava.part.tablepartobjednane" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.ObjednanoView" label="Objednané"/>
+            <children xsi:type="basic:Part" xmi:id="_2bzSgAp4EeK8G_IvoEUUaQ" elementId="cz.kpartl.preprava.part.tablepartukoncene" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.UkoncenoView" label="Ukončené"/>
           </children>
-          <children xsi:type="basic:Part" xmi:id="_yFi6EAbtEeKkRsIJdnX9-w" elementId="cz.kpartl.preprava.part.tablepartobjednane" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.ObjednanoView" label="Objednané"/>
-          <children xsi:type="basic:Part" xmi:id="_2bzSgAp4EeK8G_IvoEUUaQ" elementId="cz.kpartl.preprava.part.tablepartukoncene" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.UkoncenoView" label="Ukončené"/>
+          <children xsi:type="basic:PartStack" xmi:id="_VWstkBsFEeK-qrdj6l5qwA" elementId="cz.kpartl.preprava.partstack.0">
+            <children xsi:type="basic:Part" xmi:id="_jDccUBsDEeK-qrdj6l5qwA" elementId="cz.kpartl.preprava.part.pozadavekDetailPart" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.PozadavekDetailView" label="Detail požadavku"/>
+            <children xsi:type="basic:Part" xmi:id="__j8h4ByDEeKshv86tddrZw" elementId="cz.kpartl.preprava.part.objednavkaDetailPart" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.ObjednavkaDetailView" label="Detail objednávky"/>
+          </children>
         </children>
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_AezNMAgjEeKxW-KmU_7sbA" elementId="cz.kpartl.preprava.perspective.administrace" label="Administrace" tooltip="Administrace kmenových dat">

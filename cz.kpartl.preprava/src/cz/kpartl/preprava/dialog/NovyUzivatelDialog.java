@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import cz.kpartl.preprava.dao.UserDAO;
 import cz.kpartl.preprava.model.User;
+import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
 import cz.kpartl.preprava.view.AbstractTableView;
 
@@ -149,7 +150,7 @@ public class NovyUzivatelDialog extends TitleAreaDialog {
 						else
 							uzivatelDAO.update(uzivatel);
 						tx.commit();
-						eventBroker.post(AbstractTableView.REFRESH_VIEWERS, "");
+						eventBroker.post(EventConstants.REFRESH_VIEWERS, uzivatel);
 						close();
 					} catch (Exception ex) {
 						setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."

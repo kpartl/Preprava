@@ -8,6 +8,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -52,6 +53,7 @@ import cz.kpartl.preprava.model.Destinace;
 import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.sorter.TableViewerComparator;
+import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
 import cz.kpartl.preprava.util.Login;
 
@@ -280,7 +282,7 @@ public class DestinaceView extends AbstractTableView {
 		if (selectedDestinace != null){
 			new NovaDestinaceDialog(shell, context, selectedDestinace,
 					eventBroker).open();
-			eventBroker.post(REFRESH_VIEWERS, "");
+			eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
 		}
 	}
 
@@ -297,7 +299,7 @@ public class DestinaceView extends AbstractTableView {
 				destinaceDAO.delete(selectedDestinace);
 				tx.commit();
 				
-				eventBroker.post(REFRESH_VIEWERS, "");
+				eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
 				
 			} catch (Exception ex) {
 				MessageDialog
@@ -315,6 +317,12 @@ public class DestinaceView extends AbstractTableView {
 	@Override
 	protected TableViewerComparator getComparator() {
 		return new TableViewerComparator();
+	}
+	
+	@Inject
+	@Optional
+	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) Destinace d) {
+		viewer.setInput(getModelData());
 	}
 
 }

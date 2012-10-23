@@ -32,6 +32,8 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.MApplicationFactory;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.impl.HandledToolItemImpl;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.services.IStylingEngine;
@@ -111,10 +113,12 @@ public class PozadavkyView extends AbstractTableView {
 	@Inject
 	@Optional
 	EPartService partService;
+	MPart objednavkaDetailView;
+	MPart pozadavekDetailView;
 
 	@Inject
 	public PozadavkyView(Composite parent,
-			@Optional IStylingEngine styleEngine, IEclipseContext context) {
+			@Optional IStylingEngine styleEngine, IEclipseContext context,EPartService partService) {
 
 		super(styleEngine);
 		this.context = context;
@@ -122,6 +126,11 @@ public class PozadavkyView extends AbstractTableView {
 		shell = parent.getShell();
 
 		this.pozadavekDAO = context.get(PozadavekDAO.class);
+		 objednavkaDetailView = partService.findPart(ObjednavkaDetailView.ID);
+		 pozadavekDetailView = partService.findPart(PozadavekDetailView.ID);
+		 
+		 
+		 
 
 		createPartControl(parent);
 	}
@@ -222,6 +231,7 @@ public class PozadavkyView extends AbstractTableView {
 
 	@Focus
 	public void setFocus() {
+		super.setFocus();
 		novyMenuItem.setVisible(true);
 		editMenuItem.setVisible(true);
 		smazatMenuItem.setVisible(true);
@@ -230,7 +240,22 @@ public class PozadavkyView extends AbstractTableView {
 		editMenuItem.setTooltip("Editovat požadavek");
 		smazatMenuItem.setTooltip("Smazat požadavek");
 		
-		super.setFocus();
+		
+				
+	
+		//partService.hidePart(objednavkaDetailView);
+		pozadavekDetailView.setVisible(true	);
+		partService.showPart(pozadavekDetailView, PartState.ACTIVATE);
+		objednavkaDetailView.setVisible(false);
+		pozadavekDetailView.setToBeRendered(true);
+		
+		
+		
+		/*System.out.println("PozadavekyView setFocus called 1");
+		partService.showPart(pozadavekDetailView, PartState.ACTIVATE);
+		partService.bringToTop(pozadavekDetailView);
+		System.out.println("PozadavekyView setFocus called 2");*/
+		
 	}
 	
 	public void editSelectedPozadavek(){
@@ -252,9 +277,15 @@ public class PozadavkyView extends AbstractTableView {
 					.beginTransaction();
 			pozadavekDAO.delete(selectedPozadavek);
 			tx.commit();
-			eventBroker.post(REFRESH_VIEWERS, "");
+			eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
 		}
 		;
+	}
+	
+	@Inject
+	@Optional
+	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) Pozadavek p) {
+		viewer.setInput(getModelData());
 	}
 
 }

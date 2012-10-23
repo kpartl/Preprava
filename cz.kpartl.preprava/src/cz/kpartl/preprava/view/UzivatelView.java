@@ -41,6 +41,7 @@ import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.sorter.TableViewerComparator;
+import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
 import cz.kpartl.preprava.util.Login;
 import cz.kpartl.preprava.util.MyMessageDialog;
@@ -239,7 +240,7 @@ public class UzivatelView extends AbstractTableView {
 		}
 
 		new NovyUzivatelDialog(shell, context, selectedUser, eventBroker).open();
-		eventBroker.post(REFRESH_VIEWERS, "");
+		eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
 
 	}
 
@@ -267,7 +268,7 @@ public class UzivatelView extends AbstractTableView {
 
 				logger.error("Nelze vložit/upravit uživatele", ex);
 			}
-			eventBroker.post(REFRESH_VIEWERS, "");
+			eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
 		}
 		;
 	}

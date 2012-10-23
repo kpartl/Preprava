@@ -59,6 +59,7 @@ import cz.kpartl.preprava.dao.UserDAO;
 import cz.kpartl.preprava.model.Destinace;
 import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.model.User;
+import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.OtherUtils;
 import cz.kpartl.preprava.view.AbstractTableView;
 
@@ -122,6 +123,10 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		setTitle("Nový požadavek na pøepravu");
 		persistenceHelper = cz.kpartl.preprava.util.HibernateHelper
 				.getInstance();
+	}
+	
+	public Control publicCreateContents(Composite parent){
+		return createContents(parent);
 	}
 
 	@Override
@@ -518,7 +523,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		else
 			pozadavekDAO.update(pozadavek);
 		
-		eventBroker.send(AbstractTableView.REFRESH_VIEWERS, "");
+		eventBroker.send(EventConstants.REFRESH_VIEWERS, pozadavek);
 		
 		return true;
 		} else {

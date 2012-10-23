@@ -48,6 +48,7 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
@@ -86,14 +87,12 @@ import cz.kpartl.preprava.sorter.TableViewerComparator;
 import cz.kpartl.preprava.Activator;
 
 public abstract class AbstractTableView extends ViewPart {
-	
-	public static final String REFRESH_VIEWERS = "REFRESH_VIEWERS";
 
 	protected TableViewer viewer;
 
 	protected TableColumnLayout layout;
 
-	protected EventHandler eventHandler;
+	// protected EventHandler eventHandler;
 
 	protected IStylingEngine styleEngine;
 
@@ -107,7 +106,7 @@ public abstract class AbstractTableView extends ViewPart {
 	protected TableViewerComparator comparator;
 
 	protected int columnIndex = 0;
-	
+
 	@Inject
 	@Optional
 	IEclipseContext context;
@@ -116,10 +115,10 @@ public abstract class AbstractTableView extends ViewPart {
 	@Optional
 	protected IEventBroker eventBroker;
 
-	//@Inject
-	//@Optional
+	// @Inject
+	// @Optional
 	protected ESelectionService selectionService;
-	
+
 	protected HandledToolItemImpl novyMenuItem;
 	protected HandledToolItemImpl editMenuItem;
 	protected HandledToolItemImpl smazatMenuItem;
@@ -130,37 +129,37 @@ public abstract class AbstractTableView extends ViewPart {
 
 	// Vrati data pro tabulku
 	protected abstract Object getModelData();
-	
+
 	protected abstract TableViewerComparator getComparator();
 
-	
-	@Inject 
+	@Inject
 	@PostConstruct
 	public void init(EModelService modelService, MApplication app) {
-		novyMenuItem = (HandledToolItemImpl) modelService.find("cz.kpartl.preprava.toolItem.novyPozadavek",app);
-		editMenuItem = (HandledToolItemImpl) modelService.find("cz.kpartl.preprava.handledtoolitem.edit",app);
-		smazatMenuItem = (HandledToolItemImpl) modelService.find("cz.kpartl.preprava.handledtoolitem.delete",app);
+		novyMenuItem = (HandledToolItemImpl) modelService.find(
+				"cz.kpartl.preprava.toolItem.novyPozadavek", app);
+		editMenuItem = (HandledToolItemImpl) modelService.find(
+				"cz.kpartl.preprava.handledtoolitem.edit", app);
+		smazatMenuItem = (HandledToolItemImpl) modelService.find(
+				"cz.kpartl.preprava.handledtoolitem.delete", app);
 
 	}
-	
-	
 
-	
-	
-	@PreDestroy
-	void unhookEvents() {
-		if( eventBroker != null && eventHandler != null ) {
-			eventBroker.unsubscribe(eventHandler);
-		}
-	}
-
+	/*
+	 * @PreDestroy void unhookEvents() { if( eventBroker != null && eventHandler
+	 * != null ) { eventBroker.unsubscribe(eventHandler); } }
+	 */
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
-		if (viewer.getSelection().isEmpty())
+	//	viewer.getControl().setFocus();
+		
+		if (viewer.getSelection().isEmpty()){
 			viewer.getTable().select(0);
-		viewer.getControl().setFocus();
+			StructuredSelection sel = (StructuredSelection) viewer.getSelection();
+			eventBroker.post(EventConstants.POZADAVEK_SELECTION_CHANGED, sel.getFirstElement());
+		}
+		
 	}
 
 	// Used to update the viewer from outsite
@@ -172,10 +171,10 @@ public abstract class AbstractTableView extends ViewPart {
 		GridLayout layout = new GridLayout(1, false);
 		parent.setLayout(layout);
 		createViewer(parent, getModelData());
-		// Set the sorter for the table		
+		// Set the sorter for the table
 		comparator = getComparator();
 		viewer.setComparator(comparator);
-		
+
 		ColumnViewerToolTipSupport.enableFor(viewer, ToolTip.NO_RECREATE);
 	}
 
@@ -209,7 +208,7 @@ public abstract class AbstractTableView extends ViewPart {
 		viewer.setInput(data);
 
 		// Make the selection available to other Views
-		//getSite().setSelectionProvider(viewer); // HELE JA NEVIM NA CO TO JE
+		// getSite().setSelectionProvider(viewer); // HELE JA NEVIM NA CO TO JE
 
 		if (styleEngine != null) {
 			styleEngine.setClassname(this.viewer.getControl(), "pozadavkyList");
@@ -222,17 +221,15 @@ public abstract class AbstractTableView extends ViewPart {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		viewer.getControl().setLayoutData(gridData);				
+		viewer.getControl().setLayoutData(gridData);
 	}
-	
-	
 
 	protected TableViewerColumn createTableViewerColumn(String title,
 			int bound, final int colNumber, final String toolTip) {
 		final TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
 				SWT.NONE);
 
-		final TableColumn column = viewerColumn.getColumn(); 
+		final TableColumn column = viewerColumn.getColumn();
 		if (colNumber == 0)
 			layout.setColumnData(column, new ColumnPixelData(bound, true, true));
 		else
@@ -246,14 +243,10 @@ public abstract class AbstractTableView extends ViewPart {
 		// column.setImage(Activator.getImageDescriptor("./icons/header.gif").createImage());
 		column.addSelectionListener(getSelectionAdapter(column, colNumber));
 		// Create the menu item for this column
-		//createMenuItem(headerMenu, column);
-						
+		// createMenuItem(headerMenu, column);
+
 		return viewerColumn;
 	}
-	
-		
-		
-	
 
 	protected SelectionAdapter getSelectionAdapter(final TableColumn column,
 			final int index) {
@@ -265,6 +258,7 @@ public abstract class AbstractTableView extends ViewPart {
 				viewer.getTable().setSortDirection(dir);
 				viewer.getTable().setSortColumn(column);
 				viewer.refresh();
+				eventBroker.send(EventConstants.POZADAVEK_SELECTION_CHANGED, e);
 			}
 		};
 		return selectionAdapter;
@@ -327,12 +321,7 @@ public abstract class AbstractTableView extends ViewPart {
 				if (element instanceof Objednavka) {
 					element = ((Objednavka) element).getPozadavek();
 				}
-				final Destinace destinace_z = ((Pozadavek) element)
-						.getDestinace_z();
-				if (destinace_z == null)
-					return "";
-				else
-					return destinace_z.getNazevACislo();
+				return ((Pozadavek)element).getDestinaceZNazevACislo();				
 
 			}
 		});
@@ -346,12 +335,7 @@ public abstract class AbstractTableView extends ViewPart {
 				if (element instanceof Objednavka) {
 					element = ((Objednavka) element).getPozadavek();
 				}
-				final Destinace destinace_do = ((Pozadavek) element)
-						.getDestinace_do();
-				if (destinace_do == null)
-					return "";
-				else
-					return destinace_do.getNazevACislo();
+				return ((Pozadavek)element).getDestinaceDoNazevACislo();	
 
 			}
 		});
@@ -368,9 +352,8 @@ public abstract class AbstractTableView extends ViewPart {
 				return ((Pozadavek) element).getCelkova_hmotnost();
 			}
 		});
-		
-		col = createTableViewerColumn("Palet", 60, columnIndex++,
-				"Poèet palet");
+
+		col = createTableViewerColumn("Palet", 60, columnIndex++, "Poèet palet");
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
 			@Override
@@ -432,12 +415,7 @@ public abstract class AbstractTableView extends ViewPart {
 				if (element instanceof Objednavka) {
 					element = ((Objednavka) element).getPozadavek();
 				}
-				final Destinace destinace_z = ((Pozadavek) element)
-						.getDestinace_z();
-				if (destinace_z == null)
-					return "";
-				else
-					return (destinace_z.getKontaktniOsobuAKontakt());
+				return ((Pozadavek)element).getDestinaceZKontaktAOsobu();	
 
 			}
 		});
@@ -451,12 +429,7 @@ public abstract class AbstractTableView extends ViewPart {
 				if (element instanceof Objednavka) {
 					element = ((Objednavka) element).getPozadavek();
 				}
-				final Destinace destinace_do = ((Pozadavek) element)
-						.getDestinace_do();
-				if (destinace_do == null)
-					return "";
-				else
-					return destinace_do.getKontaktniOsobuAKontakt();
+				return ((Pozadavek)element).getDestinaceDoKontaktAOsobu();	
 
 			}
 		});
@@ -490,10 +463,9 @@ public abstract class AbstractTableView extends ViewPart {
 					return zadavatel.getUsername();
 
 			}
-			
-			
+
 		});
-		
+
 		col = createTableViewerColumn("Poznámka", 100, columnIndex++,
 				"Poznámka");
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
@@ -506,8 +478,6 @@ public abstract class AbstractTableView extends ViewPart {
 				return ((Pozadavek) element).getPoznamka();
 			}
 		});
-		
-		
 
 		/*
 		 * Enumeration e = viewer.getColumnModel().getColumns(); while
@@ -522,6 +492,9 @@ public abstract class AbstractTableView extends ViewPart {
 					selectionService.setSelection(((IStructuredSelection) event
 							.getSelection()).getFirstElement());
 				}
+				eventBroker.send(EventConstants.POZADAVEK_SELECTION_CHANGED,
+						((StructuredSelection) event.getSelection())
+								.getFirstElement());
 			}
 		});
 
@@ -529,21 +502,17 @@ public abstract class AbstractTableView extends ViewPart {
 		viewer.getControl().addDisposeListener(new DisposeListener() {
 
 			public void widgetDisposed(DisposeEvent e) {
-				unhookEvents();
+				
 			}
 		});
-		
-		
+
 	}
+
+	/*
+	 * public void refreshInputData() { viewer.setInput(getModelData()); }
+	 */
+
 	
-	/*public void refreshInputData() {
-		viewer.setInput(getModelData());
-		}*/
-	
-	@Inject @Optional
-	void closeHandler(@UIEventTopic(REFRESH_VIEWERS) String s) {
-		viewer.setInput(getModelData());
-	} 
 
 	/*
 	 * protected void createMenuItem(Menu parent, final TableColumn column) {

@@ -8,7 +8,11 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IStylingEngine;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -41,6 +45,7 @@ import cz.kpartl.preprava.model.Dopravce;
 import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.sorter.TableViewerComparator;
+import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
 import cz.kpartl.preprava.util.Login;
 
@@ -54,9 +59,6 @@ public class ObjednanoView extends AbstractTableView {
 	public static final String TYP_DOKLADY_KOMPLETNI = "Doklady kompletní";
 	public static final String TYP_FAKTUROVANO = "Fakturováno";
 	public static final String TYP_UKONCENO = "Ukonèeno";
-	// public static final String TYPY[] = { TYP_OBJEDNANO,
-	// TYP_PREPRAVA_ZAHAJENA,TYP_PREPRAVA_UKONCENA, TYP_DOKLADY_KOMPLETNI,
-	// TYP_FAKTUROVANO };
 
 	public static final HashMap<Integer, String> typyHashMap;
 
@@ -82,16 +84,26 @@ public class ObjednanoView extends AbstractTableView {
 	private Combo typCombo;
 	protected Shell shell;
 	private int faze = 0;
+	
+	EPartService partService;
+	MPart pozadavekDetailView;
+	MPart objednavkaDetailView;
 
 	@Inject
 	public ObjednanoView(Composite parent,
 			@Optional IStylingEngine styleEngine,
-			@Optional ObjednavkaDAO objednavkaDAO, IEclipseContext context) {
+			@Optional ObjednavkaDAO objednavkaDAO, IEclipseContext context, EPartService partService) {
 		super(styleEngine);
 
 		shell = parent.getShell();
 		this.objednavkaDAO = objednavkaDAO;
 		this.context = context;
+		this.partService =partService;
+		
+		pozadavekDetailView = partService.findPart(PozadavekDetailView.ID);
+			
+		 objednavkaDetailView = partService.findPart(ObjednavkaDetailView.ID);
+		
 		context.getParent().set(ObjednanoView.ID, this);
 
 		createPartControl(parent);
@@ -205,12 +217,7 @@ public class ObjednanoView extends AbstractTableView {
 						.getSelection()).getFirstElement();
 				if (selectedObjednavka == null)
 					return;
-				NovaObjednavkaDialog dialog = new NovaObjednavkaDialog(shell,
-						context, selectedObjednavka, eventBroker);
-				if (dialog.open() == Window.OK) {
-					// refreshInputData();
-				}
-
+				new NovaObjednavkaDialog(shell,	context, selectedObjednavka, eventBroker).open();				
 			}
 
 		});
@@ -253,14 +260,23 @@ public class ObjednanoView extends AbstractTableView {
 
 	@Focus
 	public void setFocus() {
+		super.setFocus();
 		novyMenuItem.setVisible(false);
 		editMenuItem.setVisible(true);
 		smazatMenuItem.setVisible(true);
 
 		editMenuItem.setTooltip("Editovat objednávku");
-		smazatMenuItem.setTooltip("Smazat objednávku");
+		smazatMenuItem.setTooltip("Smazat objednávku");		
+
+		objednavkaDetailView.setVisible(true);
+				
+		//partService.hidePart(pozadavekDetailView);
+		partService.showPart(objednavkaDetailView, PartState.VISIBLE);
+		pozadavekDetailView.setVisible(false);
+		objednavkaDetailView.setToBeRendered(true);
+		//partService.bringToTop(objednavkaDetailView);*/
 		
-		super.setFocus();
+		
 	}
 
 	public void editSelectedObjednavka() {
@@ -271,7 +287,7 @@ public class ObjednanoView extends AbstractTableView {
 		new NovaObjednavkaDialog(shell, context, selectedObjednavka,
 				eventBroker).open();
 
-		eventBroker.post(REFRESH_VIEWERS, "");
+		eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
 	}
 
 	public void deleteSelectedObjednavka() {
@@ -286,10 +302,16 @@ public class ObjednanoView extends AbstractTableView {
 			pozadavekDAO.delete(selectedObjednavka.getPozadavek());
 			tx.commit();
 
-			eventBroker.post(REFRESH_VIEWERS, "");
+			eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
 		}
 		;
 
+	}
+	
+	@Inject
+	@Optional
+	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) Objednavka o) {
+		viewer.setInput(getModelData());
 	}
 
 	public static String[] getComboItems(boolean withUkonceno) {

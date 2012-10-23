@@ -44,6 +44,7 @@ import cz.kpartl.preprava.model.Dopravce;
 import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.model.User;
+import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.OtherUtils;
 import cz.kpartl.preprava.view.AbstractTableView;
 import cz.kpartl.preprava.view.ObjednanoView;
@@ -306,7 +307,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 			else
 				objednavkaDAO.update(objednavka);
 			
-			eventBroker.send(AbstractTableView.REFRESH_VIEWERS, "");
+			eventBroker.send(EventConstants.REFRESH_VIEWERS, objednavka);
 			
 			/*UkoncenoView ukoncenoView = (UkoncenoView) context.get(UkoncenoView.class);
 			ObjednanoView objednanoView = (ObjednanoView)context.get(ObjednanoView.ID);

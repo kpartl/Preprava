@@ -302,4 +302,24 @@ public class Pozadavek implements java.io.Serializable {
 	public void setZadavatel(User zadavatel) {
 		this.zadavatel = zadavatel;
 	}
+	
+	public String getDestinaceZKontaktAOsobu(){
+		if(destinace_z != null) return destinace_z.getKontaktniOsobuAKontakt();
+		else return "";
+	}
+	
+	public String getDestinaceZNazevACislo(){
+		if(destinace_z != null) return destinace_z.getNazevACislo();
+		else return "";
+	}
+	
+	public String getDestinaceDoKontaktAOsobu(){
+		if(destinace_do != null) return destinace_do.getKontaktniOsobuAKontakt();
+		else return "";
+	}
+	
+	public String getDestinaceDoNazevACislo(){
+		if(destinace_do != null) return destinace_do.getNazevACislo();
+		else return "";
+	}
 }
