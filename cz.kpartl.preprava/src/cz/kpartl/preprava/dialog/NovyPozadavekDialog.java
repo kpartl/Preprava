@@ -524,6 +524,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 			pozadavekDAO.update(pozadavek);
 		
 		eventBroker.send(EventConstants.REFRESH_VIEWERS, pozadavek);
+		eventBroker.send(EventConstants.POZADAVEK_SELECTION_CHANGED, pozadavek);
 		
 		return true;
 		} else {
@@ -570,8 +571,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 				destinaceMap = new HashMap<Integer, Destinace>(destinace.size());
 			int index = 0;
 			for (Destinace des : destinace) {
-				result.add(des.getNazev().concat("(")
-						.concat(String.valueOf(des.getCislo()).concat(")")));
+				result.add(des.getNazevACislo());
 				destinaceMap.put(Integer.valueOf(index++), des);
 			}
 		}

@@ -38,6 +38,8 @@ import org.eclipse.ui.internal.WorkbenchWindow;
 import org.eclipse.ui.menus.UIElement;
 
 import cz.kpartl.preprava.model.User;
+import cz.kpartl.preprava.view.ObjednavkaDetailView;
+import cz.kpartl.preprava.view.PozadavekDetailView;
 import cz.kpartl.preprava.view.PozadavkyView;
 
 public class SwitchPerspectiveHandler {
@@ -59,20 +61,34 @@ public class SwitchPerspectiveHandler {
 
 		MPerspective administracePerspective = (MPerspective) modelService
 				.find("cz.kpartl.preprava.perspective.administrace", app);
+		
+		
 
 		// Object menuitem =menuService.
 		// find("cz.kpartl.preprava.handledmenuitem.administrace", app);
 
 		if (prepravaPerspective.equals(activePerspective)) {
 
+			/*partService.findPart(PozadavekDetailView.ID).setVisible(false);
+
+			partService.findPart(ObjednavkaDetailView.ID).setVisible(false);*/
+			
 			partService.switchPerspective(administracePerspective);
 			((MenuItem) event.widget).setText("Požadavky/objednávky");
+			
 
 		} else {
-
+			
+			/*final MPart pozadavekDetailView =partService.findPart(PozadavekDetailView.ID);
+			if (pozadavekDetailView != null) pozadavekDetailView.setVisible(true);
+			
+			final MPart objednavkaDetailView =partService.findPart(ObjednavkaDetailView.ID);
+			if (objednavkaDetailView != null) objednavkaDetailView.setVisible(true);*/
+			
 			partService.switchPerspective(prepravaPerspective);
 			((MenuItem) event.widget).setText("Administrace");
-			((MenuItem) event.widget).getParent().setVisible(false);
+			//((MenuItem) event.widget).getParent().setVisible(false);
+			
 
 		}
 
@@ -85,7 +101,7 @@ public class SwitchPerspectiveHandler {
 		return result;
 	}
 
-	@Inject
+/*	@Inject
 	@Optional
 	public void partActivation(
 			@UIEventTopic(UIEvents.UILifeCycle.ACTIVATE) org.osgi.service.event.Event event,
@@ -97,6 +113,6 @@ public class SwitchPerspectiveHandler {
 		if (activePart != null) {
 			context.set("myactivePartId", activePart.getElementId());
 		}
-	}
+	}*/
 
 }

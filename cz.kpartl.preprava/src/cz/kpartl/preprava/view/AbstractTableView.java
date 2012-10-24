@@ -30,11 +30,15 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import cz.kpartl.preprava.util.EventConstants;
 
+import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.impl.HandledToolItemImpl;
 import org.eclipse.e4.ui.services.IStylingEngine;
+import org.eclipse.e4.ui.workbench.UIEvents;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -122,6 +126,7 @@ public abstract class AbstractTableView extends ViewPart {
 	protected HandledToolItemImpl novyMenuItem;
 	protected HandledToolItemImpl editMenuItem;
 	protected HandledToolItemImpl smazatMenuItem;
+	protected HandledToolItemImpl prevestMenuItem;
 
 	public AbstractTableView(IStylingEngine styleEngine) {
 		this.styleEngine = styleEngine;
@@ -141,6 +146,8 @@ public abstract class AbstractTableView extends ViewPart {
 				"cz.kpartl.preprava.handledtoolitem.edit", app);
 		smazatMenuItem = (HandledToolItemImpl) modelService.find(
 				"cz.kpartl.preprava.handledtoolitem.delete", app);
+		prevestMenuItem = (HandledToolItemImpl) modelService.find(
+				"cz.kpartl.preprava.handledtoolitem.prevod", app);
 
 	}
 
@@ -151,15 +158,50 @@ public abstract class AbstractTableView extends ViewPart {
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
+
+	@Focus
 	public void setFocus() {
-	//	viewer.getControl().setFocus();
-		
-		if (viewer.getSelection().isEmpty()){
+		// viewer.getControl().setFocus();
+
+		if (viewer.getSelection().isEmpty()) {
 			viewer.getTable().select(0);
-			StructuredSelection sel = (StructuredSelection) viewer.getSelection();
-			eventBroker.post(EventConstants.POZADAVEK_SELECTION_CHANGED, sel.getFirstElement());
+			StructuredSelection sel = (StructuredSelection) viewer
+					.getSelection();
+			if (sel.getFirstElement() instanceof Pozadavek)
+				eventBroker.post(EventConstants.POZADAVEK_SELECTION_CHANGED,
+						sel.getFirstElement());
+			else if (sel.getFirstElement() instanceof Objednavka)
+				eventBroker.post(EventConstants.OBJEDNAVKA_SELECTION_CHANGED,
+						sel.getFirstElement());
+			else if (sel.getFirstElement() == null)
+				eventBroker.post(EventConstants.EMPTY_OBJEDNAVKA_SEND,
+						EventConstants.EMPTY_OBJEDNAVKA_SEND);
 		}
-		
+
+	}
+
+	@Inject
+	@Optional
+	public void partActivation(
+			@UIEventTopic(UIEvents.UILifeCycle.ACTIVATE) org.osgi.service.event.Event event,
+			MApplication application, EPartService partService) {
+
+		MPart activePart = (MPart) event
+				.getProperty(UIEvents.EventTags.ELEMENT);
+
+		// kvuli ukoncenym objednavkam to nefunguje pro objednanoView
+		/*
+		 * if(activePart.getElementId().equals(ObjednavkaDetailView.ID)){
+		 * partService.activate(partService.findPart(ObjednanoView.ID)); }
+		 */
+		if (activePart.getElementId().equals(PozadavekDetailView.ID)) {
+			partService.activate(partService.findPart(PozadavkyView.ID));
+		}
+
+		// if(!pozadavekDetailView.isVisible())
+		// pozadavekDetailView.setVisible(true);
+		// if(objednavkaDetailView.isVisible())
+		// objednavkaDetailView.setVisible(false);
 	}
 
 	// Used to update the viewer from outsite
@@ -321,7 +363,7 @@ public abstract class AbstractTableView extends ViewPart {
 				if (element instanceof Objednavka) {
 					element = ((Objednavka) element).getPozadavek();
 				}
-				return ((Pozadavek)element).getDestinaceZNazevACislo();				
+				return ((Pozadavek) element).getDestinaceZNazevACislo();
 
 			}
 		});
@@ -335,7 +377,7 @@ public abstract class AbstractTableView extends ViewPart {
 				if (element instanceof Objednavka) {
 					element = ((Objednavka) element).getPozadavek();
 				}
-				return ((Pozadavek)element).getDestinaceDoNazevACislo();	
+				return ((Pozadavek) element).getDestinaceDoNazevACislo();
 
 			}
 		});
@@ -415,7 +457,7 @@ public abstract class AbstractTableView extends ViewPart {
 				if (element instanceof Objednavka) {
 					element = ((Objednavka) element).getPozadavek();
 				}
-				return ((Pozadavek)element).getDestinaceZKontaktAOsobu();	
+				return ((Pozadavek) element).getDestinaceZKontaktAOsobu();
 
 			}
 		});
@@ -429,7 +471,7 @@ public abstract class AbstractTableView extends ViewPart {
 				if (element instanceof Objednavka) {
 					element = ((Objednavka) element).getPozadavek();
 				}
-				return ((Pozadavek)element).getDestinaceDoKontaktAOsobu();	
+				return ((Pozadavek) element).getDestinaceDoKontaktAOsobu();
 
 			}
 		});
@@ -492,9 +534,16 @@ public abstract class AbstractTableView extends ViewPart {
 					selectionService.setSelection(((IStructuredSelection) event
 							.getSelection()).getFirstElement());
 				}
-				eventBroker.send(EventConstants.POZADAVEK_SELECTION_CHANGED,
-						((StructuredSelection) event.getSelection())
-								.getFirstElement());
+				final Object selectedObject = ((StructuredSelection) event
+						.getSelection()).getFirstElement();
+				if (selectedObject instanceof Pozadavek)
+					eventBroker.send(
+							EventConstants.POZADAVEK_SELECTION_CHANGED,
+							selectedObject);
+				else if (selectedObject instanceof Objednavka)
+					eventBroker.send(
+							EventConstants.OBJEDNAVKA_SELECTION_CHANGED,
+							selectedObject);
 			}
 		});
 
@@ -502,7 +551,7 @@ public abstract class AbstractTableView extends ViewPart {
 		viewer.getControl().addDisposeListener(new DisposeListener() {
 
 			public void widgetDisposed(DisposeEvent e) {
-				
+
 			}
 		});
 
@@ -511,8 +560,6 @@ public abstract class AbstractTableView extends ViewPart {
 	/*
 	 * public void refreshInputData() { viewer.setInput(getModelData()); }
 	 */
-
-	
 
 	/*
 	 * protected void createMenuItem(Menu parent, final TableColumn column) {

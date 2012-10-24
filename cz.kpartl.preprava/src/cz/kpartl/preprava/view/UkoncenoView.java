@@ -8,11 +8,14 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 import cz.kpartl.preprava.dao.ObjednavkaDAO;
 import cz.kpartl.preprava.dialog.NovaObjednavkaDialog;
@@ -33,8 +36,14 @@ public class UkoncenoView extends ObjednanoView {
 	
 	@Override
 	protected void createViewer(Composite parent, Object data) {
+		final Label nadpisLabel = new Label(parent, SWT.NONE);
+		nadpisLabel.setText("Pøehled ukonèených pøeprav");
+		nadpisLabel.setFont(JFaceResources.getHeaderFont());
+		
 		superCreateViewer(parent, data);
 		createMenuItems(headerMenu);
+		
+		
 
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override

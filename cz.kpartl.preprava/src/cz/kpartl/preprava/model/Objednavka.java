@@ -1,5 +1,8 @@
 package cz.kpartl.preprava.model;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 
 /**
  * @generated
@@ -12,6 +15,8 @@ public class Objednavka implements java.io.Serializable {
 	public static final int FAZE_DOKLADY_KOMPLETNI = 3;
 	public static final int FAZE_FAKTUROVANO = 4;
 	public static final int FAZE_UKONCENO = 5;
+	
+	private static final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.GERMANY);
 	
 	/**
 	 * @generated
@@ -70,6 +75,15 @@ public class Objednavka implements java.io.Serializable {
 	public java.math.BigDecimal getCena() {
 		return this.cena;
 	}
+	
+	public String getCenaFormated() {
+		if(cena != null) {
+			final String formatedCena =  currencyFormatter.format(cena);
+			if(formatedCena.endsWith(" \u20ac")) return formatedCena.substring(0, formatedCena.length()- 2);
+			else return formatedCena;
+		}
+		else return "";
+	}
 
 	/**
 	 * @generated
@@ -125,6 +139,12 @@ public class Objednavka implements java.io.Serializable {
 	 */
 	public Integer getCislo_faktury_dopravce() {
 		return this.cislo_faktury_dopravce;
+	}
+	
+	public String getCisloFakturyDopravceAsString()
+	{
+		if(cislo_faktury_dopravce == null) return "";
+		else return String.valueOf(cislo_faktury_dopravce);
 	}
 
 	/**

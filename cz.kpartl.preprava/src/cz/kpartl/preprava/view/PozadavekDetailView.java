@@ -31,27 +31,27 @@ public class PozadavekDetailView extends ViewPart {
 
 	public static final String ID = "cz.kpartl.preprava.part.pozadavekDetailPart";
 
-	IEventBroker eventBroker;
-	Pozadavek pozadavek;
-	Composite parent;
+	protected IEventBroker eventBroker;
+	protected Pozadavek pozadavek;
+	protected Composite parent;
 
-	Label datum;
-	Label datumNakladkylabel;
-	Label datumVykladkylabel;
-	Label odkud;
-	Label kam;
-	Label hmotnost;
-	Label palet;
-	Label termin_konecny;
-	Label taxi;
-	Label odkud_kontakt;
-	Label kam_kontakt;
-	Label hodina_nakladky;
-	Label poznamka;
-	Label zadavatel;
-	Shell shell;
+	protected Label datum;
+	protected Label datumNakladkylabel;
+	protected Label datumVykladkylabel;
+	protected Label odkud;
+	protected Label kam;
+	protected Label hmotnost;
+	protected Label palet;
+	protected Label termin_konecny;
+	protected Label taxi;
+	protected Label odkud_kontakt;
+	protected Label kam_kontakt;
+	protected Label hodina_nakladky;
+	protected Label poznamka;
+	protected Label zadavatel;
+	protected Shell shell;
 
-	Font boldFont;
+	protected Font boldFont;
 
 	@Inject
 	Shell parentShell;
@@ -60,14 +60,21 @@ public class PozadavekDetailView extends ViewPart {
 	public PozadavekDetailView(Composite parent,
 			@Named(IServiceConstants.ACTIVE_SHELL) Shell parentShell,
 			IEclipseContext context, IEventBroker eventBroker) {
-		createPartControl(parent);
+		this.parent = parent;
 		this.eventBroker = eventBroker;
 		this.shell = shell;
 		this.pozadavek = null;
 
+		GridLayout layout = new GridLayout(4, false);
+		layout.horizontalSpacing = 30;
+		parent.setLayout(layout);
+		
+		createPartControl(parent);
+		
+
 	}
 
-	private Label createBoldLabel(Composite parent, String text) {
+	protected Label createBoldLabel(Composite parent, String text) {
 		if (boldFont == null) {
 			final FontData[] fd = parent.getDisplay().getSystemFont()
 					.getFontData();
@@ -85,15 +92,17 @@ public class PozadavekDetailView extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		this.parent = parent;
-
-		GridLayout layout = new GridLayout(4, false);
-		layout.horizontalSpacing = 30;
-		parent.setLayout(layout);
-
+		
 		createBoldLabel(parent, "Datum požadavku: ");
 		datum = new Label(parent, SWT.NONE);
+		
+
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		
+		
 		createBoldLabel(parent, "Požadované datum nakládky: ");
+		
 		datumNakladkylabel = new Label(parent, SWT.NONE);
 		createBoldLabel(parent, "Požadované datum vykládky: ");
 		datumVykladkylabel = new Label(parent, SWT.NONE);
@@ -129,9 +138,26 @@ public class PozadavekDetailView extends ViewPart {
 
 	}
 
-	private void fillData() {
-		if (pozadavek == null)
+	protected void fillData() {
+		if (pozadavek == null){
+			datum.setText("");
+			odkud.setText("");
+			kam.setText("");
+			odkud_kontakt.setText("");
+			kam_kontakt.setText("");
+			hmotnost.setText("");
+			palet.setText("");
+			termin_konecny.setText("");
+			datum.setText("");
+			datumNakladkylabel.setText("");
+			datumVykladkylabel.setText("");
+			taxi.setText("");
+			hodina_nakladky.setText("");
+			poznamka.setText("");
+			zadavatel.setText("");
+			
 			return;
+		}
 
 		datum.setText(new SimpleDateFormat("dd.MM.yyyy").format(pozadavek
 				.getDatum()));
@@ -159,8 +185,7 @@ public class PozadavekDetailView extends ViewPart {
 
 	@Override
 	public void setFocus() {
-		System.out.println("PozadavekDetailView setFocus called");
-
+		parent.setFocus();
 	}
 
 	@Inject
@@ -171,9 +196,18 @@ public class PozadavekDetailView extends ViewPart {
 		fillData();
 
 	}
+	
+	@Inject
+	@Optional
+	void selectionChangedToEmpty(
+			@UIEventTopic(EventConstants.EMPTY_POZADAVEK_SEND) String s) {
+		this.pozadavek = null;
+		fillData();
+
+	}
 
 	@PreDestroy
-	void onDestroy() {
+	protected void onDestroy() {
 		if (boldFont != null)
 			boldFont.dispose();
 	}

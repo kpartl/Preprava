@@ -293,9 +293,12 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 			if ("" != cena.getText())
 				objednavka.setCena(BigDecimal.valueOf(Double.valueOf(cena
 						.getText().replace(',', '.'))));
+			else objednavka.setCena(null);
+			
 			if ("" != cisloFakturyDopravce.getText())
 				objednavka.setCislo_faktury_dopravce(Integer
 						.valueOf(cisloFakturyDopravce.getText()));
+			else objednavka.setCislo_faktury_dopravce(null);
 			objednavka.setMena(mena.getText());
 			objednavka.setZmena_nakladky(zmenaTerminuNakladky.getText());
 			objednavka.setFaze(fazeCombo.getSelectionIndex());
@@ -308,6 +311,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 				objednavkaDAO.update(objednavka);
 			
 			eventBroker.send(EventConstants.REFRESH_VIEWERS, objednavka);
+			eventBroker.send(EventConstants.OBJEDNAVKA_SELECTION_CHANGED, objednavka);
 			
 			/*UkoncenoView ukoncenoView = (UkoncenoView) context.get(UkoncenoView.class);
 			ObjednanoView objednanoView = (ObjednanoView)context.get(ObjednanoView.ID);
@@ -363,19 +367,15 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 			fazeCombo.select(Objednavka.FAZE_OBJEDNANO);
 			return;
 		}
-if(objednavka.getCena() != null){
-		String cenaText = String.valueOf(objednavka.getCena());
-		cena.setText(cenaText);
-}
 
+		cena.setText(objednavka.getCenaFormated());
 		mena.setText(objednavka.getMena());
 		fazeCombo.select(objednavka.getFaze());
 		if(objednavka.getDopravce() != null)
 		dopravceCombo.select(getDopravceIndex(objednavka.getDopravce()
 				.getNazev()));
-		if(objednavka.getCislo_faktury_dopravce() != null)
-		cisloFakturyDopravce.setText(String.valueOf(objednavka
-				.getCislo_faktury_dopravce()));
+		
+		cisloFakturyDopravce.setText(objednavka.getCisloFakturyDopravceAsString());
 		zmenaTerminuNakladky.setText(objednavka.getZmena_nakladky());
 	}
 }

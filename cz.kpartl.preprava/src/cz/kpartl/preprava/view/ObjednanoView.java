@@ -9,8 +9,10 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IStylingEngine;
+import org.eclipse.e4.ui.workbench.UIEvents;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -84,7 +86,7 @@ public class ObjednanoView extends AbstractTableView {
 	private Combo typCombo;
 	protected Shell shell;
 	private int faze = 0;
-	
+
 	EPartService partService;
 	MPart pozadavekDetailView;
 	MPart objednavkaDetailView;
@@ -92,18 +94,19 @@ public class ObjednanoView extends AbstractTableView {
 	@Inject
 	public ObjednanoView(Composite parent,
 			@Optional IStylingEngine styleEngine,
-			@Optional ObjednavkaDAO objednavkaDAO, IEclipseContext context, EPartService partService) {
+			@Optional ObjednavkaDAO objednavkaDAO, IEclipseContext context,
+			EPartService partService) {
 		super(styleEngine);
 
 		shell = parent.getShell();
 		this.objednavkaDAO = objednavkaDAO;
 		this.context = context;
-		this.partService =partService;
-		
+		this.partService = partService;
+
 		pozadavekDetailView = partService.findPart(PozadavekDetailView.ID);
-			
-		 objednavkaDetailView = partService.findPart(ObjednavkaDetailView.ID);
-		
+
+		objednavkaDetailView = partService.findPart(ObjednavkaDetailView.ID);
+
 		context.getParent().set(ObjednanoView.ID, this);
 
 		createPartControl(parent);
@@ -146,8 +149,7 @@ public class ObjednanoView extends AbstractTableView {
 				.getToolTipText()) {
 			@Override
 			public String getText(Object element) {
-				return ((Objednavka) element).getCena() != null ? String
-						.valueOf(((Objednavka) element).getCena()) : "";
+				return ((Objednavka) element).getCenaFormated();
 			}
 		});
 
@@ -176,9 +178,7 @@ public class ObjednanoView extends AbstractTableView {
 				.getToolTipText()) {
 			@Override
 			public String getText(Object element) {
-				return ((Objednavka) element).getCislo_faktury_dopravce() != null ? String
-						.valueOf(((Objednavka) element)
-								.getCislo_faktury_dopravce()) : "";
+				return ((Objednavka) element).getCisloFakturyDopravceAsString();
 			}
 		});
 
@@ -203,6 +203,20 @@ public class ObjednanoView extends AbstractTableView {
 				faze = typCombo.getSelectionIndex();
 				viewer.setInput(getModelData());
 				viewer.refresh();
+				if (viewer.getSelection().isEmpty()) {
+					viewer.getTable().select(0);
+				}
+				final Objednavka selectedObjednavka = (Objednavka) ((StructuredSelection) viewer
+						.getSelection()).getFirstElement();
+				if (selectedObjednavka != null) {
+					eventBroker.send(
+							EventConstants.OBJEDNAVKA_SELECTION_CHANGED,
+							selectedObjednavka);
+				} else {
+					eventBroker.send(EventConstants.EMPTY_OBJEDNAVKA_SEND,
+							EventConstants.EMPTY_OBJEDNAVKA_SEND);
+				}
+
 			}
 		});
 
@@ -217,7 +231,8 @@ public class ObjednanoView extends AbstractTableView {
 						.getSelection()).getFirstElement();
 				if (selectedObjednavka == null)
 					return;
-				new NovaObjednavkaDialog(shell,	context, selectedObjednavka, eventBroker).open();				
+				new NovaObjednavkaDialog(shell, context, selectedObjednavka,
+						eventBroker).open();
 			}
 
 		});
@@ -257,26 +272,34 @@ public class ObjednanoView extends AbstractTableView {
 	protected TableViewerComparator getComparator() {
 		return new TableViewerComparator();
 	}
+	
+	
 
 	@Focus
-	public void setFocus() {
+	public void setFocus() {		
 		super.setFocus();
+		
 		novyMenuItem.setVisible(false);
 		editMenuItem.setVisible(true);
 		smazatMenuItem.setVisible(true);
+		prevestMenuItem.setVisible(false);
 
 		editMenuItem.setTooltip("Editovat objednávku");
-		smazatMenuItem.setTooltip("Smazat objednávku");		
+		smazatMenuItem.setTooltip("Smazat objednávku");
 
-		objednavkaDetailView.setVisible(true);
-				
-		//partService.hidePart(pozadavekDetailView);
-		partService.showPart(objednavkaDetailView, PartState.VISIBLE);
-		pozadavekDetailView.setVisible(false);
-		objednavkaDetailView.setToBeRendered(true);
-		//partService.bringToTop(objednavkaDetailView);*/
+		if(!objednavkaDetailView.isVisible()) objednavkaDetailView.setVisible(true);		
+		if(pozadavekDetailView.isVisible()) pozadavekDetailView.setVisible(false);	
+	//	objednavkaDetailView.setToBeRendered(true);
 		
+		final Object selectedObject = (((StructuredSelection) viewer.getSelection())
+				.getFirstElement());
+		if(selectedObject != null )eventBroker
+				.send(EventConstants.OBJEDNAVKA_SELECTION_CHANGED,
+						selectedObject);
+		else eventBroker.send(EventConstants.EMPTY_OBJEDNAVKA_SEND, EventConstants.EMPTY_OBJEDNAVKA_SEND);
+
 		
+
 	}
 
 	public void editSelectedObjednavka() {
@@ -307,7 +330,7 @@ public class ObjednanoView extends AbstractTableView {
 		;
 
 	}
-	
+
 	@Inject
 	@Optional
 	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) Objednavka o) {

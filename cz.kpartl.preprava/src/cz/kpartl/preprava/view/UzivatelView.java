@@ -278,6 +278,7 @@ public class UzivatelView extends AbstractTableView {
 		novyMenuItem.setVisible(true);
 		editMenuItem.setVisible(true);
 		smazatMenuItem.setVisible(true);
+		prevestMenuItem.setVisible(false);
 
 		novyMenuItem.setTooltip("Vytvoøit nového uživatele");
 		editMenuItem.setTooltip("Editovat uživatele");

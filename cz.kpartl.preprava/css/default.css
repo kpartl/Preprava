@@ -1,0 +1,27 @@
+.MTrimmedWindow.topLevel {
+margin-top: 5px;
+margin-bottom: 2px;
+margin-left: 2px;
+margin-right: 2px;
+}
+
+.MPartStack {
+swt-tab-outline: #DDDDDD;
+swt-shadow-visible: true;
+swt-minimize-visible: false;
+swt-maximize-visible: false;
+}
+
+
+
+.MTrimBar {
+background-color: #CFCFCF #A8A8A8 100%;
+}
+.MTrimmedWindow.topLevel {
+margin-top: 5px;
+margin-bottom: 2px;
+margin-left: 2px;
+margin-right: 2px;
+}
+
+

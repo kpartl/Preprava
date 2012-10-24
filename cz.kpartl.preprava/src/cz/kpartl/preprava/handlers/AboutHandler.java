@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 public class AboutHandler {
 	@Execute
 	public void execute(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
-		MessageDialog.openInformation(shell, "About", "e4 Application example.");
+		MessageDialog.openInformation(shell, "O aplikaci", "Pøeprava v 1.0 \n \nAutor: Karel Pártl \n" +
+				"partl.karel@gmail.com");
 	}
 }

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
@@ -37,6 +38,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.impl.HandledToolItemImpl;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.services.IStylingEngine;
+import org.eclipse.e4.ui.workbench.UIEvents;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
@@ -118,7 +120,8 @@ public class PozadavkyView extends AbstractTableView {
 
 	@Inject
 	public PozadavkyView(Composite parent,
-			@Optional IStylingEngine styleEngine, IEclipseContext context,EPartService partService) {
+			@Optional IStylingEngine styleEngine, IEclipseContext context,
+			EPartService partService) {
 
 		super(styleEngine);
 		this.context = context;
@@ -126,11 +129,8 @@ public class PozadavkyView extends AbstractTableView {
 		shell = parent.getShell();
 
 		this.pozadavekDAO = context.get(PozadavekDAO.class);
-		 objednavkaDetailView = partService.findPart(ObjednavkaDetailView.ID);
-		 pozadavekDetailView = partService.findPart(PozadavekDetailView.ID);
-		 
-		 
-		 
+		objednavkaDetailView = partService.findPart(ObjednavkaDetailView.ID);
+		pozadavekDetailView = partService.findPart(PozadavekDetailView.ID);
 
 		createPartControl(parent);
 	}
@@ -190,8 +190,8 @@ public class PozadavkyView extends AbstractTableView {
 		final MenuItem smazatItem = new MenuItem(parent, SWT.PUSH);
 		smazatItem.setText("Smazat požadavek");
 		smazatItem.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {				
-			deleteSelectedPozadavek();
+			public void handleEvent(Event event) {
+				deleteSelectedPozadavek();
 			}
 		});
 
@@ -201,19 +201,7 @@ public class PozadavkyView extends AbstractTableView {
 		objednavkaItem.setText("Pøevést požadavek na objednávku");
 		objednavkaItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				Pozadavek selectedPozadavek = (Pozadavek) ((StructuredSelection) viewer
-						.getSelection()).getFirstElement();
-
-				NovaObjednavkaDialog novaObjednavkaDialog = new NovaObjednavkaDialog(
-						event.widget.getDisplay().getActiveShell(), context,
-						selectedPozadavek, eventBroker);
-				if (novaObjednavkaDialog.open() == Window.OK) {
-					// refreshInputData();
-					partService.showPart(
-							"cz.kpartl.preprava.part.tablepartobjednane",
-							EPartService.PartState.VISIBLE);
-				}
-
+			prevedSelectedPozadavek();
 			}
 		});
 
@@ -228,44 +216,40 @@ public class PozadavkyView extends AbstractTableView {
 	protected TableViewerComparator getComparator() {
 		return new PozadavekTableViewerComparator();
 	}
-
+	
 	@Focus
-	public void setFocus() {
+	public void setFocus() {		
 		super.setFocus();
 		novyMenuItem.setVisible(true);
 		editMenuItem.setVisible(true);
 		smazatMenuItem.setVisible(true);
-		
+		prevestMenuItem.setVisible(true);
+
 		novyMenuItem.setTooltip("Vytvoøit nový požadavek");
 		editMenuItem.setTooltip("Editovat požadavek");
 		smazatMenuItem.setTooltip("Smazat požadavek");
+		prevestMenuItem.setTooltip("Pøevést požadavek na objednávku");
+
+		if(!pozadavekDetailView.isVisible()) pozadavekDetailView.setVisible(true);
+		if(objednavkaDetailView.isVisible()) objednavkaDetailView.setVisible(false);	
 		
+		final Object selectedObject = (((StructuredSelection) viewer.getSelection())
+				.getFirstElement());
+		if(selectedObject != null )eventBroker
+				.send(EventConstants.POZADAVEK_SELECTION_CHANGED,
+						selectedObject);
 		
-				
-	
-		//partService.hidePart(objednavkaDetailView);
-		pozadavekDetailView.setVisible(true	);
-		partService.showPart(pozadavekDetailView, PartState.ACTIVATE);
-		objednavkaDetailView.setVisible(false);
-		pozadavekDetailView.setToBeRendered(true);
-		
-		
-		
-		/*System.out.println("PozadavekyView setFocus called 1");
-		partService.showPart(pozadavekDetailView, PartState.ACTIVATE);
-		partService.bringToTop(pozadavekDetailView);
-		System.out.println("PozadavekyView setFocus called 2");*/
-		
+
 	}
-	
-	public void editSelectedPozadavek(){
+
+	public void editSelectedPozadavek() {
 		Pozadavek selectedPozadavek = (Pozadavek) ((StructuredSelection) viewer
 				.getSelection()).getFirstElement();
 		if (selectedPozadavek != null)
 			new NovyPozadavekDialog(shell, context, selectedPozadavek,
 					eventBroker).open();
 	}
-	
+
 	public void deleteSelectedPozadavek() {
 		Pozadavek selectedPozadavek = (Pozadavek) ((StructuredSelection) viewer
 				.getSelection()).getFirstElement();
@@ -273,8 +257,7 @@ public class PozadavkyView extends AbstractTableView {
 				"Potvrzení smazání požadavku",
 				"Opravdu chcete smazat tento požadavek?");
 		if (result) {
-			Transaction tx = HibernateHelper.getInstance()
-					.beginTransaction();
+			Transaction tx = HibernateHelper.getInstance().beginTransaction();
 			pozadavekDAO.delete(selectedPozadavek);
 			tx.commit();
 			eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
@@ -282,10 +265,31 @@ public class PozadavkyView extends AbstractTableView {
 		;
 	}
 	
+	public void prevedSelectedPozadavek(){
+		Pozadavek selectedPozadavek = (Pozadavek) ((StructuredSelection) viewer
+				.getSelection()).getFirstElement();
+
+		NovaObjednavkaDialog novaObjednavkaDialog = new NovaObjednavkaDialog(
+				shell, context,
+				selectedPozadavek, eventBroker);
+		if (novaObjednavkaDialog.open() == Window.OK) {
+			eventBroker.send(EventConstants.REFRESH_VIEWERS, selectedPozadavek);
+			eventBroker.send(EventConstants.POZADAVEK_SELECTION_CHANGED, selectedPozadavek);
+			
+			partService.showPart(
+					"cz.kpartl.preprava.part.tablepartobjednane",
+					EPartService.PartState.VISIBLE);
+		}
+
+	}
+
 	@Inject
 	@Optional
 	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) Pozadavek p) {
 		viewer.setInput(getModelData());
+		if(((ArrayList)viewer.getInput()).isEmpty()){
+			eventBroker.send(EventConstants.EMPTY_POZADAVEK_SEND, "");
+		}
 	}
 
 }

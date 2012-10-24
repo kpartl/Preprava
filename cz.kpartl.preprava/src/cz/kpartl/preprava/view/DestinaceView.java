@@ -268,6 +268,8 @@ public class DestinaceView extends AbstractTableView {
 		novyMenuItem.setVisible(true);
 		editMenuItem.setVisible(true);
 		smazatMenuItem.setVisible(true);
+		prevestMenuItem.setVisible(false);
+		
 		
 		novyMenuItem.setTooltip("Vytvoøit novou destinaci");
 		editMenuItem.setTooltip("Editovat destinaci");

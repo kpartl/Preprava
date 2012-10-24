@@ -16,6 +16,10 @@
                name="lifeCycleURI"
                value="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.util.Login">
          </property>
+         <property
+               name="applicationCSS"
+               value="platform:/plugin/cz.kpartl.preprava/css/default.css">
+         </property>
          
       </product>
    </extension>

@@ -15,13 +15,14 @@
    <launcher>
       <solaris/>
       <win useIco="false">
-         <bmp/>
+         <bmp
+            winSmallHigh="/cz.kpartl.preprava/icons/truck.bmp"
+            winSmallLow="/cz.kpartl.preprava/icons/truck.bmp"/>
       </win>
    </launcher>
 
    <vm>
    </vm>
-
 
    <plugins>
       <plugin id="ch.qos.logback.classic"/>

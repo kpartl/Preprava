@@ -172,7 +172,7 @@ public class Destinace implements java.io.Serializable {
 	}
 	
 	public String getNazevACislo(){
-		return getNazev().concat("(").concat(String.valueOf(getCislo()).concat(")"));
+		return getNazev().concat(" (").concat(String.valueOf(getCislo()).concat(")"));
 	}
 	
 	public String getKontaktniOsobuAKontakt(){
