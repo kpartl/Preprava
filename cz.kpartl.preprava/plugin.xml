@@ -26,12 +26,12 @@
    <extension
          point="org.eclipse.core.expressions.definitions">
       <definition
-            id="cz.kpartl.preprava.definition4">
+            id="cz.kpartl.preprava.definition.admin">
          <with
-               variable="selection">
-            <instanceof
-                  value="org.eclipse.swt.widgets.TableItem">
-            </instanceof>
+               variable="cz.kpartl.preprava.admin">
+            <equals
+                  value="1">
+            </equals>
          </with>
       </definition>
    </extension>

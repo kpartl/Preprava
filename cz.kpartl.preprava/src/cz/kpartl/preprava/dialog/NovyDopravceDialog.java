@@ -127,7 +127,7 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 							dopravceDAO.update(dopravce);
 						tx.commit();
 						
-						eventBroker.post(EventConstants.REFRESH_VIEWERS, dopravce);
+						eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
 
 						close();
 					} catch (Exception ex) {

@@ -29,6 +29,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import cz.kpartl.preprava.util.EventConstants;
+import cz.kpartl.preprava.util.Login;
 
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
@@ -100,10 +101,7 @@ public abstract class AbstractTableView extends ViewPart {
 
 	protected IStylingEngine styleEngine;
 
-	protected static final Image CHECKED = Activator.getImageDescriptor(
-			"icons/checked.gif").createImage();
-	protected static final Image UNCHECKED = Activator.getImageDescriptor(
-			"icons/unchecked.gif").createImage();
+
 
 	protected Menu headerMenu;
 
@@ -127,6 +125,9 @@ public abstract class AbstractTableView extends ViewPart {
 	protected HandledToolItemImpl editMenuItem;
 	protected HandledToolItemImpl smazatMenuItem;
 	protected HandledToolItemImpl prevestMenuItem;
+	
+	protected Image checkedImage;
+	protected Image uncheckedImage;
 
 	public AbstractTableView(IStylingEngine styleEngine) {
 		this.styleEngine = styleEngine;
@@ -148,6 +149,9 @@ public abstract class AbstractTableView extends ViewPart {
 				"cz.kpartl.preprava.handledtoolitem.delete", app);
 		prevestMenuItem = (HandledToolItemImpl) modelService.find(
 				"cz.kpartl.preprava.handledtoolitem.prevod", app);
+		
+		checkedImage = (Image) context.get(Login.CHECKED_ICON);
+		uncheckedImage = (Image) context.get(Login.UNCHECKED_ICON);
 
 	}
 
@@ -422,9 +426,9 @@ public abstract class AbstractTableView extends ViewPart {
 					element = ((Objednavka) element).getPozadavek();
 				}
 				if (((Pozadavek) element).getJe_termin_konecny()) {
-					return CHECKED;
+					return checkedImage;
 				}
-				return UNCHECKED;
+				return uncheckedImage;
 			}
 		});
 
@@ -442,9 +446,9 @@ public abstract class AbstractTableView extends ViewPart {
 					element = ((Objednavka) element).getPozadavek();
 				}
 				if (((Pozadavek) element).getTaxi()) {
-					return CHECKED;
+					return checkedImage;
 				}
-				return UNCHECKED;
+				return uncheckedImage;
 			}
 		});
 

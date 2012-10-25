@@ -96,9 +96,8 @@ public class SwitchPerspectiveHandler {
 
 	@CanExecute
 	public boolean canExecute() {
-		boolean result = ((User) context.get(User.CONTEXT_NAME))
-				.isAdministrator();
-		return result;
+		return((User) context.get(User.CONTEXT_NAME))
+				.isAdministrator();		
 	}
 
 /*	@Inject

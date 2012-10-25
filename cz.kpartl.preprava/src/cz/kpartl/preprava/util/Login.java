@@ -2,6 +2,7 @@ package cz.kpartl.preprava.util;
 
 
 
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.ui.css.swt.theme.IThemeEngine;
@@ -17,6 +18,7 @@ import org.eclipse.e4.ui.workbench.lifecycle.PostContextCreate;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.WorkbenchAdvisor;
@@ -45,12 +47,17 @@ public class Login {
 	public static final String EDIT_ICON="EDIT_ICON";
 	public static final String DELETE_ICON="DELETE_ICON";
 	public static final String OBJEDNAVKA_ICON="OBJEDNAVKA_ICON";
+	public static final String CALENDAR_ICON="CALENDAR_ICON";
+	public static final String CHECKED_ICON="CHECKED_ICON";
+	public static final String UNCHECKED_ICON="UNCHECKED_ICON";
 			
 	UserDAO userDAO = null;
 	PozadavekDAO pozadavekDAO = null;
 	DestinaceDAO zakaznikDAO= null;
 	ObjednavkaDAO objednavkaDAO = null;
 	DopravceDAO dopravceDAO = null;
+	
+	Image addIcon, editIcon, deleteIcon, objednavkaIcon, calendarIcon, checkedIcon, uncheckedIcon;
 	
 	
 	
@@ -73,10 +80,21 @@ public class Login {
 	      context.set(DestinaceDAO.class, zakaznikDAO);
 	      context.set(DopravceDAO.class, dopravceDAO);
 	      
-	      context.set(ADD_ICON,Activator.getImageDescriptor("icons/add_obj.gif").createImage());
-	      context.set(EDIT_ICON,Activator.getImageDescriptor("icons/editor.gif").createImage());
-	      context.set(DELETE_ICON,Activator.getImageDescriptor("icons/delete_obj.gif").createImage());
-	      context.set(OBJEDNAVKA_ICON,Activator.getImageDescriptor("icons/objednavka.gif").createImage());
+	      addIcon = Activator.getImageDescriptor("icons/add_obj.gif").createImage();
+	      editIcon = Activator.getImageDescriptor("icons/editor.gif").createImage();
+	      deleteIcon = Activator.getImageDescriptor("icons/delete_obj.gif").createImage();
+	      objednavkaIcon =Activator.getImageDescriptor("icons/objednavka.gif").createImage();
+	      calendarIcon = Activator.getImageDescriptor("icons/calendar_icon.jpg").createImage();
+	      checkedIcon = Activator.getImageDescriptor("icons/checked.gif").createImage();
+	      uncheckedIcon = Activator.getImageDescriptor("icons/unchecked.gif").createImage();
+	      
+	      context.set(ADD_ICON, addIcon);
+	      context.set(EDIT_ICON,editIcon);
+	      context.set(DELETE_ICON,deleteIcon);
+	      context.set(OBJEDNAVKA_ICON,objednavkaIcon);
+	      context.set(CALENDAR_ICON, calendarIcon);
+	      context.set(CHECKED_ICON, checkedIcon);
+	      context.set(UNCHECKED_ICON, uncheckedIcon);
 	      
 	      
 	      InitUtil initUtil = ContextInjectionFactory.make(InitUtil.class, context);
@@ -89,7 +107,7 @@ public class Login {
 	 
 	 private void tryLogin(Shell shell, IEclipseContext context) 
 	 {
-		/* final LoginDialog dialog = new LoginDialog(shell);
+		 final LoginDialog dialog = new LoginDialog(shell);
 	      dialog.create();
 	 	      	      
 	 
@@ -97,17 +115,11 @@ public class Login {
 	         System.exit(0);
 	      }	
 	      	 
-	      	      */
-	      	     
+	     String username = dialog.getUsername();	      
+	      String password = userDAO.encryptPassword((dialog.getPassword()));
 	      
-	      
-	      
-	     /* String username = dialog.getUsername();
-	      
-	      String password = userDAO.encryptPassword((dialog.getPassword()));*/
-	      
-	      String username = InitUtil.LOGIN;
-	      String password = UserDAO.encryptPassword(InitUtil.PASSWORD);	    
+	    //  String username = InitUtil.LOGIN;
+	     // String password = UserDAO.encryptPassword(InitUtil.PASSWORD);	    
 	      	      	      
 	      //try to login
 	      User user = userDAO.login(username, password);
@@ -116,6 +128,7 @@ public class Login {
 
 	    	  //add the logged user to the context
 	    	  context.set(User.CONTEXT_NAME, user);
+	    	  context.set("cz.kpartl.preprava.admin", user.isAdministrator() ? "1":"0");
 	    	  
 	    	  return;
 	      }
@@ -133,6 +146,15 @@ public class Login {
 	    	  tryLogin(shell, context);
 	    	  
 	      }
+	 }
+	 
+	 @PreDestroy
+	 private void preDestroy() {
+		 addIcon.dispose();
+		 deleteIcon.dispose();
+		 editIcon.dispose();
+		 objednavkaIcon.dispose();
+		 calendarIcon.dispose();
 	 }
 
 }

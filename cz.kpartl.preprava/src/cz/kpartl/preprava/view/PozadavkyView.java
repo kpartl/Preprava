@@ -137,6 +137,7 @@ public class PozadavkyView extends AbstractTableView {
 
 	@Override
 	protected Object getModelData() {
+		System.out.println("cz.kpartl.preprava.admin = " + context.get("cz.kpartl.preprava.admin"));
 		return pozadavekDAO.findNeobjednane();
 	}
 
@@ -195,6 +196,7 @@ public class PozadavkyView extends AbstractTableView {
 			}
 		});
 
+		
 		new MenuItem(parent, SWT.SEPARATOR);
 
 		final MenuItem objednavkaItem = new MenuItem(parent, SWT.PUSH);
@@ -209,6 +211,7 @@ public class PozadavkyView extends AbstractTableView {
 		smazatItem.setImage((Image) context.get(Login.DELETE_ICON));
 		editItem.setImage((Image) context.get(Login.EDIT_ICON));
 		objednavkaItem.setImage((Image) context.get(Login.OBJEDNAVKA_ICON));
+		objednavkaItem.setEnabled(((User) context.get(User.CONTEXT_NAME)).isAdministrator());
 
 	}
 
@@ -236,7 +239,7 @@ public class PozadavkyView extends AbstractTableView {
 		final Object selectedObject = (((StructuredSelection) viewer.getSelection())
 				.getFirstElement());
 		if(selectedObject != null )eventBroker
-				.send(EventConstants.POZADAVEK_SELECTION_CHANGED,
+				.post(EventConstants.POZADAVEK_SELECTION_CHANGED,
 						selectedObject);
 		
 
@@ -273,7 +276,7 @@ public class PozadavkyView extends AbstractTableView {
 				shell, context,
 				selectedPozadavek, eventBroker);
 		if (novaObjednavkaDialog.open() == Window.OK) {
-			eventBroker.send(EventConstants.REFRESH_VIEWERS, selectedPozadavek);
+			//eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 			eventBroker.send(EventConstants.POZADAVEK_SELECTION_CHANGED, selectedPozadavek);
 			
 			partService.showPart(
@@ -282,10 +285,17 @@ public class PozadavkyView extends AbstractTableView {
 		}
 
 	}
-
+	
+	@PreDestroy
+	protected void preDestroy() {
+		eventBroker.send(EventConstants.DISPOSE_DETAIL, "");
+	}
+	
+	
+	
 	@Inject
 	@Optional
-	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) Pozadavek p) {
+	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) String s) {
 		viewer.setInput(getModelData());
 		if(((ArrayList)viewer.getInput()).isEmpty()){
 			eventBroker.send(EventConstants.EMPTY_POZADAVEK_SEND, "");

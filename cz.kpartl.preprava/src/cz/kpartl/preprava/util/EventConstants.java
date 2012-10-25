@@ -6,4 +6,5 @@ public interface EventConstants {
 	public static final String OBJEDNAVKA_SELECTION_CHANGED = "OBJEDNAVKA_SELECTION_CHANGED";
 	public static final String EMPTY_OBJEDNAVKA_SEND = "EMPTY_OBJEDNAVKA_SEND";
 	public static final String EMPTY_POZADAVEK_SEND = "EMPTY_POZADAVEK_SEND";
+	public static final String DISPOSE_DETAIL = "DISPOSE_DETAIL";
 }

@@ -25,6 +25,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -60,18 +61,19 @@ import cz.kpartl.preprava.model.Destinace;
 import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.util.EventConstants;
+import cz.kpartl.preprava.util.Login;
 import cz.kpartl.preprava.util.OtherUtils;
 import cz.kpartl.preprava.view.AbstractTableView;
 
 public class NovyPozadavekDialog extends TitleAreaDialog {
-	
-	final Logger logger = LoggerFactory.getLogger(NovyPozadavekDialog.class); 
+
+	final Logger logger = LoggerFactory.getLogger(NovyPozadavekDialog.class);
 
 	protected Shell parentShell;
 	protected DestinaceDAO destinaceDAO;
 	protected PozadavekDAO pozadavekDAO;
 	protected User user;
-	
+
 	protected IEclipseContext context;
 	protected IEventBroker eventBroker;
 	// IEventBroker broker;
@@ -85,7 +87,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 	protected Button datumVykladkyButton;
 	protected Button termin_konecny;
 	private Button taxi;
-	protected  Combo odkud;
+	protected Combo odkud;
 	protected Combo kam;
 	protected Text odkudKontakt;
 	protected Text kamKontakt;
@@ -111,7 +113,8 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 	@Inject
 	public NovyPozadavekDialog(
 			@Named(IServiceConstants.ACTIVE_SHELL) Shell parentShell,
-			IEclipseContext context, Pozadavek pozadavek, IEventBroker eventBroker) {
+			IEclipseContext context, Pozadavek pozadavek,
+			IEventBroker eventBroker) {
 		super(parentShell);
 		this.context = context;
 		this.destinaceDAO = context.get(DestinaceDAO.class);
@@ -124,28 +127,27 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		persistenceHelper = cz.kpartl.preprava.util.HibernateHelper
 				.getInstance();
 	}
-	
-	public Control publicCreateContents(Composite parent){
+
+	public Control publicCreateContents(Composite parent) {
 		return createContents(parent);
 	}
 
 	@Override
 	protected Control createContents(Composite parent) {
 		Control contents = super.createContents(parent);
-		if(pozadavek == null){ //novy pozadavek
-		setTitle("Vytvoøení nového požadavku na pøepravu");
-		setMessage("Zadejte data nového požadavku na pøepravu",
-				IMessageProvider.INFORMATION);
-		}
-		else{ //novy pozadavek
+		if (pozadavek == null) { // novy pozadavek
+			setTitle("Vytvoøení nového požadavku na pøepravu");
+			setMessage("Zadejte data nového požadavku na pøepravu",
+					IMessageProvider.INFORMATION);
+		} else { // novy pozadavek
 			setTitle("Editace požadavku na pøepravu");
 			setMessage("Upravte data požadavku na pøepravu",
 					IMessageProvider.INFORMATION);
-			}
+		}
 		return contents;
 	}
 
-	protected void setShellStyle(int newShellStyle) {		
+	protected void setShellStyle(int newShellStyle) {
 		super.setShellStyle(newShellStyle | SWT.RESIZE | SWT.MAX);
 	}
 
@@ -159,13 +161,12 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		parent.setLayout(layout);
 		createWidgets(parent);
 		createButtons(parent);
-		
+
 		return parent;
 	}
-	
-	
-	protected Composite createWidgets(Composite parent){
-		
+
+	protected Composite createWidgets(Composite parent) {
+
 		Label datumNakladkylabel = new Label(parent, SWT.NONE);
 		GridData gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false,
 				false);
@@ -180,8 +181,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		// GridData.HORIZONTAL_ALIGN_FILL));
 
 		datumNakladkyButton = new Button(parent, SWT.PUSH);
-		datumNakladkyButton.setImage(Activator.getImageDescriptor(
-				"icons/calendar_icon.jpg").createImage());
+		datumNakladkyButton.setImage((Image) context.get(Login.CALENDAR_ICON));
 		gridData = new GridData(SWT.BEGINNING, SWT.FILL, false, false);
 		gridData.heightHint = 15;
 		gridData.widthHint = 22;
@@ -204,9 +204,11 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 
 		Label hodinaNakladkyLabel = new Label(parent, SWT.BOLD);
 		hodinaNakladkyLabel.setText("Hodina nakládky");
-		gridData = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
-		//gridData = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL, SWT.CENTER, true, false);
-		// gridData.horizontalIndent = 10;		
+		gridData = new GridData(GridData.FILL_HORIZONTAL
+				| GridData.GRAB_HORIZONTAL);
+		// gridData = new GridData(GridData.FILL_HORIZONTAL |
+		// GridData.GRAB_HORIZONTAL, SWT.CENTER, true, false);
+		// gridData.horizontalIndent = 10;
 		hodinaNakladkyLabel.setLayoutData(gridData);
 
 		hodinaNakladky = new Text(parent, SWT.BORDER);
@@ -233,8 +235,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		gridData.heightHint = 5;
 		gridData.widthHint = 21;
 		datumVykladkyButton.setLayoutData(gridData);
-		datumVykladkyButton.setImage(Activator.getImageDescriptor(
-				"icons/calendar_icon.jpg").createImage());
+		datumVykladkyButton.setImage((Image) context.get(Login.CALENDAR_ICON));
 		datumVykladkyButton.addSelectionListener(new SelectionListener() {
 
 			public void widgetSelected(SelectionEvent event) {
@@ -352,7 +353,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 
 		Label pocetPaletLabel = new Label(parent, SWT.BOLD);
 		pocetPaletLabel.setText("Poèet palet");
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);		
+		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
 		pocetPaletLabel.setLayoutData(gridData);
 
 		pocetPalet = new Text(parent, SWT.BORDER);
@@ -408,12 +409,8 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		 * composite.setLayoutData(data);
 		 */
 
-		
-
 		// editace existujiciho pozadavku
 		fillFields();
-		
-		
 
 		return parent;
 	}
@@ -438,7 +435,6 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		return result;
 	}
 
-
 	protected void createButtons(Composite parent) {
 		Button okButton = new Button(parent, SWT.PUSH);
 		GridData gridData = new GridData(80, 25);
@@ -453,18 +449,22 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				Transaction tx = persistenceHelper.beginTransaction();
-				try{
-				if(updatePozadavek(tx)) {
-					tx.commit();
-					close();
-				}
-				else {
-					tx.rollback();
-				}
-				
-				}catch (Exception ex){
+				try {
+					if (updatePozadavek(tx)) {
+						tx.commit();
+						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
+						eventBroker.send(
+								EventConstants.POZADAVEK_SELECTION_CHANGED,
+								pozadavek);
+						close();
+					} else {
+						tx.rollback();
+					}
+
+				} catch (Exception ex) {
 					setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
-							.concat(System.getProperty("line.separator")).concat(ex.getMessage()));
+							.concat(System.getProperty("line.separator"))
+							.concat(ex.getMessage()));
 					logger.error("Nelze vlozit/updatovat destinaci", ex);
 				}
 			}
@@ -480,7 +480,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 				close();
 			}
 		});
-		
+
 	}
 
 	protected int getDestinaceIndex(String destinace) {
@@ -492,48 +492,44 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 
 		return -1;
 	}
-	
-	//zapise pozadavek do databaze
+
+	// zapise pozadavek do databaze
 	protected boolean updatePozadavek(Transaction tx) {
 		final ArrayList<String> validace = validatePozadavek();
 		if (validace.size() == 0) {
 			boolean novyPozadavek = pozadavek == null;
 			if (novyPozadavek) {
 				pozadavek = new Pozadavek();
-			}			
-		
-		pozadavek.setCelkova_hmotnost(hmotnost.getText());
-		pozadavek.setDatum(new Date(System.currentTimeMillis()));
-		pozadavek.setDatum_nakladky(datumNakladky.getText());
-		pozadavek.setDatum_vykladky(datumVykladky.getText());
-		pozadavek.setDestinace_z(destinaceMap.get(odkud
-				.getSelectionIndex()));
-		pozadavek.setDestinace_do(destinaceMap.get(kam
-				.getSelectionIndex()));
-		pozadavek.setHodina_nakladky(hodinaNakladky.getText());
-		pozadavek.setJe_termin_konecny(termin_konecny
-				.getSelection());
-		pozadavek.setPocet_palet(pocetPalet.getText());
-		pozadavek.setTaxi(taxi.getSelection());
-		pozadavek.setZadavatel(user);
-		pozadavek.setPoznamka(poznamka.getText());
-		
-		if (novyPozadavek)
-			pozadavek.setId(pozadavekDAO.create(pozadavek));
-		else
-			pozadavekDAO.update(pozadavek);
-		
-		eventBroker.send(EventConstants.REFRESH_VIEWERS, pozadavek);
-		eventBroker.send(EventConstants.POZADAVEK_SELECTION_CHANGED, pozadavek);
-		
-		return true;
+			}
+
+			pozadavek.setCelkova_hmotnost(hmotnost.getText());
+			pozadavek.setDatum(new Date(System.currentTimeMillis()));
+			pozadavek.setDatum_nakladky(datumNakladky.getText());
+			pozadavek.setDatum_vykladky(datumVykladky.getText());
+			pozadavek
+					.setDestinace_z(destinaceMap.get(odkud.getSelectionIndex()));
+			pozadavek
+					.setDestinace_do(destinaceMap.get(kam.getSelectionIndex()));
+			pozadavek.setHodina_nakladky(hodinaNakladky.getText());
+			pozadavek.setJe_termin_konecny(termin_konecny.getSelection());
+			pozadavek.setPocet_palet(pocetPalet.getText());
+			pozadavek.setTaxi(taxi.getSelection());
+			pozadavek.setZadavatel(user);
+			pozadavek.setPoznamka(poznamka.getText());
+
+			if (novyPozadavek)
+				pozadavek.setId(pozadavekDAO.create(pozadavek));
+			else
+				pozadavekDAO.update(pozadavek);
+
+			return true;
 		} else {
 			String errString = "";
 			for (String validaceMessage : validace)
 				errString = errString.concat(validaceMessage).concat(
 						System.getProperty("line.separator"));
 			setErrorMessage(errString);
-			
+
 			return false;
 		}
 
@@ -543,9 +539,12 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		if (pozadavek == null)
 			return;
 
-		hmotnost.setText(pozadavek.getCelkova_hmotnost()!= null? pozadavek.getCelkova_hmotnost() : "");		
-		datumNakladky.setText(pozadavek.getDatum_nakladky() != null ? pozadavek.getDatum_nakladky() : "");
-		datumVykladky.setText(pozadavek.getDatum_vykladky()!= null ? pozadavek.getDatum_vykladky(): "");
+		hmotnost.setText(pozadavek.getCelkova_hmotnost() != null ? pozadavek
+				.getCelkova_hmotnost() : "");
+		datumNakladky.setText(pozadavek.getDatum_nakladky() != null ? pozadavek
+				.getDatum_nakladky() : "");
+		datumVykladky.setText(pozadavek.getDatum_vykladky() != null ? pozadavek
+				.getDatum_vykladky() : "");
 		if (pozadavek.getDestinace_z() != null) {
 			final int index = getDestinaceIndex(pozadavek.getDestinace_z()
 					.getNazevACislo());
@@ -555,11 +554,15 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		}
 		kam.select(getDestinaceIndex(pozadavek.getDestinace_do()
 				.getNazevACislo()));
-		hodinaNakladky.setText(pozadavek.getHodina_nakladky() != null ? pozadavek.getHodina_nakladky() : "");
+		hodinaNakladky
+				.setText(pozadavek.getHodina_nakladky() != null ? pozadavek
+						.getHodina_nakladky() : "");
 		termin_konecny.setSelection(pozadavek.getJe_termin_konecny());
-		pocetPalet.setText(pozadavek.getPocet_palet() != null ? pozadavek.getPocet_palet() : "");
+		pocetPalet.setText(pozadavek.getPocet_palet() != null ? pozadavek
+				.getPocet_palet() : "");
 		taxi.setSelection(pozadavek.getTaxi());
-		poznamka.setText(pozadavek.getPoznamka() != null ? pozadavek.getPoznamka() :"");
+		poznamka.setText(pozadavek.getPoznamka() != null ? pozadavek
+				.getPoznamka() : "");
 
 	}
 
@@ -580,13 +583,13 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 	}
 
 	private SWTCalendarDialog getCalendarDialog(final Text text) {
-		SWTCalendarDialog calendarDialog = new SWTCalendarDialog(
-				this.getShell().getDisplay());
+		SWTCalendarDialog calendarDialog = new SWTCalendarDialog(this
+				.getShell().getDisplay());
 		calendarDialog.addDateChangedListener(new SWTCalendarListener() {
 			public void dateChanged(SWTCalendarEvent calendarEvent) {
 				text.setText(new SimpleDateFormat("dd.MM.yyyy")
 						.format(calendarEvent.getCalendar().getTime()));
-				//Object source = calendarEvent.getSource();
+				// Object source = calendarEvent.getSource();
 
 			}
 		});
@@ -596,11 +599,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		
+
 	}
-	
-	
-
-
 
 }

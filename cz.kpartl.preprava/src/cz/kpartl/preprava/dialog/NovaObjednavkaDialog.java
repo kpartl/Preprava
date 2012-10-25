@@ -258,6 +258,8 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 				try {
 					if (updatePozadavek(tx) && updateObjednavku(tx)) {
 						tx.commit();
+						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
+						eventBroker.send(EventConstants.OBJEDNAVKA_SELECTION_CHANGED, objednavka);
 						close();
 					} else {
 						tx.rollback();
@@ -300,7 +302,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 						.valueOf(cisloFakturyDopravce.getText()));
 			else objednavka.setCislo_faktury_dopravce(null);
 			objednavka.setMena(mena.getText());
-			objednavka.setZmena_nakladky(zmenaTerminuNakladky.getText());
+			objednavka.setZmena_nakladky(zmenaTerminuNakladky.getText());			
 			objednavka.setFaze(fazeCombo.getSelectionIndex());
 			objednavka.setDopravce(dopravceMap.get(dopravceCombo
 					.getSelectionIndex()));
@@ -310,8 +312,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 			else
 				objednavkaDAO.update(objednavka);
 			
-			eventBroker.send(EventConstants.REFRESH_VIEWERS, objednavka);
-			eventBroker.send(EventConstants.OBJEDNAVKA_SELECTION_CHANGED, objednavka);
+			
 			
 			/*UkoncenoView ukoncenoView = (UkoncenoView) context.get(UkoncenoView.class);
 			ObjednanoView objednanoView = (ObjednanoView)context.get(ObjednanoView.ID);

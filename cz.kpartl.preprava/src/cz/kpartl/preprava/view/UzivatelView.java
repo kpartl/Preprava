@@ -1,11 +1,14 @@
 package cz.kpartl.preprava.view;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -171,9 +174,9 @@ public class UzivatelView extends AbstractTableView {
 			@Override
 			public Image getImage(Object element) {
 				if (((User) element).isAdministrator()) {
-					return CHECKED;
+					return checkedImage;
 				}
-				return UNCHECKED;
+				return uncheckedImage;
 			}
 		});
 
@@ -241,7 +244,7 @@ public class UzivatelView extends AbstractTableView {
 		}
 
 		new NovyUzivatelDialog(shell, context, selectedUser, eventBroker).open();
-		eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
+		//eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
 
 	}
 
@@ -262,6 +265,7 @@ public class UzivatelView extends AbstractTableView {
 						.beginTransaction();
 				userDAO.delete(selectedUzivatel);
 				tx.commit();
+				eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
 			} catch (Exception ex) {
 				MessageDialog
 						.openError(shell, "Chyba pøi zápisu do databáze",
@@ -269,7 +273,7 @@ public class UzivatelView extends AbstractTableView {
 
 				logger.error("Nelze vložit/upravit uživatele", ex);
 			}
-			eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
+			
 		}
 		;
 	}
@@ -291,5 +295,11 @@ public class UzivatelView extends AbstractTableView {
 	@Override
 	protected TableViewerComparator getComparator() {
 		return new UzivatelTableViewerComparator();
+	}
+	
+	@Inject
+	@Optional
+	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) String u) {
+		viewer.setInput(getModelData());		
 	}
 }

@@ -150,7 +150,7 @@ public class NovyUzivatelDialog extends TitleAreaDialog {
 						else
 							uzivatelDAO.update(uzivatel);
 						tx.commit();
-						eventBroker.post(EventConstants.REFRESH_VIEWERS, uzivatel);
+						eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
 						close();
 					} catch (Exception ex) {
 						setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."

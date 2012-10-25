@@ -285,7 +285,7 @@ public class DestinaceView extends AbstractTableView {
 		if (selectedDestinace != null){
 			new NovaDestinaceDialog(shell, context, selectedDestinace,
 					eventBroker).open();
-			eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
+			//eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
 		}
 	}
 
@@ -324,7 +324,7 @@ public class DestinaceView extends AbstractTableView {
 	
 	@Inject
 	@Optional
-	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) Destinace d) {
+	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) String s) {
 		viewer.setInput(getModelData());
 	}
 

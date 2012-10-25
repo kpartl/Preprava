@@ -206,6 +206,12 @@ public class PozadavekDetailView extends ViewPart {
 
 	}
 
+	@Inject
+	@Optional	 
+	protected void destroyMe(@UIEventTopic(EventConstants.DISPOSE_DETAIL) String s){		
+		this.dispose();
+	}
+	
 	@PreDestroy
 	protected void onDestroy() {
 		if (boldFont != null)

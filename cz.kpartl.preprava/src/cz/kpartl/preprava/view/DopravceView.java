@@ -222,7 +222,7 @@ public class DopravceView extends AbstractTableView {
 		new NovyDopravceDialog(shell, context,
 				selectedDopravce, eventBroker).open();	
 		
-		eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
+		//eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
 	}
 	public void deleteSelectedDopravce(){
 		Dopravce selectedDopravce = (Dopravce) ((StructuredSelection) viewer
@@ -272,7 +272,7 @@ public class DopravceView extends AbstractTableView {
 	
 	@Inject
 	@Optional
-	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) Dopravce d) {
+	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) String d) {
 		viewer.setInput(getModelData());
 	}
 }

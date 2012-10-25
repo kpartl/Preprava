@@ -1,5 +1,6 @@
 package cz.kpartl.preprava.view;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -46,6 +47,7 @@ import cz.kpartl.preprava.dialog.NovyPozadavekDialog;
 import cz.kpartl.preprava.model.Dopravce;
 import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.model.Pozadavek;
+import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.sorter.ObjednavkaTableViewerComparator;
 import cz.kpartl.preprava.sorter.PozadavekTableViewerComparator;
 import cz.kpartl.preprava.sorter.TableViewerComparator;
@@ -96,12 +98,13 @@ public class ObjednanoView extends AbstractTableView {
 	@Inject
 	public ObjednanoView(Composite parent,
 			@Optional IStylingEngine styleEngine,
-			@Optional ObjednavkaDAO objednavkaDAO, IEclipseContext context,
+			@Optional ObjednavkaDAO objednavkaDAO, @Optional PozadavekDAO pozadavekDAO,IEclipseContext context,
 			EPartService partService) {
 		super(styleEngine);
 
 		shell = parent.getShell();
 		this.objednavkaDAO = objednavkaDAO;
+		this.pozadavekDAO = pozadavekDAO;
 		this.context = context;
 		this.partService = partService;
 
@@ -250,6 +253,9 @@ public class ObjednanoView extends AbstractTableView {
 	}
 
 	protected void createMenuItems(Menu parent) {
+		if(!((User) context.get(User.CONTEXT_NAME)).isAdministrator())
+			return;	//neadmin nema narok
+			
 		final MenuItem editItem = new MenuItem(parent, SWT.PUSH);
 		editItem.setText("Editovat objednávku");
 		editItem.addListener(SWT.Selection, new Listener() {
@@ -312,7 +318,7 @@ public class ObjednanoView extends AbstractTableView {
 		new NovaObjednavkaDialog(shell, context, selectedObjednavka,
 				eventBroker).open();
 
-		eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
+		//eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
 	}
 
 	public void deleteSelectedObjednavka() {
@@ -322,21 +328,15 @@ public class ObjednanoView extends AbstractTableView {
 				"Potvrzení smazání objednávky",
 				"Opravdu chcete smazat tuto objednávku?");
 		if (result) {
-			Transaction tx = HibernateHelper.getInstance().beginTransaction();
-			objednavkaDAO.delete(selectedObjednavka);
+			Transaction tx = HibernateHelper.getInstance().beginTransaction();			
 			pozadavekDAO.delete(selectedObjednavka.getPozadavek());
+			objednavkaDAO.delete(selectedObjednavka);
 			tx.commit();
 
 			eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
 		}
 		;
 
-	}
-
-	@Inject
-	@Optional
-	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) Objednavka o) {
-		viewer.setInput(getModelData());
 	}
 
 	public static String[] getComboItems(boolean withUkonceno) {
@@ -349,5 +349,18 @@ public class ObjednanoView extends AbstractTableView {
 		}
 		return result.toArray(new String[result.size()]);
 
+	}
+	
+	@Inject
+	@Optional
+	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) String o) {
+		StructuredSelection selection = (StructuredSelection) viewer.getSelection();
+		viewer.setInput(getModelData());
+		if(!((ArrayList)viewer.getInput()).contains(selection.getFirstElement())){
+			viewer.getTable().select(-1);
+			
+			eventBroker.post(EventConstants.EMPTY_OBJEDNAVKA_SEND, EventConstants.EMPTY_OBJEDNAVKA_SEND);
+		}
+		
 	}
 }

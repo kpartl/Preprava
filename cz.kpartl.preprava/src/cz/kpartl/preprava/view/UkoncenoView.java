@@ -1,5 +1,7 @@
 package cz.kpartl.preprava.view;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -16,8 +18,10 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.w3c.dom.events.EventTarget;
 
 import cz.kpartl.preprava.dao.ObjednavkaDAO;
+import cz.kpartl.preprava.dao.PozadavekDAO;
 import cz.kpartl.preprava.dialog.NovaObjednavkaDialog;
 import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.util.EventConstants;
@@ -28,8 +32,8 @@ public class UkoncenoView extends ObjednanoView {
 
 	@Inject
 	public UkoncenoView(Composite parent, IStylingEngine styleEngine,
-			ObjednavkaDAO objednavkaDAO, IEclipseContext context, IEventBroker eventBroker, EPartService partService) {
-		super(parent, styleEngine, objednavkaDAO, context, partService);
+			ObjednavkaDAO objednavkaDAO, PozadavekDAO pozadavekDAO, IEclipseContext context, IEventBroker eventBroker, EPartService partService) {
+		super(parent, styleEngine, objednavkaDAO, pozadavekDAO, context, partService);
 		context.getParent().set(UkoncenoView.class, this);
 		
 	}
@@ -69,11 +73,7 @@ public class UkoncenoView extends ObjednanoView {
 		return objednavkaDAO.findByFaze(Objednavka.FAZE_UKONCENO);
 	}
 	
-	@Inject
-	@Optional
-	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) Objednavka o) {
-		viewer.setInput(getModelData());
-	}
+	
 	
 	
 }
