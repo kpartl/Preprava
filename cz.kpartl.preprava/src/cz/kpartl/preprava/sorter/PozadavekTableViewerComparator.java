@@ -15,56 +15,60 @@ public class PozadavekTableViewerComparator extends TableViewerComparator {
 			rc = p1.getDatum().compareTo(p2.getDatum());
 			break;
 		case 1:
-			rc = p1.getDatum_nakladky().compareTo(p2.getDatum_nakladky());
+			rc = comparator.compare(p1.getDatum_nakladky(),
+					p2.getDatum_nakladky());
 			break;
 		case 2:
-			rc = p1.getDatum_vykladky().compareTo(p2.getDatum_vykladky());
+			rc = comparator.compare(p1.getDatum_vykladky(),
+					p2.getDatum_vykladky());
 			break;
 		case 3:
-			rc = p1.getDestinace_z().getNazevACislo()
-					.compareTo(p2.getDestinace_z().getNazevACislo());
+			rc = comparator.compare(p1.getDestinace_z().getNazevACislo(), p2
+					.getDestinace_z().getNazevACislo());
 			break;
 		case 4:
-			rc = p1.getDestinace_do().getNazevACislo()
-					.compareTo(p2.getDestinace_do().getNazevACislo());
+			rc = comparator.compare(p1.getDestinace_do().getNazevACislo(), p2
+					.getDestinace_do().getNazevACislo());
 			break;
 		case 5:
-			rc = p1.getCelkova_hmotnost().compareTo(p2.getCelkova_hmotnost());
+			rc = comparator.compare(p1.getCelkova_hmotnost(),
+					p2.getCelkova_hmotnost());
 			break;
 		case 6:
-			rc = p1.getPocet_palet().compareTo(p2.getPocet_palet());
+			rc = comparator.compare(p1.getPocet_palet(), p2.getPocet_palet());
 			break;
 		case 7:
 			if (p1.getJe_termin_konecny() == p2.getJe_termin_konecny()) {
-				rc = 0;				
+				rc = 0;
 			} else
 				rc = (p1.getJe_termin_konecny() ? 1 : -1);
 			break;
 		case 8:
 			if (p1.getTaxi() == p2.getTaxi()) {
-				rc = 0;				
+				rc = 0;
 			} else
 				rc = (p1.getTaxi() ? 1 : -1);
 			break;
 		case 9:
-			rc = p1.getDestinace_z().getKontaktniOsobuAKontakt()
-					.compareTo(p2.getDestinace_z().getKontaktniOsobuAKontakt());
+			rc = comparator.compare(p1.getDestinace_z()
+					.getKontaktniOsobuAKontakt(), p2.getDestinace_z()
+					.getKontaktniOsobuAKontakt());
 			break;
 		case 10:
-			rc = p1.getDestinace_do().getKontaktniOsobuAKontakt()
-					.compareTo(p2.getDestinace_do().getKontaktniOsobuAKontakt());
+			rc = comparator.compare(p1.getDestinace_do()
+					.getKontaktniOsobuAKontakt(), p2.getDestinace_do()
+					.getKontaktniOsobuAKontakt());
 			break;
 		case 11:
-			rc = p1.getHodina_nakladky()
-					.compareTo(p2.getHodina_nakladky());
+			rc = comparator.compare(p1.getHodina_nakladky(),
+					p2.getHodina_nakladky());
 			break;
 		case 12:
-			rc = p1.getZadavatel().getUsername()
-					.compareTo(p2.getZadavatel().getUsername());
+			rc = comparator.compare(p1.getZadavatel().getUsername(), p2
+					.getZadavatel().getUsername());
 			break;
 		case 13:
-			rc = p1.getPoznamka()
-					.compareTo(p2.getPoznamka());
+			rc = comparator.compare(p1.getPoznamka(), p2.getPoznamka());
 			break;
 		default:
 			rc = 0;

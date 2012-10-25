@@ -44,7 +44,7 @@
         <children xsi:type="menu:HandledToolItem" xmi:id="_nkHktfdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.toolItem.novyPozadavek" label="" iconURI="platform:/plugin/cz.kpartl.preprava/icons/add_obj.gif" tooltip="Vytvoření nového požadavku" enabled="false" command="_sFLgoBVzEeKNqPJNco7s0w"/>
         <children xsi:type="menu:HandledToolItem" xmi:id="_qGOHkBm7EeKXZLm_H6PBBQ" elementId="cz.kpartl.preprava.handledtoolitem.edit" iconURI="platform:/plugin/cz.kpartl.preprava/icons/editor.gif" tooltip="Editace požadavku" enabled="false" command="_t_nToBm-EeKXZLm_H6PBBQ"/>
         <children xsi:type="menu:HandledToolItem" xmi:id="_1Xb9IBm7EeKXZLm_H6PBBQ" elementId="cz.kpartl.preprava.handledtoolitem.delete" iconURI="platform:/plugin/cz.kpartl.preprava/icons/delete_obj.gif" tooltip="Smazání požadavku" enabled="false" command="_yJvxwBm-EeKXZLm_H6PBBQ"/>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_Hkl8EB3YEeKkIcYxzMQFeA" elementId="cz.kpartl.preprava.handledtoolitem.prevod" label="Převést požadavek na objednávku" iconURI="platform:/plugin/cz.kpartl.preprava/icons/objednavka.gif" enabled="false" command="_aOLGUB3YEeKkIcYxzMQFeA"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_Hkl8EB3YEeKkIcYxzMQFeA" elementId="cz.kpartl.preprava.handledtoolitem.prevod" label="" iconURI="platform:/plugin/cz.kpartl.preprava/icons/objednavka.gif" tooltip="Převést požadavek na objednávku" enabled="false" command="_aOLGUB3YEeKkIcYxzMQFeA"/>
       </children>
     </trimBars>
   </children>

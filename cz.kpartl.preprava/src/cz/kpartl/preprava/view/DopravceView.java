@@ -49,6 +49,7 @@ import cz.kpartl.preprava.dao.DopravceDAO;
 import cz.kpartl.preprava.dialog.NovyDopravceDialog;
 
 import cz.kpartl.preprava.model.Dopravce;
+import cz.kpartl.preprava.sorter.DopravceTableViewerComparator;
 import cz.kpartl.preprava.sorter.TableViewerComparator;
 import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
@@ -266,7 +267,7 @@ public class DopravceView extends AbstractTableView {
 
 	@Override
 	protected TableViewerComparator getComparator() {
-		return new TableViewerComparator();
+		return new DopravceTableViewerComparator();
 	}
 	
 	@Inject

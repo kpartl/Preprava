@@ -1,15 +1,33 @@
 package cz.kpartl.preprava.sorter;
 
+import java.text.ParseException;
+
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cz.kpartl.preprava.model.Pozadavek;
+import cz.kpartl.preprava.util.CzechComparator;
 
 public class TableViewerComparator extends ViewerComparator {
 	protected int propertyIndex;
 	protected static final int DESCENDING = 1;
 	protected int direction = DESCENDING;
+
+	static final Logger logger = LoggerFactory
+			.getLogger(TableViewerComparator.class);
+	protected static CzechComparator comparator = null;
+
+	static {
+		try {
+			comparator = new CzechComparator();
+		} catch (ParseException e) {
+			logger.error("Chyba pri parsovani retezce", e);
+			e.printStackTrace();
+		}
+	}
 
 	public TableViewerComparator() {
 		this.propertyIndex = 0;
@@ -31,6 +49,9 @@ public class TableViewerComparator extends ViewerComparator {
 		}
 	}
 
-	
+	@Override
+	public void sort(Viewer viewer, Object[] elements) {
+		super.sort(viewer, elements);
+	}
 
 }

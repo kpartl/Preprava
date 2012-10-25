@@ -52,6 +52,7 @@ import cz.kpartl.preprava.dialog.NovyPozadavekDialog;
 import cz.kpartl.preprava.model.Destinace;
 import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.model.Pozadavek;
+import cz.kpartl.preprava.sorter.DestinaceTableViewerComparator;
 import cz.kpartl.preprava.sorter.TableViewerComparator;
 import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
@@ -195,7 +196,7 @@ public class DestinaceView extends AbstractTableView {
 			}
 		});
 
-		col = createTableViewerColumn("PSÈ", 200, columnIndex++, "PSÈe");
+		col = createTableViewerColumn("PSÈ", 200, columnIndex++, "PSÈ");
 
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
@@ -318,7 +319,7 @@ public class DestinaceView extends AbstractTableView {
 
 	@Override
 	protected TableViewerComparator getComparator() {
-		return new TableViewerComparator();
+		return new DestinaceTableViewerComparator();
 	}
 	
 	@Inject

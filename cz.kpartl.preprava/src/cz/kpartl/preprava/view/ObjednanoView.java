@@ -46,6 +46,8 @@ import cz.kpartl.preprava.dialog.NovyPozadavekDialog;
 import cz.kpartl.preprava.model.Dopravce;
 import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.model.Pozadavek;
+import cz.kpartl.preprava.sorter.ObjednavkaTableViewerComparator;
+import cz.kpartl.preprava.sorter.PozadavekTableViewerComparator;
 import cz.kpartl.preprava.sorter.TableViewerComparator;
 import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
@@ -270,7 +272,7 @@ public class ObjednanoView extends AbstractTableView {
 
 	@Override
 	protected TableViewerComparator getComparator() {
-		return new TableViewerComparator();
+		return new ObjednavkaTableViewerComparator();
 	}
 	
 	

@@ -41,6 +41,7 @@ import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.sorter.TableViewerComparator;
+import cz.kpartl.preprava.sorter.UzivatelTableViewerComparator;
 import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
 import cz.kpartl.preprava.util.Login;
@@ -289,6 +290,6 @@ public class UzivatelView extends AbstractTableView {
 
 	@Override
 	protected TableViewerComparator getComparator() {
-		return new TableViewerComparator();
+		return new UzivatelTableViewerComparator();
 	}
 }
