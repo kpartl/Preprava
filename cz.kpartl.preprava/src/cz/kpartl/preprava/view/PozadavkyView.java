@@ -136,8 +136,7 @@ public class PozadavkyView extends AbstractTableView {
 	}
 
 	@Override
-	protected Object getModelData() {
-		System.out.println("cz.kpartl.preprava.admin = " + context.get("cz.kpartl.preprava.admin"));
+	protected Object getModelData() {		
 		return pozadavekDAO.findNeobjednane();
 	}
 

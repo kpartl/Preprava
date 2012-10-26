@@ -150,8 +150,7 @@ public abstract class AbstractTableView extends ViewPart {
 		prevestMenuItem = (HandledToolItemImpl) modelService.find(
 				"cz.kpartl.preprava.handledtoolitem.prevod", app);
 		
-		checkedImage = (Image) context.get(Login.CHECKED_ICON);
-		uncheckedImage = (Image) context.get(Login.UNCHECKED_ICON);
+		
 
 	}
 
@@ -214,6 +213,9 @@ public abstract class AbstractTableView extends ViewPart {
 	}
 
 	public void createPartControl(Composite parent) {
+		checkedImage = (Image) context.get(Login.CHECKED_ICON);
+		uncheckedImage = (Image) context.get(Login.UNCHECKED_ICON);
+		
 		GridLayout layout = new GridLayout(1, false);
 		parent.setLayout(layout);
 		createViewer(parent, getModelData());

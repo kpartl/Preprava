@@ -40,7 +40,7 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 
 	private DestinaceDAO destinaceDAO;
 	HibernateHelper persistenceHelper;
-	final Logger logger = LoggerFactory.getLogger(NovaDestinaceDialog.class); 
+	final Logger logger = LoggerFactory.getLogger(NovaDestinaceDialog.class);
 
 	Text nazev;
 	Text cislo;
@@ -50,9 +50,9 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 	Text psc;
 	Text mesto;
 	Destinace destinace;
-	
+
 	IEventBroker eventBroker;
-	
+
 	@Inject
 	public NovaDestinaceDialog(
 			@Named(IServiceConstants.ACTIVE_SHELL) Shell parentShell,
@@ -63,7 +63,8 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 	@Inject
 	public NovaDestinaceDialog(
 			@Named(IServiceConstants.ACTIVE_SHELL) Shell parentShell,
-			IEclipseContext context, Destinace destinace, IEventBroker eventBroker) {
+			IEclipseContext context, Destinace destinace,
+			IEventBroker eventBroker) {
 		super(parentShell);
 		this.destinace = destinace;
 		this.eventBroker = eventBroker;
@@ -81,7 +82,7 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 		return contents;
 	}
 
-	protected void setShellStyle(int newShellStyle) {		
+	protected void setShellStyle(int newShellStyle) {
 		super.setShellStyle(newShellStyle | SWT.RESIZE | SWT.MAX);
 	}
 
@@ -181,7 +182,7 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 				boolean novaDestinace = destinace == null;
 				final ArrayList<String> validace = validate(novaDestinace);
 				if (validace.size() == 0) {
-					
+
 					if (novaDestinace) {
 						destinace = new Destinace();
 					}
@@ -190,22 +191,24 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 					destinace.setKontaktni_osoba(kontaktniOsoba.getText());
 					destinace.setMesto(mesto.getText());
 					destinace.setNazev(nazev.getText());
-					if(psc.getText()!= "" )destinace.setPSC(Integer.valueOf(psc.getText()));
+					if (psc.getText() != "")
+						destinace.setPSC(Integer.valueOf(psc.getText()));
 					destinace.setUlice(ulice.getText());
 					Transaction tx = persistenceHelper.beginTransaction();
 					try {
-					if (novaDestinace)
-						destinace.setId(destinaceDAO.create(destinace));
-					else
-						destinaceDAO.update(destinace);
-					tx.commit();		
-					
-					eventBroker.post(EventConstants.REFRESH_VIEWERS, destinace);
+						if (novaDestinace)
+							destinace.setId(destinaceDAO.create(destinace));
+						else
+							destinaceDAO.update(destinace);
+						tx.commit();
 
-					close();
-					} catch (Exception ex){
+						eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
+
+						close();
+					} catch (Exception ex) {
 						setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
-								.concat(System.getProperty("line.separator")).concat(ex.getMessage()));
+								.concat(System.getProperty("line.separator"))
+								.concat(ex.getMessage()));
 						logger.error("Nelze vložit/upravit destinaci", e);
 					}
 
@@ -238,7 +241,8 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 
 	protected ArrayList<String> validate(boolean novaDestinace) {
 		ArrayList<String> result = new ArrayList<String>();
-		if("".equals(nazev.getText().trim())) result.add("Není zadán název destinace");
+		if ("".equals(nazev.getText().trim()))
+			result.add("Není zadán název destinace");
 		if ("".equals(cislo.getText().trim())) {
 			result.add("Není zadané èíslo destinace");
 		} else {
@@ -248,14 +252,16 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 				result.add("Èíslo destinace ".concat(cislo.getText()).concat(
 						" není platné èíslo"));
 			}
-			final Destinace existujici = destinaceDAO.findByCislo(Integer.valueOf(cislo.getText()));
+			final Destinace existujici = destinaceDAO.findByCislo(Integer
+					.valueOf(cislo.getText()));
 			if (existujici != null) {
-				if (novaDestinace || !existujici.getId().equals(destinace.getId())) {
+				if (novaDestinace
+						|| !existujici.getId().equals(destinace.getId())) {
 					result.add("Destinace s èíslem ".concat(cislo.getText())
 							.concat(" již existuje"));
 				}
 			}
-									
+
 		}
 
 		if (!("".equals(psc.getText().trim()))) {
@@ -275,9 +281,10 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 
 		nazev.setText(destinace.getNazev());
 		cislo.setText(String.valueOf(destinace.getCislo()));
-		mesto.setText(destinace.getMesto() !=null ? destinace.getMesto() : "");
+		mesto.setText(destinace.getMesto() != null ? destinace.getMesto() : "");
 		ulice.setText(destinace.getUlice() != null ? destinace.getUlice() : "");
-		psc.setText(String.valueOf(destinace.getPSC()));
+		psc.setText(destinace.getPSC() != null ? String.valueOf(destinace
+				.getPSC()) : "");
 		kontakt.setText(destinace.getKontakt());
 		kontaktniOsoba.setText(destinace.getKontaktni_osoba());
 

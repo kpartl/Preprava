@@ -68,7 +68,7 @@ public class NovyUzivatelDialog extends TitleAreaDialog {
 	@Override
 	protected Control createContents(Composite parent) {
 		Control contents = super.createContents(parent);
-		setTitle("Vytvoøení / editace doprace");
+		setTitle("Vytvoøení / editace uživatele");
 		setMessage("Zadejte data uživatele", IMessageProvider.INFORMATION);
 		return contents;
 	}

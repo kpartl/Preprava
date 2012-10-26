@@ -20,6 +20,22 @@
                name="applicationCSS"
                value="platform:/plugin/cz.kpartl.preprava/css/default.css">
          </property>
+         <property
+               name="aboutImage"
+               value="icons/preprava250.gif">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/preprava16.gif">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
          
       </product>
    </extension>
