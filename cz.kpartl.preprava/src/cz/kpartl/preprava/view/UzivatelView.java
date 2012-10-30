@@ -244,7 +244,7 @@ public class UzivatelView extends AbstractTableView {
 		}
 
 		new NovyUzivatelDialog(shell, context, selectedUser, eventBroker).open();
-		//eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
+		//eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 
 	}
 
@@ -265,7 +265,7 @@ public class UzivatelView extends AbstractTableView {
 						.beginTransaction();
 				userDAO.delete(selectedUzivatel);
 				tx.commit();
-				eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
+				eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 			} catch (Exception ex) {
 				MessageDialog
 						.openError(shell, "Chyba pøi zápisu do databáze",

@@ -1,30 +1,8 @@
 package cz.kpartl.preprava.view;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Vector;
-
-import javassist.expr.Instanceof;
-
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JTable;
-import javax.swing.ListCellRenderer;
-import javax.swing.UIManager;
-
-import org.eclipse.core.databinding.beans.BeanProperties;
-import org.eclipse.core.databinding.observable.IObservable;
-import org.eclipse.core.databinding.observable.list.IObservableList;
-import org.eclipse.core.databinding.observable.masterdetail.IObservableFactory;
-import org.eclipse.core.databinding.property.list.IListProperty;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
@@ -35,6 +13,7 @@ import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.basic.impl.TrimmedWindowImpl;
 import org.eclipse.e4.ui.model.application.ui.menu.impl.HandledToolItemImpl;
 import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.e4.ui.workbench.UIEvents;
@@ -43,20 +22,15 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CellLabelProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -64,44 +38,32 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
-import org.osgi.service.event.EventHandler;
-
-import cz.kpartl.preprava.dao.PozadavekDAO;
-import cz.kpartl.preprava.model.Destinace;
 import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.model.User;
 
 import cz.kpartl.preprava.sorter.TableViewerComparator;
-import cz.kpartl.preprava.Activator;
 
+@SuppressWarnings("restriction")
 public abstract class AbstractTableView extends ViewPart {
 
-	protected TableViewer viewer;
+	public TableViewer viewer;
 
 	protected TableColumnLayout layout;
 
 	// protected EventHandler eventHandler;
 
 	protected IStylingEngine styleEngine;
-
-
 
 	protected Menu headerMenu;
 
@@ -125,13 +87,18 @@ public abstract class AbstractTableView extends ViewPart {
 	protected HandledToolItemImpl editMenuItem;
 	protected HandledToolItemImpl smazatMenuItem;
 	protected HandledToolItemImpl prevestMenuItem;
-	
+
 	protected Image checkedImage;
 	protected Image uncheckedImage;
+	MenuItem newItem;
+	MenuItem objednavkaItem;
 
 	public AbstractTableView(IStylingEngine styleEngine) {
 		this.styleEngine = styleEngine;
 	}
+
+	MenuItem editItem;
+	MenuItem smazatItem;
 
 	// Vrati data pro tabulku
 	protected abstract Object getModelData();
@@ -150,7 +117,8 @@ public abstract class AbstractTableView extends ViewPart {
 		prevestMenuItem = (HandledToolItemImpl) modelService.find(
 				"cz.kpartl.preprava.handledtoolitem.prevod", app);
 		
-		
+		final TrimmedWindowImpl mainWindow = (TrimmedWindowImpl) modelService.find("cz.kpartl.preprava.mainwindow",app);
+		mainWindow.setLabel("PØEPRAVA - pøihlášený uživatel: " + ((User) context.get(User.CONTEXT_NAME)).getUsername());
 
 	}
 
@@ -171,13 +139,13 @@ public abstract class AbstractTableView extends ViewPart {
 			StructuredSelection sel = (StructuredSelection) viewer
 					.getSelection();
 			if (sel.getFirstElement() instanceof Pozadavek)
-				eventBroker.post(EventConstants.POZADAVEK_SELECTION_CHANGED,
+				eventBroker.send(EventConstants.POZADAVEK_SELECTION_CHANGED,
 						sel.getFirstElement());
 			else if (sel.getFirstElement() instanceof Objednavka)
-				eventBroker.post(EventConstants.OBJEDNAVKA_SELECTION_CHANGED,
+				eventBroker.send(EventConstants.OBJEDNAVKA_SELECTION_CHANGED,
 						sel.getFirstElement());
 			else if (sel.getFirstElement() == null)
-				eventBroker.post(EventConstants.EMPTY_OBJEDNAVKA_SEND,
+				eventBroker.send(EventConstants.EMPTY_OBJEDNAVKA_SEND,
 						EventConstants.EMPTY_OBJEDNAVKA_SEND);
 		}
 
@@ -215,7 +183,7 @@ public abstract class AbstractTableView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		checkedImage = (Image) context.get(Login.CHECKED_ICON);
 		uncheckedImage = (Image) context.get(Login.UNCHECKED_ICON);
-		
+
 		GridLayout layout = new GridLayout(1, false);
 		parent.setLayout(layout);
 		createViewer(parent, getModelData());
@@ -278,11 +246,10 @@ public abstract class AbstractTableView extends ViewPart {
 				SWT.NONE);
 
 		final TableColumn column = viewerColumn.getColumn();
-		if (colNumber == 0)
+		//if (colNumber == 0)
 			layout.setColumnData(column, new ColumnPixelData(bound, true, true));
-		else
-			layout.setColumnData(column, new ColumnWeightData(bound,
-					ColumnWeightData.MINIMUM_WIDTH, true));
+		//else
+			//layout.setColumnData(column, new ColumnWeightData(bound,ColumnWeightData.MINIMUM_WIDTH, true));
 		column.setToolTipText(toolTip);
 		column.setText(title);
 		// column.setWidth(bound);
@@ -562,6 +529,8 @@ public abstract class AbstractTableView extends ViewPart {
 		});
 
 	}
+
+	
 
 	/*
 	 * public void refreshInputData() { viewer.setInput(getModelData()); }

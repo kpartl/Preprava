@@ -286,6 +286,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 
 			}
 		});
+		
 
 		Label odkudKontaktLabel = new Label(parent, SWT.NONE);
 		odkudKontaktLabel.setText("Kontakt");
@@ -297,7 +298,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		gridData.horizontalSpan = 2;
 		odkudKontakt.setLayoutData(gridData);
-		// odkudKontakt.setEditable(false);
+		odkudKontakt.setEditable(false);
 
 		Label kamLabel = new Label(parent, SWT.NONE);
 		kamLabel.setText("Kam");
@@ -338,6 +339,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		gridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
 		gridData.horizontalSpan = 2;
 		kamKontakt.setLayoutData(gridData);
+		kamKontakt.setEditable(false);
 
 		Label hmotnostLabel = new Label(parent, SWT.BOLD);
 		hmotnostLabel.setText("Hmotnost");
@@ -452,6 +454,9 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 				try {
 					if (updatePozadavek(tx)) {
 						tx.commit();
+						persistenceHelper.getSession().flush();
+						persistenceHelper.getSession().close();
+						
 						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 						eventBroker.send(
 								EventConstants.POZADAVEK_SELECTION_CHANGED,

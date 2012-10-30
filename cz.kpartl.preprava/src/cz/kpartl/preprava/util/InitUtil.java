@@ -21,7 +21,10 @@ import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.model.Destinace;
 
+import  org.h2.tools.Server;
+
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 @Creatable
@@ -47,8 +50,15 @@ public class InitUtil {
 	private static DopravceDAO dopravceDAO;
 	
 	public static void initDBData(){
-			if (true) return;					
-		User adminUser = new User();
+		
+		/* try {
+			org.h2.tools.Server.main();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+						
+		/*User adminUser = new User();
 		adminUser.setUsername(LOGIN);
 		adminUser.setPassword(UserDAO.encryptPassword(PASSWORD));
 		adminUser.setAdministrator(true);
@@ -124,7 +134,7 @@ public class InitUtil {
 		objednavka.setDopravce(dopravce);
 		objednavka.setZmena_nakladky("úètovat  na zakázaku 45000351546");
 		
-		objednavkaDAO.create(objednavka);
+		objednavkaDAO.create(objednavka);*/
 		
 	}
 

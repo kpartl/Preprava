@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -11,9 +12,13 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.MElementContainer;
+import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.menu.impl.ToolBarImpl;
 import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.e4.ui.workbench.UIEvents;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -95,10 +100,14 @@ public class ObjednanoView extends AbstractTableView {
 	MPart pozadavekDetailView;
 	MPart objednavkaDetailView;
 
+	MenuItem editItem;
+	MenuItem smazatItem;
+
 	@Inject
 	public ObjednanoView(Composite parent,
 			@Optional IStylingEngine styleEngine,
-			@Optional ObjednavkaDAO objednavkaDAO, @Optional PozadavekDAO pozadavekDAO,IEclipseContext context,
+			@Optional ObjednavkaDAO objednavkaDAO,
+			@Optional PozadavekDAO pozadavekDAO, IEclipseContext context,
 			EPartService partService) {
 		super(styleEngine);
 
@@ -115,11 +124,11 @@ public class ObjednanoView extends AbstractTableView {
 		context.getParent().set(ObjednanoView.ID, this);
 
 		createPartControl(parent);
+
 	}
 
 	@Override
 	protected Object getModelData() {
-
 		return objednavkaDAO.findByFaze(faze);
 	}
 
@@ -214,10 +223,12 @@ public class ObjednanoView extends AbstractTableView {
 				final Objednavka selectedObjednavka = (Objednavka) ((StructuredSelection) viewer
 						.getSelection()).getFirstElement();
 				if (selectedObjednavka != null) {
+					enableMenuItems(true);
 					eventBroker.send(
 							EventConstants.OBJEDNAVKA_SELECTION_CHANGED,
 							selectedObjednavka);
 				} else {
+					enableMenuItems(false);
 					eventBroker.send(EventConstants.EMPTY_OBJEDNAVKA_SEND,
 							EventConstants.EMPTY_OBJEDNAVKA_SEND);
 				}
@@ -228,19 +239,21 @@ public class ObjednanoView extends AbstractTableView {
 		super.createViewer(parent, data);
 		createMenuItems(headerMenu);
 
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
+		if (((User) context.get(User.CONTEXT_NAME)).isAdministrator()) {
+			viewer.addDoubleClickListener(new IDoubleClickListener() {
+				@Override
+				public void doubleClick(DoubleClickEvent event) {
 
-				Objednavka selectedObjednavka = (Objednavka) ((StructuredSelection) viewer
-						.getSelection()).getFirstElement();
-				if (selectedObjednavka == null)
-					return;
-				new NovaObjednavkaDialog(shell, context, selectedObjednavka,
-						eventBroker).open();
-			}
+					Objednavka selectedObjednavka = (Objednavka) ((StructuredSelection) viewer
+							.getSelection()).getFirstElement();
+					if (selectedObjednavka == null)
+						return;
+					new NovaObjednavkaDialog(shell, context,
+							selectedObjednavka, eventBroker).open();
+				}
 
-		});
+			});
+		}
 
 		typCombo.select(0);
 	}
@@ -253,10 +266,10 @@ public class ObjednanoView extends AbstractTableView {
 	}
 
 	protected void createMenuItems(Menu parent) {
-		if(!((User) context.get(User.CONTEXT_NAME)).isAdministrator())
-			return;	//neadmin nema narok
-			
-		final MenuItem editItem = new MenuItem(parent, SWT.PUSH);
+		if (!((User) context.get(User.CONTEXT_NAME)).isAdministrator())
+			return; // neadmin nema narok
+
+		editItem = new MenuItem(parent, SWT.PUSH);
 		editItem.setText("Editovat objednávku");
 		editItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
@@ -264,7 +277,7 @@ public class ObjednanoView extends AbstractTableView {
 			}
 		});
 
-		final MenuItem smazatItem = new MenuItem(parent, SWT.PUSH);
+		smazatItem = new MenuItem(parent, SWT.PUSH);
 		smazatItem.setText("Smazat objednávku");
 		smazatItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
@@ -280,33 +293,41 @@ public class ObjednanoView extends AbstractTableView {
 	protected TableViewerComparator getComparator() {
 		return new ObjednavkaTableViewerComparator();
 	}
-	
-	
 
 	@Focus
-	public void setFocus() {		
-		super.setFocus();
-		
+	@Inject
+	public void setFocus(EPartService partService) {
+
 		novyMenuItem.setVisible(false);
 		editMenuItem.setVisible(true);
+		editMenuItem.setEnabled(true);
 		smazatMenuItem.setVisible(true);
 		prevestMenuItem.setVisible(false);
 
 		editMenuItem.setTooltip("Editovat objednávku");
 		smazatMenuItem.setTooltip("Smazat objednávku");
 
-		if(!objednavkaDetailView.isVisible()) objednavkaDetailView.setVisible(true);		
-		if(pozadavekDetailView.isVisible()) pozadavekDetailView.setVisible(false);	
-	//	objednavkaDetailView.setToBeRendered(true);
-		
-		final Object selectedObject = (((StructuredSelection) viewer.getSelection())
-				.getFirstElement());
-		if(selectedObject != null )eventBroker
-				.send(EventConstants.OBJEDNAVKA_SELECTION_CHANGED,
-						selectedObject);
-		else eventBroker.send(EventConstants.EMPTY_OBJEDNAVKA_SEND, EventConstants.EMPTY_OBJEDNAVKA_SEND);
+		if (!objednavkaDetailView.isVisible())
+			objednavkaDetailView.setVisible(true);
+		if (pozadavekDetailView.isVisible())
+			pozadavekDetailView.setVisible(false);
+		// objednavkaDetailView.setToBeRendered(true);
 
-		
+		if (viewer.getTable().getSelectionIndex() < 0)
+			viewer.getTable().setSelection(0);
+
+		final Object selectedObject = (((StructuredSelection) viewer
+				.getSelection()).getFirstElement());
+		if (selectedObject != null) {
+			enableMenuItems(true);
+			eventBroker.send(EventConstants.OBJEDNAVKA_SELECTION_CHANGED,
+					selectedObject);
+
+		} else {
+			enableMenuItems(false);
+			eventBroker.send(EventConstants.EMPTY_OBJEDNAVKA_SEND,
+					EventConstants.EMPTY_OBJEDNAVKA_SEND);
+		}
 
 	}
 
@@ -318,7 +339,7 @@ public class ObjednanoView extends AbstractTableView {
 		new NovaObjednavkaDialog(shell, context, selectedObjednavka,
 				eventBroker).open();
 
-		//eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
+		// eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 	}
 
 	public void deleteSelectedObjednavka() {
@@ -328,12 +349,12 @@ public class ObjednanoView extends AbstractTableView {
 				"Potvrzení smazání objednávky",
 				"Opravdu chcete smazat tuto objednávku?");
 		if (result) {
-			Transaction tx = HibernateHelper.getInstance().beginTransaction();			
+			Transaction tx = HibernateHelper.getInstance().beginTransaction();
 			pozadavekDAO.delete(selectedObjednavka.getPozadavek());
 			objednavkaDAO.delete(selectedObjednavka);
 			tx.commit();
 
-			eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
+			eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 		}
 		;
 
@@ -350,17 +371,32 @@ public class ObjednanoView extends AbstractTableView {
 		return result.toArray(new String[result.size()]);
 
 	}
-	
+
 	@Inject
 	@Optional
 	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) String o) {
-		StructuredSelection selection = (StructuredSelection) viewer.getSelection();
+		StructuredSelection selection = (StructuredSelection) viewer
+				.getSelection();
 		viewer.setInput(getModelData());
-		if(!((ArrayList)viewer.getInput()).contains(selection.getFirstElement())){
+		if (!((ArrayList) viewer.getInput()).contains(selection
+				.getFirstElement())) {
 			viewer.getTable().select(-1);
-			
-			eventBroker.post(EventConstants.EMPTY_OBJEDNAVKA_SEND, EventConstants.EMPTY_OBJEDNAVKA_SEND);
+
+			eventBroker.send(EventConstants.EMPTY_OBJEDNAVKA_SEND,
+					EventConstants.EMPTY_OBJEDNAVKA_SEND);
 		}
-		
+	}
+
+	@PreDestroy
+	protected void preDestroy() {
+		eventBroker.send(EventConstants.DISPOSE_DETAIL, "");
+	}
+
+	protected void enableMenuItems(boolean enable) {
+		if (editItem != null)
+			editItem.setEnabled(enable);
+		if (smazatItem != null)
+			smazatItem.setEnabled(enable);
+
 	}
 }

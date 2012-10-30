@@ -222,7 +222,7 @@ public class DopravceView extends AbstractTableView {
 		new NovyDopravceDialog(shell, context,
 				selectedDopravce, eventBroker).open();	
 		
-		//eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
+		//eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 	}
 	public void deleteSelectedDopravce(){
 		Dopravce selectedDopravce = (Dopravce) ((StructuredSelection) viewer
@@ -237,7 +237,7 @@ public class DopravceView extends AbstractTableView {
 				dopravceDAO.delete(selectedDopravce);
 				tx.commit();
 				
-				eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
+				eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 				
 			} catch (Exception ex) {
 				MessageDialog

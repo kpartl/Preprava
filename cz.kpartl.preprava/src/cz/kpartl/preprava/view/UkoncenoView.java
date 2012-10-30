@@ -24,56 +24,57 @@ import cz.kpartl.preprava.dao.ObjednavkaDAO;
 import cz.kpartl.preprava.dao.PozadavekDAO;
 import cz.kpartl.preprava.dialog.NovaObjednavkaDialog;
 import cz.kpartl.preprava.model.Objednavka;
+import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.util.EventConstants;
 
 public class UkoncenoView extends ObjednanoView {
-	
+
 	public static final String ID = "cz.kpartl.preprava.part.tablepartukoncene";
 
 	@Inject
 	public UkoncenoView(Composite parent, IStylingEngine styleEngine,
-			ObjednavkaDAO objednavkaDAO, PozadavekDAO pozadavekDAO, IEclipseContext context, IEventBroker eventBroker, EPartService partService) {
-		super(parent, styleEngine, objednavkaDAO, pozadavekDAO, context, partService);
+			ObjednavkaDAO objednavkaDAO, PozadavekDAO pozadavekDAO,
+			IEclipseContext context, IEventBroker eventBroker,
+			EPartService partService) {
+		super(parent, styleEngine, objednavkaDAO, pozadavekDAO, context,
+				partService);
 		context.getParent().set(UkoncenoView.class, this);
-		
+
 	}
-	
+
 	@Override
 	protected void createViewer(Composite parent, Object data) {
 		final Label nadpisLabel = new Label(parent, SWT.NONE);
 		nadpisLabel.setText("Pøehled ukonèených pøeprav");
 		nadpisLabel.setFont(JFaceResources.getHeaderFont());
-		
+
 		superCreateViewer(parent, data);
 		createMenuItems(headerMenu);
-		
-		
 
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
+		if (((User) context.get(User.CONTEXT_NAME)).isAdministrator()) {
+			viewer.addDoubleClickListener(new IDoubleClickListener() {
+				@Override
+				public void doubleClick(DoubleClickEvent event) {
 
-				Objednavka selectedObjednavka = (Objednavka) ((StructuredSelection) viewer
-						.getSelection()).getFirstElement();
-				if (selectedObjednavka == null)
-					return;
-				NovaObjednavkaDialog dialog = new NovaObjednavkaDialog(shell,
-						context, selectedObjednavka, eventBroker);
-				if (dialog.open() == Window.OK) {
-					//refreshInputData();
+					Objednavka selectedObjednavka = (Objednavka) ((StructuredSelection) viewer
+							.getSelection()).getFirstElement();
+					if (selectedObjednavka == null)
+						return;
+					NovaObjednavkaDialog dialog = new NovaObjednavkaDialog(
+							shell, context, selectedObjednavka, eventBroker);
+					if (dialog.open() == Window.OK) {
+						// refreshInputData();
+					}
+
 				}
 
-			}
-
-		});
+			});
+		}
 	}
-	
+
 	@Override
-	protected Object getModelData() {		
+	protected Object getModelData() {
 		return objednavkaDAO.findByFaze(Objednavka.FAZE_UKONCENO);
 	}
-	
-	
-	
-	
+
 }

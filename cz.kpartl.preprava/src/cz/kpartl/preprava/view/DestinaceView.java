@@ -1,6 +1,7 @@
 package cz.kpartl.preprava.view;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -145,6 +146,7 @@ public class DestinaceView extends AbstractTableView {
 						.getSelection()).getFirstElement();
 				if (selectedDestinace == null)
 					return;
+				refreshDestinace(selectedDestinace);
 				new NovaDestinaceDialog(shell,
 						context, selectedDestinace, eventBroker).open();				
 			}
@@ -229,7 +231,7 @@ public class DestinaceView extends AbstractTableView {
 	}
 
 	protected void createMenuItems(Menu parent) {
-		final MenuItem newItem = new MenuItem(parent, SWT.PUSH);
+		newItem = new MenuItem(parent, SWT.PUSH);
 		newItem.setText("Vytvoøit novou destinaci");
 		newItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
@@ -241,7 +243,7 @@ public class DestinaceView extends AbstractTableView {
 		});
 		// new MenuItem(parent, SWT.SEPARATOR);
 
-		final MenuItem editItem = new MenuItem(parent, SWT.PUSH);
+		editItem = new MenuItem(parent, SWT.PUSH);
 		editItem.setText("Editovat destinaci");
 		editItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
@@ -283,9 +285,10 @@ public class DestinaceView extends AbstractTableView {
 		Destinace selectedDestinace = (Destinace) ((StructuredSelection) viewer
 				.getSelection()).getFirstElement();
 		if (selectedDestinace != null){
+			refreshDestinace(selectedDestinace);
 			new NovaDestinaceDialog(shell, context, selectedDestinace,
 					eventBroker).open();
-			//eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
+			//eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 		}
 	}
 
@@ -302,7 +305,7 @@ public class DestinaceView extends AbstractTableView {
 				destinaceDAO.delete(selectedDestinace);
 				tx.commit();
 				
-				eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
+				eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 				
 			} catch (Exception ex) {
 				MessageDialog
@@ -325,7 +328,15 @@ public class DestinaceView extends AbstractTableView {
 	@Inject
 	@Optional
 	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) String s) {
+		List<Destinace>list = (List<Destinace>) getModelData();
+		for(Destinace d: list){
+			refreshDestinace(d);
+		}
 		viewer.setInput(getModelData());
+	}
+	
+	protected void refreshDestinace(Destinace destinace){
+		destinaceDAO.refreshSession(destinace);
 	}
 
 }

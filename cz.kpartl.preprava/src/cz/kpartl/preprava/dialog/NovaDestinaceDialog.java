@@ -201,8 +201,10 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 						else
 							destinaceDAO.update(destinace);
 						tx.commit();
+						persistenceHelper.getSession().flush();
+						persistenceHelper.getSession().close();
 
-						eventBroker.post(EventConstants.REFRESH_VIEWERS, "");
+						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 
 						close();
 					} catch (Exception ex) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_nkHkkPdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.application" bindingContexts="_nkHkkfdIEeGDArQ_Xew7DQ">
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_nkHkp_dIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.mainwindow" label="Objednávky přepravy" iconURI="platform:/plugin/cz.kpartl.preprava/icons/truck.bmp" tooltip="Objednávky přepravy" width="1400" height="800">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_nkHkp_dIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.mainwindow" label="" iconURI="platform:/plugin/cz.kpartl.preprava/icons/truck.bmp" tooltip="" width="1400" height="800">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_nkHkr_dIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.perspectiveStack" accessibilityPhrase="M1+P" selectedElement="_nkHksPdIEeGDArQ_Xew7DQ">
       <children xsi:type="advanced:Perspective" xmi:id="_nkHksPdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.perspective.preprava" label="Preprava" iconURI="platform:/plugin/cz.kpartl.preprava/icons/truck.gif">
         <children xsi:type="basic:PartSashContainer" xmi:id="_ZUPMEBsDEeK-qrdj6l5qwA" elementId="cz.kpartl.preprava.partsashcontainer.objednavky">
@@ -10,7 +10,7 @@
             <children xsi:type="basic:Part" xmi:id="_yFi6EAbtEeKkRsIJdnX9-w" elementId="cz.kpartl.preprava.part.tablepartobjednane" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.ObjednanoView" label="Objednané"/>
             <children xsi:type="basic:Part" xmi:id="_2bzSgAp4EeK8G_IvoEUUaQ" elementId="cz.kpartl.preprava.part.tablepartukoncene" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.UkoncenoView" label="Ukončené"/>
           </children>
-          <children xsi:type="basic:PartStack" xmi:id="_VWstkBsFEeK-qrdj6l5qwA" elementId="cz.kpartl.preprava.partstack.0">
+          <children xsi:type="basic:PartStack" xmi:id="_VWstkBsFEeK-qrdj6l5qwA" elementId="cz.kpartl.preprava.partstack.detail">
             <tags>IPresentationEngine.NO_AUTO_COLLAPSE</tags>
             <children xsi:type="basic:Part" xmi:id="_jDccUBsDEeK-qrdj6l5qwA" elementId="cz.kpartl.preprava.part.pozadavekDetailPart" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.PozadavekDetailView" label="Detail požadavku"/>
             <children xsi:type="basic:Part" xmi:id="__j8h4ByDEeKshv86tddrZw" elementId="cz.kpartl.preprava.part.objednavkaDetailPart" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.ObjednavkaDetailView" label="Detail objednávky"/>
@@ -44,11 +44,13 @@
     <trimBars xmi:id="_nkHks_dIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.windowtrim">
       <children xsi:type="menu:ToolBar" xmi:id="_nkHktPdIEeGDArQ_Xew7DQ" elementId="toolbar:org.eclipse.ui.main.toolbar">
         <children xsi:type="menu:HandledToolItem" xmi:id="_nkHktfdIEeGDArQ_Xew7DQ" elementId="cz.kpartl.preprava.toolItem.novyPozadavek" label="" iconURI="platform:/plugin/cz.kpartl.preprava/icons/add_obj.gif" tooltip="Vytvoření nového požadavku" enabled="false" command="_sFLgoBVzEeKNqPJNco7s0w"/>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_qGOHkBm7EeKXZLm_H6PBBQ" elementId="cz.kpartl.preprava.handledtoolitem.edit" iconURI="platform:/plugin/cz.kpartl.preprava/icons/editor.gif" tooltip="Editace požadavku" enabled="false" command="_t_nToBm-EeKXZLm_H6PBBQ"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_qGOHkBm7EeKXZLm_H6PBBQ" elementId="cz.kpartl.preprava.handledtoolitem.edit" iconURI="platform:/plugin/cz.kpartl.preprava/icons/editor.gif" tooltip="Editace požadavku" command="_t_nToBm-EeKXZLm_H6PBBQ"/>
         <children xsi:type="menu:HandledToolItem" xmi:id="_1Xb9IBm7EeKXZLm_H6PBBQ" elementId="cz.kpartl.preprava.handledtoolitem.delete" iconURI="platform:/plugin/cz.kpartl.preprava/icons/delete_obj.gif" tooltip="Smazání požadavku" enabled="false" command="_yJvxwBm-EeKXZLm_H6PBBQ"/>
         <children xsi:type="menu:HandledToolItem" xmi:id="_Hkl8EB3YEeKkIcYxzMQFeA" elementId="cz.kpartl.preprava.handledtoolitem.prevod" label="" iconURI="platform:/plugin/cz.kpartl.preprava/icons/objednavka.gif" tooltip="Převést požadavek na objednávku" enabled="false" command="_aOLGUB3YEeKkIcYxzMQFeA">
           <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_jedNkB6WEeKXNNti5cXLzw" coreExpressionId="cz.kpartl.preprava.definition.admin"/>
         </children>
+        <children xsi:type="menu:ToolBarSeparator" xmi:id="_DNCOMCHDEeKenvq2vkxUtA" elementId="cz.kpartl.preprava.toolbarseparator.0"/>
+        <children xsi:type="menu:DirectToolItem" xmi:id="_E4UrUCHDEeKenvq2vkxUtA" elementId="cz.kpartl.preprava.directtoolitem.refresh" iconURI="platform:/plugin/cz.kpartl.preprava/icons/refresh.gif" tooltip="Aktualizovat data" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.RefreshHandler"/>
       </children>
     </trimBars>
   </children>

@@ -99,4 +99,8 @@ public class DestinaceDAO {
 				"from cz.kpartl.preprava.model.Destinace d");
 		return query.list();
 	}
+	
+	public void refreshSession(Object arg) {
+		getSession().refresh(arg);		
+	}
 }

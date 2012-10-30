@@ -249,6 +249,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 
 		okButton.setLayoutData(gridData);
 		okButton.setText("OK");
+		okButton.setFocus();
 
 		okButton.setLayoutData(gridData);
 		okButton.setData(IDialogConstants.OK_ID);
@@ -258,6 +259,9 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 				try {
 					if (updatePozadavek(tx) && updateObjednavku(tx)) {
 						tx.commit();
+						persistenceHelper.getSession().flush();
+						persistenceHelper.getSession().close();
+						
 						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 						eventBroker.send(EventConstants.OBJEDNAVKA_SELECTION_CHANGED, objednavka);
 						close();
