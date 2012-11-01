@@ -151,7 +151,7 @@ public class NovyUzivatelDialog extends TitleAreaDialog {
 							uzivatelDAO.update(uzivatel);
 						tx.commit();
 						persistenceHelper.getSession().flush();
-						persistenceHelper.getSession().close();
+					//	persistenceHelper.getSession().close();
 						
 						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 						close();

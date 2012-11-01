@@ -455,7 +455,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 					if (updatePozadavek(tx)) {
 						tx.commit();
 						persistenceHelper.getSession().flush();
-						persistenceHelper.getSession().close();
+						//persistenceHelper.getSession().close();
 						
 						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 						eventBroker.send(

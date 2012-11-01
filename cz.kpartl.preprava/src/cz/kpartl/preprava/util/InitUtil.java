@@ -24,6 +24,7 @@ import cz.kpartl.preprava.model.Destinace;
 import  org.h2.tools.Server;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
@@ -49,7 +50,8 @@ public class InitUtil {
 	@Inject
 	private static DopravceDAO dopravceDAO;
 	
-	public static void initDBData(){
+	public static void initDBData(){		
+		
 		
 		/* try {
 			org.h2.tools.Server.main();

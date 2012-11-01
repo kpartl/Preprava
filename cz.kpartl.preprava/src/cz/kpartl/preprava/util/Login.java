@@ -1,6 +1,14 @@
 package cz.kpartl.preprava.util;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
@@ -13,6 +21,7 @@ import org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine;
 import org.eclipse.e4.ui.internal.workbench.swt.WorkbenchSWTActivator;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 
 import org.eclipse.e4.ui.workbench.lifecycle.PostContextCreate;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -22,9 +31,13 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.WorkbenchAdvisor;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cz.kpartl.preprava.Activator;
 import cz.kpartl.preprava.dao.DAOFactory;
@@ -35,8 +48,11 @@ import cz.kpartl.preprava.dao.UserDAO;
 import cz.kpartl.preprava.dao.DestinaceDAO;
 import cz.kpartl.preprava.dialog.LoginDialog;
 import cz.kpartl.preprava.model.User;
+import cz.kpartl.preprava.runnable.RefreshRunnable;
 
 public class Login {
+	
+	final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	//public static final Boolean TEST = true;
 
@@ -53,12 +69,19 @@ public class Login {
 	DestinaceDAO zakaznikDAO = null;
 	ObjednavkaDAO objednavkaDAO = null;
 	DopravceDAO dopravceDAO = null;
+	
+	java.util.Properties nastaveni = new Properties();
+	
+	
+	private final ExecutorService pingService = Executors.newFixedThreadPool(1);
+	
+	private final ExecutorService refreshService = Executors.newFixedThreadPool(1);
 
 	Image addIcon, editIcon, deleteIcon, objednavkaIcon, calendarIcon,
 			checkedIcon, uncheckedIcon, loginIcon;
 
 	@PostContextCreate
-	public void login(IEclipseContext context) {
+	public void login(IEclipseContext context, IEventBroker eventBroker) {
 
 		final Shell shell = new Shell(SWT.INHERIT_NONE);
 
@@ -69,12 +92,23 @@ public class Login {
 		objednavkaDAO = ContextInjectionFactory.make(ObjednavkaDAO.class,
 				context);
 		dopravceDAO = ContextInjectionFactory.make(DopravceDAO.class, context);
+		
+	/*	final Connection temporaryCon = HibernateHelper.getInstance().getSession().connection();
+		
+		try {
+			logger.info("Temporary connection is alive? " + temporaryCon.isValid(10));
+		} catch (SQLException e) {
+			logger.error("",e);
+		}
+		*/
+		
 
 		context.set(UserDAO.class, userDAO);
 		context.set(PozadavekDAO.class, pozadavekDAO);
 		context.set(ObjednavkaDAO.class, objednavkaDAO);
 		context.set(DestinaceDAO.class, zakaznikDAO);
 		context.set(DopravceDAO.class, dopravceDAO);
+		//context.set(Connection.class, temporaryCon);
 
 		addIcon = Activator.getImageDescriptor("icons/add_obj.gif")
 				.createImage();
@@ -107,6 +141,38 @@ public class Login {
 		initUtil.initDBData();
 
 		tryLogin(shell, context);
+		
+		pingService.submit(new Runnable(){
+			Session session;
+			  public void run() {
+			    while(true){
+			    	 session =HibernateHelper.getInstance().openSession();
+			    	try {
+						session.connection().getMetaData();
+					} catch (Exception e) {
+					logger.error("",e);
+					}
+			    	logger.info("Zavolan ping na databazi");
+			    	try {
+						Thread.sleep(60 * 1000);
+					} catch (InterruptedException e) {
+						break;
+					}
+			    	session.close();
+			    }
+			  }
+			});
+		
+		try {
+			nastaveni.load(this.getClass().getClassLoader().getResourceAsStream("nastaveni.properties"));
+		} catch (Exception e) {
+			logger.error("Nelze nacist nastaveni.properties",e);
+		}
+		
+		int refreshInterval = Integer.valueOf(nastaveni.getProperty("refresh_interval_in_minutes") ).intValue()* 60000;
+		refreshService.submit(new RefreshRunnable(eventBroker,refreshInterval));
+		
+		context.set(ExecutorService.class, pingService);
 
 	}
 
@@ -121,6 +187,8 @@ public class Login {
 		if (dialog.open() != Window.OK) {
 			System.exit(0);
 		}
+		
+		
 
 		String username = dialog.getUsername();
 		String password = userDAO.encryptPassword((dialog.getPassword()));
@@ -182,6 +250,8 @@ public class Login {
 		checkedIcon.dispose();
 		uncheckedIcon.dispose();
 		loginIcon.dispose();
+		pingService.shutdown();
+		refreshService.shutdown();
 	}
 
 }

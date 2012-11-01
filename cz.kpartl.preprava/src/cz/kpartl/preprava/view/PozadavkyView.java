@@ -80,6 +80,8 @@ public class PozadavkyView extends AbstractTableView {
 
 	@Override
 	protected Object getModelData() {
+		cz.kpartl.preprava.util.HibernateHelper.getInstance()
+		.getSession().clear();
 		return pozadavekDAO.findNeobjednane();
 	}
 

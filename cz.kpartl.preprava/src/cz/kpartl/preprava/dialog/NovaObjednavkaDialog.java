@@ -260,7 +260,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 					if (updatePozadavek(tx) && updateObjednavku(tx)) {
 						tx.commit();
 						persistenceHelper.getSession().flush();
-						persistenceHelper.getSession().close();
+						//persistenceHelper.getSession().close();
 						
 						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 						eventBroker.send(EventConstants.OBJEDNAVKA_SELECTION_CHANGED, objednavka);

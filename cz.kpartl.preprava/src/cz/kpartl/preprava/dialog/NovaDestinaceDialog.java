@@ -202,7 +202,7 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 							destinaceDAO.update(destinace);
 						tx.commit();
 						persistenceHelper.getSession().flush();
-						persistenceHelper.getSession().close();
+					//	persistenceHelper.getSession().close();
 
 						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 
@@ -211,7 +211,7 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 						setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
 								.concat(System.getProperty("line.separator"))
 								.concat(ex.getMessage()));
-						logger.error("Nelze vložit/upravit destinaci", e);
+						logger.error("Nelze vložit/upravit destinaci", ex);
 					}
 
 				} else {
