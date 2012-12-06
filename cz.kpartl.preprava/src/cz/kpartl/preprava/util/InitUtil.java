@@ -22,6 +22,7 @@ import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.model.Destinace;
 
 import  org.h2.tools.Server;
+import org.hibernate.Transaction;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -59,8 +60,10 @@ public class InitUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-						
-		/*User adminUser = new User();
+			
+		/*
+		Transaction tx = HibernateHelper.getInstance().beginTransaction();
+		User adminUser = new User();
 		adminUser.setUsername(LOGIN);
 		adminUser.setPassword(UserDAO.encryptPassword(PASSWORD));
 		adminUser.setAdministrator(true);
@@ -136,7 +139,10 @@ public class InitUtil {
 		objednavka.setDopravce(dopravce);
 		objednavka.setZmena_nakladky("úètovat  na zakázaku 45000351546");
 		
-		objednavkaDAO.create(objednavka);*/
+		objednavkaDAO.create(objednavka);
+		
+		tx.commit();
+		*/
 		
 	}
 

@@ -147,4 +147,9 @@ public class UserDAO {
 				"from cz.kpartl.preprava.model.User u");
 		return query.list();
 	}
+
+	
+	public int countAll() {
+		return ( (Long) getSession().createQuery("select count (u.id) from cz.kpartl.preprava.model.User u").iterate().next()).intValue();		
+	}
 }

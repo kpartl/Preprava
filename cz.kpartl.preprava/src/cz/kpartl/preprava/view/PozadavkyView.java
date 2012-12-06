@@ -1,6 +1,7 @@
 package cz.kpartl.preprava.view;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
@@ -20,6 +21,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -83,6 +85,7 @@ public class PozadavkyView extends AbstractTableView {
 		cz.kpartl.preprava.util.HibernateHelper.getInstance()
 		.getSession().clear();
 		return pozadavekDAO.findNeobjednane();
+	
 	}
 
 	public TableViewer getViewer() {
@@ -245,9 +248,12 @@ public class PozadavkyView extends AbstractTableView {
 	@Inject
 	@Optional
 	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) String s) {	
-		StructuredSelection selection = (StructuredSelection) viewer
+		final StructuredSelection selection = (StructuredSelection) viewer
 				.getSelection();
+		Runnable job = new Runnable(){
+			public void run() {
 		viewer.setInput(getModelData());
+		
 		if (!((ArrayList) viewer.getInput()).contains(selection
 				.getFirstElement())) {
 			viewer.getTable().select(-1);
@@ -255,6 +261,11 @@ public class PozadavkyView extends AbstractTableView {
 			eventBroker.send(EventConstants.EMPTY_POZADAVEK_SEND,
 					EventConstants.EMPTY_POZADAVEK_SEND);
 		}
+			};
+			
+		};
+			
+		BusyIndicator.showWhile(shell.getDisplay(), job);
 	}
 
 	@Inject

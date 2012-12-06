@@ -29,6 +29,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -375,16 +376,23 @@ public class ObjednanoView extends AbstractTableView {
 	@Inject
 	@Optional
 	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) String o) {
-		StructuredSelection selection = (StructuredSelection) viewer
+		final StructuredSelection selection = (StructuredSelection) viewer
 				.getSelection();
-		viewer.setInput(getModelData());
-		if (!((ArrayList) viewer.getInput()).contains(selection
-				.getFirstElement())) {
-			viewer.getTable().select(-1);
+		Runnable job = new Runnable() {
+			public void run() {
+				viewer.setInput(getModelData());
+				viewer.setInput(getModelData());
+				if (!((ArrayList) viewer.getInput()).contains(selection
+						.getFirstElement())) {
+					viewer.getTable().select(-1);
 
-			eventBroker.send(EventConstants.EMPTY_OBJEDNAVKA_SEND,
-					EventConstants.EMPTY_OBJEDNAVKA_SEND);
-		}
+					eventBroker.send(EventConstants.EMPTY_OBJEDNAVKA_SEND,
+							EventConstants.EMPTY_OBJEDNAVKA_SEND);
+				}
+			};
+		};
+
+		BusyIndicator.showWhile(shell.getDisplay(), job);
 	}
 
 	@PreDestroy

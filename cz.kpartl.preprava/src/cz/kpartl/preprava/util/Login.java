@@ -51,10 +51,10 @@ import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.runnable.RefreshRunnable;
 
 public class Login {
-	
+
 	final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	//public static final Boolean TEST = true;
+	// public static final Boolean TEST = true;
 
 	public static final String ADD_ICON = "ADD_ICON";
 	public static final String EDIT_ICON = "EDIT_ICON";
@@ -63,19 +63,23 @@ public class Login {
 	public static final String CALENDAR_ICON = "CALENDAR_ICON";
 	public static final String CHECKED_ICON = "CHECKED_ICON";
 	public static final String UNCHECKED_ICON = "UNCHECKED_ICON";
+	
+	volatile boolean  authenticated = false;
+	
+	//volatile String username, password;
 
 	UserDAO userDAO = null;
 	PozadavekDAO pozadavekDAO = null;
 	DestinaceDAO zakaznikDAO = null;
 	ObjednavkaDAO objednavkaDAO = null;
 	DopravceDAO dopravceDAO = null;
-	
+
 	java.util.Properties nastaveni = new Properties();
-	
-	
+
 	private final ExecutorService pingService = Executors.newFixedThreadPool(1);
-	
-	private final ExecutorService refreshService = Executors.newFixedThreadPool(1);
+
+	private final ExecutorService refreshService = Executors
+			.newFixedThreadPool(1);
 
 	Image addIcon, editIcon, deleteIcon, objednavkaIcon, calendarIcon,
 			checkedIcon, uncheckedIcon, loginIcon;
@@ -92,23 +96,22 @@ public class Login {
 		objednavkaDAO = ContextInjectionFactory.make(ObjednavkaDAO.class,
 				context);
 		dopravceDAO = ContextInjectionFactory.make(DopravceDAO.class, context);
-		
-	/*	final Connection temporaryCon = HibernateHelper.getInstance().getSession().connection();
-		
-		try {
-			logger.info("Temporary connection is alive? " + temporaryCon.isValid(10));
-		} catch (SQLException e) {
-			logger.error("",e);
-		}
-		*/
-		
+
+		/*
+		 * final Connection temporaryCon =
+		 * HibernateHelper.getInstance().getSession().connection();
+		 * 
+		 * try { logger.info("Temporary connection is alive? " +
+		 * temporaryCon.isValid(10)); } catch (SQLException e) {
+		 * logger.error("",e); }
+		 */
 
 		context.set(UserDAO.class, userDAO);
 		context.set(PozadavekDAO.class, pozadavekDAO);
 		context.set(ObjednavkaDAO.class, objednavkaDAO);
 		context.set(DestinaceDAO.class, zakaznikDAO);
 		context.set(DopravceDAO.class, dopravceDAO);
-		//context.set(Connection.class, temporaryCon);
+		// context.set(Connection.class, temporaryCon);
 
 		addIcon = Activator.getImageDescriptor("icons/add_obj.gif")
 				.createImage();
@@ -138,106 +141,113 @@ public class Login {
 		InitUtil initUtil = ContextInjectionFactory.make(InitUtil.class,
 				context);
 
-		initUtil.initDBData();
+		initUtil.initDBData();		
 
-		tryLogin(shell, context);
-		
-		pingService.submit(new Runnable(){
+		pingService.submit(new Runnable() {
 			Session session;
-			  public void run() {
-			    while(true){
-			    	 session =HibernateHelper.getInstance().openSession();
-			    	try {
+
+			public void run() {
+				while (true) {
+					session = HibernateHelper.getInstance().openSession();
+					try {
 						session.connection().getMetaData();
 					} catch (Exception e) {
-					logger.error("",e);
+						logger.error("", e);
 					}
-			    	logger.info("Zavolan ping na databazi");
-			    	try {
+					logger.info("Zavolan ping na databazi");
+					try {
 						Thread.sleep(60 * 1000);
 					} catch (InterruptedException e) {
 						break;
 					}
-			    	session.close();
-			    }
-			  }
-			});
+					session.close();
+				}
+			}
+		});
 		
+		
+		/*
+		 * TRY LOGIN
+		 */
+		tryLogin(shell, context);
+		
+
 		try {
-			nastaveni.load(this.getClass().getClassLoader().getResourceAsStream("nastaveni.properties"));
+			nastaveni.load(this.getClass().getClassLoader()
+					.getResourceAsStream("nastaveni.properties"));
 		} catch (Exception e) {
-			logger.error("Nelze nacist nastaveni.properties",e);
+			logger.error("Nelze nacist nastaveni.properties", e);
 		}
-		
-		int refreshInterval = Integer.valueOf(nastaveni.getProperty("refresh_interval_in_minutes") ).intValue()* 60000;
-		refreshService.submit(new RefreshRunnable(eventBroker,refreshInterval));
-		
+
+		int refreshInterval = Integer.valueOf(
+				nastaveni.getProperty("refresh_interval_in_minutes"))
+				.intValue() * 60000;
+		refreshService
+				.submit(new RefreshRunnable(eventBroker, refreshInterval));
+
 		context.set(ExecutorService.class, pingService);
 
 	}
 
-	private void tryLogin(Shell shell, IEclipseContext context) {
-		if(!isLicensed()){
-			MessageDialog.openError(shell, "Neplatná licence", "Nemáte licenèní oprávnìní používat tento program.");
+	private void tryLogin(final Shell shell, final IEclipseContext context) {
+		if (!isLicensed()) {
+			MessageDialog.openError(shell, "Neplatná licence",
+					"Nemáte licenèní oprávnìní používat tento program.");
 			System.exit(0);
 		}
-		final LoginDialog dialog = new LoginDialog(shell, loginIcon);
+		final LoginDialog dialog = new LoginDialog(shell, loginIcon, userDAO, context);
 		dialog.create();
+		dialog.setBlockOnOpen(false);
+		dialog.open();
 
-		if (dialog.open() != Window.OK) {
+		/*if (dialog.open() != Window.OK) {
 			System.exit(0);
-		}
+		}*/
+	
 		
-		
+		while (!authenticated) {
+			if (!shell.getDisplay().readAndDispatch()) {
+				if(dialog.getLoginStatus() == 1){
+					dialog.showProgressBar(false);
+					authenticated = true;
+					dialog.setLoginStatus(-1);
+					dialog.close();
+				}else if(dialog.getLoginStatus() == 2){
+					dialog.showProgressBar(false);
+					dialog.setLoginStatus(-1);
+					String errMessage = "";
+					if (userDAO.findByUsername(dialog.getUsername()) == null) {
+						errMessage = "Uživatel " + dialog.getUsername() + " neexistuje!";
+					} else {
+						errMessage = "Špatnì zadané heslo";
+					}
 
-		String username = dialog.getUsername();
-		String password = userDAO.encryptPassword((dialog.getPassword()));
-
-		// String username = InitUtil.LOGIN;
-		// String password = UserDAO.encryptPassword(InitUtil.PASSWORD);
-
-		// try to login
-		if(userDAO.findByUsername("admin") == null){
-			User admin = new User();
-			admin.setAdministrator(true);
-			admin.setUsername("admin");
-			admin.setPassword(userDAO.encryptPassword("istrator"));
-			userDAO.create(admin);
+					MessageDialog.openError(shell, "CHYBA", errMessage);
+				}
+				else if(dialog.getLoginStatus() == -2)//cancel pressed
+				{
+					System.exit(0);
+				}
+			}
 			
 		}
-		User user = userDAO.login(username, password);
-
-		if (user != null) { // successful login
-
-			// add the logged user to the context
-			context.set(User.CONTEXT_NAME, user);
-			context.set("cz.kpartl.preprava.admin",
-					user.isAdministrator() ? "1" : "0");
-
-			return;
-		} else {
-			String errMessage = "";
-			if (userDAO.findByUsername(username) == null) {
-				errMessage = "Uživatel " + username + " neexistuje!";
-			} else {
-				errMessage = "Špatnì zadané heslo";
-			}
-
-			MessageDialog.openError(shell, "CHYBA", errMessage);
-
-			tryLogin(shell, context);
-
-		}
+		
+		
+		
+		
+		
 	}
 	
-	//TODO nezapomenout zrusit
+	
+
+	// TODO nezapomenout zrusit
 	private boolean isLicensed() {
 		Calendar cal = Calendar.getInstance();
 		cal.set(2012, 12, 30);
-		
+
 		Calendar today = Calendar.getInstance();
 		today.setTimeInMillis(System.currentTimeMillis());
-		return cal.compareTo(today)>0;
+		return cal.compareTo(today) > 0;
 	}
 
 	@PreDestroy

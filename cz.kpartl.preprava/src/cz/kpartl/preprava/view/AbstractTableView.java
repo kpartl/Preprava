@@ -155,7 +155,7 @@ public abstract class AbstractTableView extends ViewPart {
 	@Optional
 	public void partActivation(
 			@UIEventTopic(UIEvents.UILifeCycle.ACTIVATE) org.osgi.service.event.Event event,
-			MApplication application, EPartService partService) {
+			MApplication application, EPartService partService, EModelService modelService) {
 
 		MPart activePart = (MPart) event
 				.getProperty(UIEvents.EventTags.ELEMENT);
@@ -165,6 +165,7 @@ public abstract class AbstractTableView extends ViewPart {
 		 * if(activePart.getElementId().equals(ObjednavkaDetailView.ID)){
 		 * partService.activate(partService.findPart(ObjednanoView.ID)); }
 		 */
+		
 		if (activePart.getElementId().equals(PozadavekDetailView.ID)) {
 			partService.activate(partService.findPart(PozadavkyView.ID));
 		}
