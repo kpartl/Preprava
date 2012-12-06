@@ -1276,7 +1276,7 @@ super.tearDown();
             </operations>
           </classSymbol>
           <classSymbol id="15">
-            <x>286</x>
+            <x>285</x>
             <y>8</y>
             <class class="cz.kpartl.preprava.dao.UserDAO"/>
             <attributes autoDisplay="289" accessVisible="true"/>
@@ -1289,6 +1289,7 @@ super.tearDown();
               <operation>findByUsername(java.lang.String)</operation>
               <operation>login(java.lang.String,java.lang.String)</operation>
               <operation>findAll()</operation>
+              <operation>countAll()</operation>
             </operations>
           </classSymbol>
           <classSymbol id="16">
@@ -1303,8 +1304,8 @@ super.tearDown();
             <operations autoDisplay="53" accessVisible="true" parametersVisible="true"/>
           </classSymbol>
           <association id="17">
-            <x>397</x>
-            <y>87</y>
+            <x>396</x>
+            <y>95</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.User" name="DAO_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.dao.UserDAO" name="DAO_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
@@ -1325,8 +1326,8 @@ super.tearDown();
               <atY>0.49275362</atY>
             </point>
             <end-1>
-              <x>286</x>
-              <y>87</y>
+              <x>285</x>
+              <y>95</y>
               <connectedSymbol symbol="15"/>
               <text>0..1</text>
             </end-1>
@@ -1380,7 +1381,7 @@ super.tearDown();
           </association>
           <association id="19">
             <x>774</x>
-            <y>446</y>
+            <y>441</y>
             <assocEnd-1 class="cz.kpartl.preprava.model.Pozadavek" name="destinace_z"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
@@ -1401,7 +1402,7 @@ super.tearDown();
             </point>
             <end-1>
               <x>769</x>
-              <y>446</y>
+              <y>441</y>
               <connectedSymbol symbol="12"/>
             </end-1>
             <end-2>
@@ -1531,7 +1532,7 @@ super.tearDown();
             </end-1>
             <end-2>
               <x>769</x>
-              <y>541</y>
+              <y>529</y>
               <w>60</w>
               <h>30</h>
               <connectedSymbol symbol="12"/>
@@ -1564,13 +1565,13 @@ super.tearDown();
             </point>
             <end-1>
               <x>1071</x>
-              <y>490</y>
+              <y>482</y>
               <connectedSymbol symbol="5"/>
               <text>0..1</text>
             </end-1>
             <end-2>
               <x>921</x>
-              <y>490</y>
+              <y>482</y>
               <connectedSymbol symbol="12"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
@@ -1693,7 +1694,7 @@ super.tearDown();
           </association>
           <association id="27">
             <x>847</x>
-            <y>468</y>
+            <y>462</y>
             <assocEnd-1 class="cz.kpartl.preprava.model.Pozadavek" name="zadavatel"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
@@ -1736,7 +1737,7 @@ super.tearDown();
           </association>
           <association id="28">
             <x>806</x>
-            <y>464</y>
+            <y>458</y>
             <assocEnd-1 class="cz.kpartl.preprava.model.Pozadavek" name="destinace_do"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
@@ -1988,6 +1989,17 @@ getSession().delete(object);
                   <queryVariable name="u">
                     <type class="cz.kpartl.preprava.model.User"/>
                   </queryVariable>
+                </tokens>
+              </query>
+            </operation>
+            <operation name="countAll">
+              <type basicType="int"/>
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+              <generatedName>countAll</generatedName>
+              <query>
+                <tokens>
+                  <queryText>count (u.id) from cz.kpartl.preprava.model.User u</queryText>
                 </tokens>
               </query>
             </operation>
