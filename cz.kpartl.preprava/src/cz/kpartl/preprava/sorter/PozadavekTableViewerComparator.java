@@ -23,51 +23,60 @@ public class PozadavekTableViewerComparator extends TableViewerComparator {
 					p2.getDatum_vykladky());
 			break;
 		case 3:
+			rc = comparator.compare(p1.getDatum_vykladky(),
+					p2.getDatum_vykladky());
+			break;
+		case 4:
 			rc = comparator.compare(p1.getDestinace_z().getNazevACislo(), p2
 					.getDestinace_z().getNazevACislo());
 			break;
-		case 4:
+		case 5:
 			rc = comparator.compare(p1.getDestinace_do().getNazevACislo(), p2
 					.getDestinace_do().getNazevACislo());
 			break;
-		case 5:
+		case 6:
 			rc = comparator.compare(p1.getCelkova_hmotnost(),
 					p2.getCelkova_hmotnost());
 			break;
-		case 6:
+		case 7:
 			rc = comparator.compare(p1.getPocet_palet(), p2.getPocet_palet());
 			break;
-		case 7:
+		case 8:
+			if (p1.getJe_stohovatelne() == p2.getJe_stohovatelne()) {
+				rc = 0;
+			} else
+				rc = (p1.getJe_stohovatelne() ? 1 : -1);
+		case 9:
 			if (p1.getJe_termin_konecny() == p2.getJe_termin_konecny()) {
 				rc = 0;
 			} else
 				rc = (p1.getJe_termin_konecny() ? 1 : -1);
 			break;
-		case 8:
+		case 10:
 			if (p1.getTaxi() == p2.getTaxi()) {
 				rc = 0;
 			} else
 				rc = (p1.getTaxi() ? 1 : -1);
 			break;
-		case 9:
+		case 11:
 			rc = comparator.compare(p1.getDestinace_z()
 					.getKontaktniOsobuAKontakt(), p2.getDestinace_z()
 					.getKontaktniOsobuAKontakt());
 			break;
-		case 10:
+		case 12:
 			rc = comparator.compare(p1.getDestinace_do()
 					.getKontaktniOsobuAKontakt(), p2.getDestinace_do()
 					.getKontaktniOsobuAKontakt());
 			break;
-		case 11:
+		case 13:
 			rc = comparator.compare(p1.getHodina_nakladky(),
 					p2.getHodina_nakladky());
 			break;
-		case 12:
+		case 14:
 			rc = comparator.compare(p1.getZadavatel().getUsername(), p2
 					.getZadavatel().getUsername());
 			break;
-		case 13:
+		case 15:
 			rc = comparator.compare(p1.getPoznamka(), p2.getPoznamka());
 			break;
 		default:

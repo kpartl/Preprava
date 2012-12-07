@@ -88,4 +88,19 @@ public class DopravceDAO {
 			return null;
 		}
 	}
+
+	/**
+	 * @generated
+	 */
+	public cz.kpartl.preprava.model.Dopravce findByICO(String ic) {
+		org.hibernate.Query query = getSession().createQuery(
+				"from cz.kpartl.preprava.model.Dopravce d where d.ic = :ic");
+		query.setString("ic", ic);
+		java.util.List list = query.list();
+		if (list.size() == 1) {
+			return (cz.kpartl.preprava.model.Dopravce) list.get(0);
+		} else {
+			return null;
+		}
+	}
 }

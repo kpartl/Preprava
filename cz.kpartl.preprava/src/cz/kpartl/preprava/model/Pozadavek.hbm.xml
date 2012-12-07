@@ -38,5 +38,9 @@
       <many-to-one  name='destinace_do' class='cz.kpartl.preprava.model.Destinace' foreign-key='fk_pozadavek_destinace_do_id'>
          <column name='destinace_do_id'/>
       </many-to-one>
+      <property  name='je_stohovatelne' type='boolean' column='je_stohovatelne'>
+      </property>
+      <property  name='hodina_vykladky' type='string' column='hodina_vykladky'>
+      </property>
    </class>
 </hibernate-mapping>

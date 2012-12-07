@@ -356,8 +356,8 @@ public abstract class AbstractTableView extends ViewPart {
 			}
 		});
 
-		col = createTableViewerColumn("Hmotnost", 60, columnIndex++,
-				"Celková hmotnost zásilky");
+		col = createTableViewerColumn("Hmotnost Kg", 60, columnIndex++,
+				"Celková hmotnost zásilky v Kg");
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
 			@Override
@@ -369,7 +369,7 @@ public abstract class AbstractTableView extends ViewPart {
 			}
 		});
 
-		col = createTableViewerColumn("Palet", 60, columnIndex++, "Poèet palet");
+		col = createTableViewerColumn("Palet", 60, columnIndex++, "Poèet EUR palet");
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
 			@Override
@@ -380,6 +380,28 @@ public abstract class AbstractTableView extends ViewPart {
 				return ((Pozadavek) element).getPocet_palet();
 			}
 		});
+		
+		col = createTableViewerColumn("Stohovatelné?", 120, columnIndex++,
+				"Jsou palety stohovatelné?");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				return "";
+			}
+
+			@Override
+			public Image getImage(Object element) {
+				if (element instanceof Objednavka) {
+					element = ((Objednavka) element).getPozadavek();
+				}
+				if (((Pozadavek) element).getJe_stohovatelne()) {
+					return checkedImage;
+				}
+				return uncheckedImage;
+			}
+		});
+
 
 		col = createTableViewerColumn("Termín koneèný?", 120, columnIndex++,
 				"Je termín nakládky koneèný?");
@@ -460,6 +482,19 @@ public abstract class AbstractTableView extends ViewPart {
 					element = ((Objednavka) element).getPozadavek();
 				}
 				return ((Pozadavek) element).getHodina_nakladky();
+			}
+		});
+		
+		col = createTableViewerColumn("Hodina vykládky", 100, columnIndex++,
+				"Hodina vykládky u zákazníka");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				if (element instanceof Objednavka) {
+					element = ((Objednavka) element).getPozadavek();
+				}
+				return ((Pozadavek) element).getHodina_vykladky();
 			}
 		});
 

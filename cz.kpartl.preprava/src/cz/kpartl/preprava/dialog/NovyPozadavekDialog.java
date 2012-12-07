@@ -82,9 +82,11 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 	protected Text datumVykladky;
 	protected Text hmotnost;
 	protected Text hodinaNakladky;
+	protected Text hodinaVykladky;
 	protected Pozadavek pozadavek;
 	protected Button datumNakladkyButton;
 	protected Button datumVykladkyButton;
+	protected Button stohovatelne;
 	protected Button termin_konecny;
 	private Button taxi;
 	protected Combo odkud;
@@ -210,11 +212,12 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		// GridData.GRAB_HORIZONTAL, SWT.CENTER, true, false);
 		// gridData.horizontalIndent = 10;
 		hodinaNakladkyLabel.setLayoutData(gridData);
-
+		
 		hodinaNakladky = new Text(parent, SWT.BORDER);
 		gridData = new GridData(SWT.NONE, SWT.CENTER, false, false);
 		gridData.widthHint = 100;
 		hodinaNakladky.setLayoutData(gridData);
+				
 
 		// empty column
 		new Label(parent, SWT.NONE);
@@ -248,6 +251,20 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 
 			}
 		});
+		
+		Label hodinaVykladkyLabel = new Label(parent, SWT.BOLD);
+		hodinaVykladkyLabel.setText("Hodina vykládky");
+		gridData = new GridData(GridData.FILL_HORIZONTAL
+				| GridData.GRAB_HORIZONTAL);
+		
+		hodinaVykladkyLabel.setLayoutData(gridData);
+
+		hodinaVykladky = new Text(parent, SWT.BORDER);
+		gridData = new GridData(SWT.NONE, SWT.CENTER, false, false);
+		gridData.widthHint = 100;
+		hodinaVykladky.setLayoutData(gridData);
+		
+		new Label(parent, SWT.NONE);
 
 		/*
 		 * datumVykladky.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL |
@@ -362,6 +379,17 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		gridData = new GridData(SWT.NONE, SWT.CENTER, false, false);
 		gridData.widthHint = 70;
 		pocetPalet.setLayoutData(gridData);
+
+		new Label(parent, SWT.NONE);
+		
+		Label stohovatelneLabel = new Label(parent, SWT.BOLD);
+		stohovatelneLabel.setText("Jsou palety stohovatelné");
+		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
+		stohovatelneLabel.setLayoutData(gridData);
+
+		stohovatelne = new Button(parent, SWT.CHECK);
+		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
+		stohovatelne.setLayoutData(gridData);
 
 		new Label(parent, SWT.NONE);
 
@@ -516,8 +544,10 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 			pozadavek
 					.setDestinace_do(destinaceMap.get(kam.getSelectionIndex()));
 			pozadavek.setHodina_nakladky(hodinaNakladky.getText());
+			pozadavek.setHodina_vykladky(hodinaVykladky.getText());
 			pozadavek.setJe_termin_konecny(termin_konecny.getSelection());
 			pozadavek.setPocet_palet(pocetPalet.getText());
+			pozadavek.setJe_stohovatelne(stohovatelne.getSelection());
 			pozadavek.setTaxi(taxi.getSelection());
 			pozadavek.setZadavatel(user);
 			pozadavek.setPoznamka(poznamka.getText());
@@ -562,9 +592,13 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		hodinaNakladky
 				.setText(pozadavek.getHodina_nakladky() != null ? pozadavek
 						.getHodina_nakladky() : "");
+		hodinaVykladky
+		.setText(pozadavek.getHodina_vykladky() != null ? pozadavek
+				.getHodina_vykladky() : "");
 		termin_konecny.setSelection(pozadavek.getJe_termin_konecny());
 		pocetPalet.setText(pozadavek.getPocet_palet() != null ? pozadavek
 				.getPocet_palet() : "");
+		stohovatelne.setSelection(pozadavek.getJe_stohovatelne());
 		taxi.setSelection(pozadavek.getTaxi());
 		poznamka.setText(pozadavek.getPoznamka() != null ? pozadavek
 				.getPoznamka() : "");

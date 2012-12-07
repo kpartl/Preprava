@@ -163,6 +163,105 @@ public class DopravceView extends AbstractTableView {
 				return ((Dopravce) element).getNazev();
 			}
 		});
+		
+		col = createTableViewerColumn("Ulice", 200,
+				columnIndex++, "Ulice");
+
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				return ((Dopravce) element).getUlice();
+			}
+		});
+		
+		col = createTableViewerColumn("Mìsto", 100,
+				columnIndex++, "Mìsto");
+
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				return ((Dopravce) element).getMesto();
+			}
+		});
+		
+		col = createTableViewerColumn("PSÈ", 70,
+				columnIndex++, "PSÈ");
+
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				return ((Dopravce) element).getPsc();
+			}
+		});
+		
+		col = createTableViewerColumn("IÈ", 70,
+				columnIndex++, "IÈ");
+
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				return ((Dopravce) element).getIc();
+			}
+		});
+		
+		col = createTableViewerColumn("DIÈ", 70,
+				columnIndex++, "DIÈ");
+
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				return ((Dopravce) element).getDic();
+			}
+		});
+		
+		col = createTableViewerColumn("SAP", 70,
+				columnIndex++, "SAP èíslo");
+
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				return ((Dopravce) element).getSap_cislo();
+			}
+		});
+		
+		col = createTableViewerColumn("Kontakt", 200,
+				columnIndex++, "Kontaktní osoba");
+
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				return ((Dopravce) element).getKontaktni_osoba();
+			}
+		});
+		
+		col = createTableViewerColumn("Telefon", 60,
+				columnIndex++, "Kontaktní telefon");
+
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				return ((Dopravce) element).getKontaktni_telefon();
+			}
+		});
+		
+		col = createTableViewerColumn("Ostatní kontakty", 200,
+				columnIndex++, "Ostatní kontakty");
+
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				return ((Dopravce) element).getKontakt_ostatni();
+			}
+		});
 
 	}
 

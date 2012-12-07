@@ -78,6 +78,15 @@ public class Pozadavek implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
+	private Boolean je_stohovatelne;
+	/**
+	 * @generated
+	 */
+	private String hodina_vykladky;
+
+	/**
+	 * @generated
+	 */
 	public Pozadavek() {
 	}
 
@@ -202,7 +211,9 @@ public class Pozadavek implements java.io.Serializable {
 				+ " pocet_palet=" + pocet_palet + " je_termin_konecny="
 				+ je_termin_konecny + " taxi=" + taxi + " poznamka=" + poznamka
 				+ " id=" + id + " celkova_hmotnost=" + celkova_hmotnost
-				+ " attr=" + attr + " hodina_nakladky=" + hodina_nakladky;
+				+ " attr=" + attr + " hodina_nakladky=" + hodina_nakladky
+				+ " je_stohovatelne=" + je_stohovatelne + " hodina_vykladky="
+				+ hodina_vykladky;
 	}
 
 	/**
@@ -321,5 +332,33 @@ public class Pozadavek implements java.io.Serializable {
 	public String getDestinaceDoNazevACislo(){
 		if(destinace_do != null) return destinace_do.getNazevACislo();
 		else return "";
+	}
+
+	/**
+	 * @generated
+	 */
+	public Boolean getJe_stohovatelne() {
+		return this.je_stohovatelne;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setJe_stohovatelne(Boolean je_stohovatelne) {
+		this.je_stohovatelne = je_stohovatelne;
+	}
+
+	/**
+	 * @generated
+	 */
+	public String getHodina_vykladky() {
+		return this.hodina_vykladky;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setHodina_vykladky(String hodina_vykladky) {
+		this.hodina_vykladky = hodina_vykladky;
 	}
 }

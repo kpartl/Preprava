@@ -42,11 +42,13 @@ public class PozadavekDetailView extends ViewPart {
 	protected Label kam;
 	protected Label hmotnost;
 	protected Label palet;
+	protected Label stohovatelne;
 	protected Label termin_konecny;
 	protected Label taxi;
 	protected Label odkud_kontakt;
 	protected Label kam_kontakt;
 	protected Label hodina_nakladky;
+	protected Label hodina_vykladky;
 	protected Label poznamka;
 	protected Label zadavatel;
 	protected Shell shell;
@@ -114,16 +116,20 @@ public class PozadavekDetailView extends ViewPart {
 		kam = new Label(parent, SWT.NONE);
 		createBoldLabel(parent, "Kontaktní osoba a kontakt:");
 		kam_kontakt = new Label(parent, SWT.NONE);
-		createBoldLabel(parent, "Celková hmotnost zásilky: ");
+		createBoldLabel(parent, "Celková hmotnost zásilky v kg: ");
 		hmotnost = new Label(parent, SWT.NONE);
-		createBoldLabel(parent, "Poèet palet: ");
+		createBoldLabel(parent, "Poèet EUR palet: ");
 		palet = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "Jsou palety stohovatelné?: ");
+		stohovatelne = new Label(parent, SWT.NONE);
 		createBoldLabel(parent, "Je termín nakládky koneèný?: ");
 		termin_konecny = new Label(parent, SWT.NONE);
 		createBoldLabel(parent, "TAXI?: ");
 		taxi = new Label(parent, SWT.NONE);
 		createBoldLabel(parent, "Hodina nakládky u dodavatele: ");
 		hodina_nakladky = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "Hodina vykládky: ");
+		hodina_vykladky = new Label(parent, SWT.NONE);
 		createBoldLabel(parent, "Poznámka: ");
 		poznamka = new Label(parent, SWT.NONE);
 		createBoldLabel(parent, "Zadavatel: ");
@@ -147,12 +153,14 @@ public class PozadavekDetailView extends ViewPart {
 			kam_kontakt.setText("");
 			hmotnost.setText("");
 			palet.setText("");
+			stohovatelne.setText("");
 			termin_konecny.setText("");
 			datum.setText("");
 			datumNakladkylabel.setText("");
 			datumVykladkylabel.setText("");
 			taxi.setText("");
 			hodina_nakladky.setText("");
+			hodina_vykladky.setText("");
 			poznamka.setText("");
 			zadavatel.setText("");
 			
@@ -171,12 +179,17 @@ public class PozadavekDetailView extends ViewPart {
 		kam_kontakt.setText(pozadavek.getDestinaceDoKontaktAOsobu());
 		hmotnost.setText(pozadavek.getCelkova_hmotnost());
 		palet.setText(pozadavek.getPocet_palet());
+		String stohovatelneString = "NE";
+		if(pozadavek.getJe_stohovatelne())
+			stohovatelneString = "ANO";
+		stohovatelne.setText(stohovatelneString);
 		String terminString = "NE";
 		if (pozadavek.getJe_termin_konecny())
 			terminString = "ANO";
 		termin_konecny.setText(terminString);
 		taxi.setText(pozadavek.getTaxi() ? "ANO" : "NE");
 		hodina_nakladky.setText(pozadavek.getHodina_nakladky());
+		hodina_vykladky.setText(pozadavek.getHodina_vykladky());
 		poznamka.setText(pozadavek.getPoznamka());
 		zadavatel.setText(pozadavek.getZadavatel().getUsername());
 

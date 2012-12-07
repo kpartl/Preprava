@@ -148,8 +148,9 @@ public class UserDAO {
 		return query.list();
 	}
 
+
 	
-	public int countAll() {
+	/*public int countAll() {
 		return ( (Long) getSession().createQuery("select count (u.id) from cz.kpartl.preprava.model.User u").iterate().next()).intValue();		
-	}
+	}*/
 }

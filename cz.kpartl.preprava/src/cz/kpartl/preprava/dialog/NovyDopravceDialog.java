@@ -43,7 +43,16 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 
 	IEventBroker eventBroker;
 
-	Text nazev;
+	Text nazev ;
+	Text mesto;
+	Text ulice;
+	Text psc;
+	Text ic;
+	Text dic;
+	Text sapCislo;
+	Text kontaktni_osoba;
+	Text kontaktni_telefon;
+	Text kontakt_ostatni;
 
 	@Inject
 	public NovyDopravceDialog(
@@ -70,6 +79,7 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 		Control contents = super.createContents(parent);
 		setTitle("Vytvoøení / editace doprace");
 		setMessage("Zadejte data dopravce", IMessageProvider.INFORMATION);
+				
 		return contents;
 	}
 
@@ -87,22 +97,35 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 
 		parent.setLayout(layout);
 
-		Label nazevlabel = new Label(parent, SWT.NONE);
-		GridData gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false,
-				false);
-		nazevlabel.setLayoutData(gridData);
-		nazevlabel.setText("Název");
-
-		nazev = new Text(parent, SWT.BORDER);
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
-		gridData.widthHint = 200;
-		nazev.setLayoutData(gridData);
+		nazev =new Text(parent, SWT.BORDER);
+		createLabelAndText(parent, "Název", nazev, 200);
+		ulice=new Text(parent, SWT.BORDER);		
+		createLabelAndText(parent, "Ulice", ulice, 200);
+		mesto=new Text(parent, SWT.BORDER);
+		createLabelAndText(parent, "Mìsto", mesto, 100);
+		psc=new Text(parent, SWT.BORDER);
+		createLabelAndText(parent, "PSÈ", psc, 70);
+		ic=new Text(parent, SWT.BORDER);
+		createLabelAndText(parent, "IÈ", ic, 100);
+		dic=new Text(parent, SWT.BORDER);
+		createLabelAndText(parent, "DIÈ", dic, 100);
+		sapCislo=new Text(parent, SWT.BORDER);
+		createLabelAndText(parent, "SAP èíslo", sapCislo, 70);
+		kontaktni_osoba=new Text(parent, SWT.BORDER);
+		createLabelAndText(parent, "Kontaktni osoba", kontaktni_osoba, 200);
+		kontaktni_telefon=new Text(parent, SWT.BORDER);
+		createLabelAndText(parent, "Kontaktní telefon", kontaktni_telefon, 100);
+		kontakt_ostatni=new Text(parent, SWT.BORDER);
+		createLabelAndText(parent, "Ostatní kontakty", kontakt_ostatni, 200);
+		
+		
+		
 
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 
 		final Button okButton = new Button(parent, SWT.PUSH);
-		gridData = new GridData(80, 25);
+		GridData gridData = new GridData(80, 25);
 		okButton.setLayoutData(gridData);
 		okButton.setText("OK");
 
@@ -119,6 +142,16 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 					}
 
 					dopravce.setNazev(nazev.getText());
+					dopravce.setUlice(ulice.getText());
+					dopravce.setMesto(mesto.getText());
+					dopravce.setIc(ic.getText());
+					dopravce.setDic(dic.getText());
+					dopravce.setSap_cislo(sapCislo.getText());
+					dopravce.setKontaktni_telefon(kontaktni_telefon.getText());
+					dopravce.setKontaktni_osoba(kontaktni_osoba.getText());
+					dopravce.setKontakt_ostatni(kontakt_ostatni.getText());
+					dopravce.setPsc(psc.getText());
+					
 					Transaction tx = persistenceHelper.beginTransaction();
 					try {
 						if (novyDopravce)
@@ -126,7 +159,8 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 						else
 							dopravceDAO.update(dopravce);
 						tx.commit();
-						persistenceHelper.getSession().flush();persistenceHelper.getSession().flush();
+						persistenceHelper.getSession().flush();
+						
 						//persistenceHelper.getSession().close();
 						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 
@@ -177,6 +211,15 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 			}
 		}
 
+		if ("".equals(ic.getText().trim()))
+			result.add("Není zadáno IÈ dopravce");
+		final Dopravce existujiciICO = dopravceDAO.findByICO(ic.getText());
+		if (existujiciICO != null) {
+			if (novyDopravce || !existujiciICO.getId().equals(dopravce.getId())) {
+				result.add("Dopravce s IÈ " + ic.getText()
+						+ " již existuje");
+			}
+		}
 		return result;
 	}
 
@@ -185,9 +228,31 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 			return;
 
 		nazev.setText(dopravce.getNazev());
+		ulice.setText(dopravce.getUlice());
+		mesto.setText(dopravce.getMesto());
+		psc.setText(dopravce.getPsc());
+		ic.setText(dopravce.getIc());
+		dic.setText(dopravce.getDic());
+		sapCislo.setText(dopravce.getSap_cislo());
+		kontaktni_osoba.setText(dopravce.getKontaktni_osoba());
+		kontaktni_telefon.setText(dopravce.getKontaktni_telefon());
+		kontakt_ostatni.setText(dopravce.getKontakt_ostatni());
 	}
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
+	}
+	
+	private void createLabelAndText(Composite parent, String popisek, Text textWidget, int widthHint){
+		Label label = new Label(parent, SWT.NONE);
+		GridData gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false,
+				false);
+		label.setLayoutData(gridData);
+		label.setText(popisek);
+
+		//textWidget = new Text(parent, SWT.BORDER);
+		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
+		gridData.widthHint = widthHint;
+		textWidget.setLayoutData(gridData);
 	}
 }
