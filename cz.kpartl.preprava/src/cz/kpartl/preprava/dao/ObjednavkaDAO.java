@@ -69,10 +69,19 @@ public class ObjednavkaDAO {
 	 */
 	public java.util.List<cz.kpartl.preprava.model.Objednavka> findByFaze(
 			int faze) {
-		org.hibernate.Query query = getSession()
-				.createQuery(
-						"from cz.kpartl.preprava.model.Objednavka o where o.faze = :faze");
-		query.setInteger("faze", faze);
+				org.hibernate.Query query = getSession()
+						.createQuery(
+								"from cz.kpartl.preprava.model.Objednavka o where o.faze = :faze");
+				query.setInteger("faze", faze);
+				return query.list();
+			}
+
+	/**
+	 * @generated
+	 */
+	public java.util.List<cz.kpartl.preprava.model.Objednavka> findNeukoncene() {
+		org.hibernate.Query query = getSession().createQuery(
+				"from cz.kpartl.preprava.model.Objednavka o where o.faze != 6");
 		return query.list();
 	}
 }

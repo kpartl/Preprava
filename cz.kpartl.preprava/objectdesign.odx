@@ -1209,6 +1209,7 @@ super.tearDown();
               <operation>update(cz.kpartl.preprava.model.Objednavka)</operation>
               <operation>delete(cz.kpartl.preprava.model.Objednavka)</operation>
               <operation>findByFaze(int)</operation>
+              <operation>findNeukoncene()</operation>
             </operations>
           </classSymbol>
           <classSymbol id="5">
@@ -1745,7 +1746,7 @@ super.tearDown();
           </association>
           <association id="27">
             <x>505</x>
-            <y>636</y>
+            <y>644</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.Objednavka" name="DAO_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.dao.ObjednavkaDAO" name="DAO_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
@@ -2721,7 +2722,9 @@ getSession().delete(object);
                     <type class="cz.kpartl.preprava.model.Dopravce"/>
                   </queryVariable>
                   <queryText>where</queryText>
-                  <queryObjectVariable object="d" variable="ic"/>
+                  <queryObjectVariable object="d">
+                    <variable class="cz.kpartl.preprava.model.Dopravce" name="ic"/>
+                  </queryObjectVariable>
                   <com.objectgen.core.Query_-Operator>=</com.objectgen.core.Query_-Operator>
                   <queryParameter name="ic"/>
                 </tokens>
@@ -2872,6 +2875,25 @@ getSession().delete(object);
                   </queryObjectVariable>
                   <com.objectgen.core.Query_-Operator>=</com.objectgen.core.Query_-Operator>
                   <queryParameter name="faze"/>
+                </tokens>
+              </query>
+            </operation>
+            <operation name="findNeukoncene">
+              <type class="cz.kpartl.preprava.model.Objednavka"/>
+              <multiplicity>*</multiplicity>
+              <access>1</access>
+              <generatedName>findNeukoncene</generatedName>
+              <query>
+                <tokens>
+                  <queryVariable name="o">
+                    <type class="cz.kpartl.preprava.model.Objednavka"/>
+                  </queryVariable>
+                  <queryText>where</queryText>
+                  <queryObjectVariable object="o">
+                    <variable class="cz.kpartl.preprava.model.Objednavka" name="faze"/>
+                  </queryObjectVariable>
+                  <queryText>!=</queryText>
+                  <queryText>6</queryText>
                 </tokens>
               </query>
             </operation>

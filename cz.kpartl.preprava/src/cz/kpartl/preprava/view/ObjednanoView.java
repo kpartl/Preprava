@@ -71,6 +71,7 @@ public class ObjednanoView extends AbstractTableView {
 	public static final String TYP_DOKLADY_KOMPLETNI = "Doklady kompletní";
 	public static final String TYP_FAKTUROVANO = "Fakturováno";
 	public static final String TYP_UKONCENO = "Ukonèeno";
+	public static final String TYP_VSE = "Vše";
 
 	public static final HashMap<Integer, String> typyHashMap;
 
@@ -85,8 +86,9 @@ public class ObjednanoView extends AbstractTableView {
 		typyHashMap.put(Objednavka.FAZE_DOKLADY_KOMPLETNI,
 				TYP_DOKLADY_KOMPLETNI);
 		typyHashMap.put(Objednavka.FAZE_FAKTUROVANO, TYP_FAKTUROVANO);
+		typyHashMap.put(Objednavka.FAZE_VSE, TYP_VSE);
 		typyHashMap.put(Objednavka.FAZE_UKONCENO, TYP_UKONCENO);
-		// typyHashMap.put(Objednavka.FAZE_UKONCENO, TYP_UKONCENO);
+		
 
 	}
 
@@ -130,7 +132,11 @@ public class ObjednanoView extends AbstractTableView {
 
 	@Override
 	protected Object getModelData() {
-		return objednavkaDAO.findByFaze(faze);
+		if(faze != Objednavka.FAZE_VSE){
+			return objednavkaDAO.findByFaze(faze);
+		}else {
+			return objednavkaDAO.findNeukoncene();
+		}
 	}
 
 	@Override
@@ -142,6 +148,16 @@ public class ObjednanoView extends AbstractTableView {
 			@Override
 			public String getText(Object element) {
 				return String.valueOf(((Objednavka) element).getId());
+			}
+		});
+		
+		 col = createTableViewerColumn("Status", 80,
+				columnIndex++, "Stav objednávky");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				return typyHashMap.get(((Objednavka) element).getFaze());
 			}
 		});
 
@@ -368,7 +384,7 @@ public class ObjednanoView extends AbstractTableView {
 				continue;
 			else
 				result.add(key, typyHashMap.get(key));
-		}
+		}		
 		return result.toArray(new String[result.size()]);
 
 	}

@@ -190,11 +190,11 @@ public class PozadavkyView extends AbstractTableView {
 				.getSelection()).getFirstElement());
 		if (selectedObject != null) {
 			enableMenuItems(true);
-			eventBroker.send(EventConstants.POZADAVEK_SELECTION_CHANGED,
+			eventBroker.post(EventConstants.POZADAVEK_SELECTION_CHANGED,
 					selectedObject);
 		} else {
 			enableMenuItems(false);
-			eventBroker.send(EventConstants.EMPTY_POZADAVEK_SEND,
+			eventBroker.post(EventConstants.EMPTY_POZADAVEK_SEND,
 					EventConstants.EMPTY_POZADAVEK_SEND);
 		}
 
