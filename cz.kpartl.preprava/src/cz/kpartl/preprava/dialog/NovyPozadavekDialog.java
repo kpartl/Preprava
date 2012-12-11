@@ -19,6 +19,7 @@ import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.AbstractTableViewer;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -88,17 +89,21 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 	protected Button datumVykladkyButton;
 	protected Button stohovatelne;
 	protected Button termin_konecny;
+	protected Button destinaceOdkudButton;
+	protected Button destinaceKamButton;
 	private Button taxi;
-	protected Combo odkud;
-	protected Combo kam;
+	protected Text odkud;
+	protected Text kam;
 	protected Text odkudKontakt;
 	protected Text kamKontakt;
 	protected Text pocetPalet;
 	protected Text poznamka;
 
+	private Destinace destinaceZ, destinaceDo;
+
 	protected cz.kpartl.preprava.util.HibernateHelper persistenceHelper;
 
-	private HashMap<Integer, Destinace> destinaceMap = null;
+	// private HashMap<Integer, Destinace> destinaceMap = null;
 	String[] destinaceItems = null;
 
 	public Pozadavek getPozadavek() {
@@ -212,12 +217,11 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		// GridData.GRAB_HORIZONTAL, SWT.CENTER, true, false);
 		// gridData.horizontalIndent = 10;
 		hodinaNakladkyLabel.setLayoutData(gridData);
-		
+
 		hodinaNakladky = new Text(parent, SWT.BORDER);
 		gridData = new GridData(SWT.NONE, SWT.CENTER, false, false);
 		gridData.widthHint = 100;
 		hodinaNakladky.setLayoutData(gridData);
-				
 
 		// empty column
 		new Label(parent, SWT.NONE);
@@ -251,19 +255,19 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 
 			}
 		});
-		
+
 		Label hodinaVykladkyLabel = new Label(parent, SWT.BOLD);
 		hodinaVykladkyLabel.setText("Hodina vykládky");
 		gridData = new GridData(GridData.FILL_HORIZONTAL
 				| GridData.GRAB_HORIZONTAL);
-		
+
 		hodinaVykladkyLabel.setLayoutData(gridData);
 
 		hodinaVykladky = new Text(parent, SWT.BORDER);
 		gridData = new GridData(SWT.NONE, SWT.CENTER, false, false);
 		gridData.widthHint = 100;
 		hodinaVykladky.setLayoutData(gridData);
-		
+
 		new Label(parent, SWT.NONE);
 
 		/*
@@ -276,35 +280,56 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
 		odkudLabel.setLayoutData(gridData);
 
-		odkud = new Combo(parent, SWT.READ_ONLY);
-		odkud.setBounds(new Rectangle(50, 50, 250, 65));
-
-		destinaceItems = getDestinaceItems();
-		odkud.setItems(destinaceItems);
-
+		odkud = new Text(parent, SWT.BORDER);
 		gridData = new GridData(SWT.NONE, SWT.CENTER, false, false);
-		gridData.horizontalSpan = 2;
+		gridData.widthHint = 100;
 		odkud.setLayoutData(gridData);
-		odkud.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				odkudKontakt.setText(destinaceMap
-						.get(odkud.getSelectionIndex())
-						.getKontaktniOsobuAKontakt());
+		odkud.setEditable(false);
+
+		destinaceOdkudButton = new Button(parent, SWT.PUSH);
+		gridData = new GridData(SWT.BEGINNING, SWT.FILL, false, false);
+		gridData.heightHint = 5;
+		gridData.widthHint = 21;
+		destinaceOdkudButton.setLayoutData(gridData);
+		// destinaceOdkudButton.setImage((Image)
+		// context.get(Login.CALENDAR_ICON));
+		destinaceOdkudButton.addSelectionListener(new SelectionListener() {
+
+			public void widgetSelected(SelectionEvent event) {
+				final DestinaceListDialog dialog = getDestinaceListDialog();
+				if (dialog.open() == Window.OK) {
+					if (dialog.selectedDestinace != null) {
+						destinaceZ = dialog.selectedDestinace;
+						odkud.setText(dialog.selectedDestinace.getNazevACislo());
+						odkudKontakt.setText(dialog.selectedDestinace
+								.getKontaktniOsobuAKontakt());
+					}
+				}
 
 			}
-		});
-		odkud.addModifyListener(new ModifyListener() {
 
 			@Override
-			public void modifyText(ModifyEvent e) {
-				odkudKontakt.setText(destinaceMap
-						.get(odkud.getSelectionIndex())
-						.getKontaktniOsobuAKontakt());
+			public void widgetDefaultSelected(SelectionEvent e) {
+				getDestinaceListDialog().open();
 
 			}
 		});
-		
 
+		/*
+		 * gridData = new GridData(SWT.NONE, SWT.CENTER, false, false);
+		 * gridData.horizontalSpan = 2; /* odkud.setLayoutData(gridData);
+		 * odkud.addSelectionListener(new SelectionAdapter() { public void
+		 * widgetSelected(SelectionEvent e) { odkudKontakt.setText(destinaceMap
+		 * .get(odkud.getSelectionIndex()) .getKontaktniOsobuAKontakt());
+		 * 
+		 * } }); odkud.addModifyListener(new ModifyListener() {
+		 * 
+		 * @Override public void modifyText(ModifyEvent e) {
+		 * odkudKontakt.setText(destinaceMap .get(odkud.getSelectionIndex())
+		 * .getKontaktniOsobuAKontakt());
+		 * 
+		 * } });
+		 */
 		Label odkudKontaktLabel = new Label(parent, SWT.NONE);
 		odkudKontaktLabel.setText("Kontakt");
 		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
@@ -322,29 +347,63 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
 		kamLabel.setLayoutData(gridData);
 
-		kam = new Combo(parent, SWT.READ_ONLY);
-		kam.setBounds(new Rectangle(50, 50, 150, 65));
-		kam.setItems(destinaceItems);
+		kam = new Text(parent, SWT.BORDER);
 		gridData = new GridData(SWT.NONE, SWT.CENTER, false, false);
-		gridData.horizontalSpan = 2;
+		gridData.widthHint = 100;
 		kam.setLayoutData(gridData);
-		kam.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				kamKontakt.setText(destinaceMap.get(kam.getSelectionIndex())
-						.getKontaktniOsobuAKontakt());
+		kam.setEditable(false);
+
+		destinaceKamButton = new Button(parent, SWT.PUSH);
+		gridData = new GridData(SWT.BEGINNING, SWT.FILL, false, false);
+		gridData.heightHint = 5;
+		gridData.widthHint = 21;
+		destinaceKamButton.setLayoutData(gridData);
+		destinaceKamButton.addSelectionListener(new SelectionListener() {
+
+			public void widgetSelected(SelectionEvent event) {
+				final DestinaceListDialog dialog = getDestinaceListDialog();
+				if (dialog.open() == Window.OK) {
+					if (dialog.selectedDestinace != null) {
+						destinaceDo = dialog.selectedDestinace; 
+						kam.setText(dialog.selectedDestinace.getNazevACislo());
+						kamKontakt.setText(dialog.selectedDestinace
+								.getKontaktniOsobuAKontakt());
+					}
+				}
 
 			}
-		});
-
-		kam.addModifyListener(new ModifyListener() {
 
 			@Override
-			public void modifyText(ModifyEvent e) {
-				kamKontakt.setText(destinaceMap.get(kam.getSelectionIndex())
-						.getKontaktniOsobuAKontakt());
+			public void widgetDefaultSelected(SelectionEvent e) {
+				getDestinaceListDialog().open();
 
 			}
 		});
+
+		/*
+		 * Label kamLabel = new Label(parent, SWT.NONE);
+		 * kamLabel.setText("Kam"); gridData = new GridData(SWT.BEGINNING,
+		 * SWT.CENTER, false, false); kamLabel.setLayoutData(gridData);
+		 * 
+		 * kam = new Combo(parent, SWT.READ_ONLY); kam.setBounds(new
+		 * Rectangle(50, 50, 150, 65)); // kam.setItems(destinaceItems);
+		 * gridData = new GridData(SWT.NONE, SWT.CENTER, false, false);
+		 * gridData.horizontalSpan = 2; kam.setLayoutData(gridData);
+		 * kam.addSelectionListener(new SelectionAdapter() { public void
+		 * widgetSelected(SelectionEvent e) {
+		 * kamKontakt.setText(destinaceMap.get(kam.getSelectionIndex())
+		 * .getKontaktniOsobuAKontakt());
+		 * 
+		 * } });
+		 * 
+		 * kam.addModifyListener(new ModifyListener() {
+		 * 
+		 * @Override public void modifyText(ModifyEvent e) {
+		 * kamKontakt.setText(destinaceMap.get(kam.getSelectionIndex())
+		 * .getKontaktniOsobuAKontakt());
+		 * 
+		 * } });
+		 */
 
 		Label kamKontaktLabel = new Label(parent, SWT.NONE);
 		kamKontaktLabel.setText("Kontakt");
@@ -381,7 +440,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		pocetPalet.setLayoutData(gridData);
 
 		new Label(parent, SWT.NONE);
-		
+
 		Label stohovatelneLabel = new Label(parent, SWT.BOLD);
 		stohovatelneLabel.setText("Jsou palety stohovatelné");
 		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
@@ -483,8 +542,8 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 					if (updatePozadavek(tx)) {
 						tx.commit();
 						persistenceHelper.getSession().flush();
-						//persistenceHelper.getSession().close();
-						
+						// persistenceHelper.getSession().close();
+
 						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 						eventBroker.send(
 								EventConstants.POZADAVEK_SELECTION_CHANGED,
@@ -539,10 +598,8 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 			pozadavek.setDatum(new Date(System.currentTimeMillis()));
 			pozadavek.setDatum_nakladky(datumNakladky.getText());
 			pozadavek.setDatum_vykladky(datumVykladky.getText());
-			pozadavek
-					.setDestinace_z(destinaceMap.get(odkud.getSelectionIndex()));
-			pozadavek
-					.setDestinace_do(destinaceMap.get(kam.getSelectionIndex()));
+			pozadavek.setDestinace_z(destinaceZ);
+			pozadavek.setDestinace_do(destinaceDo);
 			pozadavek.setHodina_nakladky(hodinaNakladky.getText());
 			pozadavek.setHodina_vykladky(hodinaVykladky.getText());
 			pozadavek.setJe_termin_konecny(termin_konecny.getSelection());
@@ -581,20 +638,19 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		datumVykladky.setText(pozadavek.getDatum_vykladky() != null ? pozadavek
 				.getDatum_vykladky() : "");
 		if (pozadavek.getDestinace_z() != null) {
-			final int index = getDestinaceIndex(pozadavek.getDestinace_z()
-					.getNazevACislo());
-			odkud.select(index);
-			odkud.notifyListeners(SWT.SELECTED, null);
-
+			destinaceZ = pozadavek.getDestinace_z();
+			odkud.setText(pozadavek.getDestinaceZNazevACislo());
 		}
-		kam.select(getDestinaceIndex(pozadavek.getDestinace_do()
-				.getNazevACislo()));
+		if (pozadavek.getDestinace_do() != null) {
+			destinaceDo = pozadavek.getDestinace_do();
+			kam.setText(pozadavek.getDestinaceDoNazevACislo());
+		}
 		hodinaNakladky
 				.setText(pozadavek.getHodina_nakladky() != null ? pozadavek
 						.getHodina_nakladky() : "");
 		hodinaVykladky
-		.setText(pozadavek.getHodina_vykladky() != null ? pozadavek
-				.getHodina_vykladky() : "");
+				.setText(pozadavek.getHodina_vykladky() != null ? pozadavek
+						.getHodina_vykladky() : "");
 		termin_konecny.setSelection(pozadavek.getJe_termin_konecny());
 		pocetPalet.setText(pozadavek.getPocet_palet() != null ? pozadavek
 				.getPocet_palet() : "");
@@ -605,21 +661,17 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 
 	}
 
-	protected String[] getDestinaceItems() {
-		List<String> result = new ArrayList<String>();
-		if (destinaceDAO != null) {
-			List<Destinace> destinace = destinaceDAO.findAll();
-			if (destinaceMap == null)
-				destinaceMap = new HashMap<Integer, Destinace>(destinace.size());
-			int index = 0;
-			for (Destinace des : destinace) {
-				result.add(des.getNazevACislo());
-				destinaceMap.put(Integer.valueOf(index++), des);
-			}
-		}
-
-		return result.toArray(new String[result.size()]);
-	}
+	/*
+	 * protected String[] getDestinaceItems() { List<String> result = new
+	 * ArrayList<String>(); if (destinaceDAO != null) { List<Destinace>
+	 * destinace = destinaceDAO.findAll(); if (destinaceMap == null)
+	 * destinaceMap = new HashMap<Integer, Destinace>(destinace.size()); int
+	 * index = 0; for (Destinace des : destinace) {
+	 * result.add(des.getNazevACislo());
+	 * destinaceMap.put(Integer.valueOf(index++), des); } }
+	 * 
+	 * return result.toArray(new String[result.size()]); }
+	 */
 
 	private SWTCalendarDialog getCalendarDialog(final Text text) {
 		SWTCalendarDialog calendarDialog = new SWTCalendarDialog(this
@@ -634,6 +686,12 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		});
 
 		return calendarDialog;
+	}
+
+	private DestinaceListDialog getDestinaceListDialog() {
+		DestinaceListDialog result = new DestinaceListDialog(parentShell,
+				context);
+		return result;
 	}
 
 	@Override
