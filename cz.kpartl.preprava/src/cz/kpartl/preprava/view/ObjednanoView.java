@@ -2,6 +2,7 @@ package cz.kpartl.preprava.view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.annotation.PreDestroy;
@@ -25,6 +26,9 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.Window;
@@ -88,7 +92,6 @@ public class ObjednanoView extends AbstractTableView {
 		typyHashMap.put(Objednavka.FAZE_FAKTUROVANO, TYP_FAKTUROVANO);
 		typyHashMap.put(Objednavka.FAZE_VSE, TYP_VSE);
 		typyHashMap.put(Objednavka.FAZE_UKONCENO, TYP_UKONCENO);
-		
 
 	}
 
@@ -105,6 +108,8 @@ public class ObjednanoView extends AbstractTableView {
 
 	MenuItem editItem;
 	MenuItem smazatItem;
+	MenuItem sparovatItem;
+	MenuItem zrusitParovaniItem;
 
 	@Inject
 	public ObjednanoView(Composite parent,
@@ -132,9 +137,9 @@ public class ObjednanoView extends AbstractTableView {
 
 	@Override
 	protected Object getModelData() {
-		if(faze != Objednavka.FAZE_VSE){
+		if (faze != Objednavka.FAZE_VSE) {
 			return objednavkaDAO.findByFaze(faze);
-		}else {
+		} else {
 			return objednavkaDAO.findNeukoncene();
 		}
 	}
@@ -147,12 +152,13 @@ public class ObjednanoView extends AbstractTableView {
 				.getToolTipText()) {
 			@Override
 			public String getText(Object element) {
-				return String.valueOf(((Objednavka) element).getId());
+				return String.valueOf(((Objednavka) element)
+						.getCislo_objednavky());
 			}
 		});
-		
-		 col = createTableViewerColumn("Status", 80,
-				columnIndex++, "Stav objednávky");
+
+		col = createTableViewerColumn("Status", 80, columnIndex++,
+				"Stav objednávky");
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
 			@Override
@@ -214,6 +220,21 @@ public class ObjednanoView extends AbstractTableView {
 		});
 
 		super.createColumns(parent);
+
+		col = createTableViewerColumn("Pøidružená objednávka", 40,
+				columnIndex++, "Pøidružená objednávka");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				final Objednavka obj = ((Objednavka) element)
+						.getPridruzena_objednavka();
+				if (obj != null) {
+					return String.valueOf(obj.getCislo_objednavky());
+				} else
+					return "";
+			}
+		});
 	}
 
 	@Override
@@ -273,6 +294,36 @@ public class ObjednanoView extends AbstractTableView {
 		}
 
 		typCombo.select(0);
+
+		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			public void selectionChanged(SelectionChangedEvent event) {
+				if (sparovatItem != null
+						&& ((StructuredSelection) viewer.getSelection()).size() == 2) {
+					final Iterator it = ((StructuredSelection) viewer
+							.getSelection()).iterator();
+					final Objednavka obj1 = (Objednavka) it.next();
+					final Objednavka obj2 = (Objednavka) it.next();
+					if (obj1.getPridruzena_objednavka() == null
+							&& obj2.getPridruzena_objednavka() == null) {
+						sparovatItem.setEnabled(true);
+					}
+				} else {
+					sparovatItem.setEnabled(false);
+				}
+
+				if (zrusitParovaniItem != null
+						&& ((StructuredSelection) viewer.getSelection()).size() == 1) {
+					final Objednavka obj = (Objednavka) ((StructuredSelection) viewer
+							.getSelection()).getFirstElement();
+					if (obj.getPridruzena_objednavka() != null)
+						zrusitParovaniItem.setEnabled(true);
+					else
+						zrusitParovaniItem.setEnabled(false);
+				}
+			}
+		});
+
 	}
 
 	protected void superCreateViewer(Composite parent, Object data) {
@@ -304,6 +355,22 @@ public class ObjednanoView extends AbstractTableView {
 
 		smazatItem.setImage((Image) context.get(Login.DELETE_ICON));
 		editItem.setImage((Image) context.get(Login.EDIT_ICON));
+
+		sparovatItem = new MenuItem(parent, SWT.PUSH);
+		sparovatItem.setText("Spárovat objednávky");
+		sparovatItem.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				sparujSelectedObjednavky();
+			}
+		});
+		zrusitParovaniItem = new MenuItem(parent, SWT.PUSH);
+		zrusitParovaniItem.setText("Zrušit spárování");
+		zrusitParovaniItem.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				zrusSparovani();
+			}
+		});
+
 	}
 
 	@Override
@@ -366,10 +433,21 @@ public class ObjednanoView extends AbstractTableView {
 				"Potvrzení smazání objednávky",
 				"Opravdu chcete smazat tuto objednávku?");
 		if (result) {
+
 			Transaction tx = HibernateHelper.getInstance().beginTransaction();
-			pozadavekDAO.delete(selectedObjednavka.getPozadavek());
-			objednavkaDAO.delete(selectedObjednavka);
-			tx.commit();
+			try {
+				pozadavekDAO.delete(selectedObjednavka.getPozadavek());
+				final Objednavka pridruzenaObj = selectedObjednavka
+						.getPridruzena_objednavka();
+				if (pridruzenaObj != null) {
+					pridruzenaObj.setPridruzena_objednavka(null);
+					objednavkaDAO.update(pridruzenaObj);
+				}
+				objednavkaDAO.delete(selectedObjednavka);
+				tx.commit();
+			} catch (Exception e) {
+				tx.rollback();
+			}
 
 			eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 		}
@@ -384,7 +462,7 @@ public class ObjednanoView extends AbstractTableView {
 				continue;
 			else
 				result.add(key, typyHashMap.get(key));
-		}		
+		}
 		return result.toArray(new String[result.size()]);
 
 	}
@@ -421,6 +499,55 @@ public class ObjednanoView extends AbstractTableView {
 			editItem.setEnabled(enable);
 		if (smazatItem != null)
 			smazatItem.setEnabled(enable);
+		sparovatItem.setEnabled(false);
+		zrusitParovaniItem.setEnabled(false);
+		if (((StructuredSelection) viewer.getSelection()).size() == 2) {
+			final Objednavka obj1 = (Objednavka) ((StructuredSelection) viewer
+					.getSelection()).iterator().next();
+			final Objednavka obj2 = (Objednavka) ((StructuredSelection) viewer
+					.getSelection()).iterator().next();
+			if (obj1.getPridruzena_objednavka() == null
+					&& obj2.getPridruzena_objednavka() == null) {
+				sparovatItem.setEnabled(true);
+			}
+		}
+
+		if (((StructuredSelection) viewer.getSelection()).size() == 1) {
+			final Objednavka obj1 = (Objednavka) ((StructuredSelection) viewer
+					.getSelection()).getFirstElement();
+			if (obj1.getPridruzena_objednavka() != null)
+				zrusitParovaniItem.setEnabled(true);
+		}
+
+	}
+
+	public void sparujSelectedObjednavky() {
+		final Iterator it = ((StructuredSelection) viewer.getSelection())
+				.iterator();
+		final Objednavka obj1 = (Objednavka) it.next();
+		final Objednavka obj2 = (Objednavka) it.next();
+
+		obj1.setPridruzena_objednavka(obj2);
+		obj2.setPridruzena_objednavka(obj1);
+
+		final Transaction tx = HibernateHelper.getInstance().beginTransaction();
+		objednavkaDAO.update(obj1);
+		objednavkaDAO.update(obj2);
+		tx.commit();
+		eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
+	}
+
+	protected void zrusSparovani() {
+		final Objednavka obj = (Objednavka) ((StructuredSelection) viewer
+				.getSelection()).getFirstElement();
+		final Objednavka refObj = obj.getPridruzena_objednavka();
+		obj.setPridruzena_objednavka(null);
+		refObj.setPridruzena_objednavka(null);
+		final Transaction tx = HibernateHelper.getInstance().beginTransaction();
+		objednavkaDAO.update(obj);
+		objednavkaDAO.update(refObj);
+		tx.commit();
+		eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 
 	}
 }

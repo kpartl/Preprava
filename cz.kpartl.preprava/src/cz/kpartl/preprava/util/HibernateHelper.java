@@ -102,8 +102,6 @@ public class HibernateHelper {
 	public org.hibernate.Session openSession()
 			throws org.hibernate.HibernateException {
 				org.hibernate.Session session = getFactory().openSession();
-				session.setCacheMode(CacheMode.IGNORE); //to jsem pridal ja
-				session.setFlushMode(FlushMode.ALWAYS);
 				session.connection();
 				return session;
 			}
@@ -115,13 +113,10 @@ public class HibernateHelper {
 			throws org.hibernate.HibernateException {
 				org.hibernate.Session session = (org.hibernate.Session) currentSession
 						.get();
-				
 				if (session == null || !session.isOpen()) {
 					session = openSession();
 					currentSession.set(session);
 				}
-				
-				session.clear(); //to jsem pridal ja
 				return session;
 			}
 

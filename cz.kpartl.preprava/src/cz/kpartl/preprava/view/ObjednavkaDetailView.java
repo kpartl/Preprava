@@ -32,6 +32,7 @@ public class ObjednavkaDetailView extends PozadavekDetailView {
 	protected Label dopravce;
 	protected Label zmenaTerminuNakladky;
 	protected Label cisloFakturyDopravce;
+	protected Label pridruzenaObjednavka;
 
 	@Inject
 	public ObjednavkaDetailView(Composite parent, Shell parentShell,
@@ -47,32 +48,35 @@ public class ObjednavkaDetailView extends PozadavekDetailView {
 
 		createBoldLabel(parent, "Èíslo objednávky: ");
 		cisloObjednavky = new Label(parent, SWT.NONE);
-		
+
 		createBoldLabel(parent, "Fáze objednávky: ");
 		faze = new Label(parent, SWT.NONE);
 
 		createBoldLabel(parent, "Dopravce: ");
 		dopravce = new Label(parent, SWT.NONE);
-		
+
 		createBoldLabel(parent, "Èíslo faktury dopravce: ");
 		cisloFakturyDopravce = new Label(parent, SWT.NONE);
 
 		createBoldLabel(parent, "Cena dopravy: ");
 		cena = new Label(parent, SWT.NONE);
-		
+
 		createBoldLabel(parent, "Mìna: ");
 		mena = new Label(parent, SWT.NONE);
 
 		createBoldLabel(parent, "Zmìna termínu nakládky: ");
 		zmenaTerminuNakladky = new Label(parent, SWT.NONE);
 
-		
+		createBoldLabel(parent, "Pøidružená objednávka: ");
+		pridruzenaObjednavka = new Label(parent, SWT.NONE);
 
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
-		
-		final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
-		final GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+
+		final Label separator = new Label(parent, SWT.SEPARATOR
+				| SWT.HORIZONTAL);
+		final GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+				| GridData.GRAB_HORIZONTAL);
 		gridData.horizontalSpan = 4;
 		separator.setLayoutData(gridData);
 
@@ -88,7 +92,7 @@ public class ObjednavkaDetailView extends PozadavekDetailView {
 
 	@Override
 	protected void fillData() {
-		if (objednavka == null){
+		if (objednavka == null) {
 			cisloObjednavky.setText("");
 			faze.setText("");
 			dopravce.setText("");
@@ -96,50 +100,54 @@ public class ObjednavkaDetailView extends PozadavekDetailView {
 			cena.setText("");
 			mena.setText("");
 			cisloFakturyDopravce.setText("");
-			
+			pridruzenaObjednavka.setText("");
+
 			super.fillData();
 			return;
 		}
 
-		cisloObjednavky.setText(String.valueOf(objednavka.getId()));
-		
+		cisloObjednavky.setText(String.valueOf(objednavka.getCislo_objednavky()));
+
 		faze.setText(ObjednanoView.getComboItems(true)[objednavka.getFaze()]);
 
 		final Dopravce d = objednavka.getDopravce();
 		if (d != null) {
 			dopravce.setText(d.getNazev());
 		}
-		
-			cena.setText(objednavka.getCenaFormated());
+
+		cena.setText(objednavka.getCenaFormated());
 
 		zmenaTerminuNakladky.setText(objednavka.getZmena_nakladky());
-		cisloFakturyDopravce.setText(objednavka.getCisloFakturyDopravceAsString());
-		
+		cisloFakturyDopravce.setText(objednavka
+				.getCisloFakturyDopravceAsString());
+
 		mena.setText(objednavka.getMena());
+		if (objednavka.getPridruzena_objednavka() != null)
+			pridruzenaObjednavka.setText(String.valueOf(objednavka
+					.getPridruzena_objednavka().getCislo_objednavky()));
+		else pridruzenaObjednavka.setText("");
 		super.fillData();
 	}
 
 	@Inject
 	@Optional
 	void selectionChanged(
-			@UIEventTopic(EventConstants.OBJEDNAVKA_SELECTION_CHANGED) Objednavka o) { 	
+			@UIEventTopic(EventConstants.OBJEDNAVKA_SELECTION_CHANGED) Objednavka o) {
 		this.objednavka = o;
 		this.pozadavek = o.getPozadavek();
 		fillData();
 
 	}
-	
+
 	@Inject
 	@Optional
 	void selectionChangedToEmpty(
-			@UIEventTopic(EventConstants.EMPTY_OBJEDNAVKA_SEND) String s) {		
-		if(s.equals(EventConstants.EMPTY_OBJEDNAVKA_SEND)){
+			@UIEventTopic(EventConstants.EMPTY_OBJEDNAVKA_SEND) String s) {
+		if (s.equals(EventConstants.EMPTY_OBJEDNAVKA_SEND)) {
 			this.objednavka = null;
 			this.pozadavek = null;
 			fillData();
 		}
 	}
-	
-	
 
 }

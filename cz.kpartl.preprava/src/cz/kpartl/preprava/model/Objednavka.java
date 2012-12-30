@@ -68,6 +68,16 @@ public class Objednavka implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
+	private Objednavka pridruzena_objednavka;
+
+	/**
+	 * @generated
+	 */
+	private Long cislo_objednavky;
+
+	/**
+	 * @generated
+	 */
 	public Objednavka() {
 	}
 
@@ -164,7 +174,7 @@ public class Objednavka implements java.io.Serializable {
 				+ mena + " zmena_nakladky=" + zmena_nakladky
 				+ " puvodni_termin_nakladky=" + puvodni_termin_nakladky
 				+ " cislo_faktury_dopravce=" + cislo_faktury_dopravce + " id="
-				+ id;
+				+ id + " cislo_objednavky=" + cislo_objednavky;
 	}
 
 	/**
@@ -221,5 +231,33 @@ public class Objednavka implements java.io.Serializable {
 	 */
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	/**
+	 * @generated
+	 */
+	public Objednavka getPridruzena_objednavka() {
+		return this.pridruzena_objednavka;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setPridruzena_objednavka(Objednavka pridruzena_objednavka) {
+		this.pridruzena_objednavka = pridruzena_objednavka;
+	}
+
+	/**
+	 * @generated
+	 */
+	public Long getCislo_objednavky() {
+		return this.cislo_objednavky;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setCislo_objednavky(Long cislo_objednavky) {
+		this.cislo_objednavky = cislo_objednavky;
 	}
 }

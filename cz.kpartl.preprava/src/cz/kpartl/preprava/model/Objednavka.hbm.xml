@@ -25,5 +25,10 @@
       <many-to-one  name='dopravce' class='cz.kpartl.preprava.model.Dopravce' foreign-key='fk_objednavka_dopravce_id'>
          <column name='dopravce_id'/>
       </many-to-one>
+      <many-to-one  name='pridruzena_objednavka' class='cz.kpartl.preprava.model.Objednavka' foreign-key='fk_objednavka_pridruzena_objednavka_id'>
+         <column name='pridruzena_objednavka_id'/>
+      </many-to-one>
+      <property  name='cislo_objednavky' type='long' column='cislo_objednavky' unique='true'>
+      </property>
    </class>
 </hibernate-mapping>

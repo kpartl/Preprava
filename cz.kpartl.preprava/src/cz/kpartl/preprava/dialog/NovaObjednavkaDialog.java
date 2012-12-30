@@ -2,7 +2,6 @@ package cz.kpartl.preprava.dialog;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,14 +13,12 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -31,24 +28,16 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.hibernate.Transaction;
-import org.hibernate.envers.synchronization.work.FakeBidirectionalRelationWorkUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cz.kpartl.preprava.dao.DestinaceDAO;
 import cz.kpartl.preprava.dao.DopravceDAO;
 import cz.kpartl.preprava.dao.ObjednavkaDAO;
-import cz.kpartl.preprava.dao.PozadavekDAO;
-import cz.kpartl.preprava.model.Destinace;
 import cz.kpartl.preprava.model.Dopravce;
 import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.model.Pozadavek;
-import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.util.EventConstants;
-import cz.kpartl.preprava.util.OtherUtils;
-import cz.kpartl.preprava.view.AbstractTableView;
 import cz.kpartl.preprava.view.ObjednanoView;
-import cz.kpartl.preprava.view.UkoncenoView;
 
 public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 
@@ -311,8 +300,12 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 			objednavka.setDopravce(dopravceMap.get(dopravceCombo
 					.getSelectionIndex()));
 
-			if (novaObjednavka)
+			if (novaObjednavka){
+				Long maxCislo = objednavkaDAO.getMaxCisloObjednavky();
+				if(maxCislo==null) maxCislo = (long) 0;
+				objednavka.setCislo_objednavky(maxCislo+1);
 				objednavka.setId(objednavkaDAO.create(objednavka));
+			}
 			else
 				objednavkaDAO.update(objednavka);
 			

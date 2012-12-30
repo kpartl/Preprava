@@ -28,7 +28,7 @@
       </one-to-one>
       <property  name='celkova_hmotnost' type='string' column='celkova_hmotnost'>
       </property>
-      <many-to-one  name='zadavatel' class='cz.kpartl.preprava.model.User' foreign-key='fk_pozadavek_zadavatel_id'>
+      <many-to-one  name='zadavatel' class='cz.kpartl.preprava.model.User' not-null='true' cascade='save-update' foreign-key='fk_pozadavek_zadavatel_id'>
          <column name='zadavatel_id'/>
       </many-to-one>
       <property  name='attr' type='integer' column='attr'>

@@ -277,6 +277,7 @@ public class PozadavkyView extends AbstractTableView {
 					((Pozadavek) viewer.getTable().getItem(i).getData())
 							.getId())) {
 				viewer.getTable().select(i);
+				enableMenuItems(true);
 				break;
 			}
 		}

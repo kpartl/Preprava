@@ -84,4 +84,19 @@ public class ObjednavkaDAO {
 				"from cz.kpartl.preprava.model.Objednavka o where o.faze != 6");
 		return query.list();
 	}
+
+	/**
+	 * @generated
+	 */
+	public Long getMaxCisloObjednavky() {
+		org.hibernate.Query query = getSession()
+				.createQuery(
+						"select max(o.cislo_objednavky) from cz.kpartl.preprava.model.Objednavka o");
+		java.util.List list = query.list();
+		if (list.size() == 1) {
+			return (java.lang.Long) list.get(0);
+		} else {
+			return null;
+		}
+	}
 }

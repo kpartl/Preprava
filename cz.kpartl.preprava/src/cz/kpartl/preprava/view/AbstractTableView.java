@@ -205,7 +205,7 @@ public abstract class AbstractTableView extends ViewPart {
 		layout = new TableColumnLayout();
 		composite.setLayout(layout);
 		// Define the TableViewer
-		viewer = new TableViewer(composite, SWT.SINGLE | SWT.H_SCROLL
+		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 
 		headerMenu = new Menu(parent.getShell(), SWT.POP_UP);
@@ -549,10 +549,12 @@ public abstract class AbstractTableView extends ViewPart {
 					eventBroker.send(
 							EventConstants.POZADAVEK_SELECTION_CHANGED,
 							selectedObject);
-				else if (selectedObject instanceof Objednavka)
+				else if (selectedObject instanceof Objednavka){
+					
 					eventBroker.send(
 							EventConstants.OBJEDNAVKA_SELECTION_CHANGED,
 							selectedObject);
+				}
 			}
 		});
 

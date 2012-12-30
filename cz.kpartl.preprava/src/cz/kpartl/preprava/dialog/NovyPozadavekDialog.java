@@ -364,7 +364,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 				final DestinaceListDialog dialog = getDestinaceListDialog();
 				if (dialog.open() == Window.OK) {
 					if (dialog.selectedDestinace != null) {
-						destinaceDo = dialog.selectedDestinace; 
+						destinaceDo = dialog.selectedDestinace;
 						kam.setText(dialog.selectedDestinace.getNazevACislo());
 						kamKontakt.setText(dialog.selectedDestinace
 								.getKontaktniOsobuAKontakt());
@@ -606,7 +606,8 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 			pozadavek.setPocet_palet(pocetPalet.getText());
 			pozadavek.setJe_stohovatelne(stohovatelne.getSelection());
 			pozadavek.setTaxi(taxi.getSelection());
-			pozadavek.setZadavatel(user);
+			if (pozadavek.getZadavatel() == null)
+				pozadavek.setZadavatel(user);
 			pozadavek.setPoznamka(poznamka.getText());
 
 			if (novyPozadavek)
