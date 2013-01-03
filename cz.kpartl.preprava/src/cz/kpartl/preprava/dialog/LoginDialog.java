@@ -178,6 +178,7 @@ public class LoginDialog extends Dialog {
 					context.set("cz.kpartl.preprava.admin",
 							user.isAdministrator() ? "1" : "0");
 					loginStatus = 1;
+					HibernateHelper.getInstance().getSession().close();
 					return;
 				} else {
 					loginStatus = 2;
