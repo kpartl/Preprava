@@ -13,6 +13,8 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -49,6 +51,13 @@ public class UkoncenoView extends ObjednanoView {
 		nadpisLabel.setFont(JFaceResources.getHeaderFont());
 
 		superCreateViewer(parent, data);
+		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			public void selectionChanged(SelectionChangedEvent event) {
+				enableMenuItems(((StructuredSelection) viewer.getSelection()).size() == 1);				
+			}
+		});
+		
 		createMenuItems(headerMenu);
 
 		if (((User) context.get(User.CONTEXT_NAME)).isAdministrator()) {

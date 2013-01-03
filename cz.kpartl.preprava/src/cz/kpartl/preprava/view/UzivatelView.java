@@ -259,19 +259,20 @@ public class UzivatelView extends AbstractTableView {
 		final String message = "Opravdu chcete smazat uživatele ".concat(selectedUzivatel
 				.getUsername().concat("?"));
 		
-		if (new MyMessageDialog(shell, "Potvrzení smazání uživatele", message).confirm()) {
-			try {
+		if (new MyMessageDialog(shell, "Potvrzení smazání uživatele", message).confirm()) {			
 				Transaction tx = HibernateHelper.getInstance()
 						.beginTransaction();
+				try {
 				userDAO.delete(selectedUzivatel);
 				tx.commit();
 				eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 			} catch (Exception ex) {
 				MessageDialog
 						.openError(shell, "Chyba pøi zápisu do databáze",
-								"Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace.");
+								"Nepodaøilo se smazat uživatele.");
 
-				logger.error("Nelze vložit/upravit uživatele", ex);
+				logger.error("Nelze smazat uživatele", ex);
+				tx.rollback();
 			}
 			
 		}

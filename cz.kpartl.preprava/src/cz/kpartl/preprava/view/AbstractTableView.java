@@ -1,7 +1,10 @@
 package cz.kpartl.preprava.view;
 
 import java.text.SimpleDateFormat;
+import java.util.Iterator;
+
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
@@ -24,7 +27,6 @@ import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
-import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -71,6 +73,8 @@ public abstract class AbstractTableView extends ViewPart {
 
 	protected int columnIndex = 0;
 
+	protected boolean isBeingDisposed = false;
+
 	@Inject
 	@Optional
 	IEclipseContext context;
@@ -116,9 +120,11 @@ public abstract class AbstractTableView extends ViewPart {
 				"cz.kpartl.preprava.handledtoolitem.delete", app);
 		prevestMenuItem = (HandledToolItemImpl) modelService.find(
 				"cz.kpartl.preprava.handledtoolitem.prevod", app);
-		
-		final TrimmedWindowImpl mainWindow = (TrimmedWindowImpl) modelService.find("cz.kpartl.preprava.mainwindow",app);
-		mainWindow.setLabel("PØEPRAVA - pøihlášený uživatel: " + ((User) context.get(User.CONTEXT_NAME)).getUsername());
+
+		final TrimmedWindowImpl mainWindow = (TrimmedWindowImpl) modelService
+				.find("cz.kpartl.preprava.mainwindow", app);
+		mainWindow.setLabel("PØEPRAVA - pøihlášený uživatel: "
+				+ ((User) context.get(User.CONTEXT_NAME)).getUsername());
 
 	}
 
@@ -133,7 +139,8 @@ public abstract class AbstractTableView extends ViewPart {
 	@Focus
 	public void setFocus() {
 		// viewer.getControl().setFocus();
-
+		if (isBeingDisposed)
+			return;
 		if (viewer.getSelection().isEmpty()) {
 			viewer.getTable().select(0);
 			StructuredSelection sel = (StructuredSelection) viewer
@@ -155,7 +162,8 @@ public abstract class AbstractTableView extends ViewPart {
 	@Optional
 	public void partActivation(
 			@UIEventTopic(UIEvents.UILifeCycle.ACTIVATE) org.osgi.service.event.Event event,
-			MApplication application, EPartService partService, EModelService modelService) {
+			MApplication application, EPartService partService,
+			EModelService modelService) {
 
 		MPart activePart = (MPart) event
 				.getProperty(UIEvents.EventTags.ELEMENT);
@@ -165,7 +173,7 @@ public abstract class AbstractTableView extends ViewPart {
 		 * if(activePart.getElementId().equals(ObjednavkaDetailView.ID)){
 		 * partService.activate(partService.findPart(ObjednanoView.ID)); }
 		 */
-		
+
 		if (activePart.getElementId().equals(PozadavekDetailView.ID)) {
 			partService.activate(partService.findPart(PozadavkyView.ID));
 		}
@@ -247,10 +255,11 @@ public abstract class AbstractTableView extends ViewPart {
 				SWT.NONE);
 
 		final TableColumn column = viewerColumn.getColumn();
-		//if (colNumber == 0)
-			layout.setColumnData(column, new ColumnPixelData(bound, true, true));
-		//else
-			//layout.setColumnData(column, new ColumnWeightData(bound,ColumnWeightData.MINIMUM_WIDTH, true));
+		// if (colNumber == 0)
+		layout.setColumnData(column, new ColumnPixelData(bound, true, true));
+		// else
+		// layout.setColumnData(column, new
+		// ColumnWeightData(bound,ColumnWeightData.MINIMUM_WIDTH, true));
 		column.setToolTipText(toolTip);
 		column.setText(title);
 		// column.setWidth(bound);
@@ -269,6 +278,8 @@ public abstract class AbstractTableView extends ViewPart {
 		SelectionAdapter selectionAdapter = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				if (isBeingDisposed)
+					return;
 				comparator.setColumn(index);
 				int dir = comparator.getDirection();
 				viewer.getTable().setSortDirection(dir);
@@ -369,7 +380,8 @@ public abstract class AbstractTableView extends ViewPart {
 			}
 		});
 
-		col = createTableViewerColumn("Palet", 60, columnIndex++, "Poèet EUR palet");
+		col = createTableViewerColumn("Palet", 60, columnIndex++,
+				"Poèet EUR palet");
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
 			@Override
@@ -380,7 +392,7 @@ public abstract class AbstractTableView extends ViewPart {
 				return ((Pozadavek) element).getPocet_palet();
 			}
 		});
-		
+
 		col = createTableViewerColumn("Stohovatelné?", 120, columnIndex++,
 				"Jsou palety stohovatelné?");
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
@@ -401,7 +413,6 @@ public abstract class AbstractTableView extends ViewPart {
 				return uncheckedImage;
 			}
 		});
-
 
 		col = createTableViewerColumn("Termín koneèný?", 120, columnIndex++,
 				"Je termín nakládky koneèný?");
@@ -484,7 +495,7 @@ public abstract class AbstractTableView extends ViewPart {
 				return ((Pozadavek) element).getHodina_nakladky();
 			}
 		});
-		
+
 		col = createTableViewerColumn("Hodina vykládky", 100, columnIndex++,
 				"Hodina vykládky u zákazníka");
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
@@ -536,39 +547,65 @@ public abstract class AbstractTableView extends ViewPart {
 		 * e.nextElement()).setHeaderRenderer(renderer); }
 		 */
 
-		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+		final ISelectionChangedListener selChangeListener = new ISelectionChangedListener() {
 
 			public void selectionChanged(SelectionChangedEvent event) {
+				if (isBeingDisposed)
+					return;
 				if (selectionService != null) {
 					selectionService.setSelection(((IStructuredSelection) event
 							.getSelection()).getFirstElement());
 				}
-				final Object selectedObject = ((StructuredSelection) event
+				Object selectedObject = ((StructuredSelection) event
 						.getSelection()).getFirstElement();
-				if (selectedObject instanceof Pozadavek)
+				if (selectedObject instanceof Pozadavek) {
+
+					if (((StructuredSelection) event.getSelection()).size() > 1) {
+						//int selIndex = viewer.getTable().getSelectionIndex();
+						/*final Iterator it = ((StructuredSelection) event
+								.getSelection()).iterator();
+						while (it.hasNext()) {
+							selectedObject = it.next();
+						}*/
+						viewer.getTable().deselectAll();
+
+					}
 					eventBroker.send(
 							EventConstants.POZADAVEK_SELECTION_CHANGED,
 							selectedObject);
-				else if (selectedObject instanceof Objednavka){
-					
-					eventBroker.send(
-							EventConstants.OBJEDNAVKA_SELECTION_CHANGED,
-							selectedObject);
+				} else if (selectedObject instanceof Objednavka) {
+					if (((StructuredSelection) event.getSelection()).size() == 1) {
+						eventBroker.send(
+								EventConstants.OBJEDNAVKA_SELECTION_CHANGED,
+								selectedObject);
+					} else {
+						eventBroker.send(EventConstants.EMPTY_OBJEDNAVKA_SEND,
+								EventConstants.EMPTY_OBJEDNAVKA_SEND);
+					}
+				}else { //nevybrano nic
+					eventBroker.send(EventConstants.EMPTY_POZADAVEK_SEND,
+							EventConstants.EMPTY_POZADAVEK_SEND);
+					eventBroker.send(EventConstants.EMPTY_OBJEDNAVKA_SEND,
+							EventConstants.EMPTY_OBJEDNAVKA_SEND);
 				}
 			}
-		});
+		};
+		viewer.addSelectionChangedListener(selChangeListener);
 
 		// Work around for 4.0 Bug of not cleaning up on Window-close
 		viewer.getControl().addDisposeListener(new DisposeListener() {
 
 			public void widgetDisposed(DisposeEvent e) {
-
+				viewer.removeSelectionChangedListener(selChangeListener);
 			}
 		});
 
 	}
 
-	
+	@PreDestroy
+	public void dispose() {
+		isBeingDisposed = true;
+	}
 
 	/*
 	 * public void refreshInputData() { viewer.setInput(getModelData()); }

@@ -529,9 +529,10 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		GridData gridData = new GridData(80, 25);
 		// data.horizontalAlignment = data.HORIZONTAL_ALIGN_FILL |
 		// data.GRAB_HORIZONTAL;
+		parent.getShell().setDefaultButton(okButton);
 
 		okButton.setLayoutData(gridData);
-		okButton.setText("OK");
+		okButton.setText("OK");		
 
 		okButton.setLayoutData(gridData);
 		okButton.setData(IDialogConstants.OK_ID);
@@ -554,10 +555,11 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 					}
 
 				} catch (Exception ex) {
+					tx.rollback();
 					setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
 							.concat(System.getProperty("line.separator"))
 							.concat(ex.getMessage()));
-					logger.error("Nelze vlozit/updatovat destinaci", ex);
+					logger.error("Nelze vlozit/updatovat pozadavek", ex);
 				}
 			}
 		});

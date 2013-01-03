@@ -128,6 +128,7 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 		GridData gridData = new GridData(80, 25);
 		okButton.setLayoutData(gridData);
 		okButton.setText("OK");
+		parent.getShell().setDefaultButton(okButton);
 
 		okButton.setLayoutData(gridData);
 		okButton.setData(IDialogConstants.OK_ID);
@@ -166,6 +167,7 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 
 						close();
 					} catch (Exception ex) {
+						tx.rollback();
 						setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
 								.concat(System.getProperty("line.separator"))
 								.concat(ex.getMessage()));

@@ -65,7 +65,7 @@ public class EditHandler {
 		TableViewer viewer = ((AbstractTableView) activePart.getObject()).viewer;
 		// logger.info("((StructuredSelection) viewer.getSelection()).getFirstElement(): "
 		// + ((StructuredSelection) viewer.getSelection()) .getFirstElement());
-		if (((StructuredSelection) viewer.getSelection()).getFirstElement() == null) {
+		if (((StructuredSelection) viewer.getSelection()).size()!= 1) {
 			result = false;
 		} else {
 			// logger.info("activePart.getElementId().equals(PozadavkyView.ID)"

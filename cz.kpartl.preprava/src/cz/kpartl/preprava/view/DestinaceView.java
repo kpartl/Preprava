@@ -298,22 +298,23 @@ public class DestinaceView extends AbstractTableView {
 		boolean result = MessageDialog.openConfirm(shell,
 				"Potvrzení smazání destinace",
 				"Opravdu chcete smazat tuto destinaci?");
-		if (result) {
-			try {
+		if (result) {		
 				Transaction tx = HibernateHelper.getInstance()
 						.beginTransaction();
+				try{
 				destinaceDAO.delete(selectedDestinace);
 				tx.commit();
 				
 				eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 				
-			} catch (Exception ex) {
+			} catch (Exception ex) {				
 				MessageDialog
 						.openError(shell,
 								"Chyba pøi zápisu do databáze",
-								"Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace.");
+								"Nepodaøilo se smazat destinaci.");
 
-				logger.error("Nelze vložit/upravit destinaci", ex);
+				logger.error("Nelze smazatt destinaci", ex);
+				tx.rollback();
 			}
 			
 		}

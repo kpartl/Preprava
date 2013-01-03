@@ -144,7 +144,7 @@ public class DopravceView extends AbstractTableView {
 				NovyDopravceDialog dialog = new NovyDopravceDialog(shell,
 						context, selectedDopravce, eventBroker);
 				if (dialog.open() == Window.OK) {
-					//refreshInputData();
+					// refreshInputData();
 				}
 
 			}
@@ -163,9 +163,8 @@ public class DopravceView extends AbstractTableView {
 				return ((Dopravce) element).getNazev();
 			}
 		});
-		
-		col = createTableViewerColumn("Ulice", 200,
-				columnIndex++, "Ulice");
+
+		col = createTableViewerColumn("Ulice", 200, columnIndex++, "Ulice");
 
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
@@ -174,9 +173,8 @@ public class DopravceView extends AbstractTableView {
 				return ((Dopravce) element).getUlice();
 			}
 		});
-		
-		col = createTableViewerColumn("Mìsto", 100,
-				columnIndex++, "Mìsto");
+
+		col = createTableViewerColumn("Mìsto", 100, columnIndex++, "Mìsto");
 
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
@@ -185,9 +183,8 @@ public class DopravceView extends AbstractTableView {
 				return ((Dopravce) element).getMesto();
 			}
 		});
-		
-		col = createTableViewerColumn("PSÈ", 70,
-				columnIndex++, "PSÈ");
+
+		col = createTableViewerColumn("PSÈ", 70, columnIndex++, "PSÈ");
 
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
@@ -196,9 +193,8 @@ public class DopravceView extends AbstractTableView {
 				return ((Dopravce) element).getPsc();
 			}
 		});
-		
-		col = createTableViewerColumn("IÈ", 70,
-				columnIndex++, "IÈ");
+
+		col = createTableViewerColumn("IÈ", 70, columnIndex++, "IÈ");
 
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
@@ -207,9 +203,8 @@ public class DopravceView extends AbstractTableView {
 				return ((Dopravce) element).getIc();
 			}
 		});
-		
-		col = createTableViewerColumn("DIÈ", 70,
-				columnIndex++, "DIÈ");
+
+		col = createTableViewerColumn("DIÈ", 70, columnIndex++, "DIÈ");
 
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
@@ -218,9 +213,8 @@ public class DopravceView extends AbstractTableView {
 				return ((Dopravce) element).getDic();
 			}
 		});
-		
-		col = createTableViewerColumn("SAP", 70,
-				columnIndex++, "SAP èíslo");
+
+		col = createTableViewerColumn("SAP", 70, columnIndex++, "SAP èíslo");
 
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
@@ -229,9 +223,9 @@ public class DopravceView extends AbstractTableView {
 				return ((Dopravce) element).getSap_cislo();
 			}
 		});
-		
-		col = createTableViewerColumn("Kontakt", 200,
-				columnIndex++, "Kontaktní osoba");
+
+		col = createTableViewerColumn("Kontakt", 200, columnIndex++,
+				"Kontaktní osoba");
 
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
@@ -240,9 +234,9 @@ public class DopravceView extends AbstractTableView {
 				return ((Dopravce) element).getKontaktni_osoba();
 			}
 		});
-		
-		col = createTableViewerColumn("Telefon", 60,
-				columnIndex++, "Kontaktní telefon");
+
+		col = createTableViewerColumn("Telefon", 60, columnIndex++,
+				"Kontaktní telefon");
 
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
@@ -251,9 +245,9 @@ public class DopravceView extends AbstractTableView {
 				return ((Dopravce) element).getKontaktni_telefon();
 			}
 		});
-		
-		col = createTableViewerColumn("Ostatní kontakty", 200,
-				columnIndex++, "Ostatní kontakty");
+
+		col = createTableViewerColumn("Ostatní kontakty", 200, columnIndex++,
+				"Ostatní kontakty");
 
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
@@ -275,7 +269,7 @@ public class DopravceView extends AbstractTableView {
 
 			}
 		});
-		//new MenuItem(parent, SWT.SEPARATOR);
+		// new MenuItem(parent, SWT.SEPARATOR);
 
 		final MenuItem editItem = new MenuItem(parent, SWT.PUSH);
 		editItem.setText("Editovat dopravce");
@@ -285,7 +279,7 @@ public class DopravceView extends AbstractTableView {
 			}
 		});
 
-		//new MenuItem(parent, SWT.SEPARATOR);
+		// new MenuItem(parent, SWT.SEPARATOR);
 
 		final MenuItem smazatItem = new MenuItem(parent, SWT.PUSH);
 		smazatItem.setText("Smazat dopravce");
@@ -294,10 +288,12 @@ public class DopravceView extends AbstractTableView {
 				deleteSelectedDopravce();
 			}
 		});
-		
-		viewer.getTable().addMouseListener(new MouseAdapter(){
+
+		viewer.getTable().addMouseListener(new MouseAdapter() {
 			public void mouseDown(MouseEvent event) {
-				if(event.button == 3 && viewer.getSelection().isEmpty()){ //prave tlacitko mysi
+				if (event.button == 3 && viewer.getSelection().isEmpty()) { // prave
+																			// tlacitko
+																			// mysi
 					headerMenu.setVisible(false);
 					viewer.getTable().getMenu().setEnabled(false);
 					headerMenu.setEnabled(false);
@@ -306,11 +302,11 @@ public class DopravceView extends AbstractTableView {
 		});
 
 		newItem.setImage((Image) context.get(Login.ADD_ICON));
-		smazatItem.setImage((Image) context.get(Login.DELETE_ICON));		
-		editItem.setImage((Image) context.get(Login.EDIT_ICON));		
-		
+		smazatItem.setImage((Image) context.get(Login.DELETE_ICON));
+		editItem.setImage((Image) context.get(Login.EDIT_ICON));
+
 	}
-	
+
 	public void editSelectedDopravce() {
 		boolean b = viewer.getSelection().isEmpty();
 		Dopravce selectedDopravce = (Dopravce) ((StructuredSelection) viewer
@@ -318,49 +314,48 @@ public class DopravceView extends AbstractTableView {
 		if (selectedDopravce == null) {
 			return;
 		}
-		new NovyDopravceDialog(shell, context,
-				selectedDopravce, eventBroker).open();	
-		
-		//eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
+		new NovyDopravceDialog(shell, context, selectedDopravce, eventBroker)
+				.open();
+
+		// eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 	}
-	public void deleteSelectedDopravce(){
+
+	public void deleteSelectedDopravce() {
 		Dopravce selectedDopravce = (Dopravce) ((StructuredSelection) viewer
 				.getSelection()).getFirstElement();
 		boolean result = MessageDialog.openConfirm(shell,
 				"Potvrzení smazání dopravce",
 				"Opravdu chcete smazat tohoto dopravce?");
 		if (result) {
+			Transaction tx = HibernateHelper.getInstance().beginTransaction();
 			try {
-				Transaction tx = HibernateHelper.getInstance()
-						.beginTransaction();
 				dopravceDAO.delete(selectedDopravce);
 				tx.commit();
-				
-				eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
-				
-			} catch (Exception ex) {
-				MessageDialog
-						.openError(shell,
-								"Chyba pøi zápisu do databáze",
-								"Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace.");
 
-				logger.error("Nelze vložit/upravit dopravce", ex);
-			}			
+				eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
+
+			} catch (Exception ex) {
+				MessageDialog.openError(shell, "Chyba pøi zápisu do databáze",
+						"Nepodaøilo se smazat dopravce.");
+
+				logger.error("Nelze smazat dopravce", ex);
+				tx.rollback();
+			}
 		}
 		;
 	}
 
 	@Focus
-	public void setFocus() {						
+	public void setFocus() {
 		novyMenuItem.setVisible(true);
 		editMenuItem.setVisible(true);
 		smazatMenuItem.setVisible(true);
 		prevestMenuItem.setVisible(false);
-		
+
 		novyMenuItem.setTooltip("Vytvoøit nového dopravce");
 		editMenuItem.setTooltip("Editovat dopravce");
 		smazatMenuItem.setTooltip("Smazat dopravce");
-		
+
 		super.setFocus();
 	}
 
@@ -368,7 +363,7 @@ public class DopravceView extends AbstractTableView {
 	protected TableViewerComparator getComparator() {
 		return new DopravceTableViewerComparator();
 	}
-	
+
 	@Inject
 	@Optional
 	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) String d) {

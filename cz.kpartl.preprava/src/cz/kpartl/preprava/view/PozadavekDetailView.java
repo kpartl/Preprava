@@ -55,6 +55,8 @@ public class PozadavekDetailView extends ViewPart {
 
 	protected Font boldFont;
 
+	public boolean isBeingDisposed = false;
+
 	@Inject
 	Shell parentShell;
 
@@ -70,9 +72,8 @@ public class PozadavekDetailView extends ViewPart {
 		GridLayout layout = new GridLayout(4, false);
 		layout.horizontalSpacing = 30;
 		parent.setLayout(layout);
-		
+
 		createPartControl(parent);
-		
 
 	}
 
@@ -94,17 +95,15 @@ public class PozadavekDetailView extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		
+
 		createBoldLabel(parent, "Datum požadavku: ");
 		datum = new Label(parent, SWT.NONE);
-		
 
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
-		
-		
+
 		createBoldLabel(parent, "Požadované datum nakládky: ");
-		
+
 		datumNakladkylabel = new Label(parent, SWT.NONE);
 		createBoldLabel(parent, "Požadované datum vykládky: ");
 		datumVykladkylabel = new Label(parent, SWT.NONE);
@@ -145,7 +144,7 @@ public class PozadavekDetailView extends ViewPart {
 	}
 
 	protected void fillData() {
-		if (pozadavek == null){
+		if (pozadavek == null) {
 			datum.setText("");
 			odkud.setText("");
 			kam.setText("");
@@ -163,7 +162,7 @@ public class PozadavekDetailView extends ViewPart {
 			hodina_vykladky.setText("");
 			poznamka.setText("");
 			zadavatel.setText("");
-			
+
 			return;
 		}
 
@@ -180,7 +179,7 @@ public class PozadavekDetailView extends ViewPart {
 		hmotnost.setText(pozadavek.getCelkova_hmotnost());
 		palet.setText(pozadavek.getPocet_palet());
 		String stohovatelneString = "NE";
-		if(pozadavek.getJe_stohovatelne())
+		if (pozadavek.getJe_stohovatelne())
 			stohovatelneString = "ANO";
 		stohovatelne.setText(stohovatelneString);
 		String terminString = "NE";
@@ -205,30 +204,35 @@ public class PozadavekDetailView extends ViewPart {
 	@Optional
 	void selectionChanged(
 			@UIEventTopic(EventConstants.POZADAVEK_SELECTION_CHANGED) Pozadavek p) {
+		if(isBeingDisposed) return;
 		this.pozadavek = p;
 		fillData();
 
 	}
-	
+
 	@Inject
 	@Optional
 	void selectionChangedToEmpty(
 			@UIEventTopic(EventConstants.EMPTY_POZADAVEK_SEND) String s) {
+		if(isBeingDisposed) return;
 		this.pozadavek = null;
 		fillData();
 
 	}
 
-	@Inject
-	@Optional	 
-	protected void destroyMe(@UIEventTopic(EventConstants.DISPOSE_DETAIL) String s){		
-		this.dispose();
-	}
-	
+	/*
+	 * @Inject
+	 * 
+	 * @Optional protected void
+	 * destroyMe(@UIEventTopic(EventConstants.DISPOSE_DETAIL) String s){
+	 * //this.dispose(); }
+	 */
+
 	@PreDestroy
 	protected void onDestroy() {
 		if (boldFont != null)
 			boldFont.dispose();
+		isBeingDisposed = true;
 	}
 
 }

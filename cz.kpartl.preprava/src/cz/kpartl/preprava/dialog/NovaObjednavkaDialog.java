@@ -239,6 +239,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 		okButton.setLayoutData(gridData);
 		okButton.setText("OK");
 		okButton.setFocus();
+		parent.getShell().setDefaultButton(okButton);
 
 		okButton.setLayoutData(gridData);
 		okButton.setData(IDialogConstants.OK_ID);
@@ -259,10 +260,11 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 					}
 
 				} catch (Exception ex) {
+					tx.rollback();
 					setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
 							.concat(System.getProperty("line.separator"))
 							.concat(ex.toString()));
-					logger.error("Nelze vlozit/updatovat destinaci", ex);
+					logger.error("Nelze updatovat objednavku", ex);
 				}
 			}
 		});

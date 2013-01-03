@@ -28,7 +28,7 @@ import cz.kpartl.preprava.util.HibernateHelper;
 
 public class LoginDialog extends Dialog {
 	private static final int RESET_ID = IDialogConstants.NO_TO_ALL_ID + 1;
-	
+
 	final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	private Text usernameField;
@@ -40,29 +40,26 @@ public class LoginDialog extends Dialog {
 	private String password;
 
 	private Image loginIcon;
-	
+
 	private ProgressBar progressBar;
-	
+
 	private volatile int loginStatus = -1;
-	
+
 	private UserDAO userDAO;
-	
+
 	IEclipseContext context;
-	
+
 	Shell shell;
 
-	public LoginDialog(Shell parentShell, Image loginIcon, UserDAO userDAO, IEclipseContext context) {
+	public LoginDialog(Shell parentShell, Image loginIcon, UserDAO userDAO,
+			IEclipseContext context) {
 		super(parentShell);
-		this.loginIcon = loginIcon;	
+		this.loginIcon = loginIcon;
 		this.userDAO = userDAO;
 		this.context = context;
 		this.shell = parentShell;
-			
 
 	}
-		
-
-
 
 	public String getUsername() {
 		return username;
@@ -76,19 +73,17 @@ public class LoginDialog extends Dialog {
 		Composite comp = (Composite) super.createDialogArea(parent);
 		final GridLayout gridLayout = new GridLayout();
 		comp.setLayout(gridLayout);
-		//comp.setBackgroundImage(loginIcon);
+		// comp.setBackgroundImage(loginIcon);
 
-	
-		GridData layoutData = new GridData(GridData.FILL, GridData.FILL,
-		true, true);
-		
-		
-		comp.setLayoutData(layoutData); 
+		GridData layoutData = new GridData(GridData.FILL, GridData.FILL, true,
+				true);
+
+		comp.setLayoutData(layoutData);
 		comp.redraw();
-		
+
 		Canvas canvas = new Canvas(comp, SWT.FILL);
-		 layoutData = new GridData(GridData.FILL_BOTH);
-		layoutData.horizontalSpan =2;
+		layoutData = new GridData(GridData.FILL_BOTH);
+		layoutData.horizontalSpan = 2;
 		canvas.setLayoutData(layoutData);
 		canvas.addPaintListener(new PaintListener() {
 
@@ -98,8 +93,8 @@ public class LoginDialog extends Dialog {
 
 			}
 		});
-//if(true) return comp;
-		
+		// if(true) return comp;
+
 		Label usernameLabel = new Label(comp, SWT.RIGHT);
 		usernameLabel.setText("Uživatelské jméno: ");
 
@@ -113,13 +108,11 @@ public class LoginDialog extends Dialog {
 		passwordField = new Text(comp, SWT.SINGLE | SWT.PASSWORD | SWT.BORDER);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		passwordField.setLayoutData(data);
-		
+
 		progressBar = new ProgressBar(comp, SWT.INDETERMINATE);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		progressBar.setLayoutData(data);
 		progressBar.setVisible(false);
-		
-		
 
 		return comp;
 	}
@@ -135,13 +128,13 @@ public class LoginDialog extends Dialog {
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setText("Pøihlášení do aplikace Pøeprava");
-		//shell.setSize(300, 125);
-		//setShellStyle( SWT.APPLICATION_MODAL); 		
-		shell.setSize(260,410);
+		// shell.setSize(300, 125);
+		// setShellStyle( SWT.APPLICATION_MODAL);
+		shell.setSize(260, 410);
 	}
-	
+
 	@Override
-	protected void cancelPressed(){
+	protected void cancelPressed() {
 		loginStatus = -2;
 		super.cancelPressed();
 	}
@@ -150,23 +143,32 @@ public class LoginDialog extends Dialog {
 	protected void okPressed() {
 		username = usernameField.getText();
 		password = UserDAO.encryptPassword(passwordField.getText());
-		
+
 		showProgressBar(true);
-		
-	
+
 		Thread thread = new Thread(new Runnable() {
-			public void run() {		
+			public void run() {
 				if (userDAO.findByUsername("admin") == null) {
 					User admin = new User();
 					admin.setAdministrator(true);
 					admin.setUsername("admin");
 					admin.setPassword(userDAO.encryptPassword("istrator"));
-					Transaction tx = HibernateHelper.getInstance().beginTransaction();
-					userDAO.create(admin);
-					tx.commit();
-					logger.debug("Vlozen user admin");
+					Transaction tx = HibernateHelper.getInstance()
+							.beginTransaction();
+					try {
+						userDAO.create(admin);
+						tx.commit();
+						logger.debug("Vlozen user admin");
+					} catch (Exception ex) {
+						MessageDialog.openError(shell,
+								"Chyba pøi zápisu do databáze",
+								"Nepodaøilo se vložit uživatele admin.");
+
+						logger.error("Nelze vlozit uživatele", ex);
+						tx.rollback();
+					}
 				}
-				
+
 				User user = userDAO.login(username, password);
 
 				if (user != null) { // successful login
@@ -180,32 +182,33 @@ public class LoginDialog extends Dialog {
 				} else {
 					loginStatus = 2;
 
-					//tryLogin(shell, context);
+					// tryLogin(shell, context);
 
 				}
 			}
 		});
-		
+
 		thread.start();
-		while(loginStatus == -1){
-			if (shell.getDisplay().readAndDispatch() == false){}
-			
+		while (loginStatus == -1) {
+			if (shell.getDisplay().readAndDispatch() == false) {
 			}
 
+		}
+
 	}
-	
-	public int getLoginStatus(){
+
+	public int getLoginStatus() {
 		return loginStatus;
 	}
-	
-	public void setLoginStatus(int status){
+
+	public void setLoginStatus(int status) {
 		this.loginStatus = status;
 	}
-	
-	public void showProgressBar(boolean how){
+
+	public void showProgressBar(boolean how) {
 		progressBar.setVisible(how);
 		progressBar.getParent().layout();
-		
+
 	}
 
 }

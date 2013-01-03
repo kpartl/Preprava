@@ -1,5 +1,6 @@
 package cz.kpartl.preprava.view;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -106,7 +107,8 @@ public class ObjednavkaDetailView extends PozadavekDetailView {
 			return;
 		}
 
-		cisloObjednavky.setText(String.valueOf(objednavka.getCislo_objednavky()));
+		cisloObjednavky
+				.setText(String.valueOf(objednavka.getCislo_objednavky()));
 
 		faze.setText(ObjednanoView.getComboItems(true)[objednavka.getFaze()]);
 
@@ -125,7 +127,8 @@ public class ObjednavkaDetailView extends PozadavekDetailView {
 		if (objednavka.getPridruzena_objednavka() != null)
 			pridruzenaObjednavka.setText(String.valueOf(objednavka
 					.getPridruzena_objednavka().getCislo_objednavky()));
-		else pridruzenaObjednavka.setText("");
+		else
+			pridruzenaObjednavka.setText("");
 		super.fillData();
 	}
 
@@ -133,6 +136,8 @@ public class ObjednavkaDetailView extends PozadavekDetailView {
 	@Optional
 	void selectionChanged(
 			@UIEventTopic(EventConstants.OBJEDNAVKA_SELECTION_CHANGED) Objednavka o) {
+		if (isBeingDisposed)
+			return;
 		this.objednavka = o;
 		this.pozadavek = o.getPozadavek();
 		fillData();
@@ -143,6 +148,8 @@ public class ObjednavkaDetailView extends PozadavekDetailView {
 	@Optional
 	void selectionChangedToEmpty(
 			@UIEventTopic(EventConstants.EMPTY_OBJEDNAVKA_SEND) String s) {
+		if (isBeingDisposed)
+			return;
 		if (s.equals(EventConstants.EMPTY_OBJEDNAVKA_SEND)) {
 			this.objednavka = null;
 			this.pozadavek = null;

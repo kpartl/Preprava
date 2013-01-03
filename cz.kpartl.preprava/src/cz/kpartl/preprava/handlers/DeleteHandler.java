@@ -53,7 +53,7 @@ public class DeleteHandler {
 	public boolean canExecute(@Active MPart activePart) {
 		
 		TableViewer viewer = ((AbstractTableView) activePart.getObject()).viewer;
-		if (((StructuredSelection) viewer.getSelection()).getFirstElement() == null) {
+		if (((StructuredSelection) viewer.getSelection()).size()!=1) {
 			return false;
 		}
 		

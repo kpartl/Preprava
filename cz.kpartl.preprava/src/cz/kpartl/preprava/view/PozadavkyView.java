@@ -1,8 +1,6 @@
 package cz.kpartl.preprava.view;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
@@ -30,7 +28,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,10 +79,10 @@ public class PozadavkyView extends AbstractTableView {
 
 	@Override
 	protected Object getModelData() {
-		cz.kpartl.preprava.util.HibernateHelper.getInstance()
-		.getSession().clear();
+		cz.kpartl.preprava.util.HibernateHelper.getInstance().getSession()
+				.clear();
 		return pozadavekDAO.findNeobjednane();
-	
+
 	}
 
 	public TableViewer getViewer() {
@@ -169,6 +166,8 @@ public class PozadavkyView extends AbstractTableView {
 
 	@Focus
 	public void setFocus() {
+		if(isBeingDisposed) return;
+		
 		super.setFocus();
 		novyMenuItem.setVisible(true);
 		editMenuItem.setVisible(true);
@@ -188,7 +187,8 @@ public class PozadavkyView extends AbstractTableView {
 
 		final Object selectedObject = (((StructuredSelection) viewer
 				.getSelection()).getFirstElement());
-		if (selectedObject != null) {
+		if (selectedObject != null
+				&& ((StructuredSelection) viewer.getSelection()).size() == 1) {
 			enableMenuItems(true);
 			eventBroker.post(EventConstants.POZADAVEK_SELECTION_CHANGED,
 					selectedObject);
@@ -216,8 +216,15 @@ public class PozadavkyView extends AbstractTableView {
 				"Opravdu chcete smazat tento požadavek?");
 		if (result) {
 			Transaction tx = HibernateHelper.getInstance().beginTransaction();
-			pozadavekDAO.delete(selectedPozadavek);
-			tx.commit();
+			try {
+				pozadavekDAO.delete(selectedPozadavek);
+				tx.commit();
+			} catch (Exception e) {
+				logger.error("Nelze smazat pozadavek", e);
+				MessageDialog.openError(shell, "Chyba pøi zápisu do databáze",
+						"Nepodaøilo se smazat požadavek.");
+				tx.rollback();
+			}
 			eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 		}
 		;
@@ -247,24 +254,26 @@ public class PozadavkyView extends AbstractTableView {
 
 	@Inject
 	@Optional
-	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) String s) {	
+	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) String s) {
+		if (isBeingDisposed) return;
+		
 		final StructuredSelection selection = (StructuredSelection) viewer
 				.getSelection();
-		Runnable job = new Runnable(){
+		Runnable job = new Runnable() {
 			public void run() {
-		viewer.setInput(getModelData());
-		
-		if (!((ArrayList) viewer.getInput()).contains(selection
-				.getFirstElement())) {
-			viewer.getTable().select(-1);
+				viewer.setInput(getModelData());
 
-			eventBroker.send(EventConstants.EMPTY_POZADAVEK_SEND,
-					EventConstants.EMPTY_POZADAVEK_SEND);
-		}
+				if (!((ArrayList) viewer.getInput()).contains(selection
+						.getFirstElement())) {
+					viewer.getTable().select(-1);
+
+					eventBroker.send(EventConstants.EMPTY_POZADAVEK_SEND,
+							EventConstants.EMPTY_POZADAVEK_SEND);
+				}
 			};
-			
+
 		};
-			
+
 		BusyIndicator.showWhile(shell.getDisplay(), job);
 	}
 
@@ -272,24 +281,33 @@ public class PozadavkyView extends AbstractTableView {
 	@Optional
 	void selectionChanged(
 			@UIEventTopic(EventConstants.POZADAVEK_SELECTION_CHANGED) Pozadavek p) {
-		for (int i = 0; i < viewer.getTable().getItemCount(); i++) {
-			if (p.getId().equals(
-					((Pozadavek) viewer.getTable().getItem(i).getData())
-							.getId())) {
-				viewer.getTable().select(i);
-				enableMenuItems(true);
-				break;
+		if (!isBeingDisposed)
+			for (int i = 0; i < viewer.getTable().getItemCount(); i++) {
+				if (p.getId().equals(
+						((Pozadavek) viewer.getTable().getItem(i).getData())
+								.getId())) {
+					viewer.getTable().select(i);					
+						enableMenuItems(((StructuredSelection) viewer.getSelection()).size() == 1);
+					
+					break;
+				}
 			}
-		}
 
 	}
 
 	protected void enableMenuItems(boolean enable) {
 		editItem.setEnabled(enable);
 		smazatItem.setEnabled(enable);
-		if(objednavkaItem != null)objednavkaItem.setEnabled(enable);
+		if (objednavkaItem != null)
+			objednavkaItem.setEnabled(enable);
 
-		logger.debug("EnableMenuItems " + enable);
+		/*editMenuItem.setEnabled(enable);
+		smazatMenuItem.setEnabled(enable);
+		if (enable)
+			prevestMenuItem.setEnabled(((User) context.get(User.CONTEXT_NAME))
+					.isAdministrator());
+		else
+			prevestMenuItem.setEnabled(false);*/
 	}
 
 }

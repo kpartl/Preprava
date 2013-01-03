@@ -12,26 +12,17 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.MElementContainer;
-import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.menu.impl.ToolBarImpl;
 import org.eclipse.e4.ui.services.IStylingEngine;
-import org.eclipse.e4.ui.workbench.UIEvents;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -49,17 +40,16 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
 import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cz.kpartl.preprava.dao.ObjednavkaDAO;
 import cz.kpartl.preprava.dao.PozadavekDAO;
 import cz.kpartl.preprava.dialog.NovaObjednavkaDialog;
-import cz.kpartl.preprava.dialog.NovyPozadavekDialog;
 import cz.kpartl.preprava.model.Dopravce;
 import cz.kpartl.preprava.model.Objednavka;
-import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.sorter.ObjednavkaTableViewerComparator;
-import cz.kpartl.preprava.sorter.PozadavekTableViewerComparator;
 import cz.kpartl.preprava.sorter.TableViewerComparator;
 import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
@@ -94,6 +84,8 @@ public class ObjednanoView extends AbstractTableView {
 		typyHashMap.put(Objednavka.FAZE_UKONCENO, TYP_UKONCENO);
 
 	}
+
+	final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	protected ObjednavkaDAO objednavkaDAO;
 	protected PozadavekDAO pozadavekDAO;
@@ -154,6 +146,21 @@ public class ObjednanoView extends AbstractTableView {
 			public String getText(Object element) {
 				return String.valueOf(((Objednavka) element)
 						.getCislo_objednavky());
+			}
+		});
+
+		col = createTableViewerColumn("Pøidružená objednávka", 40,
+				columnIndex++, "Pøidružená objednávka");
+		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+				.getToolTipText()) {
+			@Override
+			public String getText(Object element) {
+				final Objednavka obj = ((Objednavka) element)
+						.getPridruzena_objednavka();
+				if (obj != null) {
+					return String.valueOf(obj.getCislo_objednavky());
+				} else
+					return "";
 			}
 		});
 
@@ -220,21 +227,6 @@ public class ObjednanoView extends AbstractTableView {
 		});
 
 		super.createColumns(parent);
-
-		col = createTableViewerColumn("Pøidružená objednávka", 40,
-				columnIndex++, "Pøidružená objednávka");
-		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
-				.getToolTipText()) {
-			@Override
-			public String getText(Object element) {
-				final Objednavka obj = ((Objednavka) element)
-						.getPridruzena_objednavka();
-				if (obj != null) {
-					return String.valueOf(obj.getCislo_objednavky());
-				} else
-					return "";
-			}
-		});
 	}
 
 	@Override
@@ -260,7 +252,8 @@ public class ObjednanoView extends AbstractTableView {
 				}
 				final Objednavka selectedObjednavka = (Objednavka) ((StructuredSelection) viewer
 						.getSelection()).getFirstElement();
-				if (selectedObjednavka != null) {
+				if (selectedObjednavka != null
+						&& ((StructuredSelection) viewer.getSelection()).size() == 1) {
 					enableMenuItems(true);
 					eventBroker.send(
 							EventConstants.OBJEDNAVKA_SELECTION_CHANGED,
@@ -298,29 +291,8 @@ public class ObjednanoView extends AbstractTableView {
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
 			public void selectionChanged(SelectionChangedEvent event) {
-				if (sparovatItem != null
-						&& ((StructuredSelection) viewer.getSelection()).size() == 2) {
-					final Iterator it = ((StructuredSelection) viewer
-							.getSelection()).iterator();
-					final Objednavka obj1 = (Objednavka) it.next();
-					final Objednavka obj2 = (Objednavka) it.next();
-					if (obj1.getPridruzena_objednavka() == null
-							&& obj2.getPridruzena_objednavka() == null) {
-						sparovatItem.setEnabled(true);
-					}
-				} else {
-					sparovatItem.setEnabled(false);
-				}
-
-				if (zrusitParovaniItem != null
-						&& ((StructuredSelection) viewer.getSelection()).size() == 1) {
-					final Objednavka obj = (Objednavka) ((StructuredSelection) viewer
-							.getSelection()).getFirstElement();
-					if (obj.getPridruzena_objednavka() != null)
-						zrusitParovaniItem.setEnabled(true);
-					else
-						zrusitParovaniItem.setEnabled(false);
-				}
+				enableMenuItems(((StructuredSelection) viewer.getSelection())
+						.size() == 1);
 			}
 		});
 
@@ -402,7 +374,8 @@ public class ObjednanoView extends AbstractTableView {
 
 		final Object selectedObject = (((StructuredSelection) viewer
 				.getSelection()).getFirstElement());
-		if (selectedObject != null) {
+		if (selectedObject != null
+				&& ((StructuredSelection) viewer.getSelection()).size() == 1) {
 			enableMenuItems(true);
 			eventBroker.send(EventConstants.OBJEDNAVKA_SELECTION_CHANGED,
 					selectedObject);
@@ -446,6 +419,9 @@ public class ObjednanoView extends AbstractTableView {
 				objednavkaDAO.delete(selectedObjednavka);
 				tx.commit();
 			} catch (Exception e) {
+				logger.error("Nelze smazat objednavku", e);
+				MessageDialog.openError(shell, "Chyba pøi zápisu do databáze",
+						"Nepodaøilo se smazat objednávku.");
 				tx.rollback();
 			}
 
@@ -470,6 +446,8 @@ public class ObjednanoView extends AbstractTableView {
 	@Inject
 	@Optional
 	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) String o) {
+		if (isBeingDisposed) return;
+		
 		final StructuredSelection selection = (StructuredSelection) viewer
 				.getSelection();
 		Runnable job = new Runnable() {
@@ -531,10 +509,17 @@ public class ObjednanoView extends AbstractTableView {
 		obj2.setPridruzena_objednavka(obj1);
 
 		final Transaction tx = HibernateHelper.getInstance().beginTransaction();
-		objednavkaDAO.update(obj1);
-		objednavkaDAO.update(obj2);
-		tx.commit();
-		eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
+		try {
+			objednavkaDAO.update(obj1);
+			objednavkaDAO.update(obj2);
+			tx.commit();
+			eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
+		} catch (Exception e) {
+			logger.error("Nelze sparovat objednavky", e);
+			MessageDialog.openError(shell, "Chyba pøi zápisu do databáze",
+					"Nepodaøilo se spárovat objednávky.");
+			tx.rollback();
+		}
 	}
 
 	protected void zrusSparovani() {
@@ -544,10 +529,17 @@ public class ObjednanoView extends AbstractTableView {
 		obj.setPridruzena_objednavka(null);
 		refObj.setPridruzena_objednavka(null);
 		final Transaction tx = HibernateHelper.getInstance().beginTransaction();
-		objednavkaDAO.update(obj);
-		objednavkaDAO.update(refObj);
-		tx.commit();
-		eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
+		try {
+			objednavkaDAO.update(obj);
+			objednavkaDAO.update(refObj);
+			tx.commit();
+			eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
+		} catch (Exception e) {
+			logger.error("Nelze zrusit parovani objednavek", e);
+			tx.rollback();
+			MessageDialog.openError(shell, "Chyba pøi zápisu do databáze",
+					"Nepodaøilo se zrušit spárování objednávek.");
+		}
 
 	}
 }

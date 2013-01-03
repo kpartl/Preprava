@@ -171,6 +171,7 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 		new Label(parent, SWT.NONE);
 
 		final Button okButton = new Button(parent, SWT.PUSH);
+		parent.getShell().setDefaultButton(okButton);
 		gridData = new GridData(80, 25);
 		okButton.setLayoutData(gridData);
 		okButton.setText("OK");
@@ -202,12 +203,13 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 							destinaceDAO.update(destinace);
 						tx.commit();
 						persistenceHelper.getSession().flush();
-					//	persistenceHelper.getSession().close();
+						// persistenceHelper.getSession().close();
 
 						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 
 						close();
 					} catch (Exception ex) {
+						tx.rollback();
 						setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
 								.concat(System.getProperty("line.separator"))
 								.concat(ex.getMessage()));

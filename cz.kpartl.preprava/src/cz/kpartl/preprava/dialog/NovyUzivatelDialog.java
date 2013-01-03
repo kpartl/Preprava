@@ -30,7 +30,6 @@ import cz.kpartl.preprava.dao.UserDAO;
 import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
-import cz.kpartl.preprava.view.AbstractTableView;
 
 public class NovyUzivatelDialog extends TitleAreaDialog {
 
@@ -126,6 +125,7 @@ public class NovyUzivatelDialog extends TitleAreaDialog {
 		gridData = new GridData(80, 25);
 		okButton.setLayoutData(gridData);
 		okButton.setText("OK");
+		parent.getShell().setDefaultButton(okButton);
 
 		okButton.setLayoutData(gridData);
 		okButton.setData(IDialogConstants.OK_ID);
@@ -156,6 +156,7 @@ public class NovyUzivatelDialog extends TitleAreaDialog {
 						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
 						close();
 					} catch (Exception ex) {
+						tx.rollback();
 						setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
 								.concat(System.getProperty("line.separator"))
 								.concat(ex.getMessage()));
