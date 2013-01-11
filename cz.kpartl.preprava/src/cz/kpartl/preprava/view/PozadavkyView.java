@@ -174,6 +174,7 @@ public class PozadavkyView extends AbstractTableView {
 		smazatMenuItem.setVisible(true);
 		prevestMenuItem.setVisible(((User) context.get(User.CONTEXT_NAME))
 				.isAdministrator());
+		tisknoutMenuItem.setVisible(false);
 
 		novyMenuItem.setTooltip("Vytvoøit nový požadavek");
 		editMenuItem.setTooltip("Editovat požadavek");

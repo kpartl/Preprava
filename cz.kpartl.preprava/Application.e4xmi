@@ -49,8 +49,13 @@
         <children xsi:type="menu:HandledToolItem" xmi:id="_Hkl8EB3YEeKkIcYxzMQFeA" elementId="cz.kpartl.preprava.handledtoolitem.prevod" label="" iconURI="platform:/plugin/cz.kpartl.preprava/icons/objednavka.gif" tooltip="Převést požadavek na objednávku" enabled="false" command="_aOLGUB3YEeKkIcYxzMQFeA">
           <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_jedNkB6WEeKXNNti5cXLzw" coreExpressionId="cz.kpartl.preprava.definition.admin"/>
         </children>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_51tKkFsqEeKGG41A4Utr0g" elementId="cz.kpartl.preprava.handledtoolitem.tisk" label="" iconURI="platform:/plugin/cz.kpartl.preprava/icons/printview_tsk.gif" tooltip="Tisk objednávky" command="_q_yCsFsrEeKGG41A4Utr0g">
+          <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_kFYDEFswEeKGG41A4Utr0g"/>
+        </children>
         <children xsi:type="menu:ToolBarSeparator" xmi:id="_DNCOMCHDEeKenvq2vkxUtA" elementId="cz.kpartl.preprava.toolbarseparator.0"/>
-        <children xsi:type="menu:DirectToolItem" xmi:id="_E4UrUCHDEeKenvq2vkxUtA" elementId="cz.kpartl.preprava.directtoolitem.refresh" iconURI="platform:/plugin/cz.kpartl.preprava/icons/refresh.gif" tooltip="Aktualizovat data" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.RefreshHandler"/>
+        <children xsi:type="menu:DirectToolItem" xmi:id="_E4UrUCHDEeKenvq2vkxUtA" elementId="cz.kpartl.preprava.directtoolitem.refresh" iconURI="platform:/plugin/cz.kpartl.preprava/icons/refresh.gif" tooltip="Aktualizovat data" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.RefreshHandler">
+          <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_AkObkFssEeKGG41A4Utr0g"/>
+        </children>
       </children>
     </trimBars>
   </children>
@@ -65,6 +70,7 @@
   <handlers xmi:id="_3xA8QBm-EeKXZLm_H6PBBQ" elementId="cz.kpartl.preprava.handler.editace" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.EditHandler" command="_t_nToBm-EeKXZLm_H6PBBQ"/>
   <handlers xmi:id="_7-bX4Bm-EeKXZLm_H6PBBQ" elementId="cz.kpartl.preprava.handler.smazani" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.DeleteHandler" command="_yJvxwBm-EeKXZLm_H6PBBQ"/>
   <handlers xmi:id="_gZpxIB3YEeKkIcYxzMQFeA" elementId="cz.kpartl.preprava.handler.prevod" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.PrevodHandler" command="_aOLGUB3YEeKkIcYxzMQFeA"/>
+  <handlers xmi:id="_LZR5kFssEeKGG41A4Utr0g" elementId="cz.kpartl.preprava.handler.tisk" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.handlers.TiskHandler" command="_q_yCsFsrEeKGG41A4Utr0g"/>
   <bindingTables xmi:id="_nkHknPdIEeGDArQ_Xew7DQ" bindingContext="_nkHkkfdIEeGDArQ_Xew7DQ">
     <bindings xmi:id="_nkHknfdIEeGDArQ_Xew7DQ" keySequence="M1+Q" command="_nkHkmvdIEeGDArQ_Xew7DQ"/>
     <bindings xmi:id="_nkHkoPdIEeGDArQ_Xew7DQ" keySequence="M1+O" command="_nkHknvdIEeGDArQ_Xew7DQ"/>
@@ -91,6 +97,7 @@
   <commands xmi:id="_t_nToBm-EeKXZLm_H6PBBQ" elementId="cz.kpartl.preprava.command.editace" commandName="Editace"/>
   <commands xmi:id="_yJvxwBm-EeKXZLm_H6PBBQ" elementId="cz.kpartl.preprava.command.smazani" commandName="Smazani"/>
   <commands xmi:id="_aOLGUB3YEeKkIcYxzMQFeA" elementId="cz.kpartl.preprava.command.prevod" commandName="Prevod"/>
+  <commands xmi:id="_q_yCsFsrEeKGG41A4Utr0g" elementId="cz.kpartl.preprava.command.tisk" commandName="Tisk"/>
   <addons xmi:id="_nkHklPdIEeGDArQ_Xew7DQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_nkHklfdIEeGDArQ_Xew7DQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_nkHklvdIEeGDArQ_Xew7DQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

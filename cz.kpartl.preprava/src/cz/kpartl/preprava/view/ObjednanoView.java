@@ -27,9 +27,18 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.printing.PrintDialog;
+import org.eclipse.swt.printing.Printer;
+import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -39,6 +48,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Text;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +64,7 @@ import cz.kpartl.preprava.sorter.TableViewerComparator;
 import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
 import cz.kpartl.preprava.util.Login;
+import cz.kpartl.preprava.util.PrintHelper;
 
 public class ObjednanoView extends AbstractTableView {
 
@@ -102,6 +113,9 @@ public class ObjednanoView extends AbstractTableView {
 	MenuItem smazatItem;
 	MenuItem sparovatItem;
 	MenuItem zrusitParovaniItem;
+	MenuItem tisknoutItem;
+	
+	
 
 	@Inject
 	public ObjednanoView(Composite parent,
@@ -342,7 +356,21 @@ public class ObjednanoView extends AbstractTableView {
 				zrusSparovani();
 			}
 		});
+		
+		tisknoutItem = new MenuItem(parent, SWT.PUSH);
+		tisknoutItem.setText("Tisknout");
+		tisknoutItem.setImage((Image) context.get(Login.TISK_ICON));
+		tisknoutItem.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				tiskVybraneObjednavky();
+			}
+		});
 
+	}
+	
+	public void tiskVybraneObjednavky(){
+		final PrintHelper printHelper = new PrintHelper(shell);
+		printHelper.tiskVybraneObjednavky((Objednavka) ((StructuredSelection) viewer.getSelection()).getFirstElement());
 	}
 
 	@Override
@@ -359,9 +387,12 @@ public class ObjednanoView extends AbstractTableView {
 		editMenuItem.setEnabled(true);
 		smazatMenuItem.setVisible(true);
 		prevestMenuItem.setVisible(false);
+		//tisknoutMenuItem.setEnabled(true);
+		tisknoutMenuItem.setVisible(true);		
 
 		editMenuItem.setTooltip("Editovat objednávku");
 		smazatMenuItem.setTooltip("Smazat objednávku");
+		tisknoutMenuItem.setTooltip("Tisknout objednávku");
 
 		if (!objednavkaDetailView.isVisible())
 			objednavkaDetailView.setVisible(true);
@@ -478,6 +509,7 @@ public class ObjednanoView extends AbstractTableView {
 		if (smazatItem != null)
 			smazatItem.setEnabled(enable);
 		sparovatItem.setEnabled(false);
+		tisknoutItem.setEnabled(enable);
 		zrusitParovaniItem.setEnabled(false);
 		if (((StructuredSelection) viewer.getSelection()).size() == 2) {
 			final Objednavka obj1 = (Objednavka) ((StructuredSelection) viewer
@@ -542,4 +574,8 @@ public class ObjednanoView extends AbstractTableView {
 		}
 
 	}
+	
+	
+	
+	
 }

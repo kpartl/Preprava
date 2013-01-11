@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -63,6 +65,7 @@ public class Login {
 	public static final String CALENDAR_ICON = "CALENDAR_ICON";
 	public static final String CHECKED_ICON = "CHECKED_ICON";
 	public static final String UNCHECKED_ICON = "UNCHECKED_ICON";
+	public static final String TISK_ICON = "TISK_ICON";
 	
 	volatile boolean  authenticated = false;
 	
@@ -82,7 +85,7 @@ public class Login {
 			.newFixedThreadPool(1);
 
 	Image addIcon, editIcon, deleteIcon, objednavkaIcon, calendarIcon,
-			checkedIcon, uncheckedIcon, loginIcon;
+			checkedIcon, uncheckedIcon, loginIcon, tiskIcon;
 
 	@PostContextCreate
 	public void login(IEclipseContext context, IEventBroker eventBroker) {
@@ -129,6 +132,8 @@ public class Login {
 				.createImage();
 		loginIcon = Activator.getImageDescriptor("icons/preprava250.gif")
 				.createImage();
+		tiskIcon = Activator.getImageDescriptor("icons/printview_tsk.gif")
+				.createImage();
 
 		context.set(ADD_ICON, addIcon);
 		context.set(EDIT_ICON, editIcon);
@@ -137,6 +142,7 @@ public class Login {
 		context.set(CALENDAR_ICON, calendarIcon);
 		context.set(CHECKED_ICON, checkedIcon);
 		context.set(UNCHECKED_ICON, uncheckedIcon);
+		context.set(TISK_ICON, tiskIcon);
 
 		InitUtil initUtil = ContextInjectionFactory.make(InitUtil.class,
 				context);
@@ -243,10 +249,14 @@ public class Login {
 	// TODO nezapomenout zrusit
 	private boolean isLicensed() {
 		Calendar cal = Calendar.getInstance();
-		cal.set(2012, 12, 30);
+		cal.set(Calendar.YEAR,2013);
+		cal.set(Calendar.MONTH,2);
+		cal.set(Calendar.DAY_OF_MONTH,31);
+		
 
-		Calendar today = Calendar.getInstance();
-		today.setTimeInMillis(System.currentTimeMillis());
+		Calendar today = Calendar.getInstance(); 
+		today.setTimeInMillis(System.currentTimeMillis()); 
+		
 		return cal.compareTo(today) > 0;
 	}
 

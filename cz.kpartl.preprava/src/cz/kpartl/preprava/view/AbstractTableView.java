@@ -91,6 +91,7 @@ public abstract class AbstractTableView extends ViewPart {
 	protected HandledToolItemImpl editMenuItem;
 	protected HandledToolItemImpl smazatMenuItem;
 	protected HandledToolItemImpl prevestMenuItem;
+	protected HandledToolItemImpl tisknoutMenuItem;
 
 	protected Image checkedImage;
 	protected Image uncheckedImage;
@@ -120,6 +121,8 @@ public abstract class AbstractTableView extends ViewPart {
 				"cz.kpartl.preprava.handledtoolitem.delete", app);
 		prevestMenuItem = (HandledToolItemImpl) modelService.find(
 				"cz.kpartl.preprava.handledtoolitem.prevod", app);
+		tisknoutMenuItem = (HandledToolItemImpl) modelService.find(
+				"cz.kpartl.preprava.handledtoolitem.tisk", app);
 
 		final TrimmedWindowImpl mainWindow = (TrimmedWindowImpl) modelService
 				.find("cz.kpartl.preprava.mainwindow", app);

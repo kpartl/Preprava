@@ -12,13 +12,15 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Shell;
 
+import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.view.AbstractTableView;
+import cz.kpartl.preprava.view.ObjednanoView;
 import cz.kpartl.preprava.view.PozadavkyView;
 
 
 
-public class PrevodHandler {
+public class TiskHandler {
 	@Inject
 	IEclipseContext context;
 	
@@ -28,22 +30,20 @@ public class PrevodHandler {
 
 	) {
 
-		if (activePart.getElementId().equals(PozadavkyView.ID)) {
-			((PozadavkyView) activePart.getObject()).prevedSelectedPozadavek();
+		if (activePart.getElementId().equals(ObjednanoView.ID)) {			
+			((ObjednanoView) activePart.getObject()).tiskVybraneObjednavky();
 		}
 
 	}
 	
 	@CanExecute
-	public boolean canExecute(@Active MPart activePart) {
-		
-		TableViewer viewer = ((AbstractTableView) activePart.getObject()).viewer;
-		if (((StructuredSelection) viewer.getSelection()).getFirstElement() == null) {
+	public boolean canExecute(@Active MPart activePart) {				
+		final TableViewer viewer = ((AbstractTableView) activePart.getObject()).viewer;
+		if (((StructuredSelection) viewer.getSelection()).size() != 1) {
 			return false;
 		}
 		
-		return ((User) context.get(User.CONTEXT_NAME))
-				.isAdministrator();		
+		return true;		
 	}
 
 }

@@ -351,6 +351,7 @@ public class DopravceView extends AbstractTableView {
 		editMenuItem.setVisible(true);
 		smazatMenuItem.setVisible(true);
 		prevestMenuItem.setVisible(false);
+		tisknoutMenuItem.setVisible(false);
 
 		novyMenuItem.setTooltip("Vytvoøit nového dopravce");
 		editMenuItem.setTooltip("Editovat dopravce");
