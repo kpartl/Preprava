@@ -1,55 +1,32 @@
 package cz.kpartl.preprava.util;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.annotation.PreDestroy;
-import javax.inject.Inject;
 
-import org.eclipse.e4.ui.css.swt.theme.IThemeEngine;
-import org.eclipse.e4.ui.css.swt.theme.IThemeManager;
-import org.eclipse.e4.ui.internal.workbench.E4Workbench;
-import org.eclipse.e4.ui.internal.workbench.swt.E4Application;
-import org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine;
-import org.eclipse.e4.ui.internal.workbench.swt.WorkbenchSWTActivator;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
-
 import org.eclipse.e4.ui.workbench.lifecycle.PostContextCreate;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.application.WorkbenchAdvisor;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cz.kpartl.preprava.Activator;
-import cz.kpartl.preprava.dao.DAOFactory;
+import cz.kpartl.preprava.dao.DestinaceDAO;
 import cz.kpartl.preprava.dao.DopravceDAO;
 import cz.kpartl.preprava.dao.ObjednavkaDAO;
 import cz.kpartl.preprava.dao.PozadavekDAO;
 import cz.kpartl.preprava.dao.UserDAO;
-import cz.kpartl.preprava.dao.DestinaceDAO;
 import cz.kpartl.preprava.dialog.LoginDialog;
-import cz.kpartl.preprava.model.User;
+import cz.kpartl.preprava.importer.DataImporter;
 import cz.kpartl.preprava.runnable.RefreshRunnable;
 
 public class Login {
@@ -66,10 +43,10 @@ public class Login {
 	public static final String CHECKED_ICON = "CHECKED_ICON";
 	public static final String UNCHECKED_ICON = "UNCHECKED_ICON";
 	public static final String TISK_ICON = "TISK_ICON";
-	
-	volatile boolean  authenticated = false;
-	
-	//volatile String username, password;
+
+	volatile boolean authenticated = false;
+
+	// volatile String username, password;
 
 	UserDAO userDAO = null;
 	PozadavekDAO pozadavekDAO = null;
@@ -89,6 +66,18 @@ public class Login {
 
 	@PostContextCreate
 	public void login(IEclipseContext context, IEventBroker eventBroker) {
+
+		String[] args = Platform.getCommandLineArgs();
+
+		int i = 0;
+		while (i < args.length) {
+			if (args[i].equals("-destinaceImport")) {
+				i++;
+				new DataImporter(args[i]).importDestinace();
+				System.exit(0);
+			}
+			i++;
+		}
 
 		final Shell shell = new Shell(SWT.INHERIT_NONE);
 
@@ -147,7 +136,7 @@ public class Login {
 		InitUtil initUtil = ContextInjectionFactory.make(InitUtil.class,
 				context);
 
-		initUtil.initDBData();		
+		initUtil.initDBData();
 
 		pingService.submit(new Runnable() {
 			Session session;
@@ -170,13 +159,11 @@ public class Login {
 				}
 			}
 		});
-		
-		
+
 		/*
 		 * TRY LOGIN
 		 */
 		tryLogin(shell, context);
-		
 
 		try {
 			nastaveni.load(this.getClass().getClassLoader()
@@ -201,63 +188,59 @@ public class Login {
 					"Nemáte licenèní oprávnìní používat tento program.");
 			System.exit(0);
 		}
-		final LoginDialog dialog = new LoginDialog(shell, loginIcon, userDAO, context);
+		final LoginDialog dialog = new LoginDialog(shell, loginIcon, userDAO,
+				context);
 		dialog.create();
 		dialog.setBlockOnOpen(false);
 		dialog.open();
 
-		/*if (dialog.open() != Window.OK) {
-			System.exit(0);
-		}*/
-	
-		
+		/*
+		 * if (dialog.open() != Window.OK) { System.exit(0); }
+		 */
+
 		while (!authenticated) {
 			if (!shell.getDisplay().readAndDispatch()) {
-				if(dialog.getLoginStatus() == 1){
+				if (dialog.getLoginStatus() == 1) {
 					dialog.showProgressBar(false);
 					authenticated = true;
 					dialog.setLoginStatus(-1);
 					dialog.close();
-				}else if(dialog.getLoginStatus() == 2){
+				} else if (dialog.getLoginStatus() == 2) {
 					dialog.showProgressBar(false);
 					dialog.setLoginStatus(-1);
 					String errMessage = "";
 					if (userDAO.findByUsername(dialog.getUsername()) == null) {
-						errMessage = "Uživatel " + dialog.getUsername() + " neexistuje!";
+						errMessage = "Uživatel " + dialog.getUsername()
+								+ " neexistuje!";
 					} else {
 						errMessage = "Špatnì zadané heslo";
 					}
 
 					MessageDialog.openError(shell, "CHYBA", errMessage);
-				}
-				else if(dialog.getLoginStatus() == -2)//cancel pressed
+				} else if (dialog.getLoginStatus() == -2)// cancel pressed
 				{
 					System.exit(0);
 				}
 			}
-			
+
 		}
-		
-		
-		
-		
-		
+
 	}
-	
-	
 
 	// TODO nezapomenout zrusit
 	private boolean isLicensed() {
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.YEAR,2013);
-		cal.set(Calendar.MONTH,2);
-		cal.set(Calendar.DAY_OF_MONTH,31);
-		
+		/*
+		 * Calendar cal = Calendar.getInstance(); cal.set(Calendar.YEAR,2013);
+		 * cal.set(Calendar.MONTH,2); cal.set(Calendar.DAY_OF_MONTH,31);
+		 * 
+		 * 
+		 * Calendar today = Calendar.getInstance();
+		 * today.setTimeInMillis(System.currentTimeMillis());
+		 * 
+		 * return cal.compareTo(today) > 0;
+		 */
 
-		Calendar today = Calendar.getInstance(); 
-		today.setTimeInMillis(System.currentTimeMillis()); 
-		
-		return cal.compareTo(today) > 0;
+		return true;
 	}
 
 	@PreDestroy
