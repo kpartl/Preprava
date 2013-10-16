@@ -77,22 +77,23 @@ public class ObjednanoView extends AbstractTableView {
 	public static final String TYP_FAKTUROVANO = "Fakturováno";
 	public static final String TYP_UKONCENO = "Ukonèeno";
 	public static final String TYP_VSE = "Vše";
+	
 
-	public static final HashMap<Integer, String> typyHashMap;
+	public static final HashMap<String, Integer> typyHashMap;
 
 	static {
-		typyHashMap = new HashMap<Integer, String>();
+		typyHashMap = new HashMap<String, Integer>();
 
-		typyHashMap.put(Objednavka.FAZE_OBJEDNANO, TYP_OBJEDNANO);
-		typyHashMap.put(Objednavka.FAZE_PREPRAVA_ZAHAJENA,
-				TYP_PREPRAVA_ZAHAJENA);
-		typyHashMap.put(Objednavka.FAZE_PREPRAVA_UKONCENA,
-				TYP_PREPRAVA_UKONCENA);
-		typyHashMap.put(Objednavka.FAZE_DOKLADY_KOMPLETNI,
-				TYP_DOKLADY_KOMPLETNI);
-		typyHashMap.put(Objednavka.FAZE_FAKTUROVANO, TYP_FAKTUROVANO);
-		typyHashMap.put(Objednavka.FAZE_VSE, TYP_VSE);
-		typyHashMap.put(Objednavka.FAZE_UKONCENO, TYP_UKONCENO);
+		typyHashMap.put(TYP_OBJEDNANO,Objednavka.FAZE_OBJEDNANO);
+		typyHashMap.put(TYP_PREPRAVA_ZAHAJENA,Objednavka.FAZE_PREPRAVA_ZAHAJENA
+				);
+		typyHashMap.put(TYP_PREPRAVA_UKONCENA,Objednavka.FAZE_PREPRAVA_UKONCENA
+				);
+		typyHashMap.put(TYP_DOKLADY_KOMPLETNI,Objednavka.FAZE_DOKLADY_KOMPLETNI
+				);
+		typyHashMap.put(TYP_FAKTUROVANO,Objednavka.FAZE_FAKTUROVANO );
+		//typyHashMap.put(Objednavka.FAZE_VSE, TYP_VSE);
+		typyHashMap.put(TYP_UKONCENO,Objednavka.FAZE_UKONCENO);
 
 	}
 
@@ -103,7 +104,7 @@ public class ObjednanoView extends AbstractTableView {
 
 	private Combo typCombo;
 	protected Shell shell;
-	private int faze = 0;
+	private String faze = TYP_OBJEDNANO;
 
 	EPartService partService;
 	MPart pozadavekDetailView;
@@ -114,8 +115,6 @@ public class ObjednanoView extends AbstractTableView {
 	MenuItem sparovatItem;
 	MenuItem zrusitParovaniItem;
 	MenuItem tisknoutItem;
-	
-	
 
 	@Inject
 	public ObjednanoView(Composite parent,
@@ -143,8 +142,8 @@ public class ObjednanoView extends AbstractTableView {
 
 	@Override
 	protected Object getModelData() {
-		if (faze != Objednavka.FAZE_VSE) {
-			return objednavkaDAO.findByFaze(faze);
+		if (!TYP_VSE.equals(faze)) {			
+			return objednavkaDAO.findByFaze(typyHashMap.get(faze));
 		} else {
 			return objednavkaDAO.findNeukoncene();
 		}
@@ -184,7 +183,8 @@ public class ObjednanoView extends AbstractTableView {
 				.getToolTipText()) {
 			@Override
 			public String getText(Object element) {
-				return typyHashMap.get(((Objednavka) element).getFaze());
+				//return typyHashMap.get(((Objednavka) element).getFaze());
+				return getFazeKey(((Objednavka) element).getFaze());
 			}
 		});
 
@@ -253,12 +253,12 @@ public class ObjednanoView extends AbstractTableView {
 		typCombo = new Combo(composite, SWT.READ_ONLY);
 		typCombo.setBounds(new Rectangle(50, 50, 150, 65));
 
-		typCombo.setItems(getComboItems(false));
+		typCombo.setItems(getComboItems());
 		typCombo.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				faze = typCombo.getSelectionIndex();
+				faze = typCombo.getText();
 				viewer.setInput(getModelData());
 				viewer.refresh();
 				if (viewer.getSelection().isEmpty()) {
@@ -356,7 +356,7 @@ public class ObjednanoView extends AbstractTableView {
 				zrusSparovani();
 			}
 		});
-		
+
 		tisknoutItem = new MenuItem(parent, SWT.PUSH);
 		tisknoutItem.setText("Tisknout");
 		tisknoutItem.setImage((Image) context.get(Login.TISK_ICON));
@@ -367,10 +367,12 @@ public class ObjednanoView extends AbstractTableView {
 		});
 
 	}
-	
-	public void tiskVybraneObjednavky(){
+
+	public void tiskVybraneObjednavky() {
 		final PrintHelper printHelper = new PrintHelper(shell);
-		printHelper.tiskVybraneObjednavky((Objednavka) ((StructuredSelection) viewer.getSelection()).getFirstElement());
+		printHelper
+				.tiskVybraneObjednavky((Objednavka) ((StructuredSelection) viewer
+						.getSelection()).getFirstElement());
 	}
 
 	@Override
@@ -387,8 +389,8 @@ public class ObjednanoView extends AbstractTableView {
 		editMenuItem.setEnabled(true);
 		smazatMenuItem.setVisible(true);
 		prevestMenuItem.setVisible(false);
-		//tisknoutMenuItem.setEnabled(true);
-		tisknoutMenuItem.setVisible(true);		
+		// tisknoutMenuItem.setEnabled(true);
+		tisknoutMenuItem.setVisible(true);
 
 		editMenuItem.setTooltip("Editovat objednávku");
 		smazatMenuItem.setTooltip("Smazat objednávku");
@@ -462,23 +464,16 @@ public class ObjednanoView extends AbstractTableView {
 
 	}
 
-	public static String[] getComboItems(boolean withUkonceno) {
-		Vector<String> result = new Vector<String>(typyHashMap.size());
-		for (Integer key : typyHashMap.keySet()) {
-			if (!withUkonceno && key.equals(Objednavka.FAZE_UKONCENO))
-				continue;
-			else
-				result.add(key, typyHashMap.get(key));
-		}
-		return result.toArray(new String[result.size()]);
-
+	public static String[] getComboItems() {
+		return new String[] {TYP_OBJEDNANO,TYP_PREPRAVA_ZAHAJENA,TYP_PREPRAVA_UKONCENA,TYP_DOKLADY_KOMPLETNI,TYP_FAKTUROVANO, TYP_VSE};		
 	}
 
 	@Inject
 	@Optional
 	void refreshInput(@UIEventTopic(EventConstants.REFRESH_VIEWERS) String o) {
-		if (isBeingDisposed) return;
-		
+		if (isBeingDisposed)
+			return;
+
 		final StructuredSelection selection = (StructuredSelection) viewer
 				.getSelection();
 		Runnable job = new Runnable() {
@@ -575,7 +570,12 @@ public class ObjednanoView extends AbstractTableView {
 
 	}
 	
-	
-	
-	
+	public static String getFazeKey(Integer value){
+		for(String key:typyHashMap.keySet()){
+			if(typyHashMap.get(key) == value) return key;
+		}
+		
+		return "";
+	}
+
 }

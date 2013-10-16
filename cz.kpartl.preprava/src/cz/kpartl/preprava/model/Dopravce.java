@@ -97,10 +97,10 @@ public class Dopravce implements java.io.Serializable {
 	 */
 	public String toString() {
 		return "Dopravce" + " id=" + id + " nazev=" + nazev + " ulice=" + ulice
-				+ " mesto=" + mesto + " ic=" + ic + " dic=" + dic
-				+ " sap_cislo=" + sap_cislo + " kontaktni_osoba="
-				+ kontaktni_osoba + " kontaktni_telefon=" + kontaktni_telefon
-				+ " kontakt_ostatni=" + kontakt_ostatni + " psc=" + psc;
+				+ " mesto=" + mesto + " dic=" + dic + " sap_cislo=" + sap_cislo
+				+ " kontaktni_osoba=" + kontaktni_osoba + " kontaktni_telefon="
+				+ kontaktni_telefon + " kontakt_ostatni=" + kontakt_ostatni
+				+ " psc=" + psc + " ic=" + ic;
 	}
 
 	/**

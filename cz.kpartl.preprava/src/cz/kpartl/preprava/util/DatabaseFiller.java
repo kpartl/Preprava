@@ -72,7 +72,7 @@ public class DatabaseFiller {
 			d.setKontaktni_osoba("Kontaktni osoba " + i);
 			d.setMesto("Mesto " + i);
 			d.setNazev("Nazev " + i);
-			d.setPSC(new Integer(i));
+			d.setPSC("PSC" + i);
 			d.setUlice("Ulice " + i);
 			
 			destinaceDAO.create(d);

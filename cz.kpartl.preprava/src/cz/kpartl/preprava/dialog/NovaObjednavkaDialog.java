@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -40,6 +41,26 @@ import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.view.ObjednanoView;
 
 public class NovaObjednavkaDialog extends NovyPozadavekDialog {
+	
+	/*public static final HashMap<Integer, String> typyHashMap;
+
+	static {
+		typyHashMap = new HashMap<Integer, String>();
+
+		typyHashMap.put(Objednavka.FAZE_OBJEDNANO, ObjednanoView.TYP_OBJEDNANO);
+		typyHashMap.put(Objednavka.FAZE_PREPRAVA_ZAHAJENA,
+				ObjednanoView.TYP_PREPRAVA_ZAHAJENA);
+		typyHashMap.put(Objednavka.FAZE_PREPRAVA_UKONCENA,
+				ObjednanoView.TYP_PREPRAVA_UKONCENA);
+		typyHashMap.put(Objednavka.FAZE_DOKLADY_KOMPLETNI,
+				ObjednanoView.TYP_DOKLADY_KOMPLETNI);
+		typyHashMap.put(Objednavka.FAZE_FAKTUROVANO, ObjednanoView.TYP_FAKTUROVANO);
+		
+		typyHashMap.put(Objednavka.FAZE_UKONCENO, ObjednanoView.TYP_UKONCENO);
+
+	}*/
+	
+	static final String[] fazeItems = new String[] {ObjednanoView.TYP_OBJEDNANO,ObjednanoView.TYP_PREPRAVA_ZAHAJENA,ObjednanoView.TYP_PREPRAVA_UKONCENA,ObjednanoView.TYP_DOKLADY_KOMPLETNI,ObjednanoView.TYP_FAKTUROVANO, ObjednanoView.TYP_UKONCENO}	;
 
 	final Logger logger = LoggerFactory.getLogger(NovaObjednavkaDialog.class);
 
@@ -132,8 +153,8 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 		fazeObjednavkyLabel.setText("Fáze objednávky");
 
 		fazeCombo = new Combo(oGroup, SWT.READ_ONLY);
-		fazeCombo.setBounds(new Rectangle(50, 50, 200, 65));
-		fazeCombo.setItems(ObjednanoView.getComboItems(true));
+		fazeCombo.setBounds(new Rectangle(50, 50, 200, 65));			
+		fazeCombo.setItems(fazeItems);
 
 		Label dopravceLabel = new Label(oGroup, SWT.NONE);
 		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
@@ -298,7 +319,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 			else objednavka.setCislo_faktury_dopravce(null);
 			objednavka.setMena(mena.getText());
 			objednavka.setZmena_nakladky(zmenaTerminuNakladky.getText());			
-			objednavka.setFaze(fazeCombo.getSelectionIndex());
+			objednavka.setFaze(ObjednanoView.typyHashMap.get(fazeCombo.getText()));
 			objednavka.setDopravce(dopravceMap.get(dopravceCombo
 					.getSelectionIndex()));
 
@@ -364,13 +385,18 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 	protected void fillFields() {
 		super.fillFields();
 		if (objednavka.getId() == null) {
-			fazeCombo.select(Objednavka.FAZE_OBJEDNANO);
+			fazeCombo.select(0);
 			return;
 		}
 
 		cena.setText(objednavka.getCenaFormated());
 		mena.setText(objednavka.getMena());
-		fazeCombo.select(objednavka.getFaze());
+		final String fazeText = ObjednanoView.getFazeKey(objednavka.getFaze());
+		for(int i=0;i<fazeCombo.getItemCount();i++)
+		{
+			if(fazeCombo.getItem(i).equals(fazeText)) fazeCombo.select(i);
+		}
+			
 		if(objednavka.getDopravce() != null)
 		dopravceCombo.select(getDopravceIndex(objednavka.getDopravce()
 				.getNazev()));
@@ -378,4 +404,15 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 		cisloFakturyDopravce.setText(objednavka.getCisloFakturyDopravceAsString());
 		zmenaTerminuNakladky.setText(objednavka.getZmena_nakladky());
 	}
+	
+	//vrati pozici vyberu v combo boxu fazi
+	private int getSelectionIndex(final String faze){
+		for(int i = 0;i<fazeItems.length;i++){
+			if(faze.equals(fazeItems[i])) return i;
+		}
+		return 0;
+	}
+	
+	
+		
 }

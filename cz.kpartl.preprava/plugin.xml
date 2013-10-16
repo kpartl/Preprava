@@ -51,5 +51,17 @@
          </with>
       </definition>
    </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="cz.kpartl.preprava.definition.administrace">
+         <with
+               variable="cz.kpartl.preprava.administrace">
+            <equals
+                  value="1">
+            </equals>
+         </with>
+      </definition>
+   </extension>
 
 </plugin>

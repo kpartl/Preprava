@@ -213,12 +213,12 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 			}
 		}
 
-		if ("".equals(ic.getText().trim()))
-			result.add("Není zadáno IÈ dopravce");
-		final Dopravce existujiciICO = dopravceDAO.findByICO(ic.getText());
-		if (existujiciICO != null) {
-			if (novyDopravce || !existujiciICO.getId().equals(dopravce.getId())) {
-				result.add("Dopravce s IÈ " + ic.getText()
+		if ("".equals(sapCislo.getText().trim()))
+			result.add("Není zadáno SAP èíslo dopravce");
+		final Dopravce existujiciSapCislo = dopravceDAO.findBySAPCislo(sapCislo.getText());
+		if (existujiciSapCislo != null) {
+			if (novyDopravce || !existujiciSapCislo.getId().equals(dopravce.getId())) {
+				result.add("Dopravce se SAP èíslem " + sapCislo.getText()
 						+ " již existuje");
 			}
 		}

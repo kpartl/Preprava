@@ -56,7 +56,7 @@ public class Login {
 
 	java.util.Properties nastaveni = new Properties();
 
-	private final ExecutorService pingService = Executors.newFixedThreadPool(1);
+	//private final ExecutorService pingService = Executors.newFixedThreadPool(1);
 
 	private final ExecutorService refreshService = Executors
 			.newFixedThreadPool(1);
@@ -65,19 +65,7 @@ public class Login {
 			checkedIcon, uncheckedIcon, loginIcon, tiskIcon;
 
 	@PostContextCreate
-	public void login(IEclipseContext context, IEventBroker eventBroker) {
-
-		String[] args = Platform.getCommandLineArgs();
-
-		int i = 0;
-		while (i < args.length) {
-			if (args[i].equals("-destinaceImport")) {
-				i++;
-				new DataImporter(args[i]).importDestinace();
-				System.exit(0);
-			}
-			i++;
-		}
+	public void login(IEclipseContext context, IEventBroker eventBroker) {		
 
 		final Shell shell = new Shell(SWT.INHERIT_NONE);
 
@@ -138,7 +126,7 @@ public class Login {
 
 		initUtil.initDBData();
 
-		pingService.submit(new Runnable() {
+	/*	pingService.submit(new Runnable() {
 			Session session;
 
 			public void run() {
@@ -159,6 +147,22 @@ public class Login {
 				}
 			}
 		});
+		*/
+		
+		String[] args = Platform.getCommandLineArgs();
+
+		int i = 0;
+		while (i < args.length) {
+			if (args[i].equals("-destinaceImport")) {
+				i++;
+				final DataImporter dataImporter = new DataImporter(args[i]);
+				dataImporter.importDestinace();
+				while(dataImporter.getStatus() != dataImporter.STATUS_READY){}
+				System.exit(0);
+			}
+			i++;
+		}
+		
 
 		/*
 		 * TRY LOGIN
@@ -178,7 +182,7 @@ public class Login {
 		refreshService
 				.submit(new RefreshRunnable(eventBroker, refreshInterval));
 
-		context.set(ExecutorService.class, pingService);
+		//context.set(ExecutorService.class, pingService);
 
 	}
 
@@ -253,7 +257,7 @@ public class Login {
 		checkedIcon.dispose();
 		uncheckedIcon.dispose();
 		loginIcon.dispose();
-		pingService.shutdown();
+		//pingService.shutdown();
 		refreshService.shutdown();
 	}
 

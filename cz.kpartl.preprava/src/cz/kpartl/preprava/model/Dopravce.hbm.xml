@@ -13,11 +13,9 @@
       </property>
       <property  name='mesto' type='string' column='mesto'>
       </property>
-      <property  name='ic' type='string' column='ic' unique='true'>
-      </property>
       <property  name='dic' type='string' column='dic'>
       </property>
-      <property  name='sap_cislo' type='string' column='sap_cislo'>
+      <property  name='sap_cislo' type='string' column='sap_cislo' unique='true'>
       </property>
       <property  name='kontaktni_osoba' type='string' column='kontaktni_osoba'>
       </property>
@@ -26,6 +24,8 @@
       <property  name='kontakt_ostatni' type='string' column='kontakt_ostatni'>
       </property>
       <property  name='psc' type='string' column='psc'>
+      </property>
+      <property  name='ic' type='string' column='ic'>
       </property>
    </class>
 </hibernate-mapping>

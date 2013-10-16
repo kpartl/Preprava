@@ -14,7 +14,7 @@ public class Objednavka implements java.io.Serializable {
 	public static final int FAZE_PREPRAVA_UKONCENA = 2;
 	public static final int FAZE_DOKLADY_KOMPLETNI = 3;
 	public static final int FAZE_FAKTUROVANO = 4;
-	public static final int FAZE_VSE = 5;
+	//public static final int FAZE_VSE = 5;
 	public static final int FAZE_UKONCENO = 6; //nemenit, zavisi na tom dotaz findNeukoncene
 	
 	

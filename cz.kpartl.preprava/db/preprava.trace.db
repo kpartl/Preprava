@@ -1,0 +1,116 @@
+04-02 22:17:05 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_OBJEDNAVKA" nenalezena
+Table "TB_OBJEDNAVKA" not found; SQL statement:
+alter table tb_objednavka drop constraint fk_objednavka_dopravce_id [42102-166]
+04-02 22:17:05 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_OBJEDNAVKA" nenalezena
+Table "TB_OBJEDNAVKA" not found; SQL statement:
+alter table tb_objednavka drop constraint fk_objednavka_pridruzena_objednavka_id [42102-166]
+04-02 22:17:05 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_OBJEDNAVKA" nenalezena
+Table "TB_OBJEDNAVKA" not found; SQL statement:
+alter table tb_objednavka drop constraint fk_objednavka_pozadavek_id [42102-166]
+04-02 22:17:05 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_destinace_do_id [42102-166]
+04-02 22:17:05 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zadavatel_id [42102-166]
+04-02 22:17:05 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tabulka "TB_POZADAVEK" nenalezena
+Table "TB_POZADAVEK" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_destinace_z_id [42102-166]
+04-02 22:43:07 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Omezení "FK_POZADAVEK_ZADAVATEL_ID" nenalezeno
+Constraint "FK_POZADAVEK_ZADAVATEL_ID" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zadavatel_id [90057-166]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:329)
+	at org.h2.message.DbException.get(DbException.java:169)
+	at org.h2.message.DbException.get(DbException.java:146)
+	at org.h2.command.ddl.AlterTableDropConstraint.update(AlterTableDropConstraint.java:40)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:73)
+	at org.h2.command.Command.executeUpdate(Command.java:226)
+	at org.h2.jdbc.JdbcStatement.executeUpdateInternal(JdbcStatement.java:125)
+	at org.h2.jdbc.JdbcStatement.executeUpdate(JdbcStatement.java:110)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:308)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.drop(SchemaExport.java:284)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:186)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.create(SchemaExport.java:133)
+	at org.hibernate.impl.SessionFactoryImpl.<init>(SessionFactoryImpl.java:311)
+	at org.hibernate.cfg.Configuration.buildSessionFactory(Configuration.java:1294)
+	at cz.kpartl.preprava.util.HibernateHelper.getFactory(HibernateHelper.java:69)
+	at cz.kpartl.preprava.util.HibernateHelper.openSession(HibernateHelper.java:104)
+	at cz.kpartl.preprava.util.HibernateHelper.getSession(HibernateHelper.java:117)
+	at cz.kpartl.preprava.importer.DataImporter.importDestinace(DataImporter.java:45)
+	at cz.kpartl.preprava.importer.DataImporter.main(DataImporter.java:99)
+04-02 22:43:07 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Omezení "FK_POZADAVEK_DESTINACE_Z_ID" nenalezeno
+Constraint "FK_POZADAVEK_DESTINACE_Z_ID" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_destinace_z_id [90057-166]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:329)
+	at org.h2.message.DbException.get(DbException.java:169)
+	at org.h2.message.DbException.get(DbException.java:146)
+	at org.h2.command.ddl.AlterTableDropConstraint.update(AlterTableDropConstraint.java:40)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:73)
+	at org.h2.command.Command.executeUpdate(Command.java:226)
+	at org.h2.jdbc.JdbcStatement.executeUpdateInternal(JdbcStatement.java:125)
+	at org.h2.jdbc.JdbcStatement.executeUpdate(JdbcStatement.java:110)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:308)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.drop(SchemaExport.java:284)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:186)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.create(SchemaExport.java:133)
+	at org.hibernate.impl.SessionFactoryImpl.<init>(SessionFactoryImpl.java:311)
+	at org.hibernate.cfg.Configuration.buildSessionFactory(Configuration.java:1294)
+	at cz.kpartl.preprava.util.HibernateHelper.getFactory(HibernateHelper.java:69)
+	at cz.kpartl.preprava.util.HibernateHelper.openSession(HibernateHelper.java:104)
+	at cz.kpartl.preprava.util.HibernateHelper.getSession(HibernateHelper.java:117)
+	at cz.kpartl.preprava.importer.DataImporter.importDestinace(DataImporter.java:45)
+	at cz.kpartl.preprava.importer.DataImporter.main(DataImporter.java:99)
+04-02 23:09:01 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Omezení "FK_POZADAVEK_ZADAVATEL_ID" nenalezeno
+Constraint "FK_POZADAVEK_ZADAVATEL_ID" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zadavatel_id [90057-166]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:329)
+	at org.h2.message.DbException.get(DbException.java:169)
+	at org.h2.message.DbException.get(DbException.java:146)
+	at org.h2.command.ddl.AlterTableDropConstraint.update(AlterTableDropConstraint.java:40)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:73)
+	at org.h2.command.Command.executeUpdate(Command.java:226)
+	at org.h2.jdbc.JdbcStatement.executeUpdateInternal(JdbcStatement.java:125)
+	at org.h2.jdbc.JdbcStatement.executeUpdate(JdbcStatement.java:110)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:308)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.drop(SchemaExport.java:284)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:186)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.create(SchemaExport.java:133)
+	at org.hibernate.impl.SessionFactoryImpl.<init>(SessionFactoryImpl.java:311)
+	at org.hibernate.cfg.Configuration.buildSessionFactory(Configuration.java:1294)
+	at cz.kpartl.preprava.util.HibernateHelper.getFactory(HibernateHelper.java:69)
+	at cz.kpartl.preprava.util.HibernateHelper.openSession(HibernateHelper.java:104)
+	at cz.kpartl.preprava.util.HibernateHelper.getSession(HibernateHelper.java:117)
+	at cz.kpartl.preprava.importer.DataImporter.importDestinace(DataImporter.java:45)
+	at cz.kpartl.preprava.importer.DataImporter.main(DataImporter.java:99)
+04-02 23:09:01 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Omezení "FK_POZADAVEK_DESTINACE_Z_ID" nenalezeno
+Constraint "FK_POZADAVEK_DESTINACE_Z_ID" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_destinace_z_id [90057-166]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:329)
+	at org.h2.message.DbException.get(DbException.java:169)
+	at org.h2.message.DbException.get(DbException.java:146)
+	at org.h2.command.ddl.AlterTableDropConstraint.update(AlterTableDropConstraint.java:40)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:73)
+	at org.h2.command.Command.executeUpdate(Command.java:226)
+	at org.h2.jdbc.JdbcStatement.executeUpdateInternal(JdbcStatement.java:125)
+	at org.h2.jdbc.JdbcStatement.executeUpdate(JdbcStatement.java:110)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:308)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.drop(SchemaExport.java:284)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:186)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.create(SchemaExport.java:133)
+	at org.hibernate.impl.SessionFactoryImpl.<init>(SessionFactoryImpl.java:311)
+	at org.hibernate.cfg.Configuration.buildSessionFactory(Configuration.java:1294)
+	at cz.kpartl.preprava.util.HibernateHelper.getFactory(HibernateHelper.java:69)
+	at cz.kpartl.preprava.util.HibernateHelper.openSession(HibernateHelper.java:104)
+	at cz.kpartl.preprava.util.HibernateHelper.getSession(HibernateHelper.java:117)
+	at cz.kpartl.preprava.importer.DataImporter.importDestinace(DataImporter.java:45)
+	at cz.kpartl.preprava.importer.DataImporter.main(DataImporter.java:99)

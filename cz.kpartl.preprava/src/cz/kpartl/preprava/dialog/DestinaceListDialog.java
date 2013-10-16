@@ -23,6 +23,8 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -77,7 +79,7 @@ public class DestinaceListDialog extends Dialog {
 
 	@Override
 	protected Control createContents(Composite parent) {
-		Control contents = super.createContents(parent);		
+		Control contents = super.createContents(parent);
 		return contents;
 	}
 
@@ -130,35 +132,47 @@ public class DestinaceListDialog extends Dialog {
 					return;
 
 				selectedDestinace = dest;
-				//searchText.setText(selectedDestinace.getNazevACislo());
+				// searchText.setText(selectedDestinace.getNazevACislo());
 				close();
 
 			}
 		});
-		
+
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
-			public void selectionChanged(SelectionChangedEvent event) {				
+			public void selectionChanged(SelectionChangedEvent event) {
 				final Object selectedObject = ((StructuredSelection) event
 						.getSelection()).getFirstElement();
 				if (selectedObject instanceof Destinace)
-					selectedDestinace = (Destinace)selectedObject;
-					searchText.setText(selectedDestinace.getNazev());
+					selectedDestinace = (Destinace) selectedObject;
+				searchText.setText(selectedDestinace.getNazev());
 			}
 		});
-
 
 		viewer.setInput(destinaceDAO.findAll());
 
 		final DestinaceFilter filter = new DestinaceFilter();
 		viewer.addFilter(filter);
 
-		searchText.addModifyListener(new ModifyListener() {
+		/*
+		 * searchText.addModifyListener(new ModifyListener() {
+		 * 
+		 * @Override public void modifyText(ModifyEvent e) {
+		 * //filter.setSearchText(searchText.getText()); //viewer.refresh(); }
+		 * });
+		 */
+
+		searchText.addKeyListener(new KeyListener() {
 			@Override
-			public void modifyText(ModifyEvent e) {				
+			public void keyPressed(KeyEvent e) {
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
 				filter.setSearchText(searchText.getText());
 				viewer.refresh();
 			}
+
 		});
 
 		// Layout the viewer
@@ -303,10 +317,11 @@ public class DestinaceListDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
-		selectedDestinace = (Destinace) ((IStructuredSelection)(viewer.getSelection())).getFirstElement();
+		selectedDestinace = (Destinace) ((IStructuredSelection) (viewer
+				.getSelection())).getFirstElement();
 		super.okPressed();
 	}
-	
+
 	protected void setShellStyle(int newShellStyle) {
 		super.setShellStyle(newShellStyle | SWT.RESIZE | SWT.MAX);
 	}

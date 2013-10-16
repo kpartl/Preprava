@@ -212,4 +212,12 @@ public class LoginDialog extends Dialog {
 
 	}
 
+	@Override
+	public boolean close() {
+		loginStatus = -2;
+		return super.close();
+	}
+	
+	
+
 }

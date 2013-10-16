@@ -110,7 +110,7 @@ public class ObjednavkaDetailView extends PozadavekDetailView {
 		cisloObjednavky
 				.setText(String.valueOf(objednavka.getCislo_objednavky()));
 
-		faze.setText(ObjednanoView.getComboItems(true)[objednavka.getFaze()]);
+		faze.setText(ObjednanoView.getFazeKey(objednavka.getFaze()));
 
 		final Dopravce d = objednavka.getDopravce();
 		if (d != null) {

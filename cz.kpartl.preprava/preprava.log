@@ -1,0 +1,545 @@
+23:08:56,280  INFO Environment:514 - Hibernate 3.2.5
+23:08:56,296  INFO Environment:532 - loaded properties from resource hibernate.properties: {hibernate.use_sql_comments=true, hibernate.generate_statistic=true, hibernate.default_batch_fetch_size=1, hibernate.connection.driver_class=org.h2.Driver, hibernate.dialect=org.hibernate.dialect.H2Dialect, hibernate.jdbc.batch_size=1, hibernate.connection.username=sa, hibernate.hbm2ddl.auto=create-drop, hibernate.connection.url=jdbc:h2:file:./db/preprava;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MVCC=true, hibernate.show_sql=true, hibernate.bytecode.use_reflection_optimizer=false, hibernate.connection.password=****, hibernate.connection.release_mode=on_close, hibernate.connection.pool_size=1}
+23:08:56,296  INFO Environment:681 - Bytecode provider name : cglib
+23:08:56,296  INFO Environment:598 - using JDK 1.4 java.sql.Timestamp handling
+23:08:56,327  INFO Configuration:585 - Reading mappings from resource: cz/kpartl/preprava/model/User.hbm.xml
+23:08:56,327  INFO Configuration:530 - Reading mappings from resource: cz/kpartl/preprava/model/User.hbm.xml
+23:08:56,374 DEBUG DTDEntityResolver:38 - trying to resolve system-id [http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd]
+23:08:56,374 DEBUG DTDEntityResolver:40 - recognized hibernate namespace; attempting to resolve on classpath under org/hibernate/
+23:08:56,374 DEBUG DTDEntityResolver:50 - located [http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd] in classpath
+23:08:56,436  INFO HbmBinder:300 - Mapping class: cz.kpartl.preprava.model.User -> tb_user
+23:08:56,436 DEBUG HbmBinder:1270 - Mapped property: id -> user_id
+23:08:56,452 DEBUG HbmBinder:1270 - Mapped property: username -> username
+23:08:56,452 DEBUG HbmBinder:1270 - Mapped property: password -> password
+23:08:56,452 DEBUG HbmBinder:1270 - Mapped property: administrator -> administrator
+23:08:56,452  INFO Configuration:585 - Reading mappings from resource: cz/kpartl/preprava/model/Pozadavek.hbm.xml
+23:08:56,452  INFO Configuration:530 - Reading mappings from resource: cz/kpartl/preprava/model/Pozadavek.hbm.xml
+23:08:56,452 DEBUG DTDEntityResolver:38 - trying to resolve system-id [http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd]
+23:08:56,452 DEBUG DTDEntityResolver:40 - recognized hibernate namespace; attempting to resolve on classpath under org/hibernate/
+23:08:56,452 DEBUG DTDEntityResolver:50 - located [http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd] in classpath
+23:08:56,468  INFO HbmBinder:300 - Mapping class: cz.kpartl.preprava.model.Pozadavek -> tb_pozadavek
+23:08:56,468 DEBUG HbmBinder:1270 - Mapped property: id -> pozadavek_id
+23:08:56,468 DEBUG HbmBinder:1270 - Mapped property: datum -> datum
+23:08:56,468 DEBUG HbmBinder:1270 - Mapped property: datum_nakladky -> datum_nakladky
+23:08:56,468 DEBUG HbmBinder:1270 - Mapped property: datum_vykladky -> datum_vykladky
+23:08:56,468 DEBUG HbmBinder:1270 - Mapped property: pocet_palet -> pocet_palet
+23:08:56,468 DEBUG HbmBinder:1270 - Mapped property: je_termin_konecny -> je_termin_konecny
+23:08:56,468 DEBUG HbmBinder:1270 - Mapped property: taxi -> taxi
+23:08:56,468 DEBUG HbmBinder:1270 - Mapped property: poznamka -> poznamka
+23:08:56,499 DEBUG HbmBinder:1270 - Mapped property: destinace_z -> destinace_z_id
+23:08:56,499 DEBUG HbmBinder:1270 - Mapped property: objednavka
+23:08:56,499 DEBUG HbmBinder:1270 - Mapped property: celkova_hmotnost -> celkova_hmotnost
+23:08:56,499 DEBUG HbmBinder:1270 - Mapped property: zadavatel -> zadavatel_id
+23:08:56,499 DEBUG HbmBinder:1270 - Mapped property: attr -> attr
+23:08:56,499 DEBUG HbmBinder:1270 - Mapped property: hodina_nakladky -> hodina_nakladky
+23:08:56,499 DEBUG HbmBinder:1270 - Mapped property: destinace_do -> destinace_do_id
+23:08:56,515 DEBUG HbmBinder:1270 - Mapped property: je_stohovatelne -> je_stohovatelne
+23:08:56,515 DEBUG HbmBinder:1270 - Mapped property: hodina_vykladky -> hodina_vykladky
+23:08:56,515  INFO Configuration:585 - Reading mappings from resource: cz/kpartl/preprava/model/Destinace.hbm.xml
+23:08:56,515  INFO Configuration:530 - Reading mappings from resource: cz/kpartl/preprava/model/Destinace.hbm.xml
+23:08:56,515 DEBUG DTDEntityResolver:38 - trying to resolve system-id [http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd]
+23:08:56,515 DEBUG DTDEntityResolver:40 - recognized hibernate namespace; attempting to resolve on classpath under org/hibernate/
+23:08:56,515 DEBUG DTDEntityResolver:50 - located [http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd] in classpath
+23:08:56,530  INFO HbmBinder:300 - Mapping class: cz.kpartl.preprava.model.Destinace -> tb_destinace
+23:08:56,530 DEBUG HbmBinder:1270 - Mapped property: id -> destinace_id
+23:08:56,530 DEBUG HbmBinder:1270 - Mapped property: nazev -> nazev
+23:08:56,530 DEBUG HbmBinder:1270 - Mapped property: cislo -> cislo
+23:08:56,530 DEBUG HbmBinder:1270 - Mapped property: kontaktni_osoba -> kontaktni_osoba
+23:08:56,530 DEBUG HbmBinder:1270 - Mapped property: kontakt -> kontakt
+23:08:56,530 DEBUG HbmBinder:1270 - Mapped property: ulice -> ulice
+23:08:56,530 DEBUG HbmBinder:1270 - Mapped property: mesto -> mesto
+23:08:56,530 DEBUG HbmBinder:1270 - Mapped property: PSC -> p_s_c
+23:08:56,530  INFO Configuration:585 - Reading mappings from resource: cz/kpartl/preprava/model/Objednavka.hbm.xml
+23:08:56,530  INFO Configuration:530 - Reading mappings from resource: cz/kpartl/preprava/model/Objednavka.hbm.xml
+23:08:56,530 DEBUG DTDEntityResolver:38 - trying to resolve system-id [http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd]
+23:08:56,530 DEBUG DTDEntityResolver:40 - recognized hibernate namespace; attempting to resolve on classpath under org/hibernate/
+23:08:56,530 DEBUG DTDEntityResolver:50 - located [http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd] in classpath
+23:08:56,546  INFO HbmBinder:300 - Mapping class: cz.kpartl.preprava.model.Objednavka -> tb_objednavka
+23:08:56,546 DEBUG HbmBinder:1270 - Mapped property: id -> objednavka_id
+23:08:56,546 DEBUG HbmBinder:1270 - Mapped property: faze -> faze
+23:08:56,546 DEBUG HbmBinder:1270 - Mapped property: cena -> cena
+23:08:56,546 DEBUG HbmBinder:1270 - Mapped property: mena -> mena
+23:08:56,546 DEBUG HbmBinder:1270 - Mapped property: zmena_nakladky -> zmena_nakladky
+23:08:56,546 DEBUG HbmBinder:1270 - Mapped property: puvodni_termin_nakladky -> puvodni_termin_nakladky
+23:08:56,546 DEBUG HbmBinder:1270 - Mapped property: cislo_faktury_dopravce -> cislo_faktury_dopravce
+23:08:56,546 DEBUG HbmBinder:1270 - Mapped property: pozadavek -> pozadavek_id
+23:08:56,546 DEBUG HbmBinder:1270 - Mapped property: dopravce -> dopravce_id
+23:08:56,546 DEBUG HbmBinder:1270 - Mapped property: pridruzena_objednavka -> pridruzena_objednavka_id
+23:08:56,546 DEBUG HbmBinder:1270 - Mapped property: cislo_objednavky -> cislo_objednavky
+23:08:56,546  INFO Configuration:585 - Reading mappings from resource: cz/kpartl/preprava/model/Dopravce.hbm.xml
+23:08:56,546  INFO Configuration:530 - Reading mappings from resource: cz/kpartl/preprava/model/Dopravce.hbm.xml
+23:08:56,546 DEBUG DTDEntityResolver:38 - trying to resolve system-id [http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd]
+23:08:56,546 DEBUG DTDEntityResolver:40 - recognized hibernate namespace; attempting to resolve on classpath under org/hibernate/
+23:08:56,546 DEBUG DTDEntityResolver:50 - located [http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd] in classpath
+23:08:56,561  INFO HbmBinder:300 - Mapping class: cz.kpartl.preprava.model.Dopravce -> tb_dopravce
+23:08:56,561 DEBUG HbmBinder:1270 - Mapped property: id -> dopravce_id
+23:08:56,561 DEBUG HbmBinder:1270 - Mapped property: nazev -> nazev
+23:08:56,561 DEBUG HbmBinder:1270 - Mapped property: ulice -> ulice
+23:08:56,561 DEBUG HbmBinder:1270 - Mapped property: mesto -> mesto
+23:08:56,561 DEBUG HbmBinder:1270 - Mapped property: ic -> ic
+23:08:56,561 DEBUG HbmBinder:1270 - Mapped property: dic -> dic
+23:08:56,561 DEBUG HbmBinder:1270 - Mapped property: sap_cislo -> sap_cislo
+23:08:56,561 DEBUG HbmBinder:1270 - Mapped property: kontaktni_osoba -> kontaktni_osoba
+23:08:56,561 DEBUG HbmBinder:1270 - Mapped property: kontaktni_telefon -> kontaktni_telefon
+23:08:56,561 DEBUG HbmBinder:1270 - Mapped property: kontakt_ostatni -> kontakt_ostatni
+23:08:56,561 DEBUG HbmBinder:1270 - Mapped property: psc -> psc
+23:08:56,561 DEBUG Configuration:1285 - Preparing to build session factory with filters : {}
+23:08:56,561 DEBUG Configuration:1120 - processing extends queue
+23:08:56,561 DEBUG Configuration:1124 - processing collection mappings
+23:08:56,561 DEBUG Configuration:1135 - processing native query and ResultSetMapping mappings
+23:08:56,561 DEBUG Configuration:1143 - processing association property references
+23:08:56,561 DEBUG Configuration:1165 - processing foreign key constraints
+23:08:56,561 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Dopravce
+23:08:56,561 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Objednavka
+23:08:56,561 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Pozadavek
+23:08:56,561 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Destinace
+23:08:56,561 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.User
+23:08:56,561 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Destinace
+23:08:56,561  INFO DriverManagerConnectionProvider:41 - Using Hibernate built-in connection pool (not for production use!)
+23:08:56,561  INFO DriverManagerConnectionProvider:42 - Hibernate connection pool size: 1
+23:08:56,561  INFO DriverManagerConnectionProvider:45 - autocommit mode: false
+23:08:56,593  INFO DriverManagerConnectionProvider:80 - using driver: org.h2.Driver at URL: jdbc:h2:file:./db/preprava;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MVCC=true
+23:08:56,593  INFO DriverManagerConnectionProvider:83 - connection properties: {user=sa, password=, release_mode=on_close}
+23:08:56,593 DEBUG DriverManagerConnectionProvider:93 - total checked-out connections: 0
+23:08:56,593 DEBUG DriverManagerConnectionProvider:109 - opening new JDBC connection
+23:09:01,124 DEBUG DriverManagerConnectionProvider:115 - created connection to: jdbc:h2:file:./db/preprava;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MVCC=true, Isolation Level: 2
+23:09:01,124  INFO SettingsFactory:89 - RDBMS: H2, version: 1.3.166 (2012-04-08)
+23:09:01,124  INFO SettingsFactory:90 - JDBC driver: H2 JDBC Driver, version: 1.3.166 (2012-04-08)
+23:09:01,124 DEBUG DriverManagerConnectionProvider:129 - returning connection to pool, pool size: 1
+23:09:01,140  INFO Dialect:152 - Using dialect: org.hibernate.dialect.H2Dialect
+23:09:01,140  INFO TransactionFactoryFactory:31 - Using default transaction strategy (direct JDBC transactions)
+23:09:01,140  INFO TransactionManagerLookupFactory:33 - No TransactionManagerLookup configured (in JTA environment, use of read-write or transactional second-level cache is not recommended)
+23:09:01,140  INFO SettingsFactory:143 - Automatic flush during beforeCompletion(): disabled
+23:09:01,140  INFO SettingsFactory:147 - Automatic session close at end of transaction: disabled
+23:09:01,140  INFO SettingsFactory:154 - JDBC batch size: 1
+23:09:01,140  INFO SettingsFactory:157 - JDBC batch updates for versioned data: disabled
+23:09:01,140  INFO SettingsFactory:162 - Scrollable result sets: enabled
+23:09:01,140 DEBUG SettingsFactory:166 - Wrap result sets: disabled
+23:09:01,140  INFO SettingsFactory:170 - JDBC3 getGeneratedKeys(): enabled
+23:09:01,140  INFO SettingsFactory:178 - Connection release mode: on_close
+23:09:01,140  INFO SettingsFactory:205 - Default batch fetch size: 1
+23:09:01,140  INFO SettingsFactory:209 - Generate SQL with comments: enabled
+23:09:01,140  INFO SettingsFactory:213 - Order SQL updates by primary key: disabled
+23:09:01,140  INFO SettingsFactory:217 - Order SQL inserts for batching: disabled
+23:09:01,140  INFO SettingsFactory:386 - Query translator: org.hibernate.hql.ast.ASTQueryTranslatorFactory
+23:09:01,140  INFO ASTQueryTranslatorFactory:24 - Using ASTQueryTranslatorFactory
+23:09:01,140  INFO SettingsFactory:225 - Query language substitutions: {}
+23:09:01,140  INFO SettingsFactory:230 - JPA-QL strict compliance: disabled
+23:09:01,140  INFO SettingsFactory:235 - Second-level cache: enabled
+23:09:01,140  INFO SettingsFactory:239 - Query cache: disabled
+23:09:01,140  INFO SettingsFactory:373 - Cache provider: org.hibernate.cache.NoCacheProvider
+23:09:01,140  INFO SettingsFactory:254 - Optimize cache for minimal puts: disabled
+23:09:01,140  INFO SettingsFactory:263 - Structured second-level cache entries: disabled
+23:09:01,140 DEBUG SQLExceptionConverterFactory:52 - Using dialect defined converter
+23:09:01,155  INFO SettingsFactory:283 - Echoing all SQL to stdout
+23:09:01,155  INFO SettingsFactory:290 - Statistics: disabled
+23:09:01,155  INFO SettingsFactory:294 - Deleted entity synthetic identifier rollback: disabled
+23:09:01,155  INFO SettingsFactory:309 - Default entity-mode: pojo
+23:09:01,155  INFO SettingsFactory:313 - Named query checking : enabled
+23:09:01,171  INFO SessionFactoryImpl:161 - building session factory
+23:09:01,171 DEBUG SessionFactoryImpl:173 - Session factory constructed with filter configurations : {}
+23:09:01,171 DEBUG SessionFactoryImpl:177 - instantiating session factory with properties: {java.runtime.name=Java(TM) SE Runtime Environment, hibernate.connection.password=, sun.boot.library.path=C:\Program Files\Java\jdk1.6.0_31\jre\bin, java.vm.version=20.6-b01, hibernate.connection.username=sa, java.vm.vendor=Sun Microsystems Inc., java.vendor.url=http://java.sun.com/, path.separator=;, java.vm.name=Java HotSpot(TM) Client VM, file.encoding.pkg=sun.io, user.country=CZ, sun.java.launcher=SUN_STANDARD, sun.os.patch.level=Service Pack 3, java.vm.specification.name=Java Virtual Machine Specification, user.dir=C:\projects\git\cz.kpartl.preprava\cz.kpartl.preprava, java.runtime.version=1.6.0_31-b05, java.awt.graphicsenv=sun.awt.Win32GraphicsEnvironment, java.endorsed.dirs=C:\Program Files\Java\jdk1.6.0_31\jre\lib\endorsed, os.arch=x86, java.io.tmpdir=C:\DOCUME~1\Karel\LOCALS~1\Temp\, line.separator=
+, java.vm.specification.vendor=Sun Microsystems Inc., user.variant=, os.name=Windows XP, hibernate.generate_statistic=true, hibernate.default_batch_fetch_size=1, sun.jnu.encoding=Cp1250, java.library.path=C:\Program Files\Java\jdk1.6.0_31\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;c:/Program Files/Java/jdk1.6.0_31/bin/../jre/bin/client;c:/Program Files/Java/jdk1.6.0_31/bin/../jre/bin;c:/Program Files/Java/jdk1.6.0_31/bin/../jre/lib/i386;C:\Program Files\PC Connectivity Solution\;c:\Program Files\Java\jdk1.6.0_31\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\Windows Imaging\;C:\Program Files\Utimaco\SafeGuard Easy\;c:\Program Files\Microsoft SQL Server\90\Tools\binn\;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Pinnacle\Shared Files\;c:\Programs\sysinternals\apache-ant-1.8.3\bin;C:\Program Files\StreamServe\Applications\SAP connect\edocs\bin;C:\Program Files\Common Files\Adobe\AGL;C:\Programs\eclipse;;., java.specification.name=Java Platform API Specification, java.class.version=50.0, hibernate.connection.pool_size=1, sun.management.compiler=HotSpot Client Compiler, os.version=5.1, user.home=C:\Documents and Settings\Karel, user.timezone=Europe/Prague, java.awt.printerjob=sun.awt.windows.WPrinterJob, hibernate.connection.release_mode=on_close, java.specification.version=1.6, file.encoding=Cp1250, hibernate.connection.driver_class=org.h2.Driver, user.name=Karel, java.class.path=C:\projects\git\cz.kpartl.preprava\cz.kpartl.preprava\lib\sqljdbc4.jar;C:\projects\git\cz.kpartl.preprava\cz.kpartl.preprava\lib\hibernate-jpa-2.0-api-1.0.1.Final.jar;C:\projects\git\cz.kpartl.preprava\cz.kpartl.preprava\lib\commons-csv-20070724.jar;C:\Programs\eclipse\plugins\org.eclipse.core.runtime_3.8.0.v20120521-2346.jar;C:\Programs\eclipse\plugins\org.eclipse.osgi_3.8.0.v20120529-1548.jar;C:\Programs\eclipse\plugins\org.eclipse.equinox.common_3.6.100.v20120522-1841.jar;C:\Programs\eclipse\plugins\org.eclipse.core.jobs_3.5.200.v20120521-2346.jar;C:\Programs\eclipse\plugins\org.eclipse.core.runtime.compatibility.registry_3.5.100.v20120521-2346\runtime_registry_compatibility.jar;C:\Programs\eclipse\plugins\org.eclipse.equinox.registry_3.5.200.v20120522-1841.jar;C:\Programs\eclipse\plugins\org.eclipse.equinox.preferences_3.5.0.v20120522-1841.jar;C:\Programs\eclipse\plugins\org.eclipse.core.contenttype_3.4.200.v20120523-2004.jar;C:\Programs\eclipse\plugins\org.eclipse.equinox.app_1.3.100.v20120522-1841.jar;C:\Programs\eclipse\plugins\org.eclipse.swt_3.100.0.v4233d.jar;C:\Programs\eclipse\plugins\org.eclipse.swt.win32.win32.x86_3.100.0.v4233d.jar;C:\Programs\eclipse\plugins\javax.inject_1.0.0.v20091030.jar;C:\Programs\eclipse\plugins\org.eclipse.e4.core.di_1.1.0.v20120521-2346.jar;C:\Programs\eclipse\plugins\org.eclipse.e4.ui.workbench_0.10.2.v20120531-1742.jar;C:\Programs\eclipse\plugins\org.eclipse.e4.ui.model.workbench_0.10.1.v20120523-1955.jar;C:\Programs\eclipse\plugins\org.eclipse.emf.ecore_2.8.1.v20120911-0500.jar;C:\Programs\eclipse\plugins\org.eclipse.emf.common_2.8.0.v20120606-0717.jar;C:\Programs\eclipse\plugins\org.eclipse.emf.ecore.xmi_2.8.0.v20120911-0500.jar;C:\Programs\eclipse\plugins\org.eclipse.e4.ui.di_0.10.1.v20120523-1955.jar;C:\Programs\eclipse\plugins\org.eclipse.e4.ui.workbench.swt_0.10.1.v20120525-2014.jar;C:\Programs\eclipse\plugins\org.eclipse.core.expressions_3.4.400.v20120523-2004.jar;C:\Programs\eclipse\plugins\org.eclipse.e4.ui.css.swt.theme_0.9.2.v20120523-1955.jar;C:\Programs\eclipse\plugins\org.eclipse.e4.core.contexts_1.1.0.v20120523-2004.jar;C:\Programs\eclipse\plugins\org.eclipse.jface_3.8.0.v20120521-2329.jar;C:\Programs\eclipse\plugins\org.eclipse.core.commands_3.6.1.v20120521-2329.jar;C:\Programs\eclipse\plugins\org.eclipse.e4.core.services_1.0.0.v20120521-2346.jar;C:\Programs\eclipse\plugins\org.eclipse.osgi.services_3.3.100.v20120522-1822.jar;C:\Programs\eclipse\plugins\org.eclipse.e4.ui.workbench.renderers.swt_0.10.1.v20120523-1955.jar;C:\Programs\eclipse\plugins\org.eclipse.jface.databinding_1.6.0.v20120521-2329.jar;C:\Programs\eclipse\plugins\org.eclipse.core.databinding_1.4.1.v20120521-2329.jar;C:\Programs\eclipse\plugins\org.eclipse.core.databinding.observable_1.4.1.v20120521-2329.jar;C:\Programs\eclipse\plugins\org.eclipse.core.databinding.beans_1.2.200.v20120523-1955.jar;C:\Programs\eclipse\plugins\org.eclipse.core.databinding.property_1.4.100.v20120523-1955.jar;C:\Programs\eclipse\plugins\org.eclipse.ui_3.103.0.v20120521-2329.jar;C:\Programs\eclipse\plugins\org.eclipse.ui.workbench_3.103.0.v20120530-1824.jar;C:\Programs\eclipse\plugins\org.eclipse.e4.ui.workbench3_0.12.0.v20120521-2329.jar;C:\Programs\eclipse\plugins\org.eclipse.e4.ui.services_0.10.1.v20120523-1955.jar;C:\projects\git\cz.kpartl.preprava\cz.kpartl.preprava\bin;C:\Programs\eclipse\plugins\com.objectgeneration.hibernate_core_3.2.1\lib\javassist.jar;C:\Programs\eclipse\plugins\com.objectgeneration.hibernate_core_3.2.1\lib\antlr-2.7.6.jar;C:\Programs\eclipse\plugins\com.objectgeneration.hibernate_core_3.2.1\lib\asm-attrs.jar;C:\Programs\eclipse\plugins\com.objectgeneration.hibernate_core_3.2.1\lib\asm.jar;C:\Programs\eclipse\plugins\com.objectgeneration.hibernate_core_3.2.1\lib\jdbc2_0-stdext.jar;C:\Programs\eclipse\plugins\com.objectgeneration.hibernate_core_3.2.1\lib\cglib-2.1.3.jar;C:\Programs\eclipse\plugins\com.objectgeneration.hibernate_core_3.2.1\lib\jta.jar;C:\Programs\eclipse\plugins\com.objectgeneration.hibernate_core_3.2.1\lib\commons-collections-2.1.1.jar;C:\Programs\eclipse\plugins\com.objectgeneration.hibernate_core_3.2.1\lib\commons-logging-1.0.4.jar;C:\Programs\eclipse\plugins\com.objectgeneration.hibernate_core_3.2.1\lib\dom4j-1.6.1.jar;C:\Programs\eclipse\plugins\com.objectgeneration.hibernate_core_3.2.1\lib\ehcache-1.2.3.jar;C:\Programs\eclipse\plugins\com.objectgeneration.hibernate_core_3.2.1\lib\hibernate3.jar;C:\Programs\eclipse\plugins\com.objectgeneration.hibernate_core_3.2.1\lib\xml-apis.jar;C:\Programs\eclipse\plugins\com.objectgeneration.hibernate_core_3.2.1\lib\commons-lang-2.1.jar;C:\Programs\eclipse\plugins\com.objectgeneration.hsqldb_1.8.0\lib\hsqldb.jar;C:\projects\git\cz.kpartl.preprava\cz.kpartl.preprava\lib\h2-1.3.166.jar;C:\projects\git\cz.kpartl.preprava\cz.kpartl.preprava\lib\slf4j-api-1.6.6.jar;C:\Programs\eclipse\plugins\org.junit_4.8.2.v4_8_2_v20110321-1705\junit.jar;C:\projects\git\cz.kpartl.preprava\cz.kpartl.preprava\lib\hibernate3.jar;C:\projects\git\cz.kpartl.preprava\cz.kpartl.preprava\lib\antlr-2.7.6.jar;C:\projects\git\cz.kpartl.preprava\cz.kpartl.preprava\lib\commons-collections-3.1.jar;C:\projects\git\cz.kpartl.preprava\cz.kpartl.preprava\lib\dom4j-1.6.1.jar;C:\projects\git\cz.kpartl.preprava\cz.kpartl.preprava\lib\javassist.jar;C:\projects\git\cz.kpartl.preprava\cz.kpartl.preprava\lib\jta.jar;C:\projects\git\cz.kpartl.preprava\cz.kpartl.preprava\lib\slf4j-log4j12-1.6.6.jar;C:\projects\git\cz.kpartl.preprava\cz.kpartl.preprava\lib\org.apache.log4j_1.2.15.v201012070815.jar, hibernate.bytecode.use_reflection_optimizer=false, hibernate.use_sql_comments=true, hibernate.show_sql=true, java.vm.specification.version=1.0, sun.arch.data.model=32, java.home=C:\Program Files\Java\jdk1.6.0_31\jre, sun.java.command=cz.kpartl.preprava.importer.DataImporter, hibernate.connection.url=jdbc:h2:file:./db/preprava;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MVCC=true, hibernate.dialect=org.hibernate.dialect.H2Dialect, java.specification.vendor=Sun Microsystems Inc., user.language=cs, awt.toolkit=sun.awt.windows.WToolkit, java.vm.info=mixed mode, sharing, java.version=1.6.0_31, java.ext.dirs=C:\Program Files\Java\jdk1.6.0_31\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext, sun.boot.class.path=C:\Program Files\Java\jdk1.6.0_31\jre\lib\resources.jar;C:\Program Files\Java\jdk1.6.0_31\jre\lib\rt.jar;C:\Program Files\Java\jdk1.6.0_31\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.6.0_31\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.6.0_31\jre\lib\jce.jar;C:\Program Files\Java\jdk1.6.0_31\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.6.0_31\jre\lib\modules\jdk.boot.jar;C:\Program Files\Java\jdk1.6.0_31\jre\classes, java.vendor=Sun Microsystems Inc., hibernate.jdbc.batch_size=1, file.separator=\, java.vendor.url.bug=http://java.sun.com/cgi-bin/bugreport.cgi, hibernate.hbm2ddl.auto=create-drop, sun.cpu.endian=little, sun.io.unicode.encoding=UnicodeLittle, sun.desktop=windows, sun.cpu.isalist=pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86}
+23:09:01,312 DEBUG AbstractEntityPersister:2738 - Static SQL for entity: cz.kpartl.preprava.model.Dopravce
+23:09:01,312 DEBUG AbstractEntityPersister:2743 -  Version select: /* get version cz.kpartl.preprava.model.Dopravce */ select dopravce_id from tb_dopravce where dopravce_id =?
+23:09:01,312 DEBUG AbstractEntityPersister:2746 -  Snapshot select: /* get current state cz.kpartl.preprava.model.Dopravce */ select dopravce_.dopravce_id, dopravce_.nazev as nazev4_, dopravce_.ulice as ulice4_, dopravce_.mesto as mesto4_, dopravce_.ic as ic4_, dopravce_.dic as dic4_, dopravce_.sap_cislo as sap7_4_, dopravce_.kontaktni_osoba as kontaktni8_4_, dopravce_.kontaktni_telefon as kontaktni9_4_, dopravce_.kontakt_ostatni as kontakt10_4_, dopravce_.psc as psc4_ from tb_dopravce dopravce_ where dopravce_.dopravce_id=?
+23:09:01,312 DEBUG AbstractEntityPersister:2749 -  Insert 0: /* insert cz.kpartl.preprava.model.Dopravce */ insert into tb_dopravce (nazev, ulice, mesto, ic, dic, sap_cislo, kontaktni_osoba, kontaktni_telefon, kontakt_ostatni, psc, dopravce_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+23:09:01,312 DEBUG AbstractEntityPersister:2750 -  Update 0: /* update cz.kpartl.preprava.model.Dopravce */ update tb_dopravce set nazev=?, ulice=?, mesto=?, ic=?, dic=?, sap_cislo=?, kontaktni_osoba=?, kontaktni_telefon=?, kontakt_ostatni=?, psc=? where dopravce_id=?
+23:09:01,312 DEBUG AbstractEntityPersister:2751 -  Delete 0: /* delete cz.kpartl.preprava.model.Dopravce */ delete from tb_dopravce where dopravce_id=?
+23:09:01,312 DEBUG AbstractEntityPersister:2755 -  Identity insert: /* insert cz.kpartl.preprava.model.Dopravce */ insert into tb_dopravce (dopravce_id, nazev, ulice, mesto, ic, dic, sap_cislo, kontaktni_osoba, kontaktni_telefon, kontakt_ostatni, psc) values (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+23:09:01,312 DEBUG AbstractEntityPersister:2738 - Static SQL for entity: cz.kpartl.preprava.model.User
+23:09:01,312 DEBUG AbstractEntityPersister:2743 -  Version select: /* get version cz.kpartl.preprava.model.User */ select user_id from tb_user where user_id =?
+23:09:01,312 DEBUG AbstractEntityPersister:2746 -  Snapshot select: /* get current state cz.kpartl.preprava.model.User */ select user_.user_id, user_.username as username0_, user_.password as password0_, user_.administrator as administ4_0_ from tb_user user_ where user_.user_id=?
+23:09:01,312 DEBUG AbstractEntityPersister:2749 -  Insert 0: /* insert cz.kpartl.preprava.model.User */ insert into tb_user (username, password, administrator, user_id) values (?, ?, ?, ?)
+23:09:01,312 DEBUG AbstractEntityPersister:2750 -  Update 0: /* update cz.kpartl.preprava.model.User */ update tb_user set username=?, password=?, administrator=? where user_id=?
+23:09:01,312 DEBUG AbstractEntityPersister:2751 -  Delete 0: /* delete cz.kpartl.preprava.model.User */ delete from tb_user where user_id=?
+23:09:01,312 DEBUG AbstractEntityPersister:2755 -  Identity insert: /* insert cz.kpartl.preprava.model.User */ insert into tb_user (user_id, username, password, administrator) values (null, ?, ?, ?)
+23:09:01,312 DEBUG AbstractEntityPersister:2738 - Static SQL for entity: cz.kpartl.preprava.model.Objednavka
+23:09:01,312 DEBUG AbstractEntityPersister:2743 -  Version select: /* get version cz.kpartl.preprava.model.Objednavka */ select objednavka_id from tb_objednavka where objednavka_id =?
+23:09:01,312 DEBUG AbstractEntityPersister:2746 -  Snapshot select: /* get current state cz.kpartl.preprava.model.Objednavka */ select objednavka_.objednavka_id, objednavka_.faze as faze3_, objednavka_.cena as cena3_, objednavka_.mena as mena3_, objednavka_.zmena_nakladky as zmena5_3_, objednavka_.puvodni_termin_nakladky as puvodni6_3_, objednavka_.cislo_faktury_dopravce as cislo7_3_, objednavka_.pozadavek_id as pozadavek8_3_, objednavka_.dopravce_id as dopravce9_3_, objednavka_.pridruzena_objednavka_id as pridruzena10_3_, objednavka_.cislo_objednavky as cislo11_3_ from tb_objednavka objednavka_ where objednavka_.objednavka_id=?
+23:09:01,312 DEBUG AbstractEntityPersister:2749 -  Insert 0: /* insert cz.kpartl.preprava.model.Objednavka */ insert into tb_objednavka (faze, cena, mena, zmena_nakladky, puvodni_termin_nakladky, cislo_faktury_dopravce, pozadavek_id, dopravce_id, pridruzena_objednavka_id, cislo_objednavky, objednavka_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+23:09:01,312 DEBUG AbstractEntityPersister:2750 -  Update 0: /* update cz.kpartl.preprava.model.Objednavka */ update tb_objednavka set faze=?, cena=?, mena=?, zmena_nakladky=?, puvodni_termin_nakladky=?, cislo_faktury_dopravce=?, pozadavek_id=?, dopravce_id=?, pridruzena_objednavka_id=?, cislo_objednavky=? where objednavka_id=?
+23:09:01,312 DEBUG AbstractEntityPersister:2751 -  Delete 0: /* delete cz.kpartl.preprava.model.Objednavka */ delete from tb_objednavka where objednavka_id=?
+23:09:01,312 DEBUG AbstractEntityPersister:2755 -  Identity insert: /* insert cz.kpartl.preprava.model.Objednavka */ insert into tb_objednavka (objednavka_id, faze, cena, mena, zmena_nakladky, puvodni_termin_nakladky, cislo_faktury_dopravce, pozadavek_id, dopravce_id, pridruzena_objednavka_id, cislo_objednavky) values (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+23:09:01,327 DEBUG AbstractEntityPersister:2738 - Static SQL for entity: cz.kpartl.preprava.model.Destinace
+23:09:01,327 DEBUG AbstractEntityPersister:2743 -  Version select: /* get version cz.kpartl.preprava.model.Destinace */ select destinace_id from tb_destinace where destinace_id =?
+23:09:01,327 DEBUG AbstractEntityPersister:2746 -  Snapshot select: /* get current state cz.kpartl.preprava.model.Destinace */ select destinace_.destinace_id, destinace_.nazev as nazev2_, destinace_.cislo as cislo2_, destinace_.kontaktni_osoba as kontaktni4_2_, destinace_.kontakt as kontakt2_, destinace_.ulice as ulice2_, destinace_.mesto as mesto2_, destinace_.p_s_c as p8_2_ from tb_destinace destinace_ where destinace_.destinace_id=?
+23:09:01,327 DEBUG AbstractEntityPersister:2749 -  Insert 0: /* insert cz.kpartl.preprava.model.Destinace */ insert into tb_destinace (nazev, cislo, kontaktni_osoba, kontakt, ulice, mesto, p_s_c, destinace_id) values (?, ?, ?, ?, ?, ?, ?, ?)
+23:09:01,327 DEBUG AbstractEntityPersister:2750 -  Update 0: /* update cz.kpartl.preprava.model.Destinace */ update tb_destinace set nazev=?, cislo=?, kontaktni_osoba=?, kontakt=?, ulice=?, mesto=?, p_s_c=? where destinace_id=?
+23:09:01,327 DEBUG AbstractEntityPersister:2751 -  Delete 0: /* delete cz.kpartl.preprava.model.Destinace */ delete from tb_destinace where destinace_id=?
+23:09:01,327 DEBUG AbstractEntityPersister:2755 -  Identity insert: /* insert cz.kpartl.preprava.model.Destinace */ insert into tb_destinace (destinace_id, nazev, cislo, kontaktni_osoba, kontakt, ulice, mesto, p_s_c) values (null, ?, ?, ?, ?, ?, ?, ?)
+23:09:01,343 DEBUG AbstractEntityPersister:2738 - Static SQL for entity: cz.kpartl.preprava.model.Pozadavek
+23:09:01,343 DEBUG AbstractEntityPersister:2743 -  Version select: /* get version cz.kpartl.preprava.model.Pozadavek */ select pozadavek_id from tb_pozadavek where pozadavek_id =?
+23:09:01,343 DEBUG AbstractEntityPersister:2746 -  Snapshot select: /* get current state cz.kpartl.preprava.model.Pozadavek */ select pozadavek_.pozadavek_id, pozadavek_.datum as datum1_, pozadavek_.datum_nakladky as datum3_1_, pozadavek_.datum_vykladky as datum4_1_, pozadavek_.pocet_palet as pocet5_1_, pozadavek_.je_termin_konecny as je6_1_, pozadavek_.taxi as taxi1_, pozadavek_.poznamka as poznamka1_, pozadavek_.destinace_z_id as destinace9_1_, pozadavek_.celkova_hmotnost as celkova10_1_, pozadavek_.zadavatel_id as zadavatel11_1_, pozadavek_.attr as attr1_, pozadavek_.hodina_nakladky as hodina13_1_, pozadavek_.destinace_do_id as destinace14_1_, pozadavek_.je_stohovatelne as je15_1_, pozadavek_.hodina_vykladky as hodina16_1_ from tb_pozadavek pozadavek_ where pozadavek_.pozadavek_id=?
+23:09:01,343 DEBUG AbstractEntityPersister:2749 -  Insert 0: /* insert cz.kpartl.preprava.model.Pozadavek */ insert into tb_pozadavek (datum, datum_nakladky, datum_vykladky, pocet_palet, je_termin_konecny, taxi, poznamka, destinace_z_id, celkova_hmotnost, zadavatel_id, attr, hodina_nakladky, destinace_do_id, je_stohovatelne, hodina_vykladky, pozadavek_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+23:09:01,343 DEBUG AbstractEntityPersister:2750 -  Update 0: /* update cz.kpartl.preprava.model.Pozadavek */ update tb_pozadavek set datum=?, datum_nakladky=?, datum_vykladky=?, pocet_palet=?, je_termin_konecny=?, taxi=?, poznamka=?, destinace_z_id=?, celkova_hmotnost=?, zadavatel_id=?, attr=?, hodina_nakladky=?, destinace_do_id=?, je_stohovatelne=?, hodina_vykladky=? where pozadavek_id=?
+23:09:01,343 DEBUG AbstractEntityPersister:2751 -  Delete 0: /* delete cz.kpartl.preprava.model.Pozadavek */ delete from tb_pozadavek where pozadavek_id=?
+23:09:01,343 DEBUG AbstractEntityPersister:2755 -  Identity insert: /* insert cz.kpartl.preprava.model.Pozadavek */ insert into tb_pozadavek (pozadavek_id, datum, datum_nakladky, datum_vykladky, pocet_palet, je_termin_konecny, taxi, poznamka, destinace_z_id, celkova_hmotnost, zadavatel_id, attr, hodina_nakladky, destinace_do_id, je_stohovatelne, hodina_vykladky) values (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+23:09:01,343 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Dopravce: /* load cz.kpartl.preprava.model.Dopravce */ select dopravce0_.dopravce_id as dopravce1_4_0_, dopravce0_.nazev as nazev4_0_, dopravce0_.ulice as ulice4_0_, dopravce0_.mesto as mesto4_0_, dopravce0_.ic as ic4_0_, dopravce0_.dic as dic4_0_, dopravce0_.sap_cislo as sap7_4_0_, dopravce0_.kontaktni_osoba as kontaktni8_4_0_, dopravce0_.kontaktni_telefon as kontaktni9_4_0_, dopravce0_.kontakt_ostatni as kontakt10_4_0_, dopravce0_.psc as psc4_0_ from tb_dopravce dopravce0_ where dopravce0_.dopravce_id=?
+23:09:01,343 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Dopravce: /* load cz.kpartl.preprava.model.Dopravce */ select dopravce0_.dopravce_id as dopravce1_4_0_, dopravce0_.nazev as nazev4_0_, dopravce0_.ulice as ulice4_0_, dopravce0_.mesto as mesto4_0_, dopravce0_.ic as ic4_0_, dopravce0_.dic as dic4_0_, dopravce0_.sap_cislo as sap7_4_0_, dopravce0_.kontaktni_osoba as kontaktni8_4_0_, dopravce0_.kontaktni_telefon as kontaktni9_4_0_, dopravce0_.kontakt_ostatni as kontakt10_4_0_, dopravce0_.psc as psc4_0_ from tb_dopravce dopravce0_ where dopravce0_.dopravce_id=?
+23:09:01,343 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Dopravce: /* load cz.kpartl.preprava.model.Dopravce */ select dopravce0_.dopravce_id as dopravce1_4_0_, dopravce0_.nazev as nazev4_0_, dopravce0_.ulice as ulice4_0_, dopravce0_.mesto as mesto4_0_, dopravce0_.ic as ic4_0_, dopravce0_.dic as dic4_0_, dopravce0_.sap_cislo as sap7_4_0_, dopravce0_.kontaktni_osoba as kontaktni8_4_0_, dopravce0_.kontaktni_telefon as kontaktni9_4_0_, dopravce0_.kontakt_ostatni as kontakt10_4_0_, dopravce0_.psc as psc4_0_ from tb_dopravce dopravce0_ where dopravce0_.dopravce_id=? for update
+23:09:01,343 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Dopravce: /* load cz.kpartl.preprava.model.Dopravce */ select dopravce0_.dopravce_id as dopravce1_4_0_, dopravce0_.nazev as nazev4_0_, dopravce0_.ulice as ulice4_0_, dopravce0_.mesto as mesto4_0_, dopravce0_.ic as ic4_0_, dopravce0_.dic as dic4_0_, dopravce0_.sap_cislo as sap7_4_0_, dopravce0_.kontaktni_osoba as kontaktni8_4_0_, dopravce0_.kontaktni_telefon as kontaktni9_4_0_, dopravce0_.kontakt_ostatni as kontakt10_4_0_, dopravce0_.psc as psc4_0_ from tb_dopravce dopravce0_ where dopravce0_.dopravce_id=? for update
+23:09:01,358 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Dopravce: /* load cz.kpartl.preprava.model.Dopravce */ select dopravce0_.dopravce_id as dopravce1_4_0_, dopravce0_.nazev as nazev4_0_, dopravce0_.ulice as ulice4_0_, dopravce0_.mesto as mesto4_0_, dopravce0_.ic as ic4_0_, dopravce0_.dic as dic4_0_, dopravce0_.sap_cislo as sap7_4_0_, dopravce0_.kontaktni_osoba as kontaktni8_4_0_, dopravce0_.kontaktni_telefon as kontaktni9_4_0_, dopravce0_.kontakt_ostatni as kontakt10_4_0_, dopravce0_.psc as psc4_0_ from tb_dopravce dopravce0_ where dopravce0_.dopravce_id=? for update
+23:09:01,358 DEBUG EntityLoader:34 - Static select for action ACTION_MERGE on entity cz.kpartl.preprava.model.Dopravce: /* load cz.kpartl.preprava.model.Dopravce */ select dopravce0_.dopravce_id as dopravce1_4_0_, dopravce0_.nazev as nazev4_0_, dopravce0_.ulice as ulice4_0_, dopravce0_.mesto as mesto4_0_, dopravce0_.ic as ic4_0_, dopravce0_.dic as dic4_0_, dopravce0_.sap_cislo as sap7_4_0_, dopravce0_.kontaktni_osoba as kontaktni8_4_0_, dopravce0_.kontaktni_telefon as kontaktni9_4_0_, dopravce0_.kontakt_ostatni as kontakt10_4_0_, dopravce0_.psc as psc4_0_ from tb_dopravce dopravce0_ where dopravce0_.dopravce_id=?
+23:09:01,358 DEBUG EntityLoader:34 - Static select for action ACTION_REFRESH on entity cz.kpartl.preprava.model.Dopravce: /* load cz.kpartl.preprava.model.Dopravce */ select dopravce0_.dopravce_id as dopravce1_4_0_, dopravce0_.nazev as nazev4_0_, dopravce0_.ulice as ulice4_0_, dopravce0_.mesto as mesto4_0_, dopravce0_.ic as ic4_0_, dopravce0_.dic as dic4_0_, dopravce0_.sap_cislo as sap7_4_0_, dopravce0_.kontaktni_osoba as kontaktni8_4_0_, dopravce0_.kontaktni_telefon as kontaktni9_4_0_, dopravce0_.kontakt_ostatni as kontakt10_4_0_, dopravce0_.psc as psc4_0_ from tb_dopravce dopravce0_ where dopravce0_.dopravce_id=?
+23:09:01,358 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.User: /* load cz.kpartl.preprava.model.User */ select user0_.user_id as user1_0_0_, user0_.username as username0_0_, user0_.password as password0_0_, user0_.administrator as administ4_0_0_ from tb_user user0_ where user0_.user_id=?
+23:09:01,358 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.User: /* load cz.kpartl.preprava.model.User */ select user0_.user_id as user1_0_0_, user0_.username as username0_0_, user0_.password as password0_0_, user0_.administrator as administ4_0_0_ from tb_user user0_ where user0_.user_id=?
+23:09:01,358 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.User: /* load cz.kpartl.preprava.model.User */ select user0_.user_id as user1_0_0_, user0_.username as username0_0_, user0_.password as password0_0_, user0_.administrator as administ4_0_0_ from tb_user user0_ where user0_.user_id=? for update
+23:09:01,358 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.User: /* load cz.kpartl.preprava.model.User */ select user0_.user_id as user1_0_0_, user0_.username as username0_0_, user0_.password as password0_0_, user0_.administrator as administ4_0_0_ from tb_user user0_ where user0_.user_id=? for update
+23:09:01,358 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.User: /* load cz.kpartl.preprava.model.User */ select user0_.user_id as user1_0_0_, user0_.username as username0_0_, user0_.password as password0_0_, user0_.administrator as administ4_0_0_ from tb_user user0_ where user0_.user_id=? for update
+23:09:01,358 DEBUG EntityLoader:34 - Static select for action ACTION_MERGE on entity cz.kpartl.preprava.model.User: /* load cz.kpartl.preprava.model.User */ select user0_.user_id as user1_0_0_, user0_.username as username0_0_, user0_.password as password0_0_, user0_.administrator as administ4_0_0_ from tb_user user0_ where user0_.user_id=?
+23:09:01,358 DEBUG EntityLoader:34 - Static select for action ACTION_REFRESH on entity cz.kpartl.preprava.model.User: /* load cz.kpartl.preprava.model.User */ select user0_.user_id as user1_0_0_, user0_.username as username0_0_, user0_.password as password0_0_, user0_.administrator as administ4_0_0_ from tb_user user0_ where user0_.user_id=?
+23:09:01,358 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Destinace: /* load cz.kpartl.preprava.model.Destinace */ select destinace0_.destinace_id as destinace1_2_0_, destinace0_.nazev as nazev2_0_, destinace0_.cislo as cislo2_0_, destinace0_.kontaktni_osoba as kontaktni4_2_0_, destinace0_.kontakt as kontakt2_0_, destinace0_.ulice as ulice2_0_, destinace0_.mesto as mesto2_0_, destinace0_.p_s_c as p8_2_0_ from tb_destinace destinace0_ where destinace0_.destinace_id=?
+23:09:01,358 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Destinace: /* load cz.kpartl.preprava.model.Destinace */ select destinace0_.destinace_id as destinace1_2_0_, destinace0_.nazev as nazev2_0_, destinace0_.cislo as cislo2_0_, destinace0_.kontaktni_osoba as kontaktni4_2_0_, destinace0_.kontakt as kontakt2_0_, destinace0_.ulice as ulice2_0_, destinace0_.mesto as mesto2_0_, destinace0_.p_s_c as p8_2_0_ from tb_destinace destinace0_ where destinace0_.destinace_id=?
+23:09:01,358 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Destinace: /* load cz.kpartl.preprava.model.Destinace */ select destinace0_.destinace_id as destinace1_2_0_, destinace0_.nazev as nazev2_0_, destinace0_.cislo as cislo2_0_, destinace0_.kontaktni_osoba as kontaktni4_2_0_, destinace0_.kontakt as kontakt2_0_, destinace0_.ulice as ulice2_0_, destinace0_.mesto as mesto2_0_, destinace0_.p_s_c as p8_2_0_ from tb_destinace destinace0_ where destinace0_.destinace_id=? for update
+23:09:01,358 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Destinace: /* load cz.kpartl.preprava.model.Destinace */ select destinace0_.destinace_id as destinace1_2_0_, destinace0_.nazev as nazev2_0_, destinace0_.cislo as cislo2_0_, destinace0_.kontaktni_osoba as kontaktni4_2_0_, destinace0_.kontakt as kontakt2_0_, destinace0_.ulice as ulice2_0_, destinace0_.mesto as mesto2_0_, destinace0_.p_s_c as p8_2_0_ from tb_destinace destinace0_ where destinace0_.destinace_id=? for update
+23:09:01,358 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Destinace: /* load cz.kpartl.preprava.model.Destinace */ select destinace0_.destinace_id as destinace1_2_0_, destinace0_.nazev as nazev2_0_, destinace0_.cislo as cislo2_0_, destinace0_.kontaktni_osoba as kontaktni4_2_0_, destinace0_.kontakt as kontakt2_0_, destinace0_.ulice as ulice2_0_, destinace0_.mesto as mesto2_0_, destinace0_.p_s_c as p8_2_0_ from tb_destinace destinace0_ where destinace0_.destinace_id=? for update
+23:09:01,358 DEBUG EntityLoader:34 - Static select for action ACTION_MERGE on entity cz.kpartl.preprava.model.Destinace: /* load cz.kpartl.preprava.model.Destinace */ select destinace0_.destinace_id as destinace1_2_0_, destinace0_.nazev as nazev2_0_, destinace0_.cislo as cislo2_0_, destinace0_.kontaktni_osoba as kontaktni4_2_0_, destinace0_.kontakt as kontakt2_0_, destinace0_.ulice as ulice2_0_, destinace0_.mesto as mesto2_0_, destinace0_.p_s_c as p8_2_0_ from tb_destinace destinace0_ where destinace0_.destinace_id=?
+23:09:01,358 DEBUG EntityLoader:34 - Static select for action ACTION_REFRESH on entity cz.kpartl.preprava.model.Destinace: /* load cz.kpartl.preprava.model.Destinace */ select destinace0_.destinace_id as destinace1_2_0_, destinace0_.nazev as nazev2_0_, destinace0_.cislo as cislo2_0_, destinace0_.kontaktni_osoba as kontaktni4_2_0_, destinace0_.kontakt as kontakt2_0_, destinace0_.ulice as ulice2_0_, destinace0_.mesto as mesto2_0_, destinace0_.p_s_c as p8_2_0_ from tb_destinace destinace0_ where destinace0_.destinace_id=?
+23:09:01,358 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Objednavka: /* load cz.kpartl.preprava.model.Objednavka */ select objednavka0_.objednavka_id as objednavka1_3_0_, objednavka0_.faze as faze3_0_, objednavka0_.cena as cena3_0_, objednavka0_.mena as mena3_0_, objednavka0_.zmena_nakladky as zmena5_3_0_, objednavka0_.puvodni_termin_nakladky as puvodni6_3_0_, objednavka0_.cislo_faktury_dopravce as cislo7_3_0_, objednavka0_.pozadavek_id as pozadavek8_3_0_, objednavka0_.dopravce_id as dopravce9_3_0_, objednavka0_.pridruzena_objednavka_id as pridruzena10_3_0_, objednavka0_.cislo_objednavky as cislo11_3_0_ from tb_objednavka objednavka0_ where objednavka0_.objednavka_id=?
+23:09:01,358 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Objednavka: /* load cz.kpartl.preprava.model.Objednavka */ select objednavka0_.objednavka_id as objednavka1_3_0_, objednavka0_.faze as faze3_0_, objednavka0_.cena as cena3_0_, objednavka0_.mena as mena3_0_, objednavka0_.zmena_nakladky as zmena5_3_0_, objednavka0_.puvodni_termin_nakladky as puvodni6_3_0_, objednavka0_.cislo_faktury_dopravce as cislo7_3_0_, objednavka0_.pozadavek_id as pozadavek8_3_0_, objednavka0_.dopravce_id as dopravce9_3_0_, objednavka0_.pridruzena_objednavka_id as pridruzena10_3_0_, objednavka0_.cislo_objednavky as cislo11_3_0_ from tb_objednavka objednavka0_ where objednavka0_.objednavka_id=?
+23:09:01,358 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Objednavka: /* load cz.kpartl.preprava.model.Objednavka */ select objednavka0_.objednavka_id as objednavka1_3_0_, objednavka0_.faze as faze3_0_, objednavka0_.cena as cena3_0_, objednavka0_.mena as mena3_0_, objednavka0_.zmena_nakladky as zmena5_3_0_, objednavka0_.puvodni_termin_nakladky as puvodni6_3_0_, objednavka0_.cislo_faktury_dopravce as cislo7_3_0_, objednavka0_.pozadavek_id as pozadavek8_3_0_, objednavka0_.dopravce_id as dopravce9_3_0_, objednavka0_.pridruzena_objednavka_id as pridruzena10_3_0_, objednavka0_.cislo_objednavky as cislo11_3_0_ from tb_objednavka objednavka0_ where objednavka0_.objednavka_id=? for update
+23:09:01,358 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Objednavka: /* load cz.kpartl.preprava.model.Objednavka */ select objednavka0_.objednavka_id as objednavka1_3_0_, objednavka0_.faze as faze3_0_, objednavka0_.cena as cena3_0_, objednavka0_.mena as mena3_0_, objednavka0_.zmena_nakladky as zmena5_3_0_, objednavka0_.puvodni_termin_nakladky as puvodni6_3_0_, objednavka0_.cislo_faktury_dopravce as cislo7_3_0_, objednavka0_.pozadavek_id as pozadavek8_3_0_, objednavka0_.dopravce_id as dopravce9_3_0_, objednavka0_.pridruzena_objednavka_id as pridruzena10_3_0_, objednavka0_.cislo_objednavky as cislo11_3_0_ from tb_objednavka objednavka0_ where objednavka0_.objednavka_id=? for update
+23:09:01,374 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Objednavka: /* load cz.kpartl.preprava.model.Objednavka */ select objednavka0_.objednavka_id as objednavka1_3_0_, objednavka0_.faze as faze3_0_, objednavka0_.cena as cena3_0_, objednavka0_.mena as mena3_0_, objednavka0_.zmena_nakladky as zmena5_3_0_, objednavka0_.puvodni_termin_nakladky as puvodni6_3_0_, objednavka0_.cislo_faktury_dopravce as cislo7_3_0_, objednavka0_.pozadavek_id as pozadavek8_3_0_, objednavka0_.dopravce_id as dopravce9_3_0_, objednavka0_.pridruzena_objednavka_id as pridruzena10_3_0_, objednavka0_.cislo_objednavky as cislo11_3_0_ from tb_objednavka objednavka0_ where objednavka0_.objednavka_id=? for update
+23:09:01,374 DEBUG EntityLoader:34 - Static select for action ACTION_MERGE on entity cz.kpartl.preprava.model.Objednavka: /* load cz.kpartl.preprava.model.Objednavka */ select objednavka0_.objednavka_id as objednavka1_3_0_, objednavka0_.faze as faze3_0_, objednavka0_.cena as cena3_0_, objednavka0_.mena as mena3_0_, objednavka0_.zmena_nakladky as zmena5_3_0_, objednavka0_.puvodni_termin_nakladky as puvodni6_3_0_, objednavka0_.cislo_faktury_dopravce as cislo7_3_0_, objednavka0_.pozadavek_id as pozadavek8_3_0_, objednavka0_.dopravce_id as dopravce9_3_0_, objednavka0_.pridruzena_objednavka_id as pridruzena10_3_0_, objednavka0_.cislo_objednavky as cislo11_3_0_ from tb_objednavka objednavka0_ where objednavka0_.objednavka_id=?
+23:09:01,374 DEBUG EntityLoader:34 - Static select for action ACTION_REFRESH on entity cz.kpartl.preprava.model.Objednavka: /* load cz.kpartl.preprava.model.Objednavka */ select objednavka0_.objednavka_id as objednavka1_3_0_, objednavka0_.faze as faze3_0_, objednavka0_.cena as cena3_0_, objednavka0_.mena as mena3_0_, objednavka0_.zmena_nakladky as zmena5_3_0_, objednavka0_.puvodni_termin_nakladky as puvodni6_3_0_, objednavka0_.cislo_faktury_dopravce as cislo7_3_0_, objednavka0_.pozadavek_id as pozadavek8_3_0_, objednavka0_.dopravce_id as dopravce9_3_0_, objednavka0_.pridruzena_objednavka_id as pridruzena10_3_0_, objednavka0_.cislo_objednavky as cislo11_3_0_ from tb_objednavka objednavka0_ where objednavka0_.objednavka_id=?
+23:09:01,374 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Objednavka: /* load cz.kpartl.preprava.model.Objednavka */ select objednavka0_.objednavka_id as objednavka1_3_0_, objednavka0_.faze as faze3_0_, objednavka0_.cena as cena3_0_, objednavka0_.mena as mena3_0_, objednavka0_.zmena_nakladky as zmena5_3_0_, objednavka0_.puvodni_termin_nakladky as puvodni6_3_0_, objednavka0_.cislo_faktury_dopravce as cislo7_3_0_, objednavka0_.pozadavek_id as pozadavek8_3_0_, objednavka0_.dopravce_id as dopravce9_3_0_, objednavka0_.pridruzena_objednavka_id as pridruzena10_3_0_, objednavka0_.cislo_objednavky as cislo11_3_0_ from tb_objednavka objednavka0_ where objednavka0_.pozadavek_id=?
+23:09:01,374 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Pozadavek: /* load cz.kpartl.preprava.model.Pozadavek */ select pozadavek0_.pozadavek_id as pozadavek1_1_1_, pozadavek0_.datum as datum1_1_, pozadavek0_.datum_nakladky as datum3_1_1_, pozadavek0_.datum_vykladky as datum4_1_1_, pozadavek0_.pocet_palet as pocet5_1_1_, pozadavek0_.je_termin_konecny as je6_1_1_, pozadavek0_.taxi as taxi1_1_, pozadavek0_.poznamka as poznamka1_1_, pozadavek0_.destinace_z_id as destinace9_1_1_, pozadavek0_.celkova_hmotnost as celkova10_1_1_, pozadavek0_.zadavatel_id as zadavatel11_1_1_, pozadavek0_.attr as attr1_1_, pozadavek0_.hodina_nakladky as hodina13_1_1_, pozadavek0_.destinace_do_id as destinace14_1_1_, pozadavek0_.je_stohovatelne as je15_1_1_, pozadavek0_.hodina_vykladky as hodina16_1_1_, objednavka1_.objednavka_id as objednavka1_3_0_, objednavka1_.faze as faze3_0_, objednavka1_.cena as cena3_0_, objednavka1_.mena as mena3_0_, objednavka1_.zmena_nakladky as zmena5_3_0_, objednavka1_.puvodni_termin_nakladky as puvodni6_3_0_, objednavka1_.cislo_faktury_dopravce as cislo7_3_0_, objednavka1_.pozadavek_id as pozadavek8_3_0_, objednavka1_.dopravce_id as dopravce9_3_0_, objednavka1_.pridruzena_objednavka_id as pridruzena10_3_0_, objednavka1_.cislo_objednavky as cislo11_3_0_ from tb_pozadavek pozadavek0_ left outer join tb_objednavka objednavka1_ on pozadavek0_.pozadavek_id=objednavka1_.pozadavek_id where pozadavek0_.pozadavek_id=?
+23:09:01,374 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Pozadavek: /* load cz.kpartl.preprava.model.Pozadavek */ select pozadavek0_.pozadavek_id as pozadavek1_1_1_, pozadavek0_.datum as datum1_1_, pozadavek0_.datum_nakladky as datum3_1_1_, pozadavek0_.datum_vykladky as datum4_1_1_, pozadavek0_.pocet_palet as pocet5_1_1_, pozadavek0_.je_termin_konecny as je6_1_1_, pozadavek0_.taxi as taxi1_1_, pozadavek0_.poznamka as poznamka1_1_, pozadavek0_.destinace_z_id as destinace9_1_1_, pozadavek0_.celkova_hmotnost as celkova10_1_1_, pozadavek0_.zadavatel_id as zadavatel11_1_1_, pozadavek0_.attr as attr1_1_, pozadavek0_.hodina_nakladky as hodina13_1_1_, pozadavek0_.destinace_do_id as destinace14_1_1_, pozadavek0_.je_stohovatelne as je15_1_1_, pozadavek0_.hodina_vykladky as hodina16_1_1_, objednavka1_.objednavka_id as objednavka1_3_0_, objednavka1_.faze as faze3_0_, objednavka1_.cena as cena3_0_, objednavka1_.mena as mena3_0_, objednavka1_.zmena_nakladky as zmena5_3_0_, objednavka1_.puvodni_termin_nakladky as puvodni6_3_0_, objednavka1_.cislo_faktury_dopravce as cislo7_3_0_, objednavka1_.pozadavek_id as pozadavek8_3_0_, objednavka1_.dopravce_id as dopravce9_3_0_, objednavka1_.pridruzena_objednavka_id as pridruzena10_3_0_, objednavka1_.cislo_objednavky as cislo11_3_0_ from tb_pozadavek pozadavek0_ left outer join tb_objednavka objednavka1_ on pozadavek0_.pozadavek_id=objednavka1_.pozadavek_id where pozadavek0_.pozadavek_id=?
+23:09:01,374 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Pozadavek: /* load cz.kpartl.preprava.model.Pozadavek */ select pozadavek0_.pozadavek_id as pozadavek1_1_0_, pozadavek0_.datum as datum1_0_, pozadavek0_.datum_nakladky as datum3_1_0_, pozadavek0_.datum_vykladky as datum4_1_0_, pozadavek0_.pocet_palet as pocet5_1_0_, pozadavek0_.je_termin_konecny as je6_1_0_, pozadavek0_.taxi as taxi1_0_, pozadavek0_.poznamka as poznamka1_0_, pozadavek0_.destinace_z_id as destinace9_1_0_, pozadavek0_.celkova_hmotnost as celkova10_1_0_, pozadavek0_.zadavatel_id as zadavatel11_1_0_, pozadavek0_.attr as attr1_0_, pozadavek0_.hodina_nakladky as hodina13_1_0_, pozadavek0_.destinace_do_id as destinace14_1_0_, pozadavek0_.je_stohovatelne as je15_1_0_, pozadavek0_.hodina_vykladky as hodina16_1_0_ from tb_pozadavek pozadavek0_ where pozadavek0_.pozadavek_id=? for update
+23:09:01,374 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Pozadavek: /* load cz.kpartl.preprava.model.Pozadavek */ select pozadavek0_.pozadavek_id as pozadavek1_1_0_, pozadavek0_.datum as datum1_0_, pozadavek0_.datum_nakladky as datum3_1_0_, pozadavek0_.datum_vykladky as datum4_1_0_, pozadavek0_.pocet_palet as pocet5_1_0_, pozadavek0_.je_termin_konecny as je6_1_0_, pozadavek0_.taxi as taxi1_0_, pozadavek0_.poznamka as poznamka1_0_, pozadavek0_.destinace_z_id as destinace9_1_0_, pozadavek0_.celkova_hmotnost as celkova10_1_0_, pozadavek0_.zadavatel_id as zadavatel11_1_0_, pozadavek0_.attr as attr1_0_, pozadavek0_.hodina_nakladky as hodina13_1_0_, pozadavek0_.destinace_do_id as destinace14_1_0_, pozadavek0_.je_stohovatelne as je15_1_0_, pozadavek0_.hodina_vykladky as hodina16_1_0_ from tb_pozadavek pozadavek0_ where pozadavek0_.pozadavek_id=? for update
+23:09:01,374 DEBUG EntityLoader:79 - Static select for entity cz.kpartl.preprava.model.Pozadavek: /* load cz.kpartl.preprava.model.Pozadavek */ select pozadavek0_.pozadavek_id as pozadavek1_1_0_, pozadavek0_.datum as datum1_0_, pozadavek0_.datum_nakladky as datum3_1_0_, pozadavek0_.datum_vykladky as datum4_1_0_, pozadavek0_.pocet_palet as pocet5_1_0_, pozadavek0_.je_termin_konecny as je6_1_0_, pozadavek0_.taxi as taxi1_0_, pozadavek0_.poznamka as poznamka1_0_, pozadavek0_.destinace_z_id as destinace9_1_0_, pozadavek0_.celkova_hmotnost as celkova10_1_0_, pozadavek0_.zadavatel_id as zadavatel11_1_0_, pozadavek0_.attr as attr1_0_, pozadavek0_.hodina_nakladky as hodina13_1_0_, pozadavek0_.destinace_do_id as destinace14_1_0_, pozadavek0_.je_stohovatelne as je15_1_0_, pozadavek0_.hodina_vykladky as hodina16_1_0_ from tb_pozadavek pozadavek0_ where pozadavek0_.pozadavek_id=? for update
+23:09:01,374 DEBUG EntityLoader:34 - Static select for action ACTION_MERGE on entity cz.kpartl.preprava.model.Pozadavek: /* load cz.kpartl.preprava.model.Pozadavek */ select pozadavek0_.pozadavek_id as pozadavek1_1_0_, pozadavek0_.datum as datum1_0_, pozadavek0_.datum_nakladky as datum3_1_0_, pozadavek0_.datum_vykladky as datum4_1_0_, pozadavek0_.pocet_palet as pocet5_1_0_, pozadavek0_.je_termin_konecny as je6_1_0_, pozadavek0_.taxi as taxi1_0_, pozadavek0_.poznamka as poznamka1_0_, pozadavek0_.destinace_z_id as destinace9_1_0_, pozadavek0_.celkova_hmotnost as celkova10_1_0_, pozadavek0_.zadavatel_id as zadavatel11_1_0_, pozadavek0_.attr as attr1_0_, pozadavek0_.hodina_nakladky as hodina13_1_0_, pozadavek0_.destinace_do_id as destinace14_1_0_, pozadavek0_.je_stohovatelne as je15_1_0_, pozadavek0_.hodina_vykladky as hodina16_1_0_ from tb_pozadavek pozadavek0_ where pozadavek0_.pozadavek_id=?
+23:09:01,374 DEBUG EntityLoader:34 - Static select for action ACTION_REFRESH on entity cz.kpartl.preprava.model.Pozadavek: /* load cz.kpartl.preprava.model.Pozadavek */ select pozadavek0_.pozadavek_id as pozadavek1_1_0_, pozadavek0_.datum as datum1_0_, pozadavek0_.datum_nakladky as datum3_1_0_, pozadavek0_.datum_vykladky as datum4_1_0_, pozadavek0_.pocet_palet as pocet5_1_0_, pozadavek0_.je_termin_konecny as je6_1_0_, pozadavek0_.taxi as taxi1_0_, pozadavek0_.poznamka as poznamka1_0_, pozadavek0_.destinace_z_id as destinace9_1_0_, pozadavek0_.celkova_hmotnost as celkova10_1_0_, pozadavek0_.zadavatel_id as zadavatel11_1_0_, pozadavek0_.attr as attr1_0_, pozadavek0_.hodina_nakladky as hodina13_1_0_, pozadavek0_.destinace_do_id as destinace14_1_0_, pozadavek0_.je_stohovatelne as je15_1_0_, pozadavek0_.hodina_vykladky as hodina16_1_0_ from tb_pozadavek pozadavek0_ where pozadavek0_.pozadavek_id=?
+23:09:01,374 DEBUG SessionFactoryObjectFactory:39 - initializing class SessionFactoryObjectFactory
+23:09:01,374 DEBUG SessionFactoryObjectFactory:76 - registered: 402880e53dcc94de013dcc94df3e0000 (unnamed)
+23:09:01,374  INFO SessionFactoryObjectFactory:82 - Not binding factory to JNDI, no JNDI name configured
+23:09:01,374 DEBUG SessionFactoryImpl:308 - instantiated session factory
+23:09:01,374 DEBUG Configuration:1120 - processing extends queue
+23:09:01,374 DEBUG Configuration:1124 - processing collection mappings
+23:09:01,374 DEBUG Configuration:1135 - processing native query and ResultSetMapping mappings
+23:09:01,374 DEBUG Configuration:1143 - processing association property references
+23:09:01,374 DEBUG Configuration:1165 - processing foreign key constraints
+23:09:01,374 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Dopravce
+23:09:01,374 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Objednavka
+23:09:01,374 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Pozadavek
+23:09:01,374 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Destinace
+23:09:01,374 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.User
+23:09:01,374 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Destinace
+23:09:01,374 DEBUG Configuration:1120 - processing extends queue
+23:09:01,374 DEBUG Configuration:1124 - processing collection mappings
+23:09:01,374 DEBUG Configuration:1135 - processing native query and ResultSetMapping mappings
+23:09:01,374 DEBUG Configuration:1143 - processing association property references
+23:09:01,374 DEBUG Configuration:1165 - processing foreign key constraints
+23:09:01,374 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Dopravce
+23:09:01,374 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Objednavka
+23:09:01,374 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Pozadavek
+23:09:01,374 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Destinace
+23:09:01,374 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.User
+23:09:01,374 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Destinace
+23:09:01,374  INFO SchemaExport:154 - Running hbm2ddl schema export
+23:09:01,374 DEBUG SchemaExport:170 - import file not found: /import.sql
+23:09:01,374  INFO SchemaExport:179 - exporting generated schema to database
+23:09:01,374 DEBUG DriverManagerConnectionProvider:93 - total checked-out connections: 0
+23:09:01,374 DEBUG DriverManagerConnectionProvider:99 - using pooled JDBC connection, pool size: 0
+23:09:01,374 DEBUG SchemaExport:303 - alter table tb_objednavka drop constraint fk_objednavka_dopravce_id
+23:09:01,390 DEBUG SchemaExport:303 - alter table tb_objednavka drop constraint fk_objednavka_pridruzena_objednavka_id
+23:09:01,390 DEBUG SchemaExport:303 - alter table tb_objednavka drop constraint fk_objednavka_pozadavek_id
+23:09:01,390 DEBUG SchemaExport:303 - alter table tb_pozadavek drop constraint fk_pozadavek_destinace_do_id
+23:09:01,390 DEBUG SchemaExport:303 - alter table tb_pozadavek drop constraint fk_pozadavek_zadavatel_id
+23:09:01,390 DEBUG SchemaExport:288 - Unsuccessful: alter table tb_pozadavek drop constraint fk_pozadavek_zadavatel_id
+23:09:01,390 DEBUG SchemaExport:289 - Omezení "FK_POZADAVEK_ZADAVATEL_ID" nenalezeno
+Constraint "FK_POZADAVEK_ZADAVATEL_ID" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_zadavatel_id [90057-166]
+23:09:01,390 DEBUG SchemaExport:303 - alter table tb_pozadavek drop constraint fk_pozadavek_destinace_z_id
+23:09:01,390 DEBUG SchemaExport:288 - Unsuccessful: alter table tb_pozadavek drop constraint fk_pozadavek_destinace_z_id
+23:09:01,390 DEBUG SchemaExport:289 - Omezení "FK_POZADAVEK_DESTINACE_Z_ID" nenalezeno
+Constraint "FK_POZADAVEK_DESTINACE_Z_ID" not found; SQL statement:
+alter table tb_pozadavek drop constraint fk_pozadavek_destinace_z_id [90057-166]
+23:09:01,390 DEBUG SchemaExport:303 - drop table tb_destinace if exists
+23:09:01,405 DEBUG SchemaExport:303 - drop table tb_dopravce if exists
+23:09:01,405 DEBUG SchemaExport:303 - drop table tb_objednavka if exists
+23:09:01,405 DEBUG SchemaExport:303 - drop table tb_pozadavek if exists
+23:09:01,405 DEBUG SchemaExport:303 - drop table tb_user if exists
+23:09:01,405 DEBUG SchemaExport:303 - create table tb_destinace (destinace_id bigint generated by default as identity, nazev varchar(255), cislo integer unique, kontaktni_osoba varchar(255), kontakt varchar(255), ulice varchar(255), mesto varchar(255), p_s_c integer, primary key (destinace_id))
+23:09:01,405 DEBUG SchemaExport:303 - create table tb_dopravce (dopravce_id bigint generated by default as identity, nazev varchar(255), ulice varchar(255), mesto varchar(255), ic varchar(255) unique, dic varchar(255), sap_cislo varchar(255), kontaktni_osoba varchar(255), kontaktni_telefon varchar(255), kontakt_ostatni varchar(255), psc varchar(255), primary key (dopravce_id))
+23:09:01,405 DEBUG SchemaExport:303 - create table tb_objednavka (objednavka_id bigint generated by default as identity, faze integer, cena numeric, mena varchar(255), zmena_nakladky varchar(255), puvodni_termin_nakladky varchar(255), cislo_faktury_dopravce integer, pozadavek_id bigint, dopravce_id bigint, pridruzena_objednavka_id bigint, cislo_objednavky bigint unique, primary key (objednavka_id))
+23:09:01,405 DEBUG SchemaExport:303 - create table tb_pozadavek (pozadavek_id bigint generated by default as identity, datum timestamp, datum_nakladky varchar(255), datum_vykladky varchar(255), pocet_palet varchar(255), je_termin_konecny bit, taxi bit, poznamka varchar(255), destinace_z_id bigint, celkova_hmotnost varchar(255), zadavatel_id bigint, attr integer, hodina_nakladky varchar(255), destinace_do_id bigint, je_stohovatelne bit, hodina_vykladky varchar(255), primary key (pozadavek_id))
+23:09:01,405 DEBUG SchemaExport:303 - create table tb_user (user_id bigint generated by default as identity, username varchar(255) unique, password varchar(255), administrator bit, primary key (user_id))
+23:09:01,405 DEBUG SchemaExport:303 - alter table tb_objednavka add constraint fk_objednavka_dopravce_id foreign key (dopravce_id) references tb_dopravce
+23:09:01,421 DEBUG SchemaExport:303 - alter table tb_objednavka add constraint fk_objednavka_pridruzena_objednavka_id foreign key (pridruzena_objednavka_id) references tb_objednavka
+23:09:01,421 DEBUG SchemaExport:303 - alter table tb_objednavka add constraint fk_objednavka_pozadavek_id foreign key (pozadavek_id) references tb_pozadavek
+23:09:01,421 DEBUG SchemaExport:303 - alter table tb_pozadavek add constraint fk_pozadavek_destinace_do_id foreign key (destinace_do_id) references tb_destinace
+23:09:01,421 DEBUG SchemaExport:303 - alter table tb_pozadavek add constraint fk_pozadavek_zadavatel_id foreign key (zadavatel_id) references tb_user
+23:09:01,421 DEBUG SchemaExport:303 - alter table tb_pozadavek add constraint fk_pozadavek_destinace_z_id foreign key (destinace_z_id) references tb_destinace
+23:09:01,421  INFO SchemaExport:196 - schema export complete
+23:09:01,421 DEBUG DriverManagerConnectionProvider:129 - returning connection to pool, pool size: 1
+23:09:01,421 DEBUG Configuration:1120 - processing extends queue
+23:09:01,421 DEBUG Configuration:1124 - processing collection mappings
+23:09:01,421 DEBUG Configuration:1135 - processing native query and ResultSetMapping mappings
+23:09:01,421 DEBUG Configuration:1143 - processing association property references
+23:09:01,421 DEBUG Configuration:1165 - processing foreign key constraints
+23:09:01,421 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Dopravce
+23:09:01,421 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Objednavka
+23:09:01,421 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Pozadavek
+23:09:01,421 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Destinace
+23:09:01,421 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.User
+23:09:01,421 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Destinace
+23:09:01,421 DEBUG Configuration:1120 - processing extends queue
+23:09:01,421 DEBUG Configuration:1124 - processing collection mappings
+23:09:01,421 DEBUG Configuration:1135 - processing native query and ResultSetMapping mappings
+23:09:01,421 DEBUG Configuration:1143 - processing association property references
+23:09:01,421 DEBUG Configuration:1165 - processing foreign key constraints
+23:09:01,421 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Dopravce
+23:09:01,421 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Objednavka
+23:09:01,421 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Pozadavek
+23:09:01,421 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Destinace
+23:09:01,421 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.User
+23:09:01,421 DEBUG Configuration:1248 - resolving reference to class: cz.kpartl.preprava.model.Destinace
+23:09:01,421 DEBUG SessionFactoryImpl:392 - Checking 0 named HQL queries
+23:09:01,421 DEBUG SessionFactoryImpl:412 - Checking 0 named SQL queries
+23:09:01,452 DEBUG SessionImpl:220 - opened session at timestamp: 13649369414
+23:09:01,468 DEBUG JDBCTransaction:54 - begin
+23:09:01,468 DEBUG ConnectionManager:421 - opening JDBC connection
+23:09:01,468 DEBUG DriverManagerConnectionProvider:93 - total checked-out connections: 0
+23:09:01,468 DEBUG DriverManagerConnectionProvider:99 - using pooled JDBC connection, pool size: 0
+23:09:01,468 DEBUG JDBCTransaction:59 - current autocommit status: false
+23:09:01,468 DEBUG JDBCContext:210 - after transaction begin
+23:09:01,468 DEBUG QueryPlanCache:70 - unable to locate HQL query plan in cache; generating (from cz.kpartl.preprava.model.Destinace d)
+23:09:01,499 DEBUG QueryTranslatorImpl:246 - parse() - HQL: from cz.kpartl.preprava.model.Destinace d
+23:09:01,530 DEBUG AST:266 - --- HQL AST ---
+ \-[QUERY] 'query'
+    \-[SELECT_FROM] 'SELECT_FROM'
+       \-[FROM] 'from'
+          \-[RANGE] 'RANGE'
+             +-[DOT] '.'
+             |  +-[DOT] '.'
+             |  |  +-[DOT] '.'
+             |  |  |  +-[DOT] '.'
+             |  |  |  |  +-[IDENT] 'cz'
+             |  |  |  |  \-[IDENT] 'kpartl'
+             |  |  |  \-[IDENT] 'preprava'
+             |  |  \-[IDENT] 'model'
+             |  \-[IDENT] 'Destinace'
+             \-[ALIAS] 'd'
+
+23:09:01,530 DEBUG ErrorCounter:68 - throwQueryException() : no errors
+23:09:01,562 DEBUG HqlSqlBaseWalker:111 - select << begin [level=1, statement=select]
+23:09:01,577 DEBUG FromElement:108 - FromClause{level=1} :  cz.kpartl.preprava.model.Destinace (d) -> destinace0_
+23:09:01,577 DEBUG HqlSqlBaseWalker:117 - select : finishing up [level=1, statement=select]
+23:09:01,577 DEBUG HqlSqlWalker:509 - processQuery() :  ( SELECT ( FromClause{level=1} tb_destinace destinace0_ ) )
+23:09:01,577 DEBUG HqlSqlWalker:716 - Derived SELECT clause created.
+23:09:01,577 DEBUG JoinProcessor:148 - Using FROM fragment [tb_destinace destinace0_]
+23:09:01,577 DEBUG HqlSqlBaseWalker:123 - select >> end [level=1, statement=select]
+23:09:01,577 DEBUG AST:232 - --- SQL AST ---
+ \-[SELECT] QueryNode: 'SELECT'  querySpaces (tb_destinace)
+    +-[SELECT_CLAUSE] SelectClause: '{derived select clause}'
+    |  +-[SELECT_EXPR] SelectExpressionImpl: 'destinace0_.destinace_id as destinace1_2_' {FromElement{explicit,not a collection join,not a fetch join,fetch non-lazy properties,classAlias=d,role=null,tableName=tb_destinace,tableAlias=destinace0_,origin=null,colums={,className=cz.kpartl.preprava.model.Destinace}}}
+    |  \-[SQL_TOKEN] SqlFragment: 'destinace0_.nazev as nazev2_, destinace0_.cislo as cislo2_, destinace0_.kontaktni_osoba as kontaktni4_2_, destinace0_.kontakt as kontakt2_, destinace0_.ulice as ulice2_, destinace0_.mesto as mesto2_, destinace0_.p_s_c as p8_2_'
+    \-[FROM] FromClause: 'from' FromClause{level=1, fromElementCounter=1, fromElements=1, fromElementByClassAlias=[d], fromElementByTableAlias=[destinace0_], fromElementsByPath=[], collectionJoinFromElementsByPath=[], impliedElements=[]}
+       \-[FROM_FRAGMENT] FromElement: 'tb_destinace destinace0_' FromElement{explicit,not a collection join,not a fetch join,fetch non-lazy properties,classAlias=d,role=null,tableName=tb_destinace,tableAlias=destinace0_,origin=null,colums={,className=cz.kpartl.preprava.model.Destinace}}
+
+23:09:01,577 DEBUG ErrorCounter:68 - throwQueryException() : no errors
+23:09:01,593 DEBUG QueryTranslatorImpl:216 - HQL: from cz.kpartl.preprava.model.Destinace d
+23:09:01,593 DEBUG QueryTranslatorImpl:217 - SQL: select destinace0_.destinace_id as destinace1_2_, destinace0_.nazev as nazev2_, destinace0_.cislo as cislo2_, destinace0_.kontaktni_osoba as kontaktni4_2_, destinace0_.kontakt as kontakt2_, destinace0_.ulice as ulice2_, destinace0_.mesto as mesto2_, destinace0_.p_s_c as p8_2_ from tb_destinace destinace0_
+23:09:01,593 DEBUG ErrorCounter:68 - throwQueryException() : no errors
+23:09:01,593 DEBUG HQLQueryPlan:269 - HQL param location recognition took 0 mills (from cz.kpartl.preprava.model.Destinace d)
+23:09:01,593 DEBUG QueryPlanCache:76 - located HQL query plan in cache (from cz.kpartl.preprava.model.Destinace d)
+23:09:01,593 DEBUG HQLQueryPlan:150 - find: from cz.kpartl.preprava.model.Destinace d
+23:09:01,608 DEBUG QueryParameters:277 - named parameters: {}
+23:09:01,608 DEBUG AbstractBatcher:366 - about to open PreparedStatement (open PreparedStatements: 0, globally: 0)
+23:09:01,608 DEBUG SQL:401 - /* from cz.kpartl.preprava.model.Destinace d */ select destinace0_.destinace_id as destinace1_2_, destinace0_.nazev as nazev2_, destinace0_.cislo as cislo2_, destinace0_.kontaktni_osoba as kontaktni4_2_, destinace0_.kontakt as kontakt2_, destinace0_.ulice as ulice2_, destinace0_.mesto as mesto2_, destinace0_.p_s_c as p8_2_ from tb_destinace destinace0_
+23:09:01,608 DEBUG AbstractBatcher:484 - preparing statement
+23:09:01,608 DEBUG AbstractBatcher:382 - about to open ResultSet (open ResultSets: 0, globally: 0)
+23:09:01,608 DEBUG Loader:694 - processing result set
+23:09:01,608 DEBUG Loader:721 - done processing result set (0 rows)
+23:09:01,624 DEBUG AbstractBatcher:389 - about to close ResultSet (open ResultSets: 1, globally: 1)
+23:09:01,624 DEBUG AbstractBatcher:374 - about to close PreparedStatement (open PreparedStatements: 1, globally: 1)
+23:09:01,624 DEBUG AbstractBatcher:533 - closing statement
+23:09:01,624 DEBUG Loader:851 - total objects hydrated: 0
+23:09:01,624 DEBUG StatefulPersistenceContext:790 - initializing non-lazy collections
+23:09:01,624 DEBUG QueryPlanCache:70 - unable to locate HQL query plan in cache; generating (from cz.kpartl.preprava.model.Destinace z where z.cislo = :cislo)
+23:09:01,624 DEBUG QueryTranslatorImpl:246 - parse() - HQL: from cz.kpartl.preprava.model.Destinace z where z.cislo = :cislo
+23:09:01,624 DEBUG AST:266 - --- HQL AST ---
+ \-[QUERY] 'query'
+    +-[SELECT_FROM] 'SELECT_FROM'
+    |  \-[FROM] 'from'
+    |     \-[RANGE] 'RANGE'
+    |        +-[DOT] '.'
+    |        |  +-[DOT] '.'
+    |        |  |  +-[DOT] '.'
+    |        |  |  |  +-[DOT] '.'
+    |        |  |  |  |  +-[IDENT] 'cz'
+    |        |  |  |  |  \-[IDENT] 'kpartl'
+    |        |  |  |  \-[IDENT] 'preprava'
+    |        |  |  \-[IDENT] 'model'
+    |        |  \-[IDENT] 'Destinace'
+    |        \-[ALIAS] 'z'
+    \-[WHERE] 'where'
+       \-[EQ] '='
+          +-[DOT] '.'
+          |  +-[IDENT] 'z'
+          |  \-[IDENT] 'cislo'
+          \-[COLON] ':'
+             \-[IDENT] 'cislo'
+
+23:09:01,624 DEBUG ErrorCounter:68 - throwQueryException() : no errors
+23:09:01,624 DEBUG HqlSqlBaseWalker:111 - select << begin [level=1, statement=select]
+23:09:01,624 DEBUG FromElement:108 - FromClause{level=1} :  cz.kpartl.preprava.model.Destinace (z) -> destinace0_
+23:09:01,624 DEBUG FromReferenceNode:51 - Resolved :  z -> destinace0_.destinace_id
+23:09:01,624 DEBUG FromElement:525 - handling property dereference [cz.kpartl.preprava.model.Destinace (z) -> cislo (class)]
+23:09:01,624 DEBUG DotNode:568 - getDataType() : cislo -> org.hibernate.type.IntegerType@44cbbe
+23:09:01,624 DEBUG FromReferenceNode:51 - Resolved :  z.cislo -> destinace0_.cislo
+23:09:01,624 DEBUG HqlSqlBaseWalker:117 - select : finishing up [level=1, statement=select]
+23:09:01,624 DEBUG HqlSqlWalker:509 - processQuery() :  ( SELECT ( FromClause{level=1} tb_destinace destinace0_ ) ( where ( = ( destinace0_.cislo destinace0_.destinace_id cislo ) ? ) ) )
+23:09:01,624 DEBUG HqlSqlWalker:716 - Derived SELECT clause created.
+23:09:01,624 DEBUG JoinProcessor:148 - Using FROM fragment [tb_destinace destinace0_]
+23:09:01,624 DEBUG HqlSqlBaseWalker:123 - select >> end [level=1, statement=select]
+23:09:01,640 DEBUG AST:232 - --- SQL AST ---
+ \-[SELECT] QueryNode: 'SELECT'  querySpaces (tb_destinace)
+    +-[SELECT_CLAUSE] SelectClause: '{derived select clause}'
+    |  +-[SELECT_EXPR] SelectExpressionImpl: 'destinace0_.destinace_id as destinace1_2_' {FromElement{explicit,not a collection join,not a fetch join,fetch non-lazy properties,classAlias=z,role=null,tableName=tb_destinace,tableAlias=destinace0_,origin=null,colums={,className=cz.kpartl.preprava.model.Destinace}}}
+    |  \-[SQL_TOKEN] SqlFragment: 'destinace0_.nazev as nazev2_, destinace0_.cislo as cislo2_, destinace0_.kontaktni_osoba as kontaktni4_2_, destinace0_.kontakt as kontakt2_, destinace0_.ulice as ulice2_, destinace0_.mesto as mesto2_, destinace0_.p_s_c as p8_2_'
+    +-[FROM] FromClause: 'from' FromClause{level=1, fromElementCounter=1, fromElements=1, fromElementByClassAlias=[z], fromElementByTableAlias=[destinace0_], fromElementsByPath=[], collectionJoinFromElementsByPath=[], impliedElements=[]}
+    |  \-[FROM_FRAGMENT] FromElement: 'tb_destinace destinace0_' FromElement{explicit,not a collection join,not a fetch join,fetch non-lazy properties,classAlias=z,role=null,tableName=tb_destinace,tableAlias=destinace0_,origin=null,colums={,className=cz.kpartl.preprava.model.Destinace}}
+    \-[WHERE] SqlNode: 'where'
+       \-[EQ] BinaryLogicOperatorNode: '='
+          +-[DOT] DotNode: 'destinace0_.cislo' {propertyName=cislo,dereferenceType=4,propertyPath=cislo,path=z.cislo,tableAlias=destinace0_,className=cz.kpartl.preprava.model.Destinace,classAlias=z}
+          |  +-[ALIAS_REF] IdentNode: 'destinace0_.destinace_id' {alias=z, className=cz.kpartl.preprava.model.Destinace, tableAlias=destinace0_}
+          |  \-[IDENT] IdentNode: 'cislo' {originalText=cislo}
+          \-[NAMED_PARAM] ParameterNode: '?' {name=cislo, expectedType=org.hibernate.type.IntegerType@44cbbe}
+
+23:09:01,640 DEBUG ErrorCounter:68 - throwQueryException() : no errors
+23:09:01,640 DEBUG QueryTranslatorImpl:216 - HQL: from cz.kpartl.preprava.model.Destinace z where z.cislo = :cislo
+23:09:01,640 DEBUG QueryTranslatorImpl:217 - SQL: select destinace0_.destinace_id as destinace1_2_, destinace0_.nazev as nazev2_, destinace0_.cislo as cislo2_, destinace0_.kontaktni_osoba as kontaktni4_2_, destinace0_.kontakt as kontakt2_, destinace0_.ulice as ulice2_, destinace0_.mesto as mesto2_, destinace0_.p_s_c as p8_2_ from tb_destinace destinace0_ where destinace0_.cislo=?
+23:09:01,640 DEBUG ErrorCounter:68 - throwQueryException() : no errors
+23:09:01,655 DEBUG HQLQueryPlan:269 - HQL param location recognition took 15 mills (from cz.kpartl.preprava.model.Destinace z where z.cislo = :cislo)
+23:09:01,655 DEBUG QueryPlanCache:76 - located HQL query plan in cache (from cz.kpartl.preprava.model.Destinace z where z.cislo = :cislo)
+23:09:01,655 DEBUG HQLQueryPlan:150 - find: from cz.kpartl.preprava.model.Destinace z where z.cislo = :cislo
+23:09:01,655 DEBUG QueryParameters:277 - named parameters: {cislo=1}
+23:09:01,655 DEBUG AbstractBatcher:366 - about to open PreparedStatement (open PreparedStatements: 0, globally: 0)
+23:09:01,655 DEBUG SQL:401 - /* from cz.kpartl.preprava.model.Destinace z where z.cislo = :cislo */ select destinace0_.destinace_id as destinace1_2_, destinace0_.nazev as nazev2_, destinace0_.cislo as cislo2_, destinace0_.kontaktni_osoba as kontaktni4_2_, destinace0_.kontakt as kontakt2_, destinace0_.ulice as ulice2_, destinace0_.mesto as mesto2_, destinace0_.p_s_c as p8_2_ from tb_destinace destinace0_ where destinace0_.cislo=?
+23:09:01,655 DEBUG AbstractBatcher:484 - preparing statement
+23:09:01,655 DEBUG IntegerType:133 - binding '1' to parameter: 1
+23:09:01,655 DEBUG AbstractBatcher:382 - about to open ResultSet (open ResultSets: 0, globally: 0)
+23:09:01,655 DEBUG Loader:694 - processing result set
+23:09:01,655 DEBUG Loader:721 - done processing result set (0 rows)
+23:09:01,655 DEBUG AbstractBatcher:389 - about to close ResultSet (open ResultSets: 1, globally: 1)
+23:09:01,655 DEBUG AbstractBatcher:374 - about to close PreparedStatement (open PreparedStatements: 1, globally: 1)
+23:09:01,655 DEBUG AbstractBatcher:533 - closing statement
+23:09:01,655 DEBUG Loader:851 - total objects hydrated: 0
+23:09:01,655 DEBUG StatefulPersistenceContext:790 - initializing non-lazy collections
+23:09:01,655 DEBUG DefaultSaveOrUpdateEventListener:158 - saving transient instance
+23:09:01,655 DEBUG AbstractSaveEventListener:153 - saving [cz.kpartl.preprava.model.Destinace#<null>]
+23:09:01,655 DEBUG AbstractSaveEventListener:244 - executing insertions
+23:09:01,671 DEBUG AbstractSaveEventListener:297 - executing identity-insert immediately
+23:09:01,671 DEBUG AbstractEntityPersister:2144 - Inserting entity: cz.kpartl.preprava.model.Destinace (native id)
+23:09:01,671 DEBUG AbstractBatcher:366 - about to open PreparedStatement (open PreparedStatements: 0, globally: 0)
+23:09:01,671 DEBUG SQL:401 - /* insert cz.kpartl.preprava.model.Destinace */ insert into tb_destinace (destinace_id, nazev, cislo, kontaktni_osoba, kontakt, ulice, mesto, p_s_c) values (null, ?, ?, ?, ?, ?, ?, ?)
+23:09:01,671 DEBUG AbstractBatcher:484 - preparing statement
+23:09:01,671 DEBUG AbstractEntityPersister:1992 - Dehydrating entity: [cz.kpartl.preprava.model.Destinace#<null>]
+23:09:01,671 DEBUG StringType:133 - binding 'destinace1' to parameter: 1
+23:09:01,671 DEBUG IntegerType:133 - binding '1' to parameter: 2
+23:09:01,671 DEBUG StringType:133 - binding 'František Nebojsa' to parameter: 3
+23:09:01,671 DEBUG StringType:133 - binding 'frantisek.nebojsa@seznam.cz' to parameter: 4
+23:09:01,671 DEBUG StringType:133 - binding 'Šafáøova' to parameter: 5
+23:09:01,671 DEBUG StringType:133 - binding 'Brno' to parameter: 6
+23:09:01,671 DEBUG IntegerType:133 - binding '37401' to parameter: 7
+23:09:01,671 DEBUG IdentifierGeneratorFactory:37 - Natively generated identity: 1
+23:09:01,671 DEBUG AbstractBatcher:374 - about to close PreparedStatement (open PreparedStatements: 1, globally: 1)
+23:09:01,671 DEBUG AbstractBatcher:533 - closing statement
+23:09:01,671 DEBUG QueryPlanCache:76 - located HQL query plan in cache (from cz.kpartl.preprava.model.Destinace z where z.cislo = :cislo)
+23:09:01,671 DEBUG QueryPlanCache:76 - located HQL query plan in cache (from cz.kpartl.preprava.model.Destinace z where z.cislo = :cislo)
+23:09:01,671 DEBUG AbstractFlushingEventListener:58 - flushing session
+23:09:01,671 DEBUG AbstractFlushingEventListener:111 - processing flush-time cascades
+23:09:01,671 DEBUG AbstractFlushingEventListener:154 - dirty checking collections
+23:09:01,671 DEBUG AbstractFlushingEventListener:171 - Flushing entities and processing referenced collections
+23:09:01,671 DEBUG AbstractFlushingEventListener:210 - Processing unreferenced collections
+23:09:01,671 DEBUG AbstractFlushingEventListener:224 - Scheduling collection removes/(re)creates/updates
+23:09:01,671 DEBUG AbstractFlushingEventListener:85 - Flushed: 0 insertions, 0 updates, 0 deletions to 1 objects
+23:09:01,671 DEBUG AbstractFlushingEventListener:91 - Flushed: 0 (re)creations, 0 updates, 0 removals to 0 collections
+23:09:01,671 DEBUG Printer:83 - listing entities:
+23:09:01,671 DEBUG Printer:90 - cz.kpartl.preprava.model.Destinace{id=1, PSC=37401, kontaktni_osoba=František Nebojsa, nazev=destinace1, mesto=Brno, cislo=1, ulice=Šafáøova, kontakt=frantisek.nebojsa@seznam.cz}
+23:09:01,671 DEBUG DefaultAutoFlushEventListener:53 - Dont need to execute flush
+23:09:01,671 DEBUG HQLQueryPlan:150 - find: from cz.kpartl.preprava.model.Destinace z where z.cislo = :cislo
+23:09:01,671 DEBUG QueryParameters:277 - named parameters: {cislo=2}
+23:09:01,671 DEBUG AbstractBatcher:366 - about to open PreparedStatement (open PreparedStatements: 0, globally: 0)
+23:09:01,671 DEBUG SQL:401 - /* from cz.kpartl.preprava.model.Destinace z where z.cislo = :cislo */ select destinace0_.destinace_id as destinace1_2_, destinace0_.nazev as nazev2_, destinace0_.cislo as cislo2_, destinace0_.kontaktni_osoba as kontaktni4_2_, destinace0_.kontakt as kontakt2_, destinace0_.ulice as ulice2_, destinace0_.mesto as mesto2_, destinace0_.p_s_c as p8_2_ from tb_destinace destinace0_ where destinace0_.cislo=?
+23:09:01,671 DEBUG AbstractBatcher:484 - preparing statement
+23:09:01,687 DEBUG IntegerType:133 - binding '2' to parameter: 1
+23:09:01,687 DEBUG AbstractBatcher:382 - about to open ResultSet (open ResultSets: 0, globally: 0)
+23:09:01,687 DEBUG Loader:694 - processing result set
+23:09:01,687 DEBUG Loader:721 - done processing result set (0 rows)
+23:09:01,687 DEBUG AbstractBatcher:389 - about to close ResultSet (open ResultSets: 1, globally: 1)
+23:09:01,687 DEBUG AbstractBatcher:374 - about to close PreparedStatement (open PreparedStatements: 1, globally: 1)
+23:09:01,687 DEBUG AbstractBatcher:533 - closing statement
+23:09:01,687 DEBUG Loader:851 - total objects hydrated: 0
+23:09:01,687 DEBUG StatefulPersistenceContext:790 - initializing non-lazy collections
+23:09:01,687 DEBUG DefaultSaveOrUpdateEventListener:158 - saving transient instance
+23:09:01,687 DEBUG AbstractSaveEventListener:153 - saving [cz.kpartl.preprava.model.Destinace#<null>]
+23:09:01,687 DEBUG AbstractSaveEventListener:244 - executing insertions
+23:09:01,687 DEBUG AbstractSaveEventListener:297 - executing identity-insert immediately
+23:09:01,687 DEBUG AbstractEntityPersister:2144 - Inserting entity: cz.kpartl.preprava.model.Destinace (native id)
+23:09:01,687 DEBUG AbstractBatcher:366 - about to open PreparedStatement (open PreparedStatements: 0, globally: 0)
+23:09:01,687 DEBUG SQL:401 - /* insert cz.kpartl.preprava.model.Destinace */ insert into tb_destinace (destinace_id, nazev, cislo, kontaktni_osoba, kontakt, ulice, mesto, p_s_c) values (null, ?, ?, ?, ?, ?, ?, ?)
+23:09:01,687 DEBUG AbstractBatcher:484 - preparing statement
+23:09:01,687 DEBUG AbstractEntityPersister:1992 - Dehydrating entity: [cz.kpartl.preprava.model.Destinace#<null>]
+23:09:01,687 DEBUG StringType:133 - binding 'destinace2' to parameter: 1
+23:09:01,687 DEBUG IntegerType:133 - binding '2' to parameter: 2
+23:09:01,687 DEBUG StringType:133 - binding 'Jan Syèák' to parameter: 3
+23:09:01,687 DEBUG StringType:133 - binding 'jan.sycak@centrum.cz' to parameter: 4
+23:09:01,687 DEBUG StringType:133 - binding 'Lihovarská' to parameter: 5
+23:09:01,687 DEBUG StringType:133 - binding 'Praha' to parameter: 6
+23:09:01,687 DEBUG IntegerType:133 - binding '37251' to parameter: 7
+23:09:01,687 DEBUG IdentifierGeneratorFactory:37 - Natively generated identity: 2
+23:09:01,687 DEBUG AbstractBatcher:374 - about to close PreparedStatement (open PreparedStatements: 1, globally: 1)
+23:09:01,687 DEBUG AbstractBatcher:533 - closing statement
+23:09:01,687 DEBUG JDBCTransaction:103 - commit
+23:09:01,687 DEBUG SessionImpl:337 - automatically flushing session
+23:09:01,687 DEBUG AbstractFlushingEventListener:58 - flushing session
+23:09:01,687 DEBUG AbstractFlushingEventListener:111 - processing flush-time cascades
+23:09:01,687 DEBUG AbstractFlushingEventListener:154 - dirty checking collections
+23:09:01,687 DEBUG AbstractFlushingEventListener:171 - Flushing entities and processing referenced collections
+23:09:01,687 DEBUG AbstractFlushingEventListener:210 - Processing unreferenced collections
+23:09:01,687 DEBUG AbstractFlushingEventListener:224 - Scheduling collection removes/(re)creates/updates
+23:09:01,687 DEBUG AbstractFlushingEventListener:85 - Flushed: 0 insertions, 0 updates, 0 deletions to 2 objects
+23:09:01,687 DEBUG AbstractFlushingEventListener:91 - Flushed: 0 (re)creations, 0 updates, 0 removals to 0 collections
+23:09:01,687 DEBUG Printer:83 - listing entities:
+23:09:01,687 DEBUG Printer:90 - cz.kpartl.preprava.model.Destinace{id=2, PSC=37251, kontaktni_osoba=Jan Syèák, nazev=destinace2, mesto=Praha, cislo=2, ulice=Lihovarská, kontakt=jan.sycak@centrum.cz}
+23:09:01,687 DEBUG Printer:90 - cz.kpartl.preprava.model.Destinace{id=1, PSC=37401, kontaktni_osoba=František Nebojsa, nazev=destinace1, mesto=Brno, cislo=1, ulice=Šafáøova, kontakt=frantisek.nebojsa@seznam.cz}
+23:09:01,687 DEBUG AbstractFlushingEventListener:290 - executing flush
+23:09:01,687 DEBUG ConnectionManager:469 - registering flush begin
+23:09:01,687 DEBUG ConnectionManager:478 - registering flush end
+23:09:01,687 DEBUG AbstractFlushingEventListener:321 - post flush
+23:09:01,687 DEBUG JDBCContext:201 - before transaction completion
+23:09:01,687 DEBUG SessionImpl:393 - before transaction completion
+23:09:01,687 DEBUG JDBCTransaction:116 - committed JDBC Connection
+23:09:01,687 DEBUG JDBCContext:215 - after transaction completion
+23:09:01,687 DEBUG ConnectionManager:302 - transaction completed on session with on_close connection release mode; be sure to close the session to release JDBC resources!
+23:09:01,687 DEBUG SessionImpl:422 - after transaction completion
+23:09:01,687 DEBUG QueryPlanCache:76 - located HQL query plan in cache (from cz.kpartl.preprava.model.Destinace d)
+23:09:01,687 DEBUG QueryPlanCache:76 - located HQL query plan in cache (from cz.kpartl.preprava.model.Destinace d)
+23:09:01,687 DEBUG HQLQueryPlan:150 - find: from cz.kpartl.preprava.model.Destinace d
+23:09:01,687 DEBUG QueryParameters:277 - named parameters: {}
+23:09:01,687 DEBUG AbstractBatcher:366 - about to open PreparedStatement (open PreparedStatements: 0, globally: 0)
+23:09:01,687 DEBUG SQL:401 - /* from cz.kpartl.preprava.model.Destinace d */ select destinace0_.destinace_id as destinace1_2_, destinace0_.nazev as nazev2_, destinace0_.cislo as cislo2_, destinace0_.kontaktni_osoba as kontaktni4_2_, destinace0_.kontakt as kontakt2_, destinace0_.ulice as ulice2_, destinace0_.mesto as mesto2_, destinace0_.p_s_c as p8_2_ from tb_destinace destinace0_
+23:09:01,687 DEBUG AbstractBatcher:484 - preparing statement
+23:09:01,687 DEBUG AbstractBatcher:382 - about to open ResultSet (open ResultSets: 0, globally: 0)
+23:09:01,687 DEBUG Loader:694 - processing result set
+23:09:01,687 DEBUG Loader:699 - result set row: 0
+23:09:01,687 DEBUG LongType:172 - returning '1' as column: destinace1_2_
+23:09:01,687 DEBUG Loader:1173 - result row: EntityKey[cz.kpartl.preprava.model.Destinace#1]
+23:09:01,687 DEBUG Loader:699 - result set row: 1
+23:09:01,687 DEBUG LongType:172 - returning '2' as column: destinace1_2_
+23:09:01,687 DEBUG Loader:1173 - result row: EntityKey[cz.kpartl.preprava.model.Destinace#2]
+23:09:01,687 DEBUG Loader:721 - done processing result set (2 rows)
+23:09:01,687 DEBUG AbstractBatcher:389 - about to close ResultSet (open ResultSets: 1, globally: 1)
+23:09:01,687 DEBUG AbstractBatcher:374 - about to close PreparedStatement (open PreparedStatements: 1, globally: 1)
+23:09:01,687 DEBUG AbstractBatcher:533 - closing statement
+23:09:01,687 DEBUG Loader:851 - total objects hydrated: 0
+23:09:01,687 DEBUG StatefulPersistenceContext:790 - initializing non-lazy collections
+23:09:01,687 DEBUG JDBCContext:233 - after autocommit
+23:09:01,687 DEBUG ConnectionManager:302 - transaction completed on session with on_close connection release mode; be sure to close the session to release JDBC resources!
+23:09:01,687  INFO DataImporter:83 - Pocet destinaci pred importem: 0
+23:09:01,687  INFO DataImporter:85 - Pocet destinaci po importu: 2
+23:09:01,687  INFO DataImporter:86 - Pocet chybnych destinaci: 0

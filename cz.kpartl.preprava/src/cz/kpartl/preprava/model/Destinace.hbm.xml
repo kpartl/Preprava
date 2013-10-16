@@ -19,7 +19,7 @@
       </property>
       <property  name='mesto' type='string' column='mesto'>
       </property>
-      <property  name='PSC' type='integer' column='p_s_c'>
+      <property  name='PSC' type='string' column='p_s_c'>
       </property>
    </class>
 </hibernate-mapping>

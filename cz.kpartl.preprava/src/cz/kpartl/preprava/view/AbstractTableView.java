@@ -1,28 +1,40 @@
 package cz.kpartl.preprava.view;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
+
 import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.Login;
 
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.MUIElement;
+import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.impl.TrimmedWindowImpl;
+import org.eclipse.e4.ui.model.application.ui.menu.MMenu;
+import org.eclipse.e4.ui.model.application.ui.menu.MMenuElement;
 import org.eclipse.e4.ui.model.application.ui.menu.impl.HandledToolItemImpl;
+import org.eclipse.e4.ui.model.application.ui.menu.impl.MenuImpl;
 import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.e4.ui.workbench.UIEvents;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
+import org.eclipse.e4.ui.workbench.swt.modeling.EMenuService;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
@@ -43,17 +55,15 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
-
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
+
 import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.model.User;
-
 import cz.kpartl.preprava.sorter.TableViewerComparator;
 
 @SuppressWarnings("restriction")
@@ -93,6 +103,8 @@ public abstract class AbstractTableView extends ViewPart {
 	protected HandledToolItemImpl prevestMenuItem;
 	protected HandledToolItemImpl tisknoutMenuItem;
 
+	protected MenuImpl importExportMenu;
+
 	protected Image checkedImage;
 	protected Image uncheckedImage;
 	MenuItem newItem;
@@ -104,6 +116,7 @@ public abstract class AbstractTableView extends ViewPart {
 
 	MenuItem editItem;
 	MenuItem smazatItem;
+	HandledToolItemImpl importItem;
 
 	// Vrati data pro tabulku
 	protected abstract Object getModelData();
@@ -112,7 +125,8 @@ public abstract class AbstractTableView extends ViewPart {
 
 	@Inject
 	@PostConstruct
-	public void init(EModelService modelService, MApplication app) {
+	public void init(EModelService modelService, MApplication app,
+			MPerspective activePerspective, EPartService partService) {
 		novyMenuItem = (HandledToolItemImpl) modelService.find(
 				"cz.kpartl.preprava.toolItem.novyPozadavek", app);
 		editMenuItem = (HandledToolItemImpl) modelService.find(
@@ -124,8 +138,31 @@ public abstract class AbstractTableView extends ViewPart {
 		tisknoutMenuItem = (HandledToolItemImpl) modelService.find(
 				"cz.kpartl.preprava.handledtoolitem.tisk", app);
 
+		// first run, we must switch to the Preprava perspective
+		if (app.getContext().get("AbstractTableViewFirstRun") == null) {
+			app.getContext().set("AbstractTableViewFirstRun", false);
+			if (!("cz.kpartl.preprava.perspective.preprava"
+					.equals(activePerspective.getElementId()))) {
+				MPerspective prepravaPerspective = (MPerspective) modelService
+						.find("cz.kpartl.preprava.perspective.preprava", app);
+				
+				app.getContext().set("cz.kpartl.preprava.administrace", "0");
+
+			}
+		}
+
+		/*
+		 * if
+		 * ("cz.kpartl.preprava.perspective.preprava".equals(activePerspective
+		 * .getElementId())) { importExportMenu.setText("");
+		 * //importExportMenu.set(false); } else {
+		 * importExportMenu.setText("Import/Export");
+		 * //importExportMenu.setVisible(true); }
+		 */
+
 		final TrimmedWindowImpl mainWindow = (TrimmedWindowImpl) modelService
 				.find("cz.kpartl.preprava.mainwindow", app);
+
 		mainWindow.setLabel("PØEPRAVA - pøihlášený uživatel: "
 				+ ((User) context.get(User.CONTEXT_NAME)).getUsername());
 
@@ -564,12 +601,12 @@ public abstract class AbstractTableView extends ViewPart {
 				if (selectedObject instanceof Pozadavek) {
 
 					if (((StructuredSelection) event.getSelection()).size() > 1) {
-						//int selIndex = viewer.getTable().getSelectionIndex();
-						/*final Iterator it = ((StructuredSelection) event
-								.getSelection()).iterator();
-						while (it.hasNext()) {
-							selectedObject = it.next();
-						}*/
+						// int selIndex = viewer.getTable().getSelectionIndex();
+						/*
+						 * final Iterator it = ((StructuredSelection) event
+						 * .getSelection()).iterator(); while (it.hasNext()) {
+						 * selectedObject = it.next(); }
+						 */
 						viewer.getTable().deselectAll();
 
 					}
@@ -585,7 +622,7 @@ public abstract class AbstractTableView extends ViewPart {
 						eventBroker.send(EventConstants.EMPTY_OBJEDNAVKA_SEND,
 								EventConstants.EMPTY_OBJEDNAVKA_SEND);
 					}
-				}else { //nevybrano nic
+				} else { // nevybrano nic
 					eventBroker.send(EventConstants.EMPTY_POZADAVEK_SEND,
 							EventConstants.EMPTY_POZADAVEK_SEND);
 					eventBroker.send(EventConstants.EMPTY_OBJEDNAVKA_SEND,

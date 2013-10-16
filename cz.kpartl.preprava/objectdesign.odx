@@ -678,7 +678,7 @@ super.tearDown();
               <access>1</access>
             </variable>
             <variable name="PSC">
-              <type class="java.lang.Integer"/>
+              <type class="java.lang.String"/>
               <multiplicity>0..1</multiplicity>
               <access>1</access>
             </variable>
@@ -1032,27 +1032,6 @@ super.tearDown();
               <multiplicity>0..1</multiplicity>
               <access>1</access>
             </variable>
-            <variable name="ic">
-              <type class="java.lang.String"/>
-              <multiplicity>0..1</multiplicity>
-              <access>1</access>
-              <tags>
-                <tag name="@Column">
-                  <parameters>
-                    <name>(not set)</name>
-                    <length>(not set)</length>
-                    <precision>(not set)</precision>
-                    <unique>true</unique>
-                    <nullable>false</nullable>
-                  </parameters>
-                </tag>
-                <tag name="@hibernate">
-                  <parameters>
-                    <unique>true</unique>
-                  </parameters>
-                </tag>
-              </tags>
-            </variable>
             <variable name="dic">
               <type class="java.lang.String"/>
               <multiplicity>0..1</multiplicity>
@@ -1062,6 +1041,13 @@ super.tearDown();
               <type class="java.lang.String"/>
               <multiplicity>0..1</multiplicity>
               <access>1</access>
+              <tags>
+                <tag name="@hibernate">
+                  <parameters>
+                    <unique>true</unique>
+                  </parameters>
+                </tag>
+              </tags>
             </variable>
             <variable name="kontaktni_osoba">
               <type class="java.lang.String"/>
@@ -1079,6 +1065,11 @@ super.tearDown();
               <access>1</access>
             </variable>
             <variable name="psc">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="ic">
               <type class="java.lang.String"/>
               <multiplicity>0..1</multiplicity>
               <access>1</access>
@@ -1196,24 +1187,24 @@ super.tearDown();
           <showAttributes>true</showAttributes>
           <showOperations>true</showOperations>
           <tagSymbol id="1">
+            <x>202</x>
+            <y>542</y>
+            <connectedTo symbol="9"/>
+            <tag class="cz.kpartl.preprava.model.Dopravce" variable="sap_cislo" id="@hibernate"/>
+            <showNotSet>true</showNotSet>
+          </tagSymbol>
+          <tagSymbol id="2">
             <x>997</x>
             <y>532</y>
             <connectedTo symbol="15"/>
             <tag class="cz.kpartl.preprava.model.Pozadavek" variable="datum" id="@Column"/>
             <showNotSet>true</showNotSet>
           </tagSymbol>
-          <tagSymbol id="2">
+          <tagSymbol id="3">
             <x>647</x>
             <y>513</y>
             <connectedTo symbol="10"/>
             <tag class="cz.kpartl.preprava.model.Objednavka" variable="cislo_objednavky" id="@hibernate"/>
-            <showNotSet>true</showNotSet>
-          </tagSymbol>
-          <tagSymbol id="3">
-            <x>176</x>
-            <y>540</y>
-            <connectedTo symbol="9"/>
-            <tag class="cz.kpartl.preprava.model.Dopravce" variable="ic" id="@hibernate"/>
             <showNotSet>true</showNotSet>
           </tagSymbol>
           <tagSymbol id="4">
@@ -1264,7 +1255,7 @@ super.tearDown();
               <operation>delete(cz.kpartl.preprava.model.Dopravce)</operation>
               <operation>findAll()</operation>
               <operation>findByNazev(java.lang.String)</operation>
-              <operation>findByICO(java.lang.String)</operation>
+              <operation>findBySAPCislo(java.lang.String)</operation>
             </operations>
           </classSymbol>
           <classSymbol id="8">
@@ -1283,20 +1274,20 @@ super.tearDown();
             </operations>
           </classSymbol>
           <classSymbol id="9">
-            <x>24</x>
-            <y>457</y>
+            <x>39</x>
+            <y>431</y>
             <class class="cz.kpartl.preprava.model.Dopravce"/>
             <attributes autoDisplay="289" accessVisible="true">
               <attribute>nazev</attribute>
               <attribute>ulice</attribute>
               <attribute>mesto</attribute>
-              <attribute>ic</attribute>
               <attribute>dic</attribute>
               <attribute>sap_cislo</attribute>
               <attribute>kontaktni_osoba</attribute>
               <attribute>kontaktni_telefon</attribute>
               <attribute>kontakt_ostatni</attribute>
               <attribute>psc</attribute>
+              <attribute>ic</attribute>
             </attributes>
             <operations autoDisplay="37" accessVisible="true" parametersVisible="true"/>
           </classSymbol>
@@ -1435,8 +1426,8 @@ super.tearDown();
             <operations autoDisplay="53" accessVisible="true" parametersVisible="true"/>
           </classSymbol>
           <association id="20">
-            <x>396</x>
-            <y>87</y>
+            <x>405</x>
+            <y>98</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.User" name="DAO_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.dao.UserDAO" name="DAO_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
@@ -1458,12 +1449,12 @@ super.tearDown();
             </point>
             <end-1>
               <x>285</x>
-              <y>87</y>
+              <y>98</y>
               <connectedSymbol symbol="18"/>
               <text>0..1</text>
             </end-1>
             <end-2>
-              <x>246</x>
+              <x>251</x>
               <y>218</y>
               <connectedSymbol symbol="19"/>
               <symbolType>2</symbolType>
@@ -1473,8 +1464,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="21">
-            <x>128</x>
-            <y>64</y>
+            <x>134</x>
+            <y>73</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.User" name="PERSISTENT_TEST_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.model.UserPersistentTest" name="PERSISTENT_TEST_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
@@ -1495,13 +1486,13 @@ super.tearDown();
               <atY>0.49275362</atY>
             </point>
             <end-1>
-              <x>203</x>
-              <y>64</y>
+              <x>215</x>
+              <y>73</y>
               <connectedSymbol symbol="17"/>
               <text>0..1</text>
             </end-1>
             <end-2>
-              <x>246</x>
+              <x>251</x>
               <y>218</y>
               <connectedSymbol symbol="19"/>
               <symbolType>2</symbolType>
@@ -1512,7 +1503,7 @@ super.tearDown();
           </association>
           <association id="22">
             <x>833</x>
-            <y>556</y>
+            <y>564</y>
             <assocEnd-1 class="cz.kpartl.preprava.model.Pozadavek" name="destinace_z"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
@@ -1533,14 +1524,14 @@ super.tearDown();
             </point>
             <end-1>
               <x>828</x>
-              <y>556</y>
+              <y>564</y>
               <connectedSymbol symbol="15"/>
             </end-1>
             <end-2>
-              <x>627</x>
-              <y>320</y>
-              <w>65</w>
-              <h>30</h>
+              <x>637</x>
+              <y>339</y>
+              <w>68</w>
+              <h>34</h>
               <connectedSymbol symbol="14"/>
               <text>+destinace_z</text>
               <text>0..1</text>
@@ -1548,8 +1539,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="23">
-            <x>844</x>
-            <y>87</y>
+            <x>850</x>
+            <y>98</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.Destinace" name="DAO_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.dao.DestinaceDAO" name="DAO_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
@@ -1578,13 +1569,13 @@ super.tearDown();
             </point>
             <end-1>
               <x>738</x>
-              <y>87</y>
+              <y>98</y>
               <connectedSymbol symbol="12"/>
               <text>0..1</text>
             </end-1>
             <end-2>
-              <x>637</x>
-              <y>229</y>
+              <x>648</x>
+              <y>238</y>
               <connectedSymbol symbol="14"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
@@ -1593,8 +1584,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="24">
-            <x>584</x>
-            <y>56</y>
+            <x>582</x>
+            <y>63</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.Destinace" name="PERSISTENT_TEST_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.model.DestinacePersistentTest" name="PERSISTENT_TEST_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
@@ -1615,13 +1606,13 @@ super.tearDown();
               <atY>0.5</atY>
             </point>
             <end-1>
-              <x>572</x>
-              <y>114</y>
+              <x>577</x>
+              <y>129</y>
               <connectedSymbol symbol="11"/>
               <text>0..1</text>
             </end-1>
             <end-2>
-              <x>572</x>
+              <x>577</x>
               <y>176</y>
               <connectedSymbol symbol="14"/>
               <symbolType>2</symbolType>
@@ -1631,8 +1622,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="25">
-            <x>558</x>
-            <y>459</y>
+            <x>568</x>
+            <y>467</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.Pozadavek" name="objednavka"/>
             <assocEnd-1 class="cz.kpartl.preprava.model.Objednavka" name="pozadavek"/>
             <showMultiplicity>true</showMultiplicity>
@@ -1653,19 +1644,19 @@ super.tearDown();
               <atY>0.75</atY>
             </point>
             <end-1>
-              <x>558</x>
-              <y>558</y>
-              <w>64</w>
-              <h>30</h>
+              <x>568</x>
+              <y>579</y>
+              <w>69</w>
+              <h>34</h>
               <connectedSymbol symbol="10"/>
               <text>+objednavka</text>
               <text>0..1</text>
             </end-1>
             <end-2>
               <x>828</x>
-              <y>658</y>
-              <w>60</w>
-              <h>30</h>
+              <y>680</y>
+              <w>64</w>
+              <h>34</h>
               <connectedSymbol symbol="15"/>
               <text>+pozadavek</text>
               <text>1</text>
@@ -1673,8 +1664,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="26">
-            <x>1163</x>
-            <y>495</y>
+            <x>1169</x>
+            <y>504</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.Pozadavek" name="DAO_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.dao.PozadavekDAO" name="DAO_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
@@ -1695,14 +1686,14 @@ super.tearDown();
               <atY>0.5</atY>
             </point>
             <end-1>
-              <x>1163</x>
-              <y>567</y>
+              <x>1169</x>
+              <y>586</y>
               <connectedSymbol symbol="8"/>
               <text>0..1</text>
             </end-1>
             <end-2>
-              <x>980</x>
-              <y>603</y>
+              <x>993</x>
+              <y>618</y>
               <connectedSymbol symbol="15"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
@@ -1711,8 +1702,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="27">
-            <x>459</x>
-            <y>481</y>
+            <x>463</x>
+            <y>492</y>
             <assocEnd-1 class="cz.kpartl.preprava.model.Objednavka" name="dopravce"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
@@ -1733,14 +1724,14 @@ super.tearDown();
             </point>
             <end-1>
               <x>415</x>
-              <y>530</y>
+              <y>514</y>
               <connectedSymbol symbol="10"/>
             </end-1>
             <end-2>
-              <x>159</x>
-              <y>530</y>
-              <w>53</w>
-              <h>30</h>
+              <x>185</x>
+              <y>514</y>
+              <w>57</w>
+              <h>34</h>
               <connectedSymbol symbol="9"/>
               <text>+dopravce</text>
               <text>0..1</text>
@@ -1748,8 +1739,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="28">
-            <x>254</x>
-            <y>728</y>
+            <x>261</x>
+            <y>739</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.Dopravce" name="DAO_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.dao.DopravceDAO" name="DAO_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
@@ -1771,13 +1762,13 @@ super.tearDown();
             </point>
             <end-1>
               <x>156</x>
-              <y>728</y>
+              <y>739</y>
               <connectedSymbol symbol="7"/>
               <text>0..1</text>
             </end-1>
             <end-2>
-              <x>91</x>
-              <y>646</y>
+              <x>112</x>
+              <y>645</y>
               <connectedSymbol symbol="9"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
@@ -1786,8 +1777,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="29">
-            <x>540</x>
-            <y>717</y>
+            <x>546</x>
+            <y>728</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.Objednavka" name="DAO_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.dao.ObjednavkaDAO" name="DAO_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
@@ -1808,14 +1799,14 @@ super.tearDown();
               <atY>0.49612403</atY>
             </point>
             <end-1>
-              <x>511</x>
+              <x>518</x>
               <y>638</y>
               <connectedSymbol symbol="6"/>
               <text>0..1</text>
             </end-1>
             <end-2>
-              <x>511</x>
-              <y>558</y>
+              <x>518</x>
+              <y>579</y>
               <connectedSymbol symbol="10"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
@@ -1824,8 +1815,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="30">
-            <x>906</x>
-            <y>580</y>
+            <x>912</x>
+            <y>592</y>
             <assocEnd-1 class="cz.kpartl.preprava.model.Pozadavek" name="zadavatel"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
@@ -1851,15 +1842,15 @@ super.tearDown();
               <atY>0.5652174</atY>
             </point>
             <end-1>
-              <x>906</x>
+              <x>912</x>
               <y>494</y>
               <connectedSymbol symbol="15"/>
             </end-1>
             <end-2>
-              <x>310</x>
-              <y>265</y>
-              <w>55</w>
-              <h>30</h>
+              <x>320</x>
+              <y>271</y>
+              <w>57</w>
+              <h>34</h>
               <connectedSymbol symbol="19"/>
               <text>+zadavatel</text>
               <text>0..1</text>
@@ -1867,8 +1858,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="31">
-            <x>865</x>
-            <y>575</y>
+            <x>868</x>
+            <y>586</y>
             <assocEnd-1 class="cz.kpartl.preprava.model.Pozadavek" name="destinace_do"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
@@ -1889,14 +1880,14 @@ super.tearDown();
             </point>
             <end-1>
               <x>828</x>
-              <y>575</y>
+              <y>586</y>
               <connectedSymbol symbol="15"/>
             </end-1>
             <end-2>
-              <x>568</x>
-              <y>320</y>
-              <w>72</w>
-              <h>30</h>
+              <x>573</x>
+              <y>339</y>
+              <w>77</w>
+              <h>34</h>
               <connectedSymbol symbol="14"/>
               <text>+destinace_do</text>
               <text>0..1</text>
@@ -1904,8 +1895,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="32">
-            <x>103</x>
-            <y>362</y>
+            <x>101</x>
+            <y>368</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.Objednavka" name="PERSISTENT_TEST_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.model.ObjednavkaPersistentTest" name="PERSISTENT_TEST_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
@@ -1926,14 +1917,14 @@ super.tearDown();
               <atY>0.49612403</atY>
             </point>
             <end-1>
-              <x>103</x>
-              <y>412</y>
+              <x>101</x>
+              <y>425</y>
               <connectedSymbol symbol="5"/>
               <text>0..1</text>
             </end-1>
             <end-2>
               <x>415</x>
-              <y>477</y>
+              <y>488</y>
               <connectedSymbol symbol="10"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
@@ -1942,8 +1933,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="33">
-            <x>415</x>
-            <y>361</y>
+            <x>422</x>
+            <y>371</y>
             <assocEnd-1 class="cz.kpartl.preprava.model.Objednavka" name="pridruzena_objednavka"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
@@ -1984,15 +1975,15 @@ super.tearDown();
               <atY>0.49685535</atY>
             </point>
             <end-1>
-              <x>415</x>
-              <y>558</y>
+              <x>422</x>
+              <y>579</y>
               <connectedSymbol symbol="10"/>
             </end-1>
             <end-2>
-              <x>415</x>
-              <y>558</y>
-              <w>121</w>
-              <h>30</h>
+              <x>422</x>
+              <y>399</y>
+              <w>130</w>
+              <h>34</h>
               <connectedSymbol symbol="10"/>
               <text>+pridruzena_objednavka</text>
               <text>0..1</text>
@@ -2804,13 +2795,13 @@ getSession().delete(object);
                 </tokens>
               </query>
             </operation>
-            <operation name="findByICO">
+            <operation name="findBySAPCislo">
               <type class="cz.kpartl.preprava.model.Dopravce"/>
               <multiplicity>0..1</multiplicity>
               <access>1</access>
-              <generatedName>findByICO</generatedName>
+              <generatedName>findBySAPCislo</generatedName>
               <parameters>
-                <variable name="ic">
+                <variable name="sapCislo">
                   <type class="java.lang.String"/>
                   <multiplicity>0..1</multiplicity>
                 </variable>
@@ -2822,10 +2813,10 @@ getSession().delete(object);
                   </queryVariable>
                   <queryText>where</queryText>
                   <queryObjectVariable object="d">
-                    <variable class="cz.kpartl.preprava.model.Dopravce" name="ic"/>
+                    <variable class="cz.kpartl.preprava.model.Dopravce" name="sap_cislo"/>
                   </queryObjectVariable>
                   <com.objectgen.core.Query_-Operator>=</com.objectgen.core.Query_-Operator>
-                  <queryParameter name="ic"/>
+                  <queryParameter name="sapCislo"/>
                 </tokens>
               </query>
             </operation>

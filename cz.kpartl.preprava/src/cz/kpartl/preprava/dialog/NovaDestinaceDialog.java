@@ -193,7 +193,7 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 					destinace.setMesto(mesto.getText());
 					destinace.setNazev(nazev.getText());
 					if (psc.getText() != "")
-						destinace.setPSC(Integer.valueOf(psc.getText()));
+						destinace.setPSC(psc.getText());
 					destinace.setUlice(ulice.getText());
 					Transaction tx = persistenceHelper.beginTransaction();
 					try {
@@ -268,14 +268,7 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 
 		}
 
-		if (!("".equals(psc.getText().trim()))) {
-
-			try {
-				final Integer l_psc = Integer.valueOf(psc.getText());
-			} catch (NumberFormatException e) {
-				result.add("Hodnota v poli PSÈ není platné èíslo");
-			}
-		}
+		
 		return result;
 	}
 

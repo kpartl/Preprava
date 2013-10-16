@@ -41,7 +41,7 @@ public class Destinace implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	private Integer PSC;
+	private String PSC;
 
 	/**
 	 * @generated
@@ -160,14 +160,14 @@ public class Destinace implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
-	public Integer getPSC() {
+	public String getPSC() {
 		return this.PSC;
 	}
 
 	/**
 	 * @generated
 	 */
-	public void setPSC(Integer PSC) {
+	public void setPSC(String PSC) {
 		this.PSC = PSC;
 	}
 	

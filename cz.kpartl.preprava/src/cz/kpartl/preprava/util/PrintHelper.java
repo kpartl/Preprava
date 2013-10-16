@@ -71,7 +71,7 @@ public class PrintHelper {
 	private String getObjednavkaAsText(Objednavka obj){				
 		StringBuffer result = new StringBuffer();	
 		addLine(result,"Objedn·vka Ë.", obj.getCislo_objednavky());		
-		addLine(result,"F·ze", ObjednanoView.getComboItems(true)[obj.getFaze()]);
+		addLine(result,"F·ze", ObjednanoView.getFazeKey(obj.getFaze()));
 		addLine(result,"Dopravce", obj.getDopravce() != null ? obj.getDopravce().getNazev() : "");
 		addLine(result,"»Ìslo faktury dopravce", obj.getCislo_faktury_dopravce());
 		addLine(result,"Cena dopravy", obj.getCenaFormated() + " " + obj.getMena());

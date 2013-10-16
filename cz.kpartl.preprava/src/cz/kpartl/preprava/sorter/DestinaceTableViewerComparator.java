@@ -35,10 +35,8 @@ public class DestinaceTableViewerComparator extends TableViewerComparator {
 		case 3:
 			rc = comparator.compare(d1.getMesto(),d2.getMesto());
 			break;
-		case 4:
-			final Integer p1 = d1.getPSC() != null ? d1.getPSC() : -1;
-			final Integer p2 = d2.getPSC() != null ? d2.getPSC() : -1;
-			rc = p1.compareTo(p2);
+		case 4:			
+			rc = comparator.compare(d1.getPSC(),d2.getPSC());
 			break;
 		case 5:
 			rc = comparator.compare(d1.getKontaktni_osoba(), d2.getKontaktni_osoba());			

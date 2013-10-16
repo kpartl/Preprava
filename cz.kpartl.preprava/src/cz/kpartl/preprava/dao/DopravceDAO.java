@@ -92,10 +92,11 @@ public class DopravceDAO {
 	/**
 	 * @generated
 	 */
-	public cz.kpartl.preprava.model.Dopravce findByICO(String ic) {
-		org.hibernate.Query query = getSession().createQuery(
-				"from cz.kpartl.preprava.model.Dopravce d where d.ic = :ic");
-		query.setString("ic", ic);
+	public cz.kpartl.preprava.model.Dopravce findBySAPCislo(String sapCislo) {
+		org.hibernate.Query query = getSession()
+				.createQuery(
+						"from cz.kpartl.preprava.model.Dopravce d where d.sap_cislo = :sapCislo");
+		query.setString("sapCislo", sapCislo);
 		java.util.List list = query.list();
 		if (list.size() == 1) {
 			return (cz.kpartl.preprava.model.Dopravce) list.get(0);
