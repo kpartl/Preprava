@@ -310,7 +310,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 			boolean novaObjednavka = objednavka.getId() == null;
 			if ("" != cena.getText())
 				objednavka.setCena(BigDecimal.valueOf(Double.valueOf(cena
-						.getText().replace(',', '.'))));
+						.getText().replaceAll("\\.", "").replace(',', '.'))));
 			else objednavka.setCena(null);
 			
 			if ("" != cisloFakturyDopravce.getText())
@@ -359,8 +359,15 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 
 	protected ArrayList<String> validate() {
 		final ArrayList<String> result = new ArrayList<String>();
-		final String cenaText = cena.getText().replace(',', '.');
+		cena.setText(cena.getText().trim());
+		// nahrazeni des. tecky carkou
+		final int desTecka = cena.getText().lastIndexOf('.');
+		if(desTecka > cena.getText().length()-4)
+			cena.setText(cena.getText().substring(0, desTecka) + ","+ cena.getText().substring(desTecka+1));
+		final String cenaText = cena.getText().replaceAll("\\.", "")
+				.replace(',', '.');
 		if ("" != cenaText) {
+			
 			try {
 				BigDecimal.valueOf(Double.valueOf(cenaText));
 
@@ -368,7 +375,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 					result.add("Není zadána mìna");
 
 			} catch (NumberFormatException ex) {
-				result.add("Špatnì zadaná cena dopravy. Musí být ve tvaru 12345,67");
+				result.add("Špatnì zadaná cena dopravy " + cenaText + ". Musí být ve tvaru 12345,67");
 			}
 		}
 		if ("" != cisloFakturyDopravce.getText()) {
