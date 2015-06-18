@@ -157,8 +157,11 @@ public class NovyDopravceDialog extends TitleAreaDialog {
 					try {
 						if (novyDopravce)
 							dopravce.setId(dopravceDAO.create(dopravce));
-						else
+						else {
+							persistenceHelper.getSession().flush();
+							persistenceHelper.getSession().clear();
 							dopravceDAO.update(dopravce);
+						}
 						tx.commit();
 						persistenceHelper.getSession().flush();
 						

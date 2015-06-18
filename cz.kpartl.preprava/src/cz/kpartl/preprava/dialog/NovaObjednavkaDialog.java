@@ -329,8 +329,11 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 				objednavka.setCislo_objednavky(maxCislo+1);
 				objednavka.setId(objednavkaDAO.create(objednavka));
 			}
-			else
+			else {
+				persistenceHelper.getSession().flush();
+				persistenceHelper.getSession().clear();
 				objednavkaDAO.update(objednavka);
+			}
 			
 			
 			

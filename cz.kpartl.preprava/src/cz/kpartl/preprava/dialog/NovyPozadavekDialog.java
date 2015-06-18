@@ -614,8 +614,11 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 
 			if (novyPozadavek)
 				pozadavek.setId(pozadavekDAO.create(pozadavek));
-			else
+			else {
+				persistenceHelper.getSession().flush();
+				persistenceHelper.getSession().clear();
 				pozadavekDAO.update(pozadavek);
+			}
 
 			return true;
 		} else {

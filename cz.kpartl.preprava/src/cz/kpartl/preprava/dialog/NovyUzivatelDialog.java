@@ -147,8 +147,11 @@ public class NovyUzivatelDialog extends TitleAreaDialog {
 					try {
 						if (novyUzivatel)
 							uzivatel.setId(uzivatelDAO.create(uzivatel));
-						else
+						else {
+							persistenceHelper.getSession().flush();
+							persistenceHelper.getSession().clear();
 							uzivatelDAO.update(uzivatel);
+						}
 						tx.commit();
 						persistenceHelper.getSession().flush();
 					//	persistenceHelper.getSession().close();

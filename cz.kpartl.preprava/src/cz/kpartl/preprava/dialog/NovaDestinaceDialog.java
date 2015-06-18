@@ -199,8 +199,11 @@ public class NovaDestinaceDialog extends TitleAreaDialog {
 					try {
 						if (novaDestinace)
 							destinace.setId(destinaceDAO.create(destinace));
-						else
+						else {
+							persistenceHelper.getSession().flush();
+							persistenceHelper.getSession().clear();
 							destinaceDAO.update(destinace);
+						}
 						tx.commit();
 						persistenceHelper.getSession().flush();
 						// persistenceHelper.getSession().close();
