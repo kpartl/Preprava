@@ -646,10 +646,12 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		if (pozadavek.getDestinace_z() != null) {
 			destinaceZ = pozadavek.getDestinace_z();
 			odkud.setText(pozadavek.getDestinaceZNazevACislo());
+			odkudKontakt.setText(destinaceZ.getKontakt());
 		}
 		if (pozadavek.getDestinace_do() != null) {
 			destinaceDo = pozadavek.getDestinace_do();
 			kam.setText(pozadavek.getDestinaceDoNazevACislo());
+			kamKontakt.setText(destinaceDo.getKontakt());
 		}
 		hodinaNakladky
 				.setText(pozadavek.getHodina_nakladky() != null ? pozadavek
