@@ -17,6 +17,33 @@ public class DopravceTableViewerComparator extends TableViewerComparator {
 		case 0:
 			rc = comparator.compare(d1.getNazev(), d2.getNazev());
 			break;
+		case 1:
+			rc = comparator.compare(d1.getUlice(), d2.getUlice());
+			break;
+		case 2:
+			rc = comparator.compare(d1.getMesto(), d2.getMesto());
+			break;
+		case 3:
+			rc = comparator.compare(d1.getPsc(), d2.getPsc());
+			break;
+		case 4:
+			rc = comparator.compare(d1.getIc(), d2.getIc());
+			break;
+		case 5:
+			rc = comparator.compare(d1.getDic(), d2.getDic());
+			break;
+		case 6:
+			rc = comparator.compare(d1.getSap_cislo(), d2.getSap_cislo());
+			break;
+		case 7:
+			rc = comparator.compare(d1.getKontaktni_osoba(), d2.getKontaktni_osoba());
+			break;
+		case 8:
+			rc = comparator.compare(d1.getKontaktni_telefon(), d2.getKontaktni_telefon());
+			break;
+		case 9:
+			rc = comparator.compare(d1.getKontakt_ostatni(), d2.getKontakt_ostatni());
+			break;
 		default:
 			rc = 0;
 		}
