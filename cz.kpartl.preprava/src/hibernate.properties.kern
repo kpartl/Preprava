@@ -2,7 +2,7 @@
 
 hibernate.dialect=org.hibernate.dialect.SQLServerDialect
 hibernate.connection.driver_class=com.microsoft.sqlserver.jdbc.SQLServerDriver
-hibernate.connection.url=jdbc:sqlserver://server1\\SQLEXPRESS;databaseName=Preprava
+hibernate.connection.url=jdbc:sqlserver://sklcz01\\SQLEXPRESS;databaseName=Preprava
 hibernate.connection.username=preprava
 hibernate.connection.password=abcd1234
 
@@ -23,6 +23,3 @@ hibernate.generate_statistic=true
 hibernate.use_sql_comments=true
 hibernate.show_sql=true
 hibernate.bytecode.use_reflection_optimizer=false
-
-
-
