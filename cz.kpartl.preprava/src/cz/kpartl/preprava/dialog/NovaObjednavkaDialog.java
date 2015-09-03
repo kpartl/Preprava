@@ -364,9 +364,11 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 		final ArrayList<String> result = new ArrayList<String>();
 		cena.setText(cena.getText().trim());
 		// nahrazeni des. tecky carkou
-		final int desTecka = cena.getText().lastIndexOf('.');
-		if(desTecka > cena.getText().length()-4)
-			cena.setText(cena.getText().substring(0, desTecka) + ","+ cena.getText().substring(desTecka+1));
+		if (cena.getText().length() > 0) {
+			final int desTecka = cena.getText().lastIndexOf('.');
+			if(desTecka > cena.getText().length()-4)
+				cena.setText(cena.getText().substring(0, desTecka) + ","+ cena.getText().substring(desTecka+1));
+		}
 		final String cenaText = cena.getText().replaceAll("\\.", "")
 				.replace(',', '.');
 		if ("" != cenaText) {
