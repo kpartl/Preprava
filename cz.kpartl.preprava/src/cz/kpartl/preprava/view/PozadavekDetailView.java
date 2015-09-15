@@ -119,7 +119,7 @@ public class PozadavekDetailView extends ViewPart {
 		hmotnost = new Label(parent, SWT.NONE);
 		createBoldLabel(parent, "Poèet EUR palet: ");
 		palet = new Label(parent, SWT.NONE);
-		createBoldLabel(parent, "Jsou palety stohovatelné?: ");
+		createBoldLabel(parent, "Palety jsou stohovatelné: ");
 		stohovatelne = new Label(parent, SWT.NONE);
 		createBoldLabel(parent, "Je termín nakládky koneèný?: ");
 		termin_konecny = new Label(parent, SWT.NONE);

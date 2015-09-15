@@ -434,7 +434,7 @@ public abstract class AbstractTableView extends ViewPart {
 		});
 
 		col = createTableViewerColumn("Stohovatelné?", 120, columnIndex++,
-				"Jsou palety stohovatelné?");
+				"Palety jsou stohovatelné");
 		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
 				.getToolTipText()) {
 			@Override

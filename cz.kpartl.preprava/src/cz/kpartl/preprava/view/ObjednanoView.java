@@ -503,9 +503,12 @@ public class ObjednanoView extends AbstractTableView {
 			editItem.setEnabled(enable);
 		if (smazatItem != null)
 			smazatItem.setEnabled(enable);
-		sparovatItem.setEnabled(false);
-		tisknoutItem.setEnabled(enable);
-		zrusitParovaniItem.setEnabled(false);
+		if (sparovatItem != null)
+			sparovatItem.setEnabled(false);
+		if (tisknoutItem != null)
+			tisknoutItem.setEnabled(enable);
+		if (zrusitParovaniItem != null)
+			zrusitParovaniItem.setEnabled(false);
 		if (((StructuredSelection) viewer.getSelection()).size() == 2) {
 			final Objednavka obj1 = (Objednavka) ((StructuredSelection) viewer
 					.getSelection()).iterator().next();

@@ -442,7 +442,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		new Label(parent, SWT.NONE);
 
 		Label stohovatelneLabel = new Label(parent, SWT.BOLD);
-		stohovatelneLabel.setText("Jsou palety stohovatelné");
+		stohovatelneLabel.setText("Palety jsou stohovatelné");
 		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
 		stohovatelneLabel.setLayoutData(gridData);
 
