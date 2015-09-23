@@ -366,7 +366,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 		// nahrazeni des. tecky carkou
 		if (cena.getText().length() > 0) {
 			final int desTecka = cena.getText().lastIndexOf('.');
-			if(desTecka > cena.getText().length()-4)
+			if(desTecka > 0 && desTecka > cena.getText().length()-4)
 				cena.setText(cena.getText().substring(0, desTecka) + ","+ cena.getText().substring(desTecka+1));
 		}
 		final String cenaText = cena.getText().replaceAll("\\.", "")
