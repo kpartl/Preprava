@@ -540,7 +540,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 			public void widgetSelected(SelectionEvent e) {
 				Transaction tx = persistenceHelper.beginTransaction();
 				try {
-					if (updatePozadavek(tx)) {
+					if (updatePozadavek()) {
 						tx.commit();
 						persistenceHelper.getSession().flush();
 						// persistenceHelper.getSession().close();
@@ -588,7 +588,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 	}
 
 	// zapise pozadavek do databaze
-	protected boolean updatePozadavek(Transaction tx) {
+	protected boolean updatePozadavek() {
 		final ArrayList<String> validace = validatePozadavek();
 		if (validace.size() == 0) {
 			boolean novyPozadavek = pozadavek == null;

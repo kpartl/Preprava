@@ -14,6 +14,7 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -266,27 +267,39 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 		okButton.setData(IDialogConstants.OK_ID);
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				Transaction tx = persistenceHelper.beginTransaction();
-				try {
-					if (updatePozadavek(tx) && updateObjednavku(tx)) {
-						tx.commit();
-						persistenceHelper.getSession().flush();
-						//persistenceHelper.getSession().close();
-						
-						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
-						eventBroker.send(EventConstants.OBJEDNAVKA_SELECTION_CHANGED, objednavka);
-						close();
-					} else {
-						tx.rollback();
-					}
+				if (updatePozadavek() && updateObjednavku()) {
+				FormularDialog formularDialog = new FormularDialog(parentShell, context, eventBroker, objednavka);
+				if (formularDialog.open() == Window.OK) {
+					//TODO
+//					eventBroker.send(EventConstants.POZADAVEK_SELECTION_CHANGED,
+//							selectedPozadavek);
+//
+//					partService.showPart("cz.kpartl.preprava.part.tablepartobjednane",
+//							EPartService.PartState.VISIBLE);
 
-				} catch (Exception ex) {
-					tx.rollback();
-					setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
-							.concat(System.getProperty("line.separator"))
-							.concat(ex.toString()));
-					logger.error("Nelze updatovat objednavku", ex);
 				}
+				}
+//				Transaction tx = persistenceHelper.beginTransaction();
+//				try {
+//					if (updatePozadavek(tx) && updateObjednavku(tx)) {
+//						tx.commit();
+//						persistenceHelper.getSession().flush();
+//						//persistenceHelper.getSession().close();
+//						
+//						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
+//						eventBroker.send(EventConstants.OBJEDNAVKA_SELECTION_CHANGED, objednavka);
+//						close();
+//					} else {
+//						tx.rollback();
+//					}
+//
+//				} catch (Exception ex) {
+//					tx.rollback();
+//					setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
+//							.concat(System.getProperty("line.separator"))
+//							.concat(ex.toString()));
+//					logger.error("Nelze updatovat objednavku", ex);
+//				}
 			}
 		});
 
@@ -304,7 +317,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 	}
 
 	// zapise objednavku do databaze
-	protected boolean updateObjednavku(Transaction tx) {
+	protected boolean updateObjednavku() {
 		final ArrayList<String> validace = validate();
 		if (validace.size() == 0) {
 			boolean novaObjednavka = objednavka.getId() == null;
