@@ -1,5 +1,6 @@
 package cz.kpartl.preprava.dialog;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -38,6 +39,8 @@ import cz.kpartl.preprava.util.HibernateHelper;
 
 public class FormularDialog extends TitleAreaDialog {
 	
+	final Font nr12B = new org.eclipse.swt.graphics.Font(null, "Times New Roman", 12, SWT.BOLD);
+	
 	private Objednavka objednavka;
 	private DestinaceDAO destinaceDAO;
 	HibernateHelper persistenceHelper;
@@ -45,9 +48,9 @@ public class FormularDialog extends TitleAreaDialog {
 	Text cislo;
 	Text kontakt;
 	Text kontaktniOsoba;
-	Text ulice;
+	Label ulice;
 	Text psc;
-	Text mesto;
+	Label mesto;
 	Destinace destinace;
 	final Logger logger = LoggerFactory.getLogger(NovaDestinaceDialog.class);
 
@@ -85,29 +88,29 @@ public class FormularDialog extends TitleAreaDialog {
 	
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		GridLayout layout = new GridLayout(4, false);
+		final Color gray = new Color(parent.getDisplay(), new RGB(0xc1, 0xc1, 0xc1));
+		GridLayout layout = new GridLayout(2, false);
 		layout.marginBottom = 5;
 		layout.marginLeft = 0;
 		layout.marginTop = 5;
 		layout.marginRight = 0;
 
 		parent.setLayout(layout);
-		final Font nr12B = new org.eclipse.swt.graphics.Font(null, "Times New Roman", 12, SWT.BOLD);
-		final Color gray = new Color(parent.getDisplay(), new RGB(0xc1, 0xc1, 0xc1));
+
 		
-		GridLayout groupLayout = new GridLayout(2, false);
+		GridLayout groupLayout = new GridLayout(1, false);
 		Group oGroup = new Group(parent, SWT.NONE);
 
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-		gridData.horizontalSpan = 2;
+		//gridData.horizontalSpan = 2;
 		oGroup.setLayoutData(gridData);
 		oGroup.setLayout(groupLayout);
 		
-		groupLayout = new GridLayout(2, false);
+		groupLayout = new GridLayout(1, false);
 		Group dGroup = new Group(parent, SWT.NONE);
 
 		gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-		gridData.horizontalSpan = 2;
+		//gridData.horizontalSpan = 2;
 		dGroup.setLayoutData(gridData);
 		dGroup.setLayout(groupLayout);
 
@@ -133,85 +136,130 @@ public class FormularDialog extends TitleAreaDialog {
 		kernUliceLabel.setLayoutData(getHSpanGridData(2));
 		
 		final Label kernMestoLabel = new Label(oGroup, SWT.NONE);
-		kernMestoLabel.setText("370 01  Èeské Budìjovice DIÈ: CZ60849827");
+		kernMestoLabel.setText("370 01  Èeské Budìjovice");
 		kernMestoLabel.setLayoutData(getHSpanGridData(2));
 		
 		final Label kernDicLabel = new Label(oGroup, SWT.NONE);
-		kernDicLabel.setText(" DIÈ: CZ60849827");
+		kernDicLabel.setText("DIÈ: CZ60849827");
 		kernDicLabel.setLayoutData(getHSpanGridData(2));
 		
 
-		Text nazev = new Text(dGroup, SWT.BORDER);
+		Label nazev = new Label(dGroup, SWT.NONE);
 		//gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
 		//gridData.widthHint = 200;
 		nazev.setLayoutData(getHSpanGridData(2));
-		nazev.setEnabled(false);
 		if (objednavka.getDopravce() != null) {
 			nazev.setText(objednavka.getDopravce().getNazev());
 		}
+		
+		Label ulice = new Label(dGroup, SWT.NONE);
+		ulice.setLayoutData(getHSpanGridData(2));
+		if (objednavka.getDopravce() != null) {
+			ulice.setText(objednavka.getDopravce().getUlice());
+		}
+		
+		Label mesto = new Label(dGroup, SWT.NONE);
+		mesto.setLayoutData(getHSpanGridData(2));
+		if (objednavka.getDopravce() != null) {
+			mesto.setText(objednavka.getDopravce().getPsc() + " " + objednavka.getDopravce().getMesto());
+		}
+		
+		Label dic = new Label(dGroup, SWT.NONE);
+		dic.setLayoutData(getHSpanGridData(2));
+		dic.setText("DIÈ: ");
+		if (objednavka.getDopravce() != null) {
+			dic.setText(dic.getText() + objednavka.getDopravce().getDic());
+		} 
+		
+		Label sap = new Label(dGroup, SWT.NONE);
+		sap.setLayoutData(getHSpanGridData(2));
+		sap.setText("Dodavatelské èíslo: ");
+		if (objednavka.getDopravce() != null) {
+			sap.setText(sap.getText() + objednavka.getDopravce().getSap_cislo());
+		} 
 
-		Label cislolabel = new Label(parent, SWT.NONE);
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
-		cislolabel.setLayoutData(gridData);
-		cislolabel.setText("Èíslo");
+		Group detailGroup = new Group(parent, SWT.NONE);
+		gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gridData.horizontalSpan = 2;
+		detailGroup.setLayoutData(gridData);
+		
+		groupLayout = new GridLayout(6, false);
+		detailGroup.setLayout(groupLayout);
+		getGrayLabel("Èíslo objednávky:", detailGroup);
 
-		cislo = new Text(parent, SWT.BORDER);
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
-		gridData.widthHint = 70;
-		cislo.setLayoutData(gridData);
+		Label cislo = new Label(detailGroup, SWT.NONE);
+		cislo.setLayoutData(getHSpanGridData(5));
+		cislo.setText(formatCislo(String.valueOf(objednavka.getCislo_objednavky()), 6));
+		
+		getGrayLabel("Datum objednávky:", detailGroup);
+		Label datum = new Label(detailGroup, SWT.NONE);
+		datum.setLayoutData(getHSpanGridData(3));
+		datum.setText(new SimpleDateFormat("dd.MM.yyyy").format(objednavka.getPozadavek().getDatum()));
 
-		Label ulicelabel = new Label(parent, SWT.NONE);
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
-		ulicelabel.setLayoutData(gridData);
-		ulicelabel.setText("Ulice");
-
-		ulice = new Text(parent, SWT.BORDER);
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
-		gridData.widthHint = 200;
-		ulice.setLayoutData(gridData);
-
-		Label mestoabel = new Label(parent, SWT.NONE);
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
-		mestoabel.setLayoutData(gridData);
-		mestoabel.setText("Mìsto");
-
-		mesto = new Text(parent, SWT.BORDER);
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
-		gridData.widthHint = 200;
-		mesto.setLayoutData(gridData);
-
-		Label psclabel = new Label(parent, SWT.NONE);
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
-		psclabel.setLayoutData(gridData);
-		psclabel.setText("PSÈ");
-
-		psc = new Text(parent, SWT.BORDER);
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
-		gridData.widthHint = 70;
-		psc.setLayoutData(gridData);
-
-		Label kontaktniOsobalabel = new Label(parent, SWT.NONE);
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
-		kontaktniOsobalabel.setLayoutData(gridData);
-		kontaktniOsobalabel.setText("Kontaktní osoba");
-
-		kontaktniOsoba = new Text(parent, SWT.BORDER);
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
-		gridData.widthHint = 200;
-		kontaktniOsoba.setLayoutData(gridData);
-
-		Label kontaktlabel = new Label(parent, SWT.NONE);
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
-		kontaktlabel.setLayoutData(gridData);
-		kontaktlabel.setText("Kontakt");
-
-		kontakt = new Text(parent, SWT.BORDER);
-		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
-		gridData.widthHint = 200;
-		kontakt.setLayoutData(gridData);
-
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
+		getGrayLabel("Kontakt:", detailGroup);
+		Label fucikova = new Label(detailGroup, SWT.RIGHT);
+		fucikova.setLayoutData(getGridData());
+		fucikova.setText("Alena Fuèíková");
+		
+		getGrayLabel("Termín nakládky:", detailGroup);
+		Label termin = new Label(detailGroup, SWT.NONE);
+		termin.setLayoutData(getHSpanGridData(3));
+		termin.setText(objednavka.getPozadavek().getDatum_nakladky());
+		
+		Label telefon = new Label(detailGroup, SWT.NONE);
+		telefon.setLayoutData(getHSpanGridData(2));
+		telefon.setText("Tel.: 389 608 124 / 734 310 217");
+		
+		getGrayLabel("Místo nakládky:", detailGroup);
+		getGrayLabel("Firma:", detailGroup, 2);
+		Label nazevFirmy = new Label(detailGroup, SWT.NONE);
+		nazevFirmy.setLayoutData(getHSpanGridData(3));
+		nazevFirmy.setText(objednavka.getPozadavek().getDestinace_z().getNazev());
+		
+		getGrayLabel("", detailGroup);
+		getGrayLabel("Adresa:", detailGroup, 2);
+		Label adresa = new Label(detailGroup, SWT.NONE);
+		adresa.setLayoutData(getHSpanGridData(3));
+		adresa.setText(objednavka.getPozadavek().getDestinace_z().getUlice());
+		
+		
+		getGrayLabel("", detailGroup);
+		getGrayLabel("", detailGroup, 2);
+		Label mesto_a_psc = new Label(detailGroup, SWT.NONE);
+		mesto_a_psc.setLayoutData(getHSpanGridData(3));
+		String PSC = objednavka.getPozadavek().getDestinace_z().getPSC() != null ?
+				", " + objednavka.getPozadavek().getDestinace_z().getPSC() : " ";
+		mesto_a_psc.setText(objednavka.getPozadavek().getDestinace_z().getMesto() + PSC);
+		
+		getGrayLabel("", detailGroup);
+		getGrayLabel("Kontaktní osoba", detailGroup, 2);
+		Label kontOs = new Label(detailGroup, SWT.NONE);
+		kontOs.setLayoutData(getHSpanGridData(3));
+		kontOs.setText(objednavka.getPozadavek().getDestinace_z().getKontaktni_osoba());
+		
+		getGrayLabel("", detailGroup);
+		getGrayLabel("Kontakt", detailGroup, 2);
+		Label kont = new Label(detailGroup, SWT.NONE);
+		kont.setLayoutData(getHSpanGridData(3));
+		kont.setText(objednavka.getPozadavek().getDestinace_z().getKontakt());
+		
+		getGrayLabel("Specifikace zboží:", detailGroup);
+		Text specZbozi = new Text(detailGroup, SWT.NONE);
+		gridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
+		gridData.horizontalSpan = 5;
+		specZbozi.setLayoutData(gridData);
+		
+		getGrayLabel("", detailGroup);
+		getGrayLabel("Hmotnost", detailGroup, 1);
+		Label hmotn = new Label(detailGroup, SWT.NONE);
+		hmotn.setLayoutData(getHSpanGridData(2));
+		hmotn.setText(objednavka.getPozadavek().getCelkova_hmotnost());
+		getGrayLabel("ADR", detailGroup, 1);
+		Text adrTxt = new Text(detailGroup, SWT.NONE);
+		gridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
+		adrTxt.setLayoutData(gridData);
+		
+		
 
 		final Button okButton = new Button(parent, SWT.PUSH);
 		parent.getShell().setDefaultButton(okButton);
@@ -230,14 +278,14 @@ public class FormularDialog extends TitleAreaDialog {
 					if (novaDestinace) {
 						destinace = new Destinace();
 					}
-					destinace.setCislo(Integer.valueOf(cislo.getText()));
+					//destinace.setCislo(Integer.valueOf(cislo.getText()));
 					destinace.setKontakt(kontakt.getText());
 					destinace.setKontaktni_osoba(kontaktniOsoba.getText());
-					destinace.setMesto(mesto.getText());
+				//	destinace.setMesto(mesto.getText());
 					//destinace.setNazev(nazev.getText());
 					if (psc.getText() != "")
 						destinace.setPSC(psc.getText());
-					destinace.setUlice(ulice.getText());
+				//	destinace.setUlice(ulice.getText());
 					Transaction tx = persistenceHelper.beginTransaction();
 					try {
 						if (novaDestinace)
@@ -325,6 +373,35 @@ public class FormularDialog extends TitleAreaDialog {
 	private GridData getHSpanGridData(int span) {
 		GridData result = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
 		result.horizontalSpan = span;
+		return result;
+	}
+	
+	private Label getGrayLabel(String text, Composite parent, int span) {		
+		Label result = new Label(parent, SWT.NONE);
+		result.setLayoutData(span > 1 ? getHSpanGridData(span) : getGridData());
+		result.setText(text);
+		result.setFont(nr12B);
+		result.setBackground( new Color(parent.getDisplay(), new RGB(0xc1, 0xc1, 0xc1)));
+		return result;
+	}
+	
+	private Label getGrayLabel(String text, Composite parent) {
+		return getGrayLabel(text, parent, 1);
+	}
+	
+	private Label getWhiteLabel(String text, Composite parent) {
+		GridData gd = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
+		gd.widthHint = 150;
+		Label result = new Label(parent, SWT.NONE);
+		result.setLayoutData(gd);
+		result.setText(text);
+		return result;
+	}
+	
+	private String formatCislo(String cislo, int pozic) {
+		String result = cislo;
+		while (result.length() < pozic)
+			result = "0" + result;
 		return result;
 	}
 

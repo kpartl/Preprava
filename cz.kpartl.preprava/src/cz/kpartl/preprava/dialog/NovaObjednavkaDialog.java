@@ -278,7 +278,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 //							EPartService.PartState.VISIBLE);
 
 				}
-				}
+			}
 //				Transaction tx = persistenceHelper.beginTransaction();
 //				try {
 //					if (updatePozadavek(tx) && updateObjednavku(tx)) {
