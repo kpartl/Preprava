@@ -30,5 +30,75 @@
       </many-to-one>
       <property  name='cislo_objednavky' type='long' column='cislo_objednavky' unique='true'>
       </property>
+      <property  name='datum' type='timestamp' column='datum'>
+      </property>
+      <property  name='spec_zbozi' type='string' column='spec_zbozi'>
+      </property>
+      <property  name='adr' type='string' column='adr'>
+      </property>
+      <property  name='preprav_podminky' type='string' column='preprav_podminky'>
+      </property>
+      <property  name='poznamka1' type='string' column='poznamka1'>
+      </property>
+      <property  name='poznamka2' type='string' column='poznamka2'>
+      </property>
+      <property  name='poznamka3' type='string' column='poznamka3'>
+      </property>
+      <property  name='poznamka4' type='string' column='poznamka4'>
+      </property>
+      <property  name='poznamka5' type='string' column='poznamka5'>
+      </property>
+      <property  name='objednavka1' type='string' column='objednavka1'>
+      </property>
+      <property  name='objednavka2' type='string' column='objednavka2'>
+      </property>
+      <property  name='objednavka3' type='string' column='objednavka3'>
+      </property>
+      <property  name='objednavka4' type='string' column='objednavka4'>
+      </property>
+      <property  name='objednavka5' type='string' column='objednavka5'>
+      </property>
+      <property  name='objednavka6' type='string' column='objednavka6'>
+      </property>
+      <property  name='objednavka7' type='string' column='objednavka7'>
+      </property>
+      <property  name='objednavka8' type='string' column='objednavka8'>
+      </property>
+      <property  name='dod_nazev' type='string' column='dod_nazev'>
+      </property>
+      <property  name='dod_ulice' type='string' column='dod_ulice'>
+      </property>
+      <property  name='dod_psc' type='string' column='dod_psc'>
+      </property>
+      <property  name='dod_mesto' type='string' column='dod_mesto'>
+      </property>
+      <property  name='dod_dic' type='string' column='dod_dic'>
+      </property>
+      <property  name='dod_ic' type='string' column='dod_ic'>
+      </property>
+      <property  name='nakl_nazev' type='string' column='nakl_nazev'>
+      </property>
+      <property  name='nakl_ulice' type='string' column='nakl_ulice'>
+      </property>
+      <property  name='nakl_psc' type='string' column='nakl_psc'>
+      </property>
+      <property  name='nakl_mesto' type='string' column='nakl_mesto'>
+      </property>
+      <property  name='nakl_kontakt_osoba' type='string' column='nakl_kontakt_osoba'>
+      </property>
+      <property  name='nakl_kontakt' type='string' column='nakl_kontakt'>
+      </property>
+      <property  name='vykl_nazev' type='string' column='vykl_nazev'>
+      </property>
+      <property  name='vykl_ulice' type='string' column='vykl_ulice'>
+      </property>
+      <property  name='vykl_psc' type='string' column='vykl_psc'>
+      </property>
+      <property  name='vykl_mesto' type='string' column='vykl_mesto'>
+      </property>
+      <property  name='vykl_kontakt_osoba' type='string' column='vykl_kontakt_osoba'>
+      </property>
+      <property  name='vykl_kontakt' type='string' column='vykl_kontakt'>
+      </property>
    </class>
 </hibernate-mapping>

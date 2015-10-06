@@ -965,6 +965,181 @@ super.tearDown();
                 </tag>
               </tags>
             </variable>
+            <variable name="datum">
+              <type class="java.util.Date"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="spec_zbozi">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="adr">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="preprav_podminky">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="poznamka1">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="poznamka2">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="poznamka3">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="poznamka4">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="poznamka5">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="objednavka1">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="objednavka2">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="objednavka3">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="objednavka4">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="objednavka5">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="objednavka6">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="objednavka7">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="objednavka8">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="dod_nazev">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="dod_ulice">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="dod_psc">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="dod_mesto">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="dod_dic">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="dod_ic">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="nakl_nazev">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="nakl_ulice">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="nakl_psc">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="nakl_mesto">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="nakl_kontakt_osoba">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="nakl_kontakt">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="vykl_nazev">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="vykl_ulice">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="vykl_psc">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="vykl_mesto">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="vykl_kontakt_osoba">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
+            <variable name="vykl_kontakt">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
           </variables>
           <operations>
             <operation name="constructor">
@@ -1201,15 +1376,15 @@ super.tearDown();
             <showNotSet>true</showNotSet>
           </tagSymbol>
           <tagSymbol id="3">
-            <x>647</x>
-            <y>513</y>
+            <x>594</x>
+            <y>282</y>
             <connectedTo symbol="10"/>
             <tag class="cz.kpartl.preprava.model.Objednavka" variable="cislo_objednavky" id="@hibernate"/>
             <showNotSet>true</showNotSet>
           </tagSymbol>
           <tagSymbol id="4">
-            <x>645</x>
-            <y>471</y>
+            <x>592</x>
+            <y>240</y>
             <connectedTo symbol="10"/>
             <tag class="cz.kpartl.preprava.model.Objednavka" variable="faze" id="@Column"/>
             <showNotSet>true</showNotSet>
@@ -1227,10 +1402,12 @@ super.tearDown();
             </operations>
           </classSymbol>
           <classSymbol id="6">
-            <x>444</x>
-            <y>638</y>
+            <x>577</x>
+            <y>634</y>
             <class class="cz.kpartl.preprava.dao.ObjednavkaDAO"/>
-            <attributes autoDisplay="289" accessVisible="true"/>
+            <attributes autoDisplay="289" accessVisible="true">
+              <attribute>attr</attribute>
+            </attributes>
             <operations autoDisplay="37" accessVisible="true" parametersVisible="true">
               <operation>getSession()</operation>
               <operation>create(cz.kpartl.preprava.model.Objednavka)</operation>
@@ -1243,8 +1420,8 @@ super.tearDown();
             </operations>
           </classSymbol>
           <classSymbol id="7">
-            <x>156</x>
-            <y>649</y>
+            <x>115</x>
+            <y>661</y>
             <class class="cz.kpartl.preprava.dao.DopravceDAO"/>
             <attributes autoDisplay="289" accessVisible="true"/>
             <operations autoDisplay="37" accessVisible="true" parametersVisible="true">
@@ -1292,8 +1469,8 @@ super.tearDown();
             <operations autoDisplay="37" accessVisible="true" parametersVisible="true"/>
           </classSymbol>
           <classSymbol id="10">
-            <x>415</x>
-            <y>399</y>
+            <x>362</x>
+            <y>168</y>
             <class class="cz.kpartl.preprava.model.Objednavka"/>
             <attributes autoDisplay="289" accessVisible="true">
               <attribute>faze</attribute>
@@ -1304,6 +1481,41 @@ super.tearDown();
               <attribute>cislo_faktury_dopravce</attribute>
               <attribute>pridruzena_objednavka</attribute>
               <attribute>cislo_objednavky</attribute>
+              <attribute>datum</attribute>
+              <attribute>spec_zbozi</attribute>
+              <attribute>adr</attribute>
+              <attribute>preprav_podminky</attribute>
+              <attribute>poznamka1</attribute>
+              <attribute>poznamka2</attribute>
+              <attribute>poznamka3</attribute>
+              <attribute>poznamka4</attribute>
+              <attribute>poznamka5</attribute>
+              <attribute>objednavka1</attribute>
+              <attribute>objednavka2</attribute>
+              <attribute>objednavka3</attribute>
+              <attribute>objednavka4</attribute>
+              <attribute>objednavka5</attribute>
+              <attribute>objednavka6</attribute>
+              <attribute>objednavka7</attribute>
+              <attribute>objednavka8</attribute>
+              <attribute>dod_nazev</attribute>
+              <attribute>dod_ulice</attribute>
+              <attribute>dod_psc</attribute>
+              <attribute>dod_mesto</attribute>
+              <attribute>dod_dic</attribute>
+              <attribute>dod_ic</attribute>
+              <attribute>nakl_nazev</attribute>
+              <attribute>nakl_ulice</attribute>
+              <attribute>nakl_psc</attribute>
+              <attribute>nakl_mesto</attribute>
+              <attribute>nakl_kontakt_osoba</attribute>
+              <attribute>nakl_kontakt</attribute>
+              <attribute>vykl_nazev</attribute>
+              <attribute>vykl_ulice</attribute>
+              <attribute>vykl_psc</attribute>
+              <attribute>vykl_mesto</attribute>
+              <attribute>vykl_kontakt_osoba</attribute>
+              <attribute>vykl_kontakt</attribute>
             </attributes>
             <operations autoDisplay="37" accessVisible="true" parametersVisible="true"/>
           </classSymbol>
@@ -1622,8 +1834,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="25">
-            <x>568</x>
-            <y>467</y>
+            <x>515</x>
+            <y>462</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.Pozadavek" name="objednavka"/>
             <assocEnd-1 class="cz.kpartl.preprava.model.Objednavka" name="pozadavek"/>
             <showMultiplicity>true</showMultiplicity>
@@ -1644,8 +1856,8 @@ super.tearDown();
               <atY>0.75</atY>
             </point>
             <end-1>
-              <x>568</x>
-              <y>579</y>
+              <x>570</x>
+              <y>680</y>
               <w>69</w>
               <h>34</h>
               <connectedSymbol symbol="10"/>
@@ -1702,8 +1914,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="27">
-            <x>463</x>
-            <y>492</y>
+            <x>410</x>
+            <y>570</y>
             <assocEnd-1 class="cz.kpartl.preprava.model.Objednavka" name="dopravce"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
@@ -1723,7 +1935,7 @@ super.tearDown();
               <atY>0.3888889</atY>
             </point>
             <end-1>
-              <x>415</x>
+              <x>362</x>
               <y>514</y>
               <connectedSymbol symbol="10"/>
             </end-1>
@@ -1739,8 +1951,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="28">
-            <x>261</x>
-            <y>739</y>
+            <x>220</x>
+            <y>751</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.Dopravce" name="DAO_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.dao.DopravceDAO" name="DAO_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
@@ -1761,8 +1973,8 @@ super.tearDown();
               <atY>0.5</atY>
             </point>
             <end-1>
-              <x>156</x>
-              <y>739</y>
+              <x>115</x>
+              <y>751</y>
               <connectedSymbol symbol="7"/>
               <text>0..1</text>
             </end-1>
@@ -1777,8 +1989,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="29">
-            <x>546</x>
-            <y>728</y>
+            <x>679</x>
+            <y>729</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.Objednavka" name="DAO_CLASS"/>
             <assocEnd-1 class="cz.kpartl.preprava.dao.ObjednavkaDAO" name="DAO_TARGET"/>
             <showMultiplicity>true</showMultiplicity>
@@ -1799,14 +2011,14 @@ super.tearDown();
               <atY>0.49612403</atY>
             </point>
             <end-1>
-              <x>518</x>
-              <y>638</y>
+              <x>679</x>
+              <y>634</y>
               <connectedSymbol symbol="6"/>
               <text>0..1</text>
             </end-1>
             <end-2>
-              <x>518</x>
-              <y>579</y>
+              <x>570</x>
+              <y>552</y>
               <connectedSymbol symbol="10"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
@@ -1923,8 +2135,8 @@ super.tearDown();
               <text>0..1</text>
             </end-1>
             <end-2>
-              <x>415</x>
-              <y>488</y>
+              <x>362</x>
+              <y>552</y>
               <connectedSymbol symbol="10"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
@@ -1933,8 +2145,8 @@ super.tearDown();
             <style>RECTANGULAR</style>
           </association>
           <association id="33">
-            <x>422</x>
-            <y>371</y>
+            <x>369</x>
+            <y>436</y>
             <assocEnd-1 class="cz.kpartl.preprava.model.Objednavka" name="pridruzena_objednavka"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
@@ -1975,13 +2187,13 @@ super.tearDown();
               <atY>0.49685535</atY>
             </point>
             <end-1>
-              <x>422</x>
-              <y>579</y>
+              <x>368</x>
+              <y>168</y>
               <connectedSymbol symbol="10"/>
             </end-1>
             <end-2>
-              <x>422</x>
-              <y>399</y>
+              <x>369</x>
+              <y>168</y>
               <w>130</w>
               <h>34</h>
               <connectedSymbol symbol="10"/>
@@ -2837,6 +3049,11 @@ getSession().delete(object);
               <association>dao</association>
               <type>4</type>
             </variable>
+            <variable name="attr">
+              <type basicType="int"/>
+              <multiplicity>1</multiplicity>
+              <access>1</access>
+            </variable>
           </variables>
           <operations>
             <operation name="constructor">
@@ -3020,27 +3237,27 @@ getSession().delete(object);
       <generate-property-support>false</generate-property-support>
     </Java-Bean>
     <Unit-Test>
-      <src-dir>test</src-dir>
       <add-junit3-libraries>false</add-junit3-libraries>
+      <src-dir>test</src-dir>
     </Unit-Test>
     <Persistent>
-      <create-hibernate-cfg-xml>false</create-hibernate-cfg-xml>
-      <add-hsqldb-libraries>true</add-hsqldb-libraries>
-      <platform>Hibernate 3</platform>
-      <create-persistence-xml>true</create-persistence-xml>
-      <src-dir>(default)</src-dir>
-      <create-helper-main>true</create-helper-main>
-      <annotate-getters>true</annotate-getters>
-      <generate-dto-associations-many>false</generate-dto-associations-many>
-      <generate-collections-as-set>true</generate-collections-as-set>
       <generate-full-classnames>true</generate-full-classnames>
       <add-hibernate3-libraries>true</add-hibernate3-libraries>
-      <generate-dto>false</generate-dto>
+      <annotate-getters>true</annotate-getters>
+      <platform>Hibernate 3</platform>
+      <create-persistence-xml>true</create-persistence-xml>
+      <generate-dto-associations-many>false</generate-dto-associations-many>
       <generate-interfaces>false</generate-interfaces>
+      <create-hibernate-cfg-xml>false</create-hibernate-cfg-xml>
+      <src-dir>(default)</src-dir>
+      <generate-dto>false</generate-dto>
+      <generate-collections-as-set>true</generate-collections-as-set>
+      <create-helper-main>true</create-helper-main>
+      <add-hsqldb-libraries>true</add-hsqldb-libraries>
     </Persistent>
     <DAO>
-      <src-dir>(default)</src-dir>
       <generate-interfaces>false</generate-interfaces>
+      <src-dir>(default)</src-dir>
       <use-spring-templates>false</use-spring-templates>
     </DAO>
     <GWT-Service>
@@ -3048,15 +3265,15 @@ getSession().delete(object);
     </GWT-Service>
   </codeGenerators>
   <properties>
-    <conf-dir>(default)</conf-dir>
-    <root-package>cz.kpartl.preprava</root-package>
     <create-hibernate-properties>true</create-hibernate-properties>
+    <root-package>cz.kpartl.preprava</root-package>
+    <conf-dir>(default)</conf-dir>
     <create-log4j-properties>true</create-log4j-properties>
   </properties>
   <codeGeneration>
-    <generate-equals-and-hashcode>true</generate-equals-and-hashcode>
-    <source-compatibility>5.0</source-compatibility>
     <grammar>None</grammar>
+    <source-compatibility>5.0</source-compatibility>
+    <generate-equals-and-hashcode>true</generate-equals-and-hashcode>
   </codeGeneration>
   <diagramProperties>
     <link-with-java-editor>false</link-with-java-editor>

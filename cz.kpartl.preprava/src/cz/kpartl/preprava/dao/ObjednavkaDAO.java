@@ -8,6 +8,11 @@ public class ObjednavkaDAO {
 	/**
 	 * @generated
 	 */
+	public int attr;
+
+	/**
+	 * @generated
+	 */
 	public ObjednavkaDAO() {
 	}
 
@@ -61,7 +66,7 @@ public class ObjednavkaDAO {
 	 * @generated
 	 */
 	public String toString() {
-		return "ObjednavkaDAO";
+		return "ObjednavkaDAO" + " attr=" + attr;
 	}
 
 	/**
