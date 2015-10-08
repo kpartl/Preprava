@@ -93,6 +93,7 @@ public class HibernateHelper {
 				config.addClass(cz.kpartl.preprava.model.Destinace.class);
 				config.addClass(cz.kpartl.preprava.model.Objednavka.class);
 				config.addClass(cz.kpartl.preprava.model.Dopravce.class);
+				config.addClass(cz.kpartl.preprava.model.Objednatel.class);
 				return config;
 			}
 

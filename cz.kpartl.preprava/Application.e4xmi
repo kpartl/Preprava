@@ -27,6 +27,7 @@
           </children>
           <children xsi:type="basic:Part" xmi:id="_JZjegBbFEeK06cf066v-uQ" elementId="cz.kpartl.preprava.part.dopravce" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.DopravceView" label="Dopravci"/>
           <children xsi:type="basic:Part" xmi:id="_5Yk4gBdkEeK06cf066v-uQ" elementId="cz.kpartl.preprava.part.uzivatele" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.UzivatelView" label="Uživatelé"/>
+          <children xsi:type="basic:Part" xmi:id="__mME0G0zEeWXVoX3DRJKQA" elementId="cz.kpartl.preprava.part.objednatel" contributionURI="bundleclass://cz.kpartl.preprava/cz.kpartl.preprava.view.ObjednatelView" label="Objednavatel"/>
         </children>
       </children>
     </children>

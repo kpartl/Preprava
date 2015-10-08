@@ -24,6 +24,7 @@ import cz.kpartl.preprava.dao.DestinaceDAO;
 import cz.kpartl.preprava.dao.DopravceDAO;
 import cz.kpartl.preprava.dao.ObjednavkaDAO;
 import cz.kpartl.preprava.dao.PozadavekDAO;
+import cz.kpartl.preprava.dao.ObjednatelDAO;
 import cz.kpartl.preprava.dao.UserDAO;
 import cz.kpartl.preprava.dialog.LoginDialog;
 import cz.kpartl.preprava.importer.DataImporter;
@@ -53,6 +54,7 @@ public class Login {
 	DestinaceDAO zakaznikDAO = null;
 	ObjednavkaDAO objednavkaDAO = null;
 	DopravceDAO dopravceDAO = null;
+	ObjednatelDAO objednatelDAO = null;
 
 	java.util.Properties nastaveni = new Properties();
 
@@ -76,6 +78,7 @@ public class Login {
 		objednavkaDAO = ContextInjectionFactory.make(ObjednavkaDAO.class,
 				context);
 		dopravceDAO = ContextInjectionFactory.make(DopravceDAO.class, context);
+		objednatelDAO = ContextInjectionFactory.make(ObjednatelDAO.class, context);
 
 		/*
 		 * final Connection temporaryCon =
@@ -91,6 +94,7 @@ public class Login {
 		context.set(ObjednavkaDAO.class, objednavkaDAO);
 		context.set(DestinaceDAO.class, zakaznikDAO);
 		context.set(DopravceDAO.class, dopravceDAO);
+		context.set(ObjednatelDAO.class, objednatelDAO);
 		// context.set(Connection.class, temporaryCon);
 
 		addIcon = Activator.getImageDescriptor("icons/add_obj.gif")

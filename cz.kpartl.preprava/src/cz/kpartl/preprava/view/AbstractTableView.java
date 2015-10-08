@@ -318,7 +318,7 @@ public abstract class AbstractTableView extends ViewPart {
 		SelectionAdapter selectionAdapter = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (isBeingDisposed)
+				if (isBeingDisposed || comparator == null)
 					return;
 				comparator.setColumn(index);
 				int dir = comparator.getDirection();

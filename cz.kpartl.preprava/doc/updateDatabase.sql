@@ -76,3 +76,15 @@ vykl_kontakt_osoba = d.kontaktni_osoba,
 vykl_kontakt = d.kontakt
 FROM dbo.tb_objednavka o, dbo.tb_destinace d, dbo.tb_pozadavek p
 WHERE o.pozadavek_id = p.pozadavek_id AND d.destinace_id = destinace_do_id;
+
+use preprava;
+CREATE TABLE dbo.tb_objednatel
+(objednatel_id NUMERIC(19,0) PRIMARY KEY,
+o1 VARCHAR(255) NULL,
+o2 VARCHAR(255) NULL,
+o3 VARCHAR(255) NULL,
+o4 VARCHAR(255) NULL,
+o5 VARCHAR(255) NULL,
+o6 VARCHAR(255) NULL,
+o7 VARCHAR(255) NULL,
+o8 VARCHAR(255) NULL);

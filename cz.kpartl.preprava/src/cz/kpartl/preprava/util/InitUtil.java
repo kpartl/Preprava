@@ -14,6 +14,7 @@ import cz.kpartl.preprava.dao.DopravceDAO;
 import cz.kpartl.preprava.dao.ObjednavkaDAO;
 import cz.kpartl.preprava.dao.PozadavekDAO;
 import cz.kpartl.preprava.dao.UserDAO;
+import cz.kpartl.preprava.dao.ObjednatelDAO;
 import cz.kpartl.preprava.dao.DestinaceDAO;
 import cz.kpartl.preprava.model.Dopravce;
 import cz.kpartl.preprava.model.Objednavka;
@@ -50,6 +51,9 @@ public class InitUtil {
 	
 	@Inject
 	private static DopravceDAO dopravceDAO;
+	
+	@Inject
+	private static ObjednatelDAO objednatelDAO;	
 	
 	public static void initDBData(){		
 		
