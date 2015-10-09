@@ -194,11 +194,8 @@ public class ObjednanoView extends AbstractTableView {
 				.getToolTipText()) {
 			@Override
 			public String getText(Object element) {
-				final Dopravce dopravce = ((Objednavka) element).getDopravce();
-				if (dopravce == null)
-					return "";
+				return notNullStr(((Objednavka) element).getDod_nazev());
 
-				return dopravce.getNazev();
 			}
 		});
 
@@ -579,6 +576,10 @@ public class ObjednanoView extends AbstractTableView {
 		}
 		
 		return "";
+	}
+	
+	public static String notNullStr(String text) {
+		return text != null ? text : "";
 	}
 
 }

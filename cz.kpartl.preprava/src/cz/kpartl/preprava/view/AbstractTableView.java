@@ -1,14 +1,10 @@
 package cz.kpartl.preprava.view;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
@@ -20,12 +16,9 @@ import cz.kpartl.preprava.util.Login;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.impl.TrimmedWindowImpl;
-import org.eclipse.e4.ui.model.application.ui.menu.MMenu;
-import org.eclipse.e4.ui.model.application.ui.menu.MMenuElement;
 import org.eclipse.e4.ui.model.application.ui.menu.impl.HandledToolItemImpl;
 import org.eclipse.e4.ui.model.application.ui.menu.impl.MenuImpl;
 import org.eclipse.e4.ui.services.IStylingEngine;
@@ -33,8 +26,6 @@ import org.eclipse.e4.ui.workbench.UIEvents;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
-import org.eclipse.e4.ui.workbench.swt.modeling.EMenuService;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
@@ -145,7 +136,7 @@ public abstract class AbstractTableView extends ViewPart {
 					.equals(activePerspective.getElementId()))) {
 				MPerspective prepravaPerspective = (MPerspective) modelService
 						.find("cz.kpartl.preprava.perspective.preprava", app);
-				
+
 				app.getContext().set("cz.kpartl.preprava.administrace", "0");
 
 			}
@@ -378,34 +369,69 @@ public abstract class AbstractTableView extends ViewPart {
 				return ((Pozadavek) element).getDatum_vykladky();
 			}
 		});
-
-		col = createTableViewerColumn("Odkud", 150, columnIndex++,
-				"Výchozí destinace");
-		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
-				.getToolTipText()) {
-			@Override
-			public String getText(Object element) {
-				if (element instanceof Objednavka) {
-					element = ((Objednavka) element).getPozadavek();
+		
+			col = createTableViewerColumn("Odkud", 150, columnIndex++,
+					"Výchozí destinace");
+			col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+					.getToolTipText()) {
+				@Override
+				public String getText(Object element) {
+					if (element instanceof Objednavka) {
+						return notNullStr(((Objednavka) element)
+								.getNakl_nazev());
+					} else
+						return ((Pozadavek) element).getDestinaceZNazevACislo();
 				}
-				return ((Pozadavek) element).getDestinaceZNazevACislo();
+			});
 
-			}
-		});
+			col = createTableViewerColumn("Kam", 150, columnIndex++,
+					"Cílová destinace");
+			col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+					.getToolTipText()) {
+				@Override
+				public String getText(Object element) {
+					if (element instanceof Objednavka) {
+						return notNullStr(((Objednavka) element)
+								.getVykl_nazev());
+					} else
+						return ((Pozadavek) element)
+								.getDestinaceDoNazevACislo();
 
-		col = createTableViewerColumn("Kam", 150, columnIndex++,
-				"Cílová destinace");
-		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
-				.getToolTipText()) {
-			@Override
-			public String getText(Object element) {
-				if (element instanceof Objednavka) {
-					element = ((Objednavka) element).getPozadavek();
 				}
-				return ((Pozadavek) element).getDestinaceDoNazevACislo();
+			});
 
-			}
-		});
+			col = createTableViewerColumn("Kontakt ODKUD", 200, columnIndex++,
+					"Kontaktní osoba u výchozí destinace");
+			col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+					.getToolTipText()) {
+				@Override
+				public String getText(Object element) {
+					if (element instanceof Objednavka) {
+						return getSpojenyString(
+								((Objednavka) element).getNakl_kontakt_osoba(),
+								((Objednavka) element).getNakl_kontakt());
+					}
+					return ((Pozadavek) element).getDestinaceZKontaktAOsobu();
+
+				}
+			});
+
+			col = createTableViewerColumn("Kontakt KAM", 200, columnIndex++,
+					"Kontaktní osoba u cílové destinace");
+			col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
+					.getToolTipText()) {
+				@Override
+				public String getText(Object element) {
+					if (element instanceof Objednavka) {
+						return getSpojenyString(
+								((Objednavka) element).getVykl_kontakt_osoba(),
+								((Objednavka) element).getVykl_kontakt());
+					}
+					return ((Pozadavek) element).getDestinaceDoKontaktAOsobu();
+
+				}
+			});
+		
 
 		col = createTableViewerColumn("Hmotnost Kg", 60, columnIndex++,
 				"Celková hmotnost zásilky v Kg");
@@ -492,34 +518,6 @@ public abstract class AbstractTableView extends ViewPart {
 					return checkedImage;
 				}
 				return uncheckedImage;
-			}
-		});
-
-		col = createTableViewerColumn("Kontakt ODKUD", 200, columnIndex++,
-				"Kontaktní osoba u výchozí destinace");
-		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
-				.getToolTipText()) {
-			@Override
-			public String getText(Object element) {
-				if (element instanceof Objednavka) {
-					element = ((Objednavka) element).getPozadavek();
-				}
-				return ((Pozadavek) element).getDestinaceZKontaktAOsobu();
-
-			}
-		});
-
-		col = createTableViewerColumn("Kontakt KAM", 200, columnIndex++,
-				"Kontaktní osoba u cílové destinace");
-		col.setLabelProvider(new TooltipColumnLabelProvider(col.getColumn()
-				.getToolTipText()) {
-			@Override
-			public String getText(Object element) {
-				if (element instanceof Objednavka) {
-					element = ((Objednavka) element).getPozadavek();
-				}
-				return ((Pozadavek) element).getDestinaceDoKontaktAOsobu();
-
 			}
 		});
 
@@ -645,6 +643,19 @@ public abstract class AbstractTableView extends ViewPart {
 	@PreDestroy
 	public void dispose() {
 		isBeingDisposed = true;
+	}
+
+	public static String getSpojenyString(String str1, String str2) {
+		if (str1 == null)
+			str1 = "";
+		if (str2 == null)
+			return str1;
+		else
+			return str1.concat(" (").concat(String.valueOf(str2).concat(")"));
+	}
+
+	public static String notNullStr(String text) {
+		return text != null ? text : "";
 	}
 
 	/*

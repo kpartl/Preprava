@@ -1,6 +1,5 @@
 package cz.kpartl.preprava.view;
 
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -9,17 +8,11 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.ui.part.ViewPart;
-
-import cz.kpartl.preprava.model.Dopravce;
 import cz.kpartl.preprava.model.Objednavka;
-import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.util.EventConstants;
 
 public class ObjednavkaDetailView extends PozadavekDetailView {
@@ -111,14 +104,8 @@ public class ObjednavkaDetailView extends PozadavekDetailView {
 				.setText(String.valueOf(objednavka.getCislo_objednavky()));
 
 		faze.setText(ObjednanoView.getFazeKey(objednavka.getFaze()));
-
-		final Dopravce d = objednavka.getDopravce();
-		if (d != null) {
-			dopravce.setText(d.getNazev());
-		}
-
+		dopravce.setText(notNullStr(objednavka.getDod_nazev()));
 		cena.setText(objednavka.getCenaFormated());
-
 		zmenaTerminuNakladky.setText(objednavka.getZmena_nakladky());
 		cisloFakturyDopravce.setText(objednavka
 				.getCisloFakturyDopravceAsString());
@@ -129,8 +116,16 @@ public class ObjednavkaDetailView extends PozadavekDetailView {
 					.getPridruzena_objednavka().getCislo_objednavky()));
 		else
 			pridruzenaObjednavka.setText("");
-		super.fillData();
+		
+		
+		
+		odkud.setText(notNullStr(objednavka.getNakl_nazev()));
+		odkud_kontakt.setText(getSpojenyString(objednavka.getNakl_kontakt_osoba(), objednavka.getNakl_kontakt()));
+
+		kam.setText(notNullStr(objednavka.getVykl_nazev()));
+		kam_kontakt.setText(getSpojenyString(objednavka.getVykl_kontakt_osoba(), objednavka.getVykl_kontakt()));
 	}
+	
 
 	@Inject
 	@Optional
@@ -155,6 +150,18 @@ public class ObjednavkaDetailView extends PozadavekDetailView {
 			this.pozadavek = null;
 			fillData();
 		}
+	}
+	
+	public static String getSpojenyString(String nazev, String cislo){
+		if (nazev == null) nazev = "";
+		if (cislo == null) 
+			return nazev;
+		else
+			return nazev.concat(" (").concat(String.valueOf(cislo).concat(")"));
+	}
+	
+	public static String notNullStr(String text) {
+		return text != null ? text : "";
 	}
 
 }
