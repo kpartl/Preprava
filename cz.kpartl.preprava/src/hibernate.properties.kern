@@ -6,8 +6,8 @@ hibernate.connection.url=jdbc:sqlserver://sklcz01\\SQLEXPRESS;databaseName=Prepr
 hibernate.connection.username=preprava
 hibernate.connection.password=abcd1234
 
-#hibernate.hbm2ddl.auto=create-drop
 hibernate.hbm2ddl.auto=validate
+hibernate.enable_lazy_load_no_trans=true
 
 
 # Optimize performance for unit tests

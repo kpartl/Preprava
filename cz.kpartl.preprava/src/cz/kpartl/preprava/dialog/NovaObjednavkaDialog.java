@@ -269,7 +269,9 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 			public void widgetSelected(SelectionEvent e) {
 				if (updatePozadavek() && updateObjednavku()) {
 				FormularDialog formularDialog = new FormularDialog(parentShell, context, eventBroker, objednavka);
+				//	PokusDialog formularDialog = new PokusDialog(parentShell);
 				if (formularDialog.open() == Window.OK) {
+					close();
 					//TODO
 //					eventBroker.send(EventConstants.POZADAVEK_SELECTION_CHANGED,
 //							selectedPozadavek);
@@ -336,17 +338,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 			objednavka.setDopravce(dopravceMap.get(dopravceCombo
 					.getSelectionIndex()));
 
-			if (novaObjednavka){
-				Long maxCislo = objednavkaDAO.getMaxCisloObjednavky();
-				if(maxCislo==null) maxCislo = (long) 0;
-				objednavka.setCislo_objednavky(maxCislo+1);
-				objednavka.setId(objednavkaDAO.create(objednavka));
-			}
-			else {
-				persistenceHelper.getSession().flush();
-				persistenceHelper.getSession().clear();
-				objednavkaDAO.update(objednavka);
-			}
+			
 			
 			
 			
