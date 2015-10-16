@@ -1141,6 +1141,11 @@ super.tearDown();
               <multiplicity>0..1</multiplicity>
               <access>1</access>
             </variable>
+            <variable name="dod_sap_cislo">
+              <type class="java.lang.String"/>
+              <multiplicity>0..1</multiplicity>
+              <access>1</access>
+            </variable>
           </variables>
           <operations>
             <operation name="constructor">
@@ -1650,6 +1655,7 @@ super.tearDown();
               <attribute>vykl_mesto</attribute>
               <attribute>vykl_kontakt_osoba</attribute>
               <attribute>vykl_kontakt</attribute>
+              <attribute>dod_sap_cislo</attribute>
             </attributes>
             <operations autoDisplay="37" accessVisible="true" parametersVisible="true"/>
           </classSymbol>
@@ -1969,7 +1975,7 @@ super.tearDown();
           </association>
           <association id="27">
             <x>515</x>
-            <y>462</y>
+            <y>468</y>
             <assocEnd-0 class="cz.kpartl.preprava.model.Pozadavek" name="objednavka"/>
             <assocEnd-1 class="cz.kpartl.preprava.model.Objednavka" name="pozadavek"/>
             <showMultiplicity>true</showMultiplicity>
@@ -2049,7 +2055,7 @@ super.tearDown();
           </association>
           <association id="29">
             <x>410</x>
-            <y>570</y>
+            <y>579</y>
             <assocEnd-1 class="cz.kpartl.preprava.model.Objednavka" name="dopravce"/>
             <showMultiplicity>true</showMultiplicity>
             <point>
@@ -2152,7 +2158,7 @@ super.tearDown();
             </end-1>
             <end-2>
               <x>570</x>
-              <y>552</y>
+              <y>560</y>
               <connectedSymbol symbol="12"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
@@ -2270,7 +2276,7 @@ super.tearDown();
             </end-1>
             <end-2>
               <x>362</x>
-              <y>552</y>
+              <y>560</y>
               <connectedSymbol symbol="12"/>
               <symbolType>2</symbolType>
               <symbolLength>8</symbolLength>
@@ -2280,7 +2286,7 @@ super.tearDown();
           </association>
           <association id="35">
             <x>369</x>
-            <y>436</y>
+            <y>444</y>
             <assocEnd-1 class="cz.kpartl.preprava.model.Objednavka" name="pridruzena_objednavka"/>
             <showMultiplicity>true</showMultiplicity>
             <point>

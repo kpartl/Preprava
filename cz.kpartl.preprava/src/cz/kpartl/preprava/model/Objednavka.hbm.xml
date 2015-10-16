@@ -100,5 +100,7 @@
       </property>
       <property  name='vykl_kontakt' type='string' column='vykl_kontakt'>
       </property>
+      <property  name='dod_sap_cislo' type='string' column='dod_sap_cislo'>
+      </property>
    </class>
 </hibernate-mapping>

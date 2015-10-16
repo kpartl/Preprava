@@ -1,5 +1,6 @@
 package cz.kpartl.preprava.dialog;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,17 +32,20 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.hibernate.Transaction;
+import org.hibernate.property.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cz.kpartl.preprava.dao.DestinaceDAO;
 import cz.kpartl.preprava.dao.ObjednatelDAO;
 import cz.kpartl.preprava.dao.ObjednavkaDAO;
+import cz.kpartl.preprava.dao.PozadavekDAO;
 import cz.kpartl.preprava.model.Destinace;
 import cz.kpartl.preprava.model.Objednatel;
 import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
+import cz.kpartl.preprava.util.OtherUtils;
 
 public class FormularDialog extends TitleAreaDialog {
 
@@ -51,11 +55,17 @@ public class FormularDialog extends TitleAreaDialog {
 	private Objednavka objednavka;
 	private ObjednavkaDAO objednavkaDAO;
 	private ObjednatelDAO objednatelDAO;
+	private PozadavekDAO pozadavekDAO;
 	HibernateHelper persistenceHelper;
-	Text obj1, obj2, obj3,obj4,obj5,obj6,obj7,obj8,dodNazev,dodUlice,dodPsc,dodDic,dodIc,destZNazev,destZUlice,destZPsc,destZMesto,destZKontOs,destZKontakt,specZbozi,adr,destDoNazev,destDoUlice,
-	destDoPsc,destDoMesto,destDoKontOs,destDoKontakt,prepravniPodminky,poznamky;
+	Text obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8, dodNazev, dodUlice,
+			dodPsc, dodDic, dodIc, destZNazev, destZUlice, destZPsc,
+			destZMesto, destZKontOs, destZKontakt, specZbozi, adr, destDoNazev,
+			destDoUlice, destDoPsc, destDoMesto, destDoKontOs, destDoKontakt,
+			prepravniPodminky, poznamky, cisloObjednavky, datumObjednavky,
+			terminNakladky, dodSapCislo, hmotnost, dodMesto, pocetPalet,
+			terminVykladky, cena, poznamka;
+	Button stohovatelne;
 
-	
 	Destinace destinace;
 	final Logger logger = LoggerFactory.getLogger(NovaDestinaceDialog.class);
 
@@ -77,6 +87,7 @@ public class FormularDialog extends TitleAreaDialog {
 		this.objednavka = objednavka;
 		this.objednatelDAO = context.get(ObjednatelDAO.class);
 		this.objednavkaDAO = context.get(ObjednavkaDAO.class);
+		this.pozadavekDAO = context.get(PozadavekDAO.class);
 		this.eventBroker = eventBroker;
 		persistenceHelper = cz.kpartl.preprava.util.HibernateHelper
 				.getInstance();
@@ -85,7 +96,7 @@ public class FormularDialog extends TitleAreaDialog {
 
 	@Override
 	protected void setShellStyle(int newShellStyle) {
-		super.setShellStyle(newShellStyle | SWT.RESIZE | SWT.MAX );
+		super.setShellStyle(newShellStyle | SWT.RESIZE | SWT.MAX);
 	}
 
 	@Override
@@ -100,22 +111,23 @@ public class FormularDialog extends TitleAreaDialog {
 	@Override
 	protected Control createDialogArea(Composite superParent) {
 
-		 Composite area = (Composite) super.createDialogArea (superParent);
+		boolean novaObjednavka = objednavka.getId() == null;
 
-		 ScrolledComposite scrolledComposite = new ScrolledComposite (area, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		 GridData gridData = new GridData (SWT.FILL, SWT.FILL, false, false, 1, 1);
-		 gridData.heightHint = 600 ;// adjustable size, indispensable
-		 scrolledComposite.setLayoutData (gridData);
-		 scrolledComposite.setExpandHorizontal (true);
-		 scrolledComposite.setExpandVertical (true);
-		 scrolledComposite.setAlwaysShowScrollBars (true);
+		Composite area = (Composite) super.createDialogArea(superParent);
 
+		ScrolledComposite scrolledComposite = new ScrolledComposite(area,
+				SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+		gridData.heightHint = 600;// adjustable size, indispensable
+		scrolledComposite.setLayoutData(gridData);
+		scrolledComposite.setExpandHorizontal(true);
+		scrolledComposite.setExpandVertical(true);
+		scrolledComposite.setAlwaysShowScrollBars(true);
 
-		 Composite container = new Composite (scrolledComposite, SWT.NONE);
-		 container.setLayout (new FillLayout (SWT.HORIZONTAL));
+		Composite container = new Composite(scrolledComposite, SWT.NONE);
+		container.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-		 Composite parent = new Composite (container, SWT.NONE);
-		 
+		Composite parent = new Composite(container, SWT.NONE);
 
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginBottom = 5;
@@ -139,7 +151,7 @@ public class FormularDialog extends TitleAreaDialog {
 		gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
 		// gridData.horizontalSpan = 2;
 		dGroup.setLayoutData(gridData);
-		dGroup.setLayout(groupLayout);
+		dGroup.setLayout(new GridLayout(2, false));
 
 		final Label objednavatelLabel = new Label(oGroup, SWT.BORDER_SOLID);
 		objednavatelLabel.setLayoutData(getHSpanGridData(2));
@@ -162,211 +174,235 @@ public class FormularDialog extends TitleAreaDialog {
 		obj7 = createText(oGroup, objednavka.getObjednavka7());
 		obj8 = createText(oGroup, objednavka.getObjednavka8());
 
-		dodNazev = createText(dGroup, notNullStr(objednavka.getDod_nazev()));
-		dodUlice = createText(dGroup, notNullStr(objednavka.getDod_ulice()));
-		dodPsc = createText(dGroup, notNullStr(objednavka.getDod_psc()) + ", "
-				+ notNullStr(objednavka.getDod_mesto()));
-		dodDic=createText(dGroup, "DIÈ: " + notNullStr(objednavka.getDod_dic()));
-		dodIc=createText(dGroup, "IÈ: " + notNullStr(objednavka.getDod_ic()));
+		dodNazev = createText(dGroup, notNullStr(objednavka.getDod_nazev()), 2);
+		dodUlice = createText(dGroup, notNullStr(objednavka.getDod_ulice()), 2);
+		dodPsc = createText(dGroup, notNullStr(objednavka.getDod_psc()));
+		dodMesto = createText(dGroup, notNullStr(objednavka.getDod_mesto()));
+		getLabel("DIÈ:", dGroup);
+		dodDic = createText(dGroup, notNullStr(objednavka.getDod_dic()));
+		getLabel("IÈ:", dGroup);
+		dodIc = createText(dGroup, notNullStr(objednavka.getDod_ic()));
 
-		Label sap = new Label(dGroup, SWT.NONE);
-		sap.setLayoutData(getHSpanGridData(2));
-		sap.setText("Dodavatelské èíslo: ");
-		if (objednavka.getDopravce() != null) {
-			sap.setText(sap.getText() + objednavka.getDopravce().getSap_cislo());
-		}
+		getLabel("Dodavatelské èíslo:", dGroup);
+		dodSapCislo = createText(dGroup, novaObjednavka ? objednavka
+				.getDopravce().getSap_cislo() : objednavka.getDod_sap_cislo());
 
 		// detail group
 		Group detailGroup = new Group(parent, SWT.NONE);
-		gridData = new GridData(SWT.FILL, SWT.FILL,  true, false);
+		gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gridData.horizontalSpan = 2;
 		detailGroup.setLayoutData(gridData);
 		groupLayout = new GridLayout(6, false);
 		detailGroup.setLayout(groupLayout);
+
+		getLabel("Èíslo objednávky:", detailGroup);
+
+		cisloObjednavky = createText(
+				detailGroup,
+				formatCislo(String.valueOf(objednavka.getCislo_objednavky()), 6),
+				2);
+
+		getLabel("Datum objednávky:", detailGroup);
+		datumObjednavky = createText(detailGroup, new SimpleDateFormat(
+				"dd.MM.yyyy").format(novaObjednavka ? new Date() : objednavka
+				.getDatum()), 2);
+
+		getLabel("Termín nakládky:", detailGroup);
+		terminNakladky = createText(detailGroup, objednavka.getPozadavek()
+				.getDatum_nakladky(), 5);
+
+		getLabel("Místo nakládky:", detailGroup);
+		getLabel("Firma:", detailGroup, 2);
+		destZNazev = createText(detailGroup, novaObjednavka ? notNullStr(objednavka
+				.getPozadavek().getDestinace_z().getNazev()) : objednavka.getNakl_nazev(), 3);
+
+		getLabel("", detailGroup);
+		getLabel("Adresa:", detailGroup, 2);
+		destZUlice = createText(detailGroup, novaObjednavka ? notNullStr(objednavka
+				.getPozadavek().getDestinace_z().getUlice()) : objednavka.getNakl_ulice(), 3);
+
+		getLabel(" ", detailGroup, 3);
+
+		destZPsc = createText(detailGroup, novaObjednavka ? notNullStr(objednavka.getPozadavek()
+				.getDestinace_z().getPSC()) : objednavka.getNakl_psc());
 		
-		getGrayLabel("Èíslo objednávky:", detailGroup);
+		destZMesto = createText(detailGroup, novaObjednavka ? notNullStr(objednavka
+				.getPozadavek().getDestinace_z().getMesto()) : objednavka.getNakl_mesto(), 2);
 
-		Label cislo = new Label(detailGroup, SWT.NONE);
-		cislo.setLayoutData(getHSpanGridData(2));
-		cislo.setText(formatCislo(
-				String.valueOf(objednavka.getCislo_objednavky()), 6));
+		getLabel(" ", detailGroup);
+		getLabel("Kontaktní osoba", detailGroup, 2);
+		destZKontOs = createText(detailGroup, novaObjednavka ? notNullStr(objednavka
+				.getPozadavek().getDestinace_z().getKontaktni_osoba()) : objednavka.getNakl_kontakt_osoba(), 3);
 
+		getLabel(" ", detailGroup);
+		getLabel("Kontakt", detailGroup, 2);
+		destZKontakt = createText(detailGroup, novaObjednavka ? notNullStr(objednavka
+				.getPozadavek().getDestinace_z().getKontakt()) :  objednavka.getNakl_kontakt(), 3);
+
+		getLabel("Specifikace zboží:", detailGroup);
+
+		specZbozi = createText(detailGroup,
+				notNullStr(objednavka.getSpec_zbozi()), 5);
+
+		getLabel("", detailGroup);
+		getLabel("Hmotnost", detailGroup);
+		hmotnost = createText(detailGroup, objednavka.getPozadavek()
+				.getCelkova_hmotnost(), 2);
+
+		getLabel("ADR", detailGroup);
+		adr = createText(detailGroup, notNullStr(objednavka.getAdr()));
+		getLabel("", detailGroup);
+		getLabel("Poèet palet:", detailGroup);
+		pocetPalet = createText(detailGroup, notNullStr(objednavka
+				.getPozadavek().getPocet_palet()), 2);
+		getLabel("Stohovatelné?", detailGroup);
+
+		stohovatelne = new Button(detailGroup, SWT.CHECK);
+		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
+		stohovatelne.setLayoutData(gridData);
+		stohovatelne.setSelection(objednavka.getPozadavek()
+				.getJe_stohovatelne());
+
+		getLabel("Termín vykládky:", detailGroup);
+		terminVykladky = createText(detailGroup, notNullStr(objednavka
+				.getPozadavek().getDatum_vykladky()), 5);
+
+		getLabel("Místo vykládky:", detailGroup);
+		getLabel("Firma:", detailGroup, 2);
+		destDoNazev = createText(detailGroup, novaObjednavka ? notNullStr(objednavka
+				.getPozadavek().getDestinace_do().getNazev()) :  objednavka.getVykl_nazev(), 3);
+
+		getLabel("", detailGroup);
+		getLabel("Adresa:", detailGroup, 2);
+		destDoUlice = createText(detailGroup, novaObjednavka ? notNullStr(objednavka
+				.getPozadavek().getDestinace_do().getUlice()) : objednavka.getVykl_ulice(), 3);
+
+		getLabel(" ", detailGroup, 3);
+
+		destDoPsc = createText(detailGroup, novaObjednavka ? notNullStr(objednavka
+				.getPozadavek().getDestinace_do().getPSC()) : objednavka.getVykl_psc());
 		
-		getGrayLabel("Datum objednávky:", detailGroup);
-		Label datum = new Label(detailGroup, SWT.NONE);
-		datum.setLayoutData(getHSpanGridData(2));
-		datum.setText(new SimpleDateFormat("dd.MM.yyyy").format(objednavka
-				.getDatum() != null ? objednavka.getDatum() : new Date()));
+		destDoMesto = createText(detailGroup, novaObjednavka ? notNullStr(objednavka
+				.getPozadavek().getDestinace_do().getMesto()) : objednavka.getVykl_mesto(), 2);
 
-		getGrayLabel("Termín nakládky:", detailGroup);
-		Label termin = new Label(detailGroup, SWT.NONE);
-		termin.setLayoutData(getHSpanGridData(5));
-		termin.setText(objednavka.getPozadavek().getDatum_nakladky());
+		getLabel(" ", detailGroup);
+		
+		getLabel("Kontaktní osoba", detailGroup, 2);
+		destDoKontOs = createText(detailGroup, novaObjednavka ? notNullStr(objednavka
+				.getPozadavek().getDestinace_do().getKontaktni_osoba()) : objednavka.getVykl_kontakt_osoba(), 3);
 
-		getGrayLabel("Místo nakládky:", detailGroup);
-		getGrayLabel("Firma:", detailGroup, 2);
-		destZNazev=createText(detailGroup, notNullStr(objednavka.getPozadavek()
-				.getDestinace_z().getNazev()), 3);
+		getLabel(" ", detailGroup);
+		getLabel("Kontakt", detailGroup, 2);
+		destDoKontakt = createText(detailGroup, novaObjednavka ? notNullStr(objednavka
+				.getPozadavek().getDestinace_do().getKontakt()) : objednavka.getVykl_kontakt(), 3);
 
-		getGrayLabel("", detailGroup);
-		getGrayLabel("Adresa:", detailGroup, 2);
-		destZUlice=createText(detailGroup, notNullStr(objednavka.getPozadavek()
-				.getDestinace_z().getUlice()), 3);
+		getLabel("Cena za dopravu:", detailGroup);
+		cena = createText(detailGroup,
+				notNullStr(objednavka.getCenaFormated()), 5);
 
-		getGrayLabel(" ", detailGroup, 3);
+		getLabel("Pøepravní podmínky:", detailGroup);
+		prepravniPodminky = createText(detailGroup,
+				notNullStr(objednavka.getPreprav_podminky()), 5);
 
-		destZPsc=createText(detailGroup, notNullStr(objednavka.getPozadavek()
-				.getDestinace_z().getPSC()));
-		destZMesto=createText(detailGroup, notNullStr(objednavka.getPozadavek()
-				.getDestinace_z().getMesto()), 2);
-
-		getGrayLabel(" ", detailGroup);
-		getGrayLabel("Kontaktní osoba", detailGroup, 2);
-		destZKontOs=createText(detailGroup, notNullStr(objednavka.getPozadavek()
-				.getDestinace_z().getKontaktni_osoba()), 3);
-
-		getGrayLabel(" ", detailGroup);
-		getGrayLabel("Kontakt", detailGroup, 2);
-		destZKontakt=createText(detailGroup, notNullStr(objednavka.getPozadavek()
-				.getDestinace_z().getKontakt()), 3);
-
-		getGrayLabel("Specifikace zboží:", detailGroup);
-		specZbozi=createText(detailGroup, "", 5);
-
-		getGrayLabel("", detailGroup);
-		getGrayLabel("Hmotnost", detailGroup);
-		getWhiteLabel(objednavka.getPozadavek().getCelkova_hmotnost(),
-				detailGroup, 2);
-		getGrayLabel("ADR", detailGroup);
-		adr=createText(detailGroup, notNullStr(objednavka.getAdr()));
-		getGrayLabel("", detailGroup);
-		getGrayLabel("Poèet palet:", detailGroup);
-		getWhiteLabel(objednavka.getPozadavek().getPocet_palet(), detailGroup, 2);
-		getGrayLabel("Stohovatelné?", detailGroup);
-		getGrayLabel(objednavka.getPozadavek().getJe_stohovatelne() ? "ano"
-				: "ne", detailGroup);
-
-		getGrayLabel("Termín vykládky:", detailGroup);
-		getGrayLabel(notNullStr(objednavka.getPozadavek().getDatum_vykladky()),
-				detailGroup, 5);
-
-		getGrayLabel("Místo vykládky:", detailGroup);
-		getGrayLabel("Firma:", detailGroup, 2);
-		destDoNazev=createText(detailGroup, notNullStr(objednavka.getPozadavek()
-				.getDestinace_do().getNazev()), 3);
-
-		getGrayLabel("", detailGroup);
-		getGrayLabel("Adresa:", detailGroup, 2);
-		destDoUlice=createText(detailGroup, notNullStr(objednavka.getPozadavek()
-				.getDestinace_do().getUlice()), 3);
-
-		getGrayLabel(" ", detailGroup, 3);
-
-		destDoPsc=createText(detailGroup, notNullStr(objednavka.getPozadavek()
-				.getDestinace_do().getPSC()));
-		destDoMesto=createText(detailGroup, notNullStr(objednavka.getPozadavek()
-				.getDestinace_do().getMesto()), 2);
-
-		getGrayLabel(" ", detailGroup);
-		getGrayLabel("Kontaktní osoba", detailGroup, 2);
-		destDoKontOs=createText(detailGroup, notNullStr(objednavka.getPozadavek()
-				.getDestinace_do().getKontaktni_osoba()), 3);
-
-		getGrayLabel(" ", detailGroup);
-		getGrayLabel("Kontakt", detailGroup, 2);
-		destDoKontakt=createText(detailGroup, notNullStr(objednavka.getPozadavek()
-				.getDestinace_do().getKontakt()), 3);
-
-		getGrayLabel("Cena za dopravu:", detailGroup);
-		getWhiteLabel(notNullStr(objednavka.getCenaFormated()), detailGroup, 5);
-
-		getGrayLabel("Pøepravní podmínky:", detailGroup);
-		prepravniPodminky=createText(detailGroup, "", 5);
-
-		getGrayLabel("Poznámka:", detailGroup);
-		getWhiteLabel(notNullStr(objednavka.getPozadavek().getPoznamka()),
-				detailGroup, 5);
-		poznamky = new Text(detailGroup, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		getLabel("Poznámka:", detailGroup);
+		poznamka = createText(detailGroup, notNullStr(objednavka.getPozadavek()
+				.getPoznamka()), 5);
+		poznamky = new Text(detailGroup, SWT.MULTI | SWT.BORDER | SWT.WRAP
+				| SWT.V_SCROLL);
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = 6;
-		gridData.heightHint=90;
+		gridData.heightHint = 90;
 		poznamky.setLayoutData(gridData);
-		
-		final Button okButton = new Button(parent, SWT.PUSH);
-		parent.getShell().setDefaultButton(okButton);
-		gridData = new GridData(80, 25);
-		okButton.setLayoutData(gridData);
-		okButton.setText("Uložit");
+		poznamky.setText(getPoznamky());
 
-		okButton.setLayoutData(gridData);
-		okButton.setData(IDialogConstants.OK_ID);
-		okButton.addSelectionListener(new SelectionAdapter() {
+		scrolledComposite.setContent(container);
+		scrolledComposite.setMinSize(container.computeSize(SWT.DEFAULT,
+				SWT.DEFAULT));
+		return area;
+
+	}
+
+	@Override
+	protected void okPressed() {
+		if (saveBeforeClose())
+			super.okPressed();
+	}
+
+	@Override
+	protected void createButtonsForButtonBar(Composite parent) {
+
+		// Change parent layout data to fill the whole bar
+		parent.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+		createButton(parent, IDialogConstants.OK_ID, "Uložit", true);
+		Button okAndPrintButton = createButton(parent, IDialogConstants.NO_ID,
+				"Uložit a tisk", false);
+		okAndPrintButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				boolean novaObjednavka = objednavka.getId() == null;
-				final ArrayList<String> validace = validate();
-				if (validace.size() == 0) {
-					fillObjednavka();
-					// destinace.setUlice(ulice.getText());
-					Transaction tx = persistenceHelper.beginTransaction();
-					try {
-						if (novaObjednavka){
-							Long maxCislo = objednavkaDAO.getMaxCisloObjednavky();
-							if(maxCislo==null) maxCislo = (long) 0;
-							objednavka.setCislo_objednavky(maxCislo+1);
-							objednavka.setId(objednavkaDAO.create(objednavka));
-						}
-						else {
-							persistenceHelper.getSession().flush();
-							persistenceHelper.getSession().clear();
-							objednavkaDAO.update(objednavka);
-						}
-						tx.commit();
-						persistenceHelper.getSession().flush();
-						// persistenceHelper.getSession().close();
-
-						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
-
-						close();
-					} catch (Exception ex) {
-						tx.rollback();
-						setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
-								.concat(System.getProperty("line.separator"))
-								.concat(ex.getMessage()));
-						logger.error("Nelze vložit/upravit destinaci", ex);
-					}
-
-				} else {
-					String errString = "";
-					for (String validaceMessage : validace)
-						errString = errString.concat(validaceMessage).concat(
-								System.getProperty("line.separator"));
-					setErrorMessage(errString);
+				if (saveBeforeClose()) {
+					// todo print
+					close();
 				}
 			}
 		});
+		// Create a spacer label
+		Label spacer = new Label(parent, SWT.NONE);
+		spacer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-		Button cancelButton = new Button(parent, SWT.PUSH);
-		gridData = new GridData(80, 25);
-		cancelButton.setLayoutData(gridData);
-		cancelButton.setText("Zrušit");
-		cancelButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				close();
-			}
-		});
+		// Update layout of the parent composite to count the spacer
+		GridLayout layout = (GridLayout) parent.getLayout();
+		layout.numColumns++;
+		layout.makeColumnsEqualWidth = false;
 
-		// editace existujiciho pozadavku
-		// fillFields();
+		createButton(parent, IDialogConstants.CANCEL_ID, "Zrušit", false);
 
-		 scrolledComposite.setContent (container);
-		 scrolledComposite.setMinSize (container.computeSize (SWT.DEFAULT, SWT.DEFAULT));
-		return area;
-
+		// //super.createButtonsForButtonBar(parent);
+		// Button okAndSaveButton = new Button(parent, SWT.PUSH);
+		// //setButtonLayoutData(okAndSaveButton);
+		// okAndSaveButton.setText("Uložit a tisk");
+		//
+		// Button okButton = getButton(IDialogConstants.OK_ID);
+		// parent.getShell().setDefaultButton(okButton);
+		// //setButtonLayoutData(okButton);
+		// okButton.setText("Uložit");
+		//
+		// Button cancel = getButton(IDialogConstants.CANCEL_ID);
+		// cancel.setText("Zrušit");
+		// setButtonLayoutData(cancel);
 	}
 
 	protected ArrayList<String> validate() {
 		ArrayList<String> result = new ArrayList<String>();
 		// do result muzu pridat chybove hlasky
+		if (!OtherUtils.isValidDate(datumObjednavky.getText()))
+			result.add("Špatné datum objednávky.");
+
+		try {
+			Long.valueOf(cisloObjednavky.getText());
+		} catch (NumberFormatException e) {
+			result.add("Špatné èíslo objednávky.");
+		}
+
+		cena.setText(cena.getText().trim());
+		// nahrazeni des. tecky carkou
+		if (cena.getText().length() > 0) {
+			final int desTecka = cena.getText().lastIndexOf('.');
+			if (desTecka > 0 && desTecka > cena.getText().length() - 4)
+				cena.setText(cena.getText().substring(0, desTecka) + ","
+						+ cena.getText().substring(desTecka + 1));
+		}
+		final String cenaText = cena.getText().replaceAll("\\.", "")
+				.replace(',', '.');
+		if ("" != cenaText) {
+
+			try {
+				BigDecimal.valueOf(Double.valueOf(cenaText));
+
+			} catch (NumberFormatException ex) {
+				result.add("Špatnì zadaná cena dopravy " + cenaText
+						+ ". Musí být ve tvaru 12345,67");
+			}
+		}
 		return result;
 	}
 
@@ -380,7 +416,7 @@ public class FormularDialog extends TitleAreaDialog {
 		return result;
 	}
 
-	private Label getGrayLabel(String text, Composite parent, int span) {
+	private Label getLabel(String text, Composite parent, int span) {
 		Label result = new Label(parent, SWT.NONE);
 		result.setLayoutData(span > 1 ? getHSpanGridData(span) : getGridData());
 		result.setText(text);
@@ -390,22 +426,8 @@ public class FormularDialog extends TitleAreaDialog {
 		return result;
 	}
 
-	private Label getGrayLabel(String text, Composite parent) {
-		return getGrayLabel(text, parent, 1);
-	}
-
-	private Label getWhiteLabel(String text, Composite parent) {
-		return getWhiteLabel(text, parent, 1);
-	}
-
-	private Label getWhiteLabel(String text, Composite parent, int span) {
-		Label result = new Label(parent, SWT.NONE);
-		result.setLayoutData(span > 1 ? getHSpanGridData(span) : getGridData());
-		result.setText(text);
-		// result.setFont(nr12B);
-		// result.setBackground( new Color(parent.getDisplay(), new RGB(0xc1,
-		// 0xc1, 0xc1)));
-		return result;
+	private Label getLabel(String text, Composite parent) {
+		return getLabel(text, parent, 1);
 	}
 
 	private String formatCislo(String cislo, int pozic) {
@@ -420,10 +442,10 @@ public class FormularDialog extends TitleAreaDialog {
 	}
 
 	private Text createText(Composite parent, String str, int span) {
-		final Text text = new Text(parent, SWT.BORDER | SWT.BEGINNING );
+		final Text text = new Text(parent, SWT.BORDER | SWT.BEGINNING);
 		text.setText(notNullStr(str));
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		//gd.widthHint = 200;
+		// gd.widthHint = 200;
 		gd.horizontalSpan = span;
 		text.setLayoutData(gd);
 		return text;
@@ -448,7 +470,7 @@ public class FormularDialog extends TitleAreaDialog {
 			}
 		}
 	}
-	
+
 	private void fillObjednavka() {
 		objednavka.setObjednavka1(obj1.getText());
 		objednavka.setObjednavka2(obj2.getText());
@@ -461,6 +483,7 @@ public class FormularDialog extends TitleAreaDialog {
 		objednavka.setDod_nazev(dodNazev.getText());
 		objednavka.setDod_ulice(dodUlice.getText());
 		objednavka.setDod_psc(dodPsc.getText());
+		objednavka.setDod_mesto(dodMesto.getText());
 		objednavka.setDod_dic(dodDic.getText());
 		objednavka.setDod_ic(dodIc.getText());
 		objednavka.setNakl_nazev(destZNazev.getText());
@@ -478,34 +501,113 @@ public class FormularDialog extends TitleAreaDialog {
 		objednavka.setVykl_kontakt_osoba(destDoKontOs.getText());
 		objednavka.setVykl_kontakt(destDoKontakt.getText());
 		objednavka.setPreprav_podminky(prepravniPodminky.getText());
+		objednavka.setDatum(OtherUtils.parseDate(datumObjednavky.getText()));
+		objednavka.setCislo_objednavky(Long.valueOf(cisloObjednavky.getText()));
+		objednavka.setDod_sap_cislo(dodSapCislo.getText());
+		objednavka.getPozadavek().setDatum_nakladky(terminNakladky.getText());
+		if ("" != cena.getText())
+			objednavka.setCena(BigDecimal.valueOf(Double.valueOf(cena.getText()
+					.replaceAll("\\.", "").replace(',', '.'))));
+		objednavka.getPozadavek().setDatum_vykladky(terminVykladky.getText());
+		objednavka.getPozadavek().setCelkova_hmotnost(hmotnost.getText());
+		objednavka.getPozadavek().setPocet_palet(pocetPalet.getText());
+		objednavka.getPozadavek().setJe_stohovatelne(
+				stohovatelne.getSelection());
+		objednavka.getPozadavek().setPoznamka(poznamka.getText());
+		
+
 		fillPoznamky();
 	}
-	
+
+	private String getPoznamky() {
+		return notNullStr(objednavka.getPoznamka1())
+				+ notNullStr(objednavka.getPoznamka2())
+				+ notNullStr(objednavka.getPoznamka3())
+				+ notNullStr(objednavka.getPoznamka4())
+				+ notNullStr(objednavka.getPoznamka5());
+	}
+
 	private void fillPoznamky() {
 		if (poznamky.getText().length() > 0)
 			objednavka.setPoznamka1(getSubstring(poznamky.getText(), 0, 255));
-		else return;
+		else
+			return;
 		if (poznamky.getText().length() > 255)
 			objednavka.setPoznamka2(getSubstring(poznamky.getText(), 255, 510));
-		else return;
+		else
+			return;
 		if (poznamky.getText().length() > 510)
 			objednavka.setPoznamka3(getSubstring(poznamky.getText(), 510, 765));
-		else return;
+		else
+			return;
 		if (poznamky.getText().length() > 765)
-			objednavka.setPoznamka4(getSubstring(poznamky.getText(), 765, 1010));
-		else return;
+			objednavka
+					.setPoznamka4(getSubstring(poznamky.getText(), 765, 1010));
+		else
+			return;
 		if (poznamky.getText().length() > 1010)
-			objednavka.setPoznamka5(getSubstring(poznamky.getText(), 1010, 1265));
-		else return;
-		
+			objednavka
+					.setPoznamka5(getSubstring(poznamky.getText(), 1010, 1265));
+		else
+			return;
+
 	}
-	
+
 	private String getSubstring(String str, int from, int to) {
 		if (str == null)
 			return "";
 		else
 			return str.length() < to ? str.substring(from, str.length()) : str
 					.substring(from, to);
+	}
+
+	private boolean saveBeforeClose() {
+		boolean novaObjednavka = objednavka.getId() == null;
+		final ArrayList<String> validace = validate();
+		if (validace.size() == 0) {
+			fillObjednavka();
+			// destinace.setUlice(ulice.getText());
+			Transaction tx = persistenceHelper.beginTransaction();
+			try {
+				if (novaObjednavka) {
+					Long maxCislo = objednavkaDAO.getMaxCisloObjednavky();
+					if (maxCislo == null)
+						maxCislo = (long) 0;
+					objednavka.setCislo_objednavky(maxCislo + 1);
+					objednavka.setId(objednavkaDAO.create(objednavka));
+					pozadavekDAO.update(objednavka.getPozadavek());
+				} else {
+					persistenceHelper.getSession().flush();
+					persistenceHelper.getSession().clear();
+					pozadavekDAO.update(objednavka.getPozadavek());
+					objednavkaDAO.update(objednavka);
+				}
+				tx.commit();
+				persistenceHelper.getSession().flush();
+				// persistenceHelper.getSession().close();
+
+				eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
+				eventBroker.send(EventConstants.OBJEDNAVKA_SELECTION_CHANGED, objednavka);
+
+				return true;
+			} catch (Exception ex) {
+				tx.rollback();
+				setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
+						.concat(System.getProperty("line.separator")).concat(
+								ex.getMessage()));
+				logger.error("Nelze vložit/upravit destinaci", ex);
+				return false;
+			}
+
+		} else {
+			String errString = "";
+			for (String validaceMessage : validace)
+				errString = errString.concat(validaceMessage).concat(
+						System.getProperty("line.separator"));
+			setErrorMessage(errString);
+			return false;
+		}
+
 	}
 
 }

@@ -220,6 +220,11 @@ public class Objednavka implements java.io.Serializable {
 	/**
 	 * @generated
 	 */
+	private String dod_sap_cislo;
+
+	/**
+	 * @generated
+	 */
 	public Objednavka() {
 	}
 
@@ -334,7 +339,8 @@ public class Objednavka implements java.io.Serializable {
 				+ " nakl_kontakt=" + nakl_kontakt + " vykl_nazev=" + vykl_nazev
 				+ " vykl_ulice=" + vykl_ulice + " vykl_psc=" + vykl_psc
 				+ " vykl_mesto=" + vykl_mesto + " vykl_kontakt_osoba="
-				+ vykl_kontakt_osoba + " vykl_kontakt=" + vykl_kontakt;
+				+ vykl_kontakt_osoba + " vykl_kontakt=" + vykl_kontakt
+				+ " dod_sap_cislo=" + dod_sap_cislo;
 	}
 
 	/**
@@ -909,5 +915,19 @@ public class Objednavka implements java.io.Serializable {
 	 */
 	public void setVykl_kontakt(String vykl_kontakt) {
 		this.vykl_kontakt = vykl_kontakt;
+	}
+
+	/**
+	 * @generated
+	 */
+	public String getDod_sap_cislo() {
+		return this.dod_sap_cislo;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setDod_sap_cislo(String dod_sap_cislo) {
+		this.dod_sap_cislo = dod_sap_cislo;
 	}
 }

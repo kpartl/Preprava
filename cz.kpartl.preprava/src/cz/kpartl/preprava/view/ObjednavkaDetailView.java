@@ -1,5 +1,7 @@
 package cz.kpartl.preprava.view;
 
+import java.text.SimpleDateFormat;
+
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -74,7 +76,51 @@ public class ObjednavkaDetailView extends PozadavekDetailView {
 		gridData.horizontalSpan = 4;
 		separator.setLayoutData(gridData);
 
-		super.createPartControl(parent);
+		//super.createPartControl(parent);
+		createBoldLabel(parent, "Datum požadavku: ");
+		datum = new Label(parent, SWT.NONE);
+
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+
+		createBoldLabel(parent, "Požadované datum nakládky: ");
+
+		datumNakladkylabel = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "Požadované datum vykládky: ");
+		datumVykladkylabel = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "Výchozí destinace: ");
+		odkud = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "Kontaktní osoba a kontakt:");
+		odkud_kontakt = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "Cílová destinace: ");
+		kam = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "Kontaktní osoba a kontakt:");
+		kam_kontakt = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "Celková hmotnost zásilky v kg: ");
+		hmotnost = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "Poèet EUR palet: ");
+		palet = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "Palety jsou stohovatelné: ");
+		stohovatelne = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "Je termín nakládky koneèný?: ");
+		termin_konecny = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "TAXI?: ");
+		taxi = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "Hodina nakládky u dodavatele: ");
+		hodina_nakladky = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "Hodina vykládky: ");
+		hodina_vykladky = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "Poznámka: ");
+		poznamka = new Label(parent, SWT.NONE);
+		createBoldLabel(parent, "Zadavatel: ");
+		zadavatel = new Label(parent, SWT.NONE);
+
+		// GridData gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false,
+		// false);
+		// datumNakladkylabel.setLayoutData(gridData);
+		// datumVykladkylabel.setLayoutData(gridData);
+
+	
 
 	}
 
@@ -124,7 +170,28 @@ public class ObjednavkaDetailView extends PozadavekDetailView {
 
 		kam.setText(notNullStr(objednavka.getVykl_nazev()));
 		kam_kontakt.setText(getSpojenyString(objednavka.getVykl_kontakt_osoba(), objednavka.getVykl_kontakt()));
+		
+		// pozadavek
+		datum.setText(new SimpleDateFormat("dd.MM.yyyy").format(pozadavek
+				.getDatum()));
+		datumNakladkylabel.setText(pozadavek.getDatum_nakladky());
+		datumVykladkylabel.setText(pozadavek.getDatum_vykladky());
+
+				
+		hmotnost.setText(pozadavek.getCelkova_hmotnost());
+		palet.setText(pozadavek.getPocet_palet());
+		stohovatelne.setText(pozadavek.getJe_stohovatelne() ?  "ANO" : "NE");
+		termin_konecny.setText(pozadavek.getJe_termin_konecny() ? "ANO" : "NE");
+		taxi.setText(pozadavek.getTaxi() ? "ANO" : "NE");
+		hodina_nakladky.setText(pozadavek.getHodina_nakladky());
+		hodina_vykladky.setText(pozadavek.getHodina_vykladky());
+		poznamka.setText(pozadavek.getPoznamka());
+		zadavatel.setText(pozadavek.getZadavatel().getUsername());
+
+		datumNakladkylabel.getParent().layout();
 	}
+	
+	
 	
 
 	@Inject

@@ -55,6 +55,7 @@ import org.slf4j.LoggerFactory;
 
 import cz.kpartl.preprava.dao.ObjednavkaDAO;
 import cz.kpartl.preprava.dao.PozadavekDAO;
+import cz.kpartl.preprava.dialog.FormularDialog;
 import cz.kpartl.preprava.dialog.NovaObjednavkaDialog;
 import cz.kpartl.preprava.model.Dopravce;
 import cz.kpartl.preprava.model.Objednavka;
@@ -290,8 +291,8 @@ public class ObjednanoView extends AbstractTableView {
 							.getSelection()).getFirstElement();
 					if (selectedObjednavka == null)
 						return;
-					new NovaObjednavkaDialog(shell, context,
-							selectedObjednavka, eventBroker).open();
+					new FormularDialog(shell, context,
+							eventBroker, selectedObjednavka).open();
 				}
 
 			});

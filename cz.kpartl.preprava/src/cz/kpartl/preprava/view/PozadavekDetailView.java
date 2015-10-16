@@ -69,7 +69,7 @@ public class PozadavekDetailView extends ViewPart {
 		this.shell = shell;
 		this.pozadavek = null;
 
-		GridLayout layout = new GridLayout(4, false);
+		GridLayout layout = new GridLayout(4, true);
 		layout.horizontalSpacing = 30;
 		parent.setLayout(layout);
 
