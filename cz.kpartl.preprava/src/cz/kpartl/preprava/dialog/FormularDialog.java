@@ -46,6 +46,7 @@ import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.util.EventConstants;
 import cz.kpartl.preprava.util.HibernateHelper;
 import cz.kpartl.preprava.util.OtherUtils;
+import cz.kpartl.preprava.util.PrintHelper;
 
 public class FormularDialog extends TitleAreaDialog {
 
@@ -70,6 +71,7 @@ public class FormularDialog extends TitleAreaDialog {
 	final Logger logger = LoggerFactory.getLogger(NovaDestinaceDialog.class);
 
 	IEventBroker eventBroker;
+	IEclipseContext context;
 
 	public FormularDialog(
 			@Named(IServiceConstants.ACTIVE_SHELL) Shell parentShell,
@@ -89,6 +91,7 @@ public class FormularDialog extends TitleAreaDialog {
 		this.objednavkaDAO = context.get(ObjednavkaDAO.class);
 		this.pozadavekDAO = context.get(PozadavekDAO.class);
 		this.eventBroker = eventBroker;
+		this.context = context;
 		persistenceHelper = cz.kpartl.preprava.util.HibernateHelper
 				.getInstance();
 		fillObjednatele();
@@ -157,7 +160,7 @@ public class FormularDialog extends TitleAreaDialog {
 		objednavatelLabel.setLayoutData(getHSpanGridData(2));
 		objednavatelLabel.setFont(nr12B);
 		// objednavatelLabel.setBackground(gray);
-		objednavatelLabel.setText("Objednavatel");
+		objednavatelLabel.setText("Objednavatel:");
 
 		final Label dodavatelLabel = new Label(dGroup, SWT.NONE);
 		dodavatelLabel.setLayoutData(getHSpanGridData(2));
@@ -184,8 +187,9 @@ public class FormularDialog extends TitleAreaDialog {
 		dodIc = createText(dGroup, notNullStr(objednavka.getDod_ic()));
 
 		getLabel("Dodavatelské èíslo:", dGroup);
-		dodSapCislo = createText(dGroup, novaObjednavka ? objednavka
-				.getDopravce().getSap_cislo() : objednavka.getDod_sap_cislo());
+		dodSapCislo = createText(dGroup, novaObjednavka &&  objednavka
+				.getDopravce() != null ? objednavka.getDopravce().getSap_cislo() 
+						: objednavka.getDod_sap_cislo());
 
 		// detail group
 		Group detailGroup = new Group(parent, SWT.NONE);
@@ -230,12 +234,12 @@ public class FormularDialog extends TitleAreaDialog {
 				.getPozadavek().getDestinace_z().getMesto()) : objednavka.getNakl_mesto(), 2);
 
 		getLabel(" ", detailGroup);
-		getLabel("Kontaktní osoba", detailGroup, 2);
+		getLabel("Kontaktní osoba:", detailGroup, 2);
 		destZKontOs = createText(detailGroup, novaObjednavka ? notNullStr(objednavka
 				.getPozadavek().getDestinace_z().getKontaktni_osoba()) : objednavka.getNakl_kontakt_osoba(), 3);
 
 		getLabel(" ", detailGroup);
-		getLabel("Kontakt", detailGroup, 2);
+		getLabel("Kontakt:", detailGroup, 2);
 		destZKontakt = createText(detailGroup, novaObjednavka ? notNullStr(objednavka
 				.getPozadavek().getDestinace_z().getKontakt()) :  objednavka.getNakl_kontakt(), 3);
 
@@ -287,12 +291,12 @@ public class FormularDialog extends TitleAreaDialog {
 
 		getLabel(" ", detailGroup);
 		
-		getLabel("Kontaktní osoba", detailGroup, 2);
+		getLabel("Kontaktní osoba:", detailGroup, 2);
 		destDoKontOs = createText(detailGroup, novaObjednavka ? notNullStr(objednavka
 				.getPozadavek().getDestinace_do().getKontaktni_osoba()) : objednavka.getVykl_kontakt_osoba(), 3);
 
 		getLabel(" ", detailGroup);
-		getLabel("Kontakt", detailGroup, 2);
+		getLabel("Kontakt:", detailGroup, 2);
 		destDoKontakt = createText(detailGroup, novaObjednavka ? notNullStr(objednavka
 				.getPozadavek().getDestinace_do().getKontakt()) : objednavka.getVykl_kontakt(), 3);
 
@@ -318,6 +322,10 @@ public class FormularDialog extends TitleAreaDialog {
 		scrolledComposite.setContent(container);
 		scrolledComposite.setMinSize(container.computeSize(SWT.DEFAULT,
 				SWT.DEFAULT));
+		
+		if (objednavka.getFaze() != 0) {
+			setEnabledRecursive(parent, false);
+		}
 		return area;
 
 	}
@@ -329,7 +337,7 @@ public class FormularDialog extends TitleAreaDialog {
 	}
 
 	@Override
-	protected void createButtonsForButtonBar(Composite parent) {
+	protected void createButtonsForButtonBar(final Composite parent) {
 
 		// Change parent layout data to fill the whole bar
 		parent.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -340,7 +348,9 @@ public class FormularDialog extends TitleAreaDialog {
 		okAndPrintButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				if (saveBeforeClose()) {
-					// todo print
+					final PrintHelper printHelper = new PrintHelper(parent.getShell(), context);
+					printHelper
+							.tiskVybraneObjednavky(objednavka);
 					close();
 				}
 			}
@@ -608,6 +618,28 @@ public class FormularDialog extends TitleAreaDialog {
 			return false;
 		}
 
+	}
+	
+	public static void setEnabledRecursive(final Composite composite, final boolean enabled)
+	{
+	    if (composite == null)
+	    	return;
+
+	    Control[] children = composite.getChildren();
+
+	    for (int i = 0; i < children.length; i++)
+	    {
+	        if (children[i] instanceof Composite)
+	        {
+	            setEnabledRecursive((Composite) children[i], enabled);
+	        }
+	        else
+	        {
+	            children[i].setEnabled(enabled);
+	        }
+	    }
+
+	    composite.setEnabled(enabled);
 	}
 
 }

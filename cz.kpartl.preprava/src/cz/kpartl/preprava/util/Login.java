@@ -44,6 +44,7 @@ public class Login {
 	public static final String CHECKED_ICON = "CHECKED_ICON";
 	public static final String UNCHECKED_ICON = "UNCHECKED_ICON";
 	public static final String TISK_ICON = "TISK_ICON";
+	public static final String KERN_ICON = "KERN_ICON";
 
 	volatile boolean authenticated = false;
 
@@ -64,7 +65,7 @@ public class Login {
 			.newFixedThreadPool(1);
 
 	Image addIcon, editIcon, deleteIcon, objednavkaIcon, calendarIcon,
-			checkedIcon, uncheckedIcon, loginIcon, tiskIcon;
+			checkedIcon, uncheckedIcon, loginIcon, tiskIcon, kernIcon;
 
 	@PostContextCreate
 	public void login(IEclipseContext context, IEventBroker eventBroker) {		
@@ -115,6 +116,8 @@ public class Login {
 				.createImage();
 		tiskIcon = Activator.getImageDescriptor("icons/printview_tsk.gif")
 				.createImage();
+		kernIcon = Activator.getImageDescriptor("icons/kernliebers.png")
+				.createImage();
 
 		context.set(ADD_ICON, addIcon);
 		context.set(EDIT_ICON, editIcon);
@@ -124,6 +127,7 @@ public class Login {
 		context.set(CHECKED_ICON, checkedIcon);
 		context.set(UNCHECKED_ICON, uncheckedIcon);
 		context.set(TISK_ICON, tiskIcon);
+		context.set(KERN_ICON, kernIcon);
 
 		InitUtil initUtil = ContextInjectionFactory.make(InitUtil.class,
 				context);

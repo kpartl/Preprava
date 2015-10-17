@@ -367,7 +367,7 @@ public class ObjednanoView extends AbstractTableView {
 	}
 
 	public void tiskVybraneObjednavky() {
-		final PrintHelper printHelper = new PrintHelper(shell);
+		final PrintHelper printHelper = new PrintHelper(shell, context);
 		printHelper
 				.tiskVybraneObjednavky((Objednavka) ((StructuredSelection) viewer
 						.getSelection()).getFirstElement());
