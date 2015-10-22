@@ -291,8 +291,8 @@ public class ObjednanoView extends AbstractTableView {
 							.getSelection()).getFirstElement();
 					if (selectedObjednavka == null)
 						return;
-					new FormularDialog(shell, context,
-							eventBroker, selectedObjednavka).open();
+					new NovaObjednavkaDialog(shell, context,
+							selectedObjednavka, eventBroker).open();
 				}
 
 			});

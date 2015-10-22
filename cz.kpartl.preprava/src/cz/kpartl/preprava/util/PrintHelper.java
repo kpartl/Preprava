@@ -1,5 +1,8 @@
 package cz.kpartl.preprava.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -23,12 +26,12 @@ public class PrintHelper {
 	Shell shell;
 
 	Objednavka objednavka;
-	Font normalFont, boldFont, titleFont;
+	Font normalFont, boldFont,boldItalicFont, titleFont;
 	Color foregroundColor, backgroundColor;
 
 	Printer printer;
 	GC gc;
-	Font titleText, normalText, boldText;
+	Font titleText, normalText, boldText, boldItalicText;
 	Color printerForegroundColor, printerBackgroundColor;
 
 	int lineHeight = 0;
@@ -36,12 +39,13 @@ public class PrintHelper {
 	int leftMargin, rightMargin, topMargin, bottomMargin, titleTopMargin;
 	int x, y;
 	int index, end;
+	int colWidth = 400;
 	int col1 = 0;
-	int col2 = 300;
-	int col3 = 600;
-	int col4 = 900;
-	int col5 = 1200;
-	int col6 = 1500;
+	int col2 = colWidth + 20;
+	int col3 = 2 * colWidth;
+	int col4 = 3 * colWidth;
+	int col5 = 4 * colWidth;
+	int col6 = 5 * colWidth;
 	String textToPrint;
 	ImageData kernIcon;
 	String tabs;
@@ -77,6 +81,7 @@ public class PrintHelper {
 		printer = new Printer(data);
 		normalFont = new Font(shell.getDisplay(), "Times New Roman", 12, SWT.NORMAL);
 		boldFont = new Font(shell.getDisplay(), "Times New Roman", 12, SWT.BOLD);
+		boldItalicFont = new Font(shell.getDisplay(), "Times New Roman", 12, SWT.BOLD | SWT.ITALIC);
 		titleFont = new Font(shell.getDisplay(), "Times New Roman", 16, SWT.BOLD);
 		foregroundColor = shell.getDisplay().getSystemColor(SWT.COLOR_BLACK);
 		backgroundColor = shell.getDisplay().getSystemColor(SWT.COLOR_WHITE);
@@ -132,7 +137,8 @@ public class PrintHelper {
 			Rectangle clientArea = printer.getClientArea();
 			Rectangle trim = printer.computeTrim(0, 0, 0, 0);
 			Point dpi = printer.getDPI();
-			leftMargin = dpi.x + trim.x; // one inch from left side of paper
+			//leftMargin = dpi.x + trim.x; // one inch from left side of paper
+			leftMargin = 30;
 			col1 += leftMargin;
 			col2 += leftMargin;
 			col3 += leftMargin;
@@ -177,6 +183,9 @@ public class PrintHelper {
 					fontData.getHeight(), fontData.getStyle());
 			fontData = boldFont.getFontData()[0];
 			boldText = new Font(printer, fontData.getName(),
+					fontData.getHeight(), fontData.getStyle());
+			fontData = boldItalicFont.getFontData()[0];
+			boldItalicText = new Font(printer, fontData.getName(),
 					fontData.getHeight(), fontData.getStyle());
 			
 			tabWidth = gc.stringExtent(tabs).x;
@@ -242,7 +251,7 @@ public class PrintHelper {
 		newline();
 		gc.drawString(objednavka.getObjednavka3(), col1, y);
 		gc.drawString(objednavka.getDod_psc(), col4, y);
-		gc.drawString(objednavka.getDod_mesto(), col4, y);
+		gc.drawString(objednavka.getDod_mesto(), col5, y);
 		newline();
 		gc.drawString(objednavka.getObjednavka4(), col1, y);
 		gc.drawString("DIÈ: " + objednavka.getDod_dic(), col4, y);
@@ -257,7 +266,122 @@ public class PrintHelper {
 		gc.drawString(objednavka.getObjednavka7(), col1, y);
 		newline();
 		gc.drawString(objednavka.getObjednavka8(), col1, y);
+		newline();
 		
+		gc.setFont(boldText);
+		gc.drawString("Èíslo objednávky: ", col1, y);
+		gc.drawString("Datum objednávky: ", col4, y);
+		gc.setFont(normalText);
+		gc.drawString(String.valueOf(objednavka.getCislo_objednavky()), col2, y);
+		gc.drawString(getDatumAsText(objednavka.getDatum()), col5, y);
+		newline();
+		
+		gc.setFont(boldText);
+		gc.drawString("Termín nakládky: ", col1, y);
+		gc.setFont(normalText);
+		gc.drawString(objednavka.getPozadavek().getDatum_nakladky() + " " + objednavka.getPozadavek().getHodina_nakladky(), col2, y);
+		newline();
+		
+		gc.drawString("Firma: ", col2, y);
+		gc.drawString(objednavka.getNakl_nazev(), col4, y);
+		newline();
+		
+		gc.drawString("Adresa: ", col2, y);
+		gc.drawString(objednavka.getNakl_ulice(), col4, y);
+		newline();
+		
+		gc.setFont(boldText);
+		gc.drawString("Místo nakládky: ", col1, y);
+		gc.setFont(normalText);
+		gc.drawString(objednavka.getNakl_psc(), col4, y);
+		gc.drawString(objednavka.getNakl_mesto(), col5, y);
+		newline();
+		
+		gc.drawString("Kontaktní osoba:", col2, y);
+		gc.drawString(objednavka.getNakl_kontakt_osoba(), col4, y);
+		newline();
+		
+		gc.drawString("Kontakt:", col2, y);
+		gc.drawString(objednavka.getNakl_kontakt(), col4, y);
+		newline();
+		
+		gc.drawString(objednavka.getSpec_zbozi(), col2, y);
+		newline();
+		
+		gc.setFont(boldText);
+		gc.drawString("Specifikace zboží:", col1, y);
+		gc.setFont(normalText);
+		gc.drawString("Hmotnost:", col2, y);
+		gc.drawString(objednavka.getPozadavek().getCelkova_hmotnost(), col3, y);
+		gc.drawString("ADR:", col5, y);
+		gc.drawString(objednavka.getAdr(), col6, y);
+		newline();
+		gc.drawString("Poèet palet:", col2, y);
+		gc.drawString(objednavka.getPozadavek().getPocet_palet(), col3, y);
+		gc.drawString("Stohovatelné?", col5, y);
+		gc.drawString(objednavka.getPozadavek().getJe_stohovatelne() ? "ano":"ne", col6, y);
+		newline();
+		
+		gc.setFont(boldText);
+		gc.drawString("Termín vykládky: ", col1, y);
+		gc.setFont(normalText);
+		gc.drawString(objednavka.getPozadavek().getDatum_vykladky() + " " + objednavka.getPozadavek().getHodina_vykladky(), col2, y);
+		newline();
+		
+		gc.drawString("Firma: ", col2, y);
+		gc.drawString(objednavka.getVykl_nazev(), col4, y);
+		newline();
+		
+		gc.drawString("Adresa: ", col2, y);
+		gc.drawString(objednavka.getVykl_ulice(), col4, y);
+		newline();
+		
+		gc.setFont(boldText);
+		gc.drawString("Místo vykládky: ", col1, y);
+		gc.setFont(normalText);
+		gc.drawString(objednavka.getVykl_psc(), col4, y);
+		gc.drawString(objednavka.getVykl_mesto(), col5, y);
+		newline();
+		
+		gc.drawString("Kontaktní osoba:", col2, y);
+		gc.drawString(objednavka.getVykl_kontakt_osoba(), col4, y);
+		newline();
+		
+		gc.drawString("Kontakt:", col2, y);
+		gc.drawString(objednavka.getVykl_kontakt(), col4, y);
+		newline();
+		
+		gc.setFont(boldText);
+		gc.drawString("Cena za dopravu:", col1, y);
+		gc.setFont(normalText);
+		gc.drawString(objednavka.getCenaFormated() + " " + objednavka.getMena(), col2, y);
+		newline();
+		
+		gc.setFont(boldText);
+		gc.drawString("Pøepravní podmínky:", col1, y);
+		gc.setFont(normalText);
+		gc.drawString(objednavka.getPreprav_podminky(), col2, y);
+		newline();
+		
+		gc.setFont(boldText);
+		gc.drawString("Poznámka:", col1, y);
+		gc.setFont(normalText);
+		gc.drawString(objednavka.getPozadavek().getPoznamka(), col2, y);
+		
+		newline();
+		gc.drawString(notNullStr(objednavka.getPoznamka1()), col1, y);
+		newline();
+		gc.drawString(notNullStr(objednavka.getPoznamka2()), col1, y);
+		newline();
+		gc.drawString(notNullStr(objednavka.getPoznamka3()), col1, y);
+		newline();
+		gc.drawString(notNullStr(objednavka.getPoznamka4()), col1, y);
+		newline();
+		gc.drawString(notNullStr(objednavka.getPoznamka5()), col1, y);
+		newline();
+		
+		gc.setFont(boldItalicText);
+		gc.drawString("Pøepravní pøíkaz dle podmínek KERN-LIEBERS CR spol. s r.o.", col2, y);
 	}
 	
 	
@@ -325,6 +449,20 @@ public class PrintHelper {
 				printer.startPage();
 			}
 		}
+	}
+	
+	String getDatumAsText(Date datum) {
+		try {
+			return new SimpleDateFormat("dd.MM.yyyy")
+			.format(datum);
+		} catch (Exception e) {
+			return "";
+		}
+		
+	}
+	
+	public static String notNullStr(String text) {
+		return text != null ? text : "";
 	}
 
 }

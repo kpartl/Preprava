@@ -63,8 +63,8 @@ public class FormularDialog extends TitleAreaDialog {
 			destZMesto, destZKontOs, destZKontakt, specZbozi, adr, destDoNazev,
 			destDoUlice, destDoPsc, destDoMesto, destDoKontOs, destDoKontakt,
 			prepravniPodminky, poznamky, cisloObjednavky, datumObjednavky,
-			terminNakladky, dodSapCislo, hmotnost, dodMesto, pocetPalet,
-			terminVykladky, cena, poznamka;
+			terminNakladky, hodinaNakladky, dodSapCislo, hmotnost, dodMesto, pocetPalet,
+			terminVykladky, hodinaVykladky, cena, poznamka;
 	Button stohovatelne;
 
 	Destinace destinace;
@@ -208,12 +208,16 @@ public class FormularDialog extends TitleAreaDialog {
 
 		getLabel("Datum objednávky:", detailGroup);
 		datumObjednavky = createText(detailGroup, new SimpleDateFormat(
-				"dd.MM.yyyy").format(novaObjednavka ? new Date() : objednavka
+				"dd.MM.yyyy").format(novaObjednavka ||  objednavka
+						.getDatum() == null ? new Date() : objednavka
 				.getDatum()), 2);
 
 		getLabel("Termín nakládky:", detailGroup);
 		terminNakladky = createText(detailGroup, objednavka.getPozadavek()
-				.getDatum_nakladky(), 5);
+				.getDatum_nakladky(), 2);
+		getLabel("Hodina nakládky:", detailGroup);
+		hodinaNakladky = createText(detailGroup, objednavka.getPozadavek()
+				.getHodina_nakladky(), 2);
 
 		getLabel("Místo nakládky:", detailGroup);
 		getLabel("Firma:", detailGroup, 2);
@@ -269,7 +273,10 @@ public class FormularDialog extends TitleAreaDialog {
 
 		getLabel("Termín vykládky:", detailGroup);
 		terminVykladky = createText(detailGroup, notNullStr(objednavka
-				.getPozadavek().getDatum_vykladky()), 5);
+				.getPozadavek().getDatum_vykladky()), 2);
+		getLabel("Hodina vykládky:", detailGroup);
+		hodinaVykladky = createText(detailGroup, notNullStr(objednavka
+				.getPozadavek().getHodina_vykladky()), 2);
 
 		getLabel("Místo vykládky:", detailGroup);
 		getLabel("Firma:", detailGroup, 2);
@@ -515,10 +522,12 @@ public class FormularDialog extends TitleAreaDialog {
 		objednavka.setCislo_objednavky(Long.valueOf(cisloObjednavky.getText()));
 		objednavka.setDod_sap_cislo(dodSapCislo.getText());
 		objednavka.getPozadavek().setDatum_nakladky(terminNakladky.getText());
+		objednavka.getPozadavek().setHodina_nakladky(hodinaNakladky.getText());
 		if ("" != cena.getText())
 			objednavka.setCena(BigDecimal.valueOf(Double.valueOf(cena.getText()
 					.replaceAll("\\.", "").replace(',', '.'))));
 		objednavka.getPozadavek().setDatum_vykladky(terminVykladky.getText());
+		objednavka.getPozadavek().setHodina_vykladky(hodinaVykladky.getText());
 		objednavka.getPozadavek().setCelkova_hmotnost(hmotnost.getText());
 		objednavka.getPozadavek().setPocet_palet(pocetPalet.getText());
 		objednavka.getPozadavek().setJe_stohovatelne(

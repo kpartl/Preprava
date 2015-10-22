@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -62,6 +61,7 @@ import cz.kpartl.preprava.model.Destinace;
 import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.model.User;
 import cz.kpartl.preprava.util.EventConstants;
+import cz.kpartl.preprava.util.HibernateHelper;
 import cz.kpartl.preprava.util.Login;
 import cz.kpartl.preprava.util.OtherUtils;
 import cz.kpartl.preprava.view.AbstractTableView;
@@ -95,7 +95,9 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 	protected Text odkud;
 	protected Text kam;
 	protected Text odkudKontakt;
+	protected Text odkudKontaktOsoba;
 	protected Text kamKontakt;
+	protected Text kamKontaktOsoba;
 	protected Text pocetPalet;
 	protected Text poznamka;
 
@@ -302,7 +304,9 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 						destinaceZ = dialog.selectedDestinace;
 						odkud.setText(dialog.selectedDestinace.getNazevACislo());
 						odkudKontakt.setText(dialog.selectedDestinace
-								.getKontaktniOsobuAKontakt());
+								.getKontakt());
+						odkudKontaktOsoba.setText(dialog.selectedDestinace
+								.getKontaktni_osoba());
 					}
 				}
 
@@ -335,10 +339,14 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
 		// gridData.horizontalIndent = 10;
 		odkudKontaktLabel.setLayoutData(gridData);
-
+		
+		odkudKontaktOsoba = new Text(parent, SWT.BORDER);
+		gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		odkudKontaktOsoba.setLayoutData(gridData);
+		odkudKontaktOsoba.setEditable(false);
+		
 		odkudKontakt = new Text(parent, SWT.BORDER);
 		gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		gridData.horizontalSpan = 2;
 		odkudKontakt.setLayoutData(gridData);
 		odkudKontakt.setEditable(false);
 
@@ -367,7 +375,9 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 						destinaceDo = dialog.selectedDestinace;
 						kam.setText(dialog.selectedDestinace.getNazevACislo());
 						kamKontakt.setText(dialog.selectedDestinace
-								.getKontaktniOsobuAKontakt());
+								.getKontakt());
+						kamKontaktOsoba.setText(dialog.selectedDestinace
+								.getKontaktni_osoba());
 					}
 				}
 
@@ -410,10 +420,14 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
 		// gridData.horizontalIndent = 10;
 		kamKontaktLabel.setLayoutData(gridData);
-
+		
+		kamKontaktOsoba = new Text(parent, SWT.BORDER);
+		gridData = new GridData(SWT.FILL, SWT.CENTER, false, false);		
+		kamKontaktOsoba.setLayoutData(gridData);
+		kamKontaktOsoba.setEditable(false);
+		
 		kamKontakt = new Text(parent, SWT.BORDER);
-		gridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
-		gridData.horizontalSpan = 2;
+		gridData = new GridData(SWT.FILL, SWT.CENTER, false, false);		
 		kamKontakt.setLayoutData(gridData);
 		kamKontakt.setEditable(false);
 
@@ -532,7 +546,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 		parent.getShell().setDefaultButton(okButton);
 
 		okButton.setLayoutData(gridData);
-		okButton.setText("OK");		
+		okButton.setText("OK");
 
 		okButton.setLayoutData(gridData);
 		okButton.setData(IDialogConstants.OK_ID);
@@ -540,7 +554,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 			public void widgetSelected(SelectionEvent e) {
 				Transaction tx = persistenceHelper.beginTransaction();
 				try {
-					if (updatePozadavek()) {
+					if (updatePozadavek(true)) {
 						tx.commit();
 						persistenceHelper.getSession().flush();
 						// persistenceHelper.getSession().close();
@@ -588,7 +602,7 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 	}
 
 	// zapise pozadavek do databaze
-	protected boolean updatePozadavek() {
+	protected boolean updatePozadavek(boolean save) {
 		final ArrayList<String> validace = validatePozadavek();
 		if (validace.size() == 0) {
 			boolean novyPozadavek = pozadavek == null;
@@ -612,12 +626,14 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 				pozadavek.setZadavatel(user);
 			pozadavek.setPoznamka(poznamka.getText());
 
-			if (novyPozadavek)
-				pozadavek.setId(pozadavekDAO.create(pozadavek));
-			else {
-				persistenceHelper.getSession().flush();
-				persistenceHelper.getSession().clear();
-				pozadavekDAO.update(pozadavek);
+			if (save) {
+				if (novyPozadavek)
+					pozadavek.setId(pozadavekDAO.create(pozadavek));
+				else {
+					persistenceHelper.getSession().flush();
+					persistenceHelper.getSession().clear();
+					pozadavekDAO.update(pozadavek);
+				}
 			}
 
 			return true;
@@ -636,7 +652,8 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 	protected void fillFields() {
 		if (pozadavek == null)
 			return;
-
+		HibernateHelper.getInstance().getSession();
+		
 		hmotnost.setText(pozadavek.getCelkova_hmotnost() != null ? pozadavek
 				.getCelkova_hmotnost() : "");
 		datumNakladky.setText(pozadavek.getDatum_nakladky() != null ? pozadavek
@@ -647,11 +664,13 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 			destinaceZ = pozadavek.getDestinace_z();
 			odkud.setText(pozadavek.getDestinaceZNazevACislo());
 			odkudKontakt.setText(destinaceZ.getKontakt());
+			odkudKontaktOsoba.setText(destinaceZ.getKontaktni_osoba());
 		}
 		if (pozadavek.getDestinace_do() != null) {
 			destinaceDo = pozadavek.getDestinace_do();
 			kam.setText(pozadavek.getDestinaceDoNazevACislo());
 			kamKontakt.setText(destinaceDo.getKontakt());
+			kamKontaktOsoba.setText(destinaceDo.getKontaktni_osoba());
 		}
 		hodinaNakladky
 				.setText(pozadavek.getHodina_nakladky() != null ? pozadavek

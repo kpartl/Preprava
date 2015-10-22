@@ -18,6 +18,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -88,9 +89,12 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 		objednavka = new Objednavka();
 		objednavka.setPozadavek(pozadavek);
 		this.pozadavek = pozadavek;	
+		setDataFromPozadavek();
 		afterConstruct(parentShell, context, objednavka);
 
 	}
+	
+	
 
 	@Inject
 	public NovaObjednavkaDialog(
@@ -167,6 +171,20 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 		
 		dopravceItems = getDopravceItems();
 		dopravceCombo.setItems(dopravceItems);
+		dopravceCombo.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				setDopravceFields();
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				setDopravceFields();
+				
+			}
+		});
 
 		Label cenaLabel = new Label(oGroup, SWT.NONE);
 		gridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);		
@@ -253,7 +271,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 
 	@Override
 	protected void createButtons(Composite parent) {
-		Button okButton = new Button(parent, SWT.PUSH);
+		Button okButton = new Button(parent, SWT.PUSH);		
 		GridData gridData = new GridData(80, 25);
 		// data.horizontalAlignment = data.HORIZONTAL_ALIGN_FILL |
 		// data.GRAB_HORIZONTAL;
@@ -267,11 +285,10 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 		okButton.setData(IDialogConstants.OK_ID);
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				if (updatePozadavek() && updateObjednavku()) {
-				FormularDialog formularDialog = new FormularDialog(parentShell, context, eventBroker, objednavka);
+				
 				//	PokusDialog formularDialog = new PokusDialog(parentShell);
-				if (formularDialog.open() == Window.OK) {
-					close();
+				
+				
 					//TODO
 //					eventBroker.send(EventConstants.POZADAVEK_SELECTION_CHANGED,
 //							selectedPozadavek);
@@ -279,34 +296,50 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 //					partService.showPart("cz.kpartl.preprava.part.tablepartobjednane",
 //							EPartService.PartState.VISIBLE);
 
+				
+		
+				Transaction tx = persistenceHelper.beginTransaction();
+				try {
+					if (updatePozadavek(true) && updateObjednavku(true)) {
+						tx.commit();
+						persistenceHelper.getSession().flush();
+						//persistenceHelper.getSession().close();
+						
+						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
+						eventBroker.send(EventConstants.OBJEDNAVKA_SELECTION_CHANGED, objednavka);
+						close();
+					} else {
+						tx.rollback();
+					}
+
+				} catch (Exception ex) {
+					tx.rollback();
+					setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
+							.concat(System.getProperty("line.separator"))
+							.concat(ex.toString()));
+					logger.error("Nelze updatovat objednavku", ex);
 				}
-			}
-//				Transaction tx = persistenceHelper.beginTransaction();
-//				try {
-//					if (updatePozadavek(tx) && updateObjednavku(tx)) {
-//						tx.commit();
-//						persistenceHelper.getSession().flush();
-//						//persistenceHelper.getSession().close();
-//						
-//						eventBroker.send(EventConstants.REFRESH_VIEWERS, "");
-//						eventBroker.send(EventConstants.OBJEDNAVKA_SELECTION_CHANGED, objednavka);
-//						close();
-//					} else {
-//						tx.rollback();
-//					}
-//
-//				} catch (Exception ex) {
-//					tx.rollback();
-//					setErrorMessage("Pøi zápisu do databáze došlo k chybì, kontaktujte prosím tvùrce aplikace."
-//							.concat(System.getProperty("line.separator"))
-//							.concat(ex.toString()));
-//					logger.error("Nelze updatovat objednavku", ex);
-//				}
 			}
 		});
 
+		Button formButton = new Button(parent, SWT.PUSH);
+		gridData = new GridData(160, 25);
+		formButton.setLayoutData(gridData);
+		formButton.setText("Formuláø pro tisk");
+		formButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				if (updatePozadavek(false) && updateObjednavku(false)) {
+					FormularDialog formularDialog = new FormularDialog(parentShell, context, eventBroker, objednavka);
+					//	PokusDialog formularDialog = new PokusDialog(parentShell);
+					if (formularDialog.open() == Window.OK) {
+						close();
+					}
+				}
+			}
+		});
+		
 		Button cancelButton = new Button(parent, SWT.PUSH);
-		gridData = new GridData(80, 25);
+		gridData = new GridData(80, 25);		
 		// data.horizontalAlignment =SWT.RIGHT;
 		cancelButton.setLayoutData(gridData);
 		cancelButton.setText("Zrušit");
@@ -319,7 +352,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 	}
 
 	// zapise objednavku do databaze
-	protected boolean updateObjednavku() {
+	protected boolean updateObjednavku(boolean save) {
 		final ArrayList<String> validace = validate();
 		if (validace.size() == 0) {
 			boolean novaObjednavka = objednavka.getId() == null;
@@ -335,10 +368,30 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 			objednavka.setMena(mena.getText());
 			objednavka.setZmena_nakladky(zmenaTerminuNakladky.getText());			
 			objednavka.setFaze(ObjednanoView.typyHashMap.get(fazeCombo.getText()));
-			objednavka.setDopravce(dopravceMap.get(dopravceCombo
-					.getSelectionIndex()));
-
+//			objednavka.setDopravce(dopravceMap.get(dopravceCombo
+//					.getSelectionIndex()));
+			objednavka.setNakl_nazev(odkud.getText());
+			objednavka.setNakl_kontakt(odkudKontakt.getText());
+			objednavka.setNakl_kontakt_osoba(odkudKontaktOsoba.getText());
+			objednavka.setVykl_nazev(kam.getText());
+			objednavka.setVykl_kontakt(kamKontakt.getText());
+			objednavka.setVykl_kontakt_osoba(kamKontaktOsoba.getText());
+			//
 			
+
+			if (save) {
+				if (novaObjednavka) {
+					Long maxCislo = objednavkaDAO.getMaxCisloObjednavky();
+					if (maxCislo == null)
+						maxCislo = (long) 0;
+					objednavka.setCislo_objednavky(maxCislo + 1);
+					objednavka.setId(objednavkaDAO.create(objednavka));
+				} else {
+					persistenceHelper.getSession().flush();
+					persistenceHelper.getSession().clear();
+					objednavkaDAO.update(objednavka);
+				}
+			}
 			
 			
 			
@@ -400,12 +453,28 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 	}
 
 	protected void fillFields() {
+		boolean novaObjednavka = objednavka.getId() == null;
 		super.fillFields();
+		odkud.setEditable(true);
+		kam.setEditable(true);
+		kamKontakt.setEditable(true);
+		odkudKontakt.setEditable(true);
+		kamKontaktOsoba.setEditable(true);
+		odkudKontaktOsoba.setEditable(true);
+		
+		odkud.setText(objednavka.getNakl_nazev());
+		odkudKontakt.setText(novaObjednavka ? pozadavek.getDestinace_z().getKontakt() : objednavka.getNakl_kontakt());
+		odkudKontaktOsoba.setText(novaObjednavka ? pozadavek.getDestinace_z().getKontaktni_osoba() : objednavka.getNakl_kontakt_osoba());
+
+		kam.setText(objednavka.getVykl_nazev());
+		kamKontakt.setText(novaObjednavka ? pozadavek.getDestinace_do().getKontakt() : objednavka.getVykl_kontakt());	
+		kamKontaktOsoba.setText(novaObjednavka ? pozadavek.getDestinace_do().getKontaktni_osoba() : objednavka.getVykl_kontakt_osoba());
+		
 		if (objednavka.getId() == null) {
 			fazeCombo.select(0);
 			return;
 		}
-
+		
 		cena.setText(objednavka.getCenaFormated());
 		mena.setText(objednavka.getMena());
 		final String fazeText = ObjednanoView.getFazeKey(objednavka.getFaze());
@@ -430,6 +499,68 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 		return 0;
 	}
 	
+	public static String notNullStr(String text) {
+		return text != null ? text : "";
+	}
 	
+	private void setDataFromPozadavek() {
+		
+		objednavka.setNakl_nazev(pozadavek.getDestinace_z() != null 
+				? notNullStr(pozadavek.getDestinace_z().getNazev()) : "");
+		
+		objednavka.setNakl_ulice(pozadavek.getDestinace_z() != null 
+				? notNullStr(pozadavek.getDestinace_z().getUlice()) : "");
+		
+		objednavka.setNakl_psc(pozadavek.getDestinace_z() != null 
+				?  notNullStr(pozadavek.getDestinace_z().getPSC()) :"");
+		
+		objednavka.setNakl_mesto(pozadavek.getDestinace_z() != null 
+				?  notNullStr(pozadavek.getDestinace_z().getMesto()) :"");
+		
+		objednavka.setVykl_nazev(pozadavek.getDestinace_do() != null 
+				? notNullStr(pozadavek.getDestinace_do().getNazev()) : "");
+		
+		objednavka.setVykl_ulice(pozadavek.getDestinace_do() != null 
+				? notNullStr(pozadavek.getDestinace_do().getUlice()) : "");
+		
+		objednavka.setVykl_psc(pozadavek.getDestinace_do() != null 
+				?  notNullStr(pozadavek.getDestinace_do().getPSC()) :"");
+		
+		objednavka.setVykl_mesto(pozadavek.getDestinace_do() != null 
+				?  notNullStr(pozadavek.getDestinace_do().getMesto()) :"");
+
+	}
+	
+	private void setDopravceFields() {
+		if (dopravceCombo.getSelectionIndex()<0)
+			return;
+		Dopravce d = dopravceMap.get(dopravceCombo.getSelectionIndex());
+		if (d != null) {
+			objednavka.setDopravce(d);
+			objednavka.setDod_dic(d.getDic());
+			objednavka.setDod_ic(d.getIc());
+			objednavka.setDod_mesto(d.getMesto());
+			objednavka.setDod_nazev(d.getNazev());
+			objednavka.setDod_psc(d.getPsc());
+			objednavka.setDod_sap_cislo(d.getSap_cislo());
+			objednavka.setDod_ulice(d.getUlice());			
+		}
+		return;
+	}
+	
+//	private String[] parseKontakt(String kontakt) {
+//		String[] result = new String[2];
+//		if (kontakt == null || kontakt.length() == 0)
+//			return result;
+//		
+//		int i = kontakt.indexOf("(");
+//		int j = kontakt.ind
+//		if (i > 0) {
+//			result[0] = kontakt.substring(0, i);
+//			result[1] = kontakt.substring(i)
+//		}
+//		
+//		
+//	}
 		
 }
