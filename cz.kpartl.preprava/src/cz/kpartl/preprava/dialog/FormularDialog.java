@@ -539,34 +539,42 @@ public class FormularDialog extends TitleAreaDialog {
 	}
 
 	private String getPoznamky() {
-		return notNullStr(objednavka.getPoznamka1())
+		String ret ="";
+		 ret = notNullStr(objednavka.getPoznamka1())
 				+ notNullStr(objednavka.getPoznamka2())
 				+ notNullStr(objednavka.getPoznamka3())
 				+ notNullStr(objednavka.getPoznamka4())
 				+ notNullStr(objednavka.getPoznamka5());
+		return ret;
 	}
 
 	private void fillPoznamky() {
+		objednavka.setPoznamka1("");
+		objednavka.setPoznamka2("");
+		objednavka.setPoznamka3("");
+		objednavka.setPoznamka4("");
+		objednavka.setPoznamka5("");
+		int width = 96;
 		if (poznamky.getText().length() > 0)
-			objednavka.setPoznamka1(getSubstring(poznamky.getText(), 0, 255));
+			objednavka.setPoznamka1(getSubstring(poznamky.getText(), 0, width));
 		else
 			return;
 		if (poznamky.getText().length() > 255)
-			objednavka.setPoznamka2(getSubstring(poznamky.getText(), 255, 510));
+			objednavka.setPoznamka2(getSubstring(poznamky.getText(), width, 2*width));
 		else
 			return;
 		if (poznamky.getText().length() > 510)
-			objednavka.setPoznamka3(getSubstring(poznamky.getText(), 510, 765));
+			objednavka.setPoznamka3(getSubstring(poznamky.getText(), 2*width, 3*width));
 		else
 			return;
-		if (poznamky.getText().length() > 765)
+		if (poznamky.getText().length() > 3*width)
 			objednavka
-					.setPoznamka4(getSubstring(poznamky.getText(), 765, 1010));
+					.setPoznamka4(getSubstring(poznamky.getText(), 3*width, 4*width));
 		else
 			return;
-		if (poznamky.getText().length() > 1010)
+		if (poznamky.getText().length() > 4*width)
 			objednavka
-					.setPoznamka5(getSubstring(poznamky.getText(), 1010, 1265));
+					.setPoznamka5(getSubstring(poznamky.getText(), 4*width, 5*width));
 		else
 			return;
 

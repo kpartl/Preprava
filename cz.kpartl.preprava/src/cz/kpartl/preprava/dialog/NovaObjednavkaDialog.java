@@ -323,7 +323,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 		});
 
 		Button formButton = new Button(parent, SWT.PUSH);
-		gridData = new GridData(160, 25);
+		gridData = new GridData(120, 25);
 		formButton.setLayoutData(gridData);
 		formButton.setText("Formuláø pro tisk");
 		formButton.addSelectionListener(new SelectionAdapter() {

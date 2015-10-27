@@ -36,16 +36,18 @@ public class PrintHelper {
 
 	int lineHeight = 0;
 	int tabWidth = 0;
-	int leftMargin, rightMargin, topMargin, bottomMargin, titleTopMargin;
+	int leftMargin = 100, lineMargin = 20, rightMargin, topMargin, bottomMargin, titleTopMargin;
 	int x, y;
 	int index, end;
 	int colWidth = 400;
-	int col1 = 0;
-	int col2 = colWidth + 20;
-	int col3 = 2 * colWidth;
+	int col1 = leftMargin; //100
+	int col2 = col1 + 500; //590
+	int col3 = col2 + 270;
 	int col4 = 3 * colWidth;
-	int col5 = 4 * colWidth;
+	int col5 = 4 * colWidth + 40;
 	int col6 = 5 * colWidth;
+	int formWidth = col6 + 390;
+	int formHeight = 5000;
 	String textToPrint;
 	ImageData kernIcon;
 	String tabs;
@@ -138,13 +140,13 @@ public class PrintHelper {
 			Rectangle trim = printer.computeTrim(0, 0, 0, 0);
 			Point dpi = printer.getDPI();
 			//leftMargin = dpi.x + trim.x; // one inch from left side of paper
-			leftMargin = 30;
-			col1 += leftMargin;
-			col2 += leftMargin;
-			col3 += leftMargin;
-			col4 += leftMargin;
-			col5 += leftMargin;
-			col6 += leftMargin;
+			
+//			col1 += leftMargin;
+//			col2 += leftMargin;
+//			col3 += leftMargin;
+//			col4 += leftMargin;
+//			col5 += leftMargin;
+//			col6 += leftMargin;
 			rightMargin = clientArea.width - dpi.x + trim.x + trim.width; // one
 																			// inch
 																			// from
@@ -152,7 +154,7 @@ public class PrintHelper {
 																			// side
 																			// of
 																			// paper
-			topMargin = dpi.y + trim.y + 15; // one inch from top edge of paper
+			topMargin = dpi.y + trim.y -20; // one inch from top edge of paper
 			titleTopMargin =30;
 			bottomMargin = clientArea.height - dpi.y + trim.y + trim.height; // one
 																				// inch
@@ -224,11 +226,11 @@ public class PrintHelper {
 		int titleLineHeight = gc.getFontMetrics().getHeight();
 		int scaleFactor = 3;
 		int titleCenter = (kernIcon.width + titleLineHeight) / 2;
-		gc.drawString("OBJEDNÁVKA PØEPRAVY", leftMargin, titleCenter - titleLineHeight);
+		gc.drawString("OBJEDNÁVKA PØEPRAVY", leftMargin , titleCenter - titleLineHeight + 15);		
 		
 		Image printerImage = new Image(printer, kernIcon);
 		gc.drawImage(printerImage, 0, 0, kernIcon.width,
-				kernIcon.height, 1500, titleTopMargin, 
+				kernIcon.height, 1620, titleTopMargin, 
                 scaleFactor * kernIcon.width,
                 scaleFactor * kernIcon.height);
   
@@ -237,7 +239,11 @@ public class PrintHelper {
 	}
 	
 	void printBody() {
-		y = topMargin;
+		y = topMargin;		
+		int verticalFrom2;
+		gc.setLineWidth(5);
+		drawLine();
+		
 		gc.setFont(boldText);
 		gc.drawString("Objednavatel:", col1, y);
 		gc.drawString("Dodavatel (pøepravce):", col4, y);
@@ -250,8 +256,8 @@ public class PrintHelper {
 		gc.drawString(objednavka.getDod_ulice(), col4, y);
 		newline();
 		gc.drawString(objednavka.getObjednavka3(), col1, y);
-		gc.drawString(objednavka.getDod_psc(), col4, y);
-		gc.drawString(objednavka.getDod_mesto(), col5, y);
+		gc.drawString(objednavka.getDod_psc() + "  " + objednavka.getDod_mesto(), col4, y);
+		
 		newline();
 		gc.drawString(objednavka.getObjednavka4(), col1, y);
 		gc.drawString("DIÈ: " + objednavka.getDod_dic(), col4, y);
@@ -261,7 +267,7 @@ public class PrintHelper {
 		newline();
 		gc.drawString(objednavka.getObjednavka6(), col1, y);
 		gc.drawString("Dodavatelské èíslo: ", col4, y);
-		gc.drawString(objednavka.getDod_sap_cislo(), col6, y);
+		gc.drawString(objednavka.getDod_sap_cislo(), col5, y);
 		newline();
 		gc.drawString(objednavka.getObjednavka7(), col1, y);
 		newline();
@@ -269,44 +275,57 @@ public class PrintHelper {
 		newline();
 		
 		gc.setFont(boldText);
+		drawLine();		
+		
 		gc.drawString("Èíslo objednávky: ", col1, y);
 		gc.drawString("Datum objednávky: ", col4, y);
+		int verticalLineFrom = y;
 		gc.setFont(normalText);
-		gc.drawString(String.valueOf(objednavka.getCislo_objednavky()), col2, y);
+		gc.drawString(String.format("%06d %n", objednavka.getCislo_objednavky()), col2, y);
 		gc.drawString(getDatumAsText(objednavka.getDatum()), col5, y);
 		newline();
+		drawLine();
+		drawVerticalLine(col4, topMargin, y);
 		
 		gc.setFont(boldText);
 		gc.drawString("Termín nakládky: ", col1, y);
-		gc.setFont(normalText);
+		gc.setFont(normalText);		
 		gc.drawString(objednavka.getPozadavek().getDatum_nakladky() + " " + objednavka.getPozadavek().getHodina_nakladky(), col2, y);
 		newline();
+		drawLine();
+		verticalFrom2 = y - gc.getLineWidth();
 		
 		gc.drawString("Firma: ", col2, y);
 		gc.drawString(objednavka.getNakl_nazev(), col4, y);
 		newline();
+		drawShortLine();
 		
 		gc.drawString("Adresa: ", col2, y);
 		gc.drawString(objednavka.getNakl_ulice(), col4, y);
 		newline();
 		
+		
 		gc.setFont(boldText);
 		gc.drawString("Místo nakládky: ", col1, y);
 		gc.setFont(normalText);
-		gc.drawString(objednavka.getNakl_psc(), col4, y);
-		gc.drawString(objednavka.getNakl_mesto(), col5, y);
+		gc.drawString(objednavka.getNakl_psc() + "  " + objednavka.getNakl_mesto(), col4, y);		
 		newline();
-		
+		drawShortLine();
 		gc.drawString("Kontaktní osoba:", col2, y);
 		gc.drawString(objednavka.getNakl_kontakt_osoba(), col4, y);
 		newline();
+		drawShortLine();
 		
 		gc.drawString("Kontakt:", col2, y);
-		gc.drawString(objednavka.getNakl_kontakt(), col4, y);
+		gc.drawString(objednavka.getNakl_kontakt(), col4, y);		
 		newline();
+		drawLine();
+		drawVerticalLine(col4, verticalFrom2, y);
 		
 		gc.drawString(objednavka.getSpec_zbozi(), col2, y);
 		newline();
+		drawShortLine();
+		verticalFrom2 = y;
 		
 		gc.setFont(boldText);
 		gc.drawString("Specifikace zboží:", col1, y);
@@ -316,52 +335,67 @@ public class PrintHelper {
 		gc.drawString("ADR:", col5, y);
 		gc.drawString(objednavka.getAdr(), col6, y);
 		newline();
+		drawShortLine();
 		gc.drawString("Poèet palet:", col2, y);
 		gc.drawString(objednavka.getPozadavek().getPocet_palet(), col3, y);
 		gc.drawString("Stohovatelné?", col5, y);
-		gc.drawString(objednavka.getPozadavek().getJe_stohovatelne() ? "ano":"ne", col6, y);
+		gc.drawString(objednavka.getPozadavek().getJe_stohovatelne() ? "ano":"ne", col6, y);		
 		newline();
-		
+		drawLine();
+		drawVerticalLine(col3, verticalFrom2, y);
+		drawVerticalLine(col5, verticalFrom2, y);
+		drawVerticalLine(col6, verticalFrom2, y);
 		gc.setFont(boldText);
 		gc.drawString("Termín vykládky: ", col1, y);
 		gc.setFont(normalText);
-		gc.drawString(objednavka.getPozadavek().getDatum_vykladky() + " " + objednavka.getPozadavek().getHodina_vykladky(), col2, y);
+		gc.drawString(objednavka.getPozadavek().getDatum_vykladky() + " " + objednavka.getPozadavek().getHodina_vykladky(), col2, y);		
 		newline();
+		drawLine();
+		verticalFrom2 = y -gc.getLineWidth();
 		
 		gc.drawString("Firma: ", col2, y);
 		gc.drawString(objednavka.getVykl_nazev(), col4, y);
 		newline();
+		drawShortLine();
 		
 		gc.drawString("Adresa: ", col2, y);
 		gc.drawString(objednavka.getVykl_ulice(), col4, y);
-		newline();
+		newline();		
 		
 		gc.setFont(boldText);
 		gc.drawString("Místo vykládky: ", col1, y);
 		gc.setFont(normalText);
-		gc.drawString(objednavka.getVykl_psc(), col4, y);
-		gc.drawString(objednavka.getVykl_mesto(), col5, y);
+		gc.drawString(objednavka.getVykl_psc() + " " + objednavka.getVykl_mesto(), col4, y);		
 		newline();
+		drawShortLine();
 		
 		gc.drawString("Kontaktní osoba:", col2, y);
 		gc.drawString(objednavka.getVykl_kontakt_osoba(), col4, y);
 		newline();
+		drawShortLine();
 		
 		gc.drawString("Kontakt:", col2, y);
 		gc.drawString(objednavka.getVykl_kontakt(), col4, y);
+		
 		newline();
+		drawLine();
+		drawVerticalLine(col4, verticalFrom2, y);
 		
 		gc.setFont(boldText);
 		gc.drawString("Cena za dopravu:", col1, y);
 		gc.setFont(normalText);
 		gc.drawString(objednavka.getCenaFormated() + " " + objednavka.getMena(), col2, y);
+		
 		newline();
+		drawLine();
 		
 		gc.setFont(boldText);
 		gc.drawString("Pøepravní podmínky:", col1, y);
 		gc.setFont(normalText);
 		gc.drawString(objednavka.getPreprav_podminky(), col2, y);
+		
 		newline();
+		drawLine();
 		
 		gc.setFont(boldText);
 		gc.drawString("Poznámka:", col1, y);
@@ -369,19 +403,46 @@ public class PrintHelper {
 		gc.drawString(objednavka.getPozadavek().getPoznamka(), col2, y);
 		
 		newline();
-		gc.drawString(notNullStr(objednavka.getPoznamka1()), col1, y);
-		newline();
-		gc.drawString(notNullStr(objednavka.getPoznamka2()), col1, y);
-		newline();
-		gc.drawString(notNullStr(objednavka.getPoznamka3()), col1, y);
-		newline();
-		gc.drawString(notNullStr(objednavka.getPoznamka4()), col1, y);
-		newline();
-		gc.drawString(notNullStr(objednavka.getPoznamka5()), col1, y);
-		newline();
+		drawLine();
+		drawVerticalLine(col2, verticalLineFrom, y);
+		printPoznamkaLine(getPoznamky());
+		
+		
+//		gc.drawString(notNullStr(objednavka.getPoznamka1()), col1, y);
+//		newline();
+//		gc.drawString(notNullStr(objednavka.getPoznamka2()), col1, y);
+//		newline();
+//		gc.drawString(notNullStr(objednavka.getPoznamka3()), col1, y);
+//		newline();
+//		gc.drawString(notNullStr(objednavka.getPoznamka4()), col1, y);
+//		newline();
+//		gc.drawString(notNullStr(objednavka.getPoznamka5()), col1, y);
+//		newline();
 		
 		gc.setFont(boldItalicText);
 		gc.drawString("Pøepravní pøíkaz dle podmínek KERN-LIEBERS CR spol. s r.o.", col2, y);
+		drawLine();
+	
+		//newline();
+		gc.drawRectangle(new Rectangle(leftMargin - lineMargin, titleTopMargin, formWidth - leftMargin + lineMargin, y + 45));
+		
+	}
+	
+	void printPoznamkaLine(String line) {
+		textToPrint = line;
+		printTextOld();
+//		final int poznamkyWidth = 90;
+//		if (line.length() > 0) {
+//			if (line.length() > poznamkyWidth) {
+//				gc.drawString(line.substring(0, poznamkyWidth), col1, y);
+//				newline();
+//				printPoznamkaLine(line.substring(poznamkyWidth + 1));
+//			} else {
+//				gc.drawString(line, col1, y);
+//			}
+//		}
+//		
+//		newline();
 	}
 	
 	
@@ -389,8 +450,8 @@ public class PrintHelper {
 		
 		
 		wordBuffer = new StringBuffer();
-		x = leftMargin;
-		y = topMargin;
+		x = col1;
+		
 		
 		gc.setFont(normalText);
 		index = 0;
@@ -439,7 +500,7 @@ public class PrintHelper {
 	}
 
 	void newline() {
-		lineHeight = (int) (1.5 * (gc.getFontMetrics().getHeight()));
+		lineHeight = (int) (1.4 * (gc.getFontMetrics().getHeight()));
 		x = leftMargin;
 		y += lineHeight;
 		if (y + lineHeight > bottomMargin) {
@@ -449,6 +510,20 @@ public class PrintHelper {
 				printer.startPage();
 			}
 		}
+	}
+	
+	void drawLine() {
+		gc.drawLine(leftMargin - lineMargin, y - 9, formWidth, y - 9);
+	}
+	
+	
+	
+	void drawShortLine() {
+		gc.drawLine(col2 - lineMargin, y - 9, formWidth, y - 9);
+	}
+	
+	void drawVerticalLine(int col, int from, int to) {
+		gc.drawLine(col - lineMargin, from - gc.getLineWidth(), col - lineMargin, to - gc.getLineWidth() - 5);
 	}
 	
 	String getDatumAsText(Date datum) {
@@ -463,6 +538,14 @@ public class PrintHelper {
 	
 	public static String notNullStr(String text) {
 		return text != null ? text : "";
+	}
+	
+	private String getPoznamky() {
+		return notNullStr(objednavka.getPoznamka1())
+				+ notNullStr(objednavka.getPoznamka2())
+				+ notNullStr(objednavka.getPoznamka3())
+				+ notNullStr(objednavka.getPoznamka4())
+				+ notNullStr(objednavka.getPoznamka5());
 	}
 
 }
