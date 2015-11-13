@@ -241,7 +241,7 @@ public class PrintHelper {
 	void printBody() {
 		y = topMargin;		
 		int verticalFrom2;
-		gc.setLineWidth(5);
+		gc.setLineWidth(6);
 		drawLine();
 		
 		gc.setFont(boldText);
@@ -420,11 +420,12 @@ public class PrintHelper {
 //		newline();
 		
 		gc.setFont(boldItalicText);
+		newline();
 		gc.drawString("Pøepravní pøíkaz dle podmínek KERN-LIEBERS CR spol. s r.o.", col2, y);
 		drawLine();
 	
-		//newline();
-		gc.drawRectangle(new Rectangle(leftMargin - lineMargin, titleTopMargin, formWidth - leftMargin + lineMargin, y + 45));
+		newline();
+		gc.drawRectangle(new Rectangle(leftMargin - lineMargin, titleTopMargin, formWidth - leftMargin + lineMargin, y - 30));
 		
 	}
 	
@@ -481,7 +482,8 @@ public class PrintHelper {
 			}
 		}
 		if (y + lineHeight <= bottomMargin) {
-			printer.endPage();
+			printWordBuffer();
+			//printer.endPage();
 		}
 	}
 

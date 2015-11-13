@@ -22,7 +22,7 @@ public class AboutHandler {
 	
 	@Execute
 	public void execute(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
-		MessageDialog.openInformation(shell, "O aplikaci", "Pøeprava v 1.1 \n \n \n" 
+		MessageDialog.openInformation(shell, "O aplikaci", "Pøeprava v 1.2 \n \n \n" 
 				);
 	}
 	
