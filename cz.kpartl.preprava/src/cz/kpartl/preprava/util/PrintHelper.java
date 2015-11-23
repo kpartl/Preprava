@@ -36,18 +36,19 @@ public class PrintHelper {
 
 	int lineHeight = 0;
 	int tabWidth = 0;
-	int leftMargin = 100, lineMargin = 20, rightMargin, topMargin, bottomMargin, titleTopMargin;
+	int leftMargin = 100, lineMargin, rightMargin, topMargin, bottomMargin, titleTopMargin;
 	int x, y;
 	int index, end;
 	int colWidth = 400;
-	int col1 = leftMargin; //100
-	int col2 = col1 + 500; //590
-	int col3 = col2 + 270;
-	int col4 = 3 * colWidth;
-	int col5 = 4 * colWidth + 40;
-	int col6 = 5 * colWidth;
-	int formWidth = col6 + 390;
-	int formHeight = 5000;
+	int col1;
+	int col2;
+	int col3;
+	int col4;
+	int col5;
+	int col6;
+	int formWidth;
+	int formHeight;
+	int lineOffset;
 	String textToPrint;
 	ImageData kernIcon;
 	String tabs;
@@ -139,7 +140,8 @@ public class PrintHelper {
 			Rectangle clientArea = printer.getClientArea();
 			Rectangle trim = printer.computeTrim(0, 0, 0, 0);
 			Point dpi = printer.getDPI();
-			//leftMargin = dpi.x + trim.x; // one inch from left side of paper
+			formWidth = clientArea.width - leftMargin;
+			leftMargin = trim.x + (int) (formWidth / 24.8); // one inch from left side of paper
 			
 //			col1 += leftMargin;
 //			col2 += leftMargin;
@@ -163,6 +165,16 @@ public class PrintHelper {
 																				// edge
 																				// of
 																				// paper
+			
+			col1 = leftMargin; //100
+			lineMargin = leftMargin / 5;
+			col2 = col1 +  (int) (formWidth / 4.9); //590
+			col3 = col2 +  (int) (formWidth / 9.19);
+			col4 = col3 +  (int) (formWidth / 5.77);
+			col5 = col4 +  (int) (formWidth / 5.64);
+			col6 = col5 +  (int) (formWidth / 6.7);
+			
+			formHeight = clientArea.height;
 
 			/* Create a buffer for computing tab width. */
 			int tabSize = 4; // is tab width a user setting in your UI?
@@ -224,13 +236,14 @@ public class PrintHelper {
 	void printTitle() {
 		gc.setFont(titleText);
 		int titleLineHeight = gc.getFontMetrics().getHeight();
+	
 		int scaleFactor = 3;
 		int titleCenter = (kernIcon.width + titleLineHeight) / 2;
 		gc.drawString("OBJEDNÁVKA PØEPRAVY", leftMargin , titleCenter - titleLineHeight + 15);		
 		
 		Image printerImage = new Image(printer, kernIcon);
 		gc.drawImage(printerImage, 0, 0, kernIcon.width,
-				kernIcon.height, 1620, titleTopMargin, 
+				kernIcon.height, formWidth - scaleFactor * kernIcon.width, titleTopMargin, 
                 scaleFactor * kernIcon.width,
                 scaleFactor * kernIcon.height);
   
@@ -549,5 +562,53 @@ public class PrintHelper {
 				+ notNullStr(objednavka.getPoznamka4())
 				+ notNullStr(objednavka.getPoznamka5());
 	}
+	
+//	void print(Printer printer) {
+//	    if (printer.startJob("Tisk objednavky")) {   // the string is the job name - shows up in the printer's job list
+//	      Rectangle clientArea = printer.getClientArea();
+//	      Rectangle trim = printer.computeTrim(0, 0, 0, 0);
+//	      Point dpi = printer.getDPI();
+//	      leftMargin = dpi.x + trim.x; // one inch from left side of paper
+//	      rightMargin = clientArea.width - dpi.x + trim.x + trim.width; // one inch from right side of paper
+//	      topMargin = dpi.y + trim.y; // one inch from top edge of paper
+//	      bottomMargin = clientArea.height - dpi.y + trim.y + trim.height; // one inch from bottom edge of paper
+//	      
+//	      /* Create a buffer for computing tab width. */
+//	      int tabSize = 4; // is tab width a user setting in your UI?
+//	      StringBuffer tabBuffer = new StringBuffer(tabSize);
+//	      for (int i = 0; i < tabSize; i++) tabBuffer.append(' ');
+//	      tabs = tabBuffer.toString();
+//
+//	      /* Create printer GC, and create and set the printer font & foreground color. */
+//	      gc = new GC(printer);
+//	      
+//	     
+//	      
+//	      FontData fontData = font.getFontData()[0];
+//	      printerFont = new Font(printer, fontData.getName(), fontData.getHeight(), fontData.getStyle());
+//	      gc.setFont(printerFont);
+//	      tabWidth = gc.stringExtent(tabs).x;
+//	      lineHeight = gc.getFontMetrics().getHeight();
+//	      
+//	      RGB rgb = foregroundColor.getRGB();
+//	      printerForegroundColor = new Color(printer, rgb);
+//	      gc.setForeground(printerForegroundColor);
+//	    
+//	      rgb = backgroundColor.getRGB();
+//	      printerBackgroundColor = new Color(printer, rgb);
+//	      gc.setBackground(printerBackgroundColor);
+//	    
+//	      /* Print text to current gc using word wrap */
+//	      printText();
+//	      printer.endJob();
+//
+//	      /* Cleanup graphics resources used in printing */
+//	      printerFont.dispose();
+//	      printerForegroundColor.dispose();
+//	      printerBackgroundColor.dispose();
+//	      gc.dispose();
+//	    }
+//	  }
+	
 
 }
