@@ -26,12 +26,12 @@ public class PrintHelper {
 	Shell shell;
 
 	Objednavka objednavka;
-	Font normalFont, boldFont,boldItalicFont, titleFont;
+	Font normalFont, boldFont,boldItalicFont, boldItalicUnderFont, titleFont;
 	Color foregroundColor, backgroundColor;
 
 	Printer printer;
 	GC gc;
-	Font titleText, normalText, boldText, boldItalicText;
+	Font titleText, normalText, boldText, boldItalicText, boldItalicUnderText;
 	Color printerForegroundColor, printerBackgroundColor;
 
 	int lineHeight = 0;
@@ -85,6 +85,7 @@ public class PrintHelper {
 		normalFont = new Font(shell.getDisplay(), "Times New Roman", 12, SWT.NORMAL);
 		boldFont = new Font(shell.getDisplay(), "Times New Roman", 12, SWT.BOLD);
 		boldItalicFont = new Font(shell.getDisplay(), "Times New Roman", 12, SWT.BOLD | SWT.ITALIC);
+		boldItalicUnderFont = new Font(shell.getDisplay(), "Times New Roman", 12, SWT.BOLD | SWT.ITALIC | SWT.UNDERLINE_SINGLE);
 		titleFont = new Font(shell.getDisplay(), "Times New Roman", 16, SWT.BOLD);
 		foregroundColor = shell.getDisplay().getSystemColor(SWT.COLOR_BLACK);
 		backgroundColor = shell.getDisplay().getSystemColor(SWT.COLOR_WHITE);
@@ -142,13 +143,6 @@ public class PrintHelper {
 			Point dpi = printer.getDPI();
 			formWidth = clientArea.width - leftMargin;
 			leftMargin = trim.x + (int) (formWidth / 24.8); // one inch from left side of paper
-			
-//			col1 += leftMargin;
-//			col2 += leftMargin;
-//			col3 += leftMargin;
-//			col4 += leftMargin;
-//			col5 += leftMargin;
-//			col6 += leftMargin;
 			rightMargin = clientArea.width - dpi.x + trim.x + trim.width; // one
 																			// inch
 																			// from
@@ -156,9 +150,9 @@ public class PrintHelper {
 																			// side
 																			// of
 																			// paper
-			topMargin = dpi.y + trim.y -20; // one inch from top edge of paper
+			topMargin = dpi.y + trim.y; // one inch from top edge of paper
 			titleTopMargin =30;
-			bottomMargin = clientArea.height - dpi.y + trim.y + trim.height; // one
+			bottomMargin = clientArea.height + trim.y + trim.height; // one
 																				// inch
 																				// from
 																				// bottom
@@ -171,7 +165,7 @@ public class PrintHelper {
 			col2 = col1 +  (int) (formWidth / 4.9); //590
 			col3 = col2 +  (int) (formWidth / 9.19);
 			col4 = col3 +  (int) (formWidth / 5.77);
-			col5 = col4 +  (int) (formWidth / 5.64);
+			col5 = col4 +  (int) (formWidth / 5.5);
 			col6 = col5 +  (int) (formWidth / 6.7);
 			
 			formHeight = clientArea.height;
@@ -200,6 +194,9 @@ public class PrintHelper {
 					fontData.getHeight(), fontData.getStyle());
 			fontData = boldItalicFont.getFontData()[0];
 			boldItalicText = new Font(printer, fontData.getName(),
+					fontData.getHeight(), fontData.getStyle());
+			fontData = boldItalicUnderFont.getFontData()[0];
+			boldItalicUnderText = new Font(printer, fontData.getName(),
 					fontData.getHeight(), fontData.getStyle());
 			
 			tabWidth = gc.stringExtent(tabs).x;
@@ -432,40 +429,33 @@ public class PrintHelper {
 //		gc.drawString(notNullStr(objednavka.getPoznamka5()), col1, y);
 //		newline();
 		
-		gc.setFont(boldItalicText);
+		gc.setFont(boldItalicUnderText);
 		newline();
 		gc.drawString("Pøepravní pøíkaz dle podmínek KERN-LIEBERS CR spol. s r.o.", col2, y);
 		drawLine();
 	
 		newline();
 		gc.drawRectangle(new Rectangle(leftMargin - lineMargin, titleTopMargin, formWidth - leftMargin + lineMargin, y - 30));
-		
+		newline();
+		newline();
+		gc.drawString("Potvrzení objednávky dodavatelem", col1, y);
+		gc.setFont(boldText);
+		newline();
+		newline();
+		newline();
+		gc.drawString("Datum: .....................", col1, y);
+		gc.drawString("Razítko a podpis: ........................................", col4, y);
 	}
 	
 	void printPoznamkaLine(String line) {
 		textToPrint = line;
-		printTextOld();
-//		final int poznamkyWidth = 90;
-//		if (line.length() > 0) {
-//			if (line.length() > poznamkyWidth) {
-//				gc.drawString(line.substring(0, poznamkyWidth), col1, y);
-//				newline();
-//				printPoznamkaLine(line.substring(poznamkyWidth + 1));
-//			} else {
-//				gc.drawString(line, col1, y);
-//			}
-//		}
-//		
-//		newline();
+		printTextCharByChar();
 	}
 	
 	
-	void printTextOld() {
-		
-		
+	void printTextCharByChar() {
 		wordBuffer = new StringBuffer();
 		x = col1;
-		
 		
 		gc.setFont(normalText);
 		index = 0;
@@ -515,7 +505,7 @@ public class PrintHelper {
 	}
 
 	void newline() {
-		lineHeight = (int) (1.4 * (gc.getFontMetrics().getHeight()));
+		lineHeight = (int) (1.3 * (gc.getFontMetrics().getHeight()));
 		x = leftMargin;
 		y += lineHeight;
 		if (y + lineHeight > bottomMargin) {
