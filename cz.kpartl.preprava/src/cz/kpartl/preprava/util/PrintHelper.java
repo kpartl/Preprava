@@ -36,8 +36,9 @@ public class PrintHelper {
 
 	int lineHeight = 0;
 	float lineHeightConst = 1.3f;
+	float scaleFactor = 3.5f;
 	int tabWidth = 0;
-	int leftMargin = 100, lineMargin, rightMargin, topMargin, bottomMargin, titleTopMargin, scaleFactor;
+	int leftMargin = 100, lineMargin, rightMargin, topMargin, bottomMargin, titleTopMargin ;
 	int x, y;
 	int index, end;
 	int colWidth = 400;
@@ -88,16 +89,16 @@ public class PrintHelper {
 		printer = new Printer(data);
 		Rectangle clientArea = printer.getClientArea();
 		Rectangle trim = printer.computeTrim(0, 0, 0, 0);
-		//Point dpi = printer.getDPI();
+		Point dpi = printer.getDPI();
 		
 		formHeight = clientArea.height;
-		scaleFactor = 3; // scaling factor for logo
+		
 		formWidth = clientArea.width - leftMargin;
 		leftMargin = trim.x + (int) (formWidth / 24.8);
 		lineMargin = leftMargin / 5;
 		rightMargin = clientArea.width + trim.x + trim.width; 
-		titleTopMargin = trim.y;
-		topMargin = titleTopMargin + lineMargin + scaleFactor * kernIcon.height;//dpi.y / 2 + trim.y; // one inch from top edge of paper
+		titleTopMargin = trim.y + dpi.y / 3;
+		topMargin = titleTopMargin + (int)(scaleFactor * kernIcon.height) + 6;//dpi.y / 2 + trim.y; // one inch from top edge of paper
 		bottomMargin = clientArea.height + trim.y + trim.height; 
 		col1 = leftMargin; //100
 		
@@ -243,14 +244,14 @@ public class PrintHelper {
 		int titleLineHeight = gc.getFontMetrics().getHeight();
 	
 		
-		int titleCenter = (kernIcon.width + titleLineHeight) / 2;
-		gc.drawString("OBJEDNÁVKA PØEPRAVY", leftMargin , titleCenter - titleLineHeight + 15);		
+		int titleCenter = (kernIcon.width + titleLineHeight) / 2 + titleTopMargin;
+		gc.drawString("OBJEDNÁVKA PØEPRAVY", leftMargin , titleCenter - titleLineHeight);		
 		
 		Image printerImage = new Image(printer, kernIcon);
 		gc.drawImage(printerImage, 0, 0, kernIcon.width,
-				kernIcon.height, formWidth - scaleFactor * kernIcon.width, titleTopMargin, 
-                scaleFactor * kernIcon.width,
-                scaleFactor * kernIcon.height);
+				kernIcon.height, formWidth - ((int)(scaleFactor * kernIcon.width)), titleTopMargin, 
+                (int)(scaleFactor * kernIcon.width),
+                (int)(scaleFactor * kernIcon.height));
   
               // Clean up
               printerImage.dispose();
@@ -431,7 +432,7 @@ public class PrintHelper {
 		gc.drawString("Pøepravní pøíkaz dle podmínek KERN-LIEBERS CR spol. s r.o.", col2, y);
 		drawLine();
 	
-		newline();
+		//newline();
 		gc.drawRectangle(new Rectangle(leftMargin - lineMargin, titleTopMargin, formWidth - leftMargin + lineMargin, y));
 		newline();
 		newline();
