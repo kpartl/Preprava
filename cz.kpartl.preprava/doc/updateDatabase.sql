@@ -78,6 +78,8 @@ vykl_kontakt = d.kontakt
 FROM dbo.tb_objednavka o, dbo.tb_destinace d, dbo.tb_pozadavek p
 WHERE o.pozadavek_id = p.pozadavek_id AND d.destinace_id = destinace_do_id;
 
+go
+
 use preprava;
 CREATE TABLE dbo.tb_objednatel
 (objednatel_id NUMERIC(19,0) PRIMARY KEY,
@@ -89,3 +91,11 @@ o5 VARCHAR(255) NULL,
 o6 VARCHAR(255) NULL,
 o7 VARCHAR(255) NULL,
 o8 VARCHAR(255) NULL);
+
+go
+
+use preprava;
+go
+INSERT INTO dbo.tb_objednatel(objednatel_id, o1, o2, o3, o4, o5, o6, o7, o8) VALUES (1, '','','','','','','','')
+
+go
