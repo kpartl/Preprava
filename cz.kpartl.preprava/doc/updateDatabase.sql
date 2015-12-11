@@ -36,6 +36,7 @@ vykl_mesto VARCHAR(255) NULL,
 vykl_kontakt_osoba VARCHAR(255) NULL,
 vykl_kontakt VARCHAR(255) NULL;
 
+go
 
 use preprava;
 UPDATE tb_objednavka
