@@ -1,10 +1,15 @@
 package cz.kpartl.preprava.sorter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import org.eclipse.jface.viewers.Viewer;
 
 import cz.kpartl.preprava.model.Pozadavek;
 
 public class PozadavekTableViewerComparator extends TableViewerComparator {
+	SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+	
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
 		Pozadavek p1 = (Pozadavek) e1;
@@ -15,12 +20,18 @@ public class PozadavekTableViewerComparator extends TableViewerComparator {
 			rc = p1.getDatum().compareTo(p2.getDatum());
 			break;
 		case 1:
-			rc = comparator.compare(p1.getDatum_nakladky(),
-					p2.getDatum_nakladky());
+			try {
+				rc = sdf.parse(p1.getDatum_nakladky()).compareTo(sdf.parse(p2.getDatum_nakladky()));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 			break;
 		case 2:
-			rc = comparator.compare(p1.getDatum_vykladky(),
-					p2.getDatum_vykladky());
+			try {
+				rc = sdf.parse(p1.getDatum_vykladky()).compareTo(sdf.parse(p2.getDatum_vykladky()));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 			break;		
 		case 3:
 			rc = comparator.compare(p1.getDestinace_z().getNazevACislo(), p2

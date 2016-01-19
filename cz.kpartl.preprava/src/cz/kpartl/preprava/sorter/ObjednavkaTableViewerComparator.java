@@ -1,6 +1,8 @@
 package cz.kpartl.preprava.sorter;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.eclipse.jface.viewers.Viewer;
 
@@ -8,6 +10,7 @@ import cz.kpartl.preprava.model.Objednavka;
 
 public class ObjednavkaTableViewerComparator extends
 		PozadavekTableViewerComparator {
+	
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
 		Objednavka o1 = (Objednavka) e1;
@@ -15,10 +18,10 @@ public class ObjednavkaTableViewerComparator extends
 
 		int rc = 0;
 		
-		if(propertyIndex >7){
+		if (!(propertyIndex < 8 || (propertyIndex >=11 && propertyIndex <= 14))) {		
 			propertyIndex = propertyIndex - 8;
 			rc =  super.compare(viewer, o1.getPozadavek(), o2.getPozadavek());
-			propertyIndex=propertyIndex +8;
+			propertyIndex=propertyIndex + 8;
 			
 			return rc;
 		}
@@ -56,6 +59,18 @@ public class ObjednavkaTableViewerComparator extends
 			final Integer i2 = o2.getCislo_faktury_dopravce() != null ? o2.getCislo_faktury_dopravce() : -1;
 			rc = i1.compareTo(i2);
 			break;		
+		case 11:
+			rc = comparator.compare(o1.getNakl_nazev(), o2.getNakl_nazev());			
+			break;
+		case 12:
+			rc = comparator.compare(o1.getVykl_nazev(), o2.getVykl_nazev());			
+			break;
+		case 13:
+			rc = comparator.compare(o1.getNakl_kontakt_osoba(), o2.getNakl_kontakt_osoba());			
+			break;
+		case 14:
+			rc = comparator.compare(o1.getVykl_kontakt_osoba(), o2.getVykl_kontakt_osoba());			
+			break;
 		default:
 			rc = 0;
 		}
