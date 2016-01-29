@@ -104,4 +104,16 @@ public class ObjednavkaDAO {
 			return null;
 		}
 	}
+
+	/**
+	 * @generated
+	 */
+	public java.util.List<cz.kpartl.preprava.model.Objednavka> findFromDate(
+			java.util.Date datum) {
+				org.hibernate.Query query = getSession()
+						.createQuery(
+								"from cz.kpartl.preprava.model.Objednavka o where o.datum >= :datum or ( o.pozadavek.datum >= :datum and o.datum is NULL )");
+				query.setParameter("datum", datum);
+				return query.list();
+			}
 }

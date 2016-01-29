@@ -2,6 +2,7 @@ package cz.kpartl.preprava.dialog;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -20,6 +21,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -133,6 +135,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 		layout.marginLeft = 5;
 		layout.marginTop = 5;
 		layout.marginRight = 5;
+		
 		parent.setLayout(layout);
 
 		createWidgets(parent);
@@ -356,6 +359,9 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 		final ArrayList<String> validace = validate();
 		if (validace.size() == 0) {
 			boolean novaObjednavka = objednavka.getId() == null;
+			if (objednavka.getDatum() == null) {
+				objednavka.setDatum(new Date());
+			}
 			if ("" != cena.getText())
 				objednavka.setCena(BigDecimal.valueOf(Double.valueOf(cena
 						.getText().replaceAll("\\.", "").replace(',', '.'))));
