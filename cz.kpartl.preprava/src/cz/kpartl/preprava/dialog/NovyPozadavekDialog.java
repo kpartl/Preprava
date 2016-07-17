@@ -611,7 +611,9 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 			}
 
 			pozadavek.setCelkova_hmotnost(hmotnost.getText());
-			pozadavek.setDatum(new Date(System.currentTimeMillis()));
+			if (pozadavek.getDatum() == null || pozadavek.getDatum().equals("")) {
+				pozadavek.setDatum(new Date(System.currentTimeMillis()));
+			}
 			pozadavek.setDatum_nakladky(datumNakladky.getText());
 			pozadavek.setDatum_vykladky(datumVykladky.getText());
 			pozadavek.setDestinace_z(destinaceZ);

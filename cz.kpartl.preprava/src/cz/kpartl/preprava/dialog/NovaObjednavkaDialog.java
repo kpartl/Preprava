@@ -358,10 +358,8 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 	protected boolean updateObjednavku(boolean save) {
 		final ArrayList<String> validace = validate();
 		if (validace.size() == 0) {
-			boolean novaObjednavka = objednavka.getId() == null;
-			if (objednavka.getDatum() == null) {
-				objednavka.setDatum(new Date());
-			}
+			boolean novaObjednavka = objednavka.getId() == null;			
+				objednavka.setDatum(new Date());			
 			if ("" != cena.getText())
 				objednavka.setCena(BigDecimal.valueOf(Double.valueOf(cena
 						.getText().replaceAll("\\.", "").replace(',', '.'))));
