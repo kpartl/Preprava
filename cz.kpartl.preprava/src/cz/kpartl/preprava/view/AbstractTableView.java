@@ -338,7 +338,7 @@ public abstract class AbstractTableView extends ViewPart {
 			public String getText(Object element) {
 				if (element instanceof Objednavka) {
 					element = ((Objednavka) element).getPozadavek();
-				}
+				}				
 				return new SimpleDateFormat("dd.MM.yyyy")
 						.format(((Pozadavek) element).getDatum());
 			}

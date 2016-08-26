@@ -42,6 +42,7 @@ import cz.kpartl.preprava.model.Dopravce;
 import cz.kpartl.preprava.model.Objednavka;
 import cz.kpartl.preprava.model.Pozadavek;
 import cz.kpartl.preprava.util.EventConstants;
+import cz.kpartl.preprava.util.HibernateHelper;
 import cz.kpartl.preprava.view.ObjednanoView;
 
 public class NovaObjednavkaDialog extends NovyPozadavekDialog {
@@ -457,6 +458,7 @@ public class NovaObjednavkaDialog extends NovyPozadavekDialog {
 	}
 
 	protected void fillFields() {
+		HibernateHelper.getInstance().openSession(); // kvuli lazy inicializaci, kdy to porad hazelo LazyInicializationException
 		boolean novaObjednavka = objednavka.getId() == null;
 		super.fillFields();
 		odkud.setEditable(true);

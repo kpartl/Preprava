@@ -664,13 +664,13 @@ public class NovyPozadavekDialog extends TitleAreaDialog {
 				.getDatum_vykladky() : "");
 		if (pozadavek.getDestinace_z() != null) {
 			destinaceZ = pozadavek.getDestinace_z();
-			odkud.setText(pozadavek.getDestinaceZNazevACislo());
+			odkud.setText(destinaceZ.getNazevACislo());
 			odkudKontakt.setText(destinaceZ.getKontakt());
 			odkudKontaktOsoba.setText(destinaceZ.getKontaktni_osoba());
 		}
 		if (pozadavek.getDestinace_do() != null) {
 			destinaceDo = pozadavek.getDestinace_do();
-			kam.setText(pozadavek.getDestinaceDoNazevACislo());
+			kam.setText(destinaceDo.getNazevACislo());
 			kamKontakt.setText(destinaceDo.getKontakt());
 			kamKontaktOsoba.setText(destinaceDo.getKontaktni_osoba());
 		}

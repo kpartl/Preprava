@@ -320,7 +320,9 @@ public class Pozadavek implements java.io.Serializable {
 	}
 	
 	public String getDestinaceZNazevACislo(){
-		if(destinace_z != null) return destinace_z.getNazevACislo();
+		if(destinace_z != null) {
+			return destinace_z.getNazevACislo();
+		}
 		else return "";
 	}
 	
