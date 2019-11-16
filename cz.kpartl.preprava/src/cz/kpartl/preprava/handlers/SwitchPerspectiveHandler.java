@@ -25,7 +25,7 @@ import org.eclipse.e4.ui.model.application.ui.menu.impl.MenuImpl;
 import org.eclipse.e4.ui.workbench.UIEvents;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.swt.modeling.EMenuService;
+//import org.eclipse.e4.ui.workbench.swt.modeling.EMenuService;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelection;
